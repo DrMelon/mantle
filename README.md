@@ -1,6 +1,6 @@
-# mantle2
+# MANTLE
 
-Enter a description of your game here. And maybe more documentation too, if you like.
+*A Deltarune Chapter 3 fangame for NES.*
 
 # How to compile
 
