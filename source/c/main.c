@@ -23,11 +23,11 @@ unsigned char testVariable;
 // Constant variables
 // Anything with const in front of it will go into write-only prg instead of the very limited ram we have.
 //
-const unsigned char welcomeMessage[] = "Make something unique!";
+const unsigned char welcomeMessage[] = "CONTROLLER NOT FOUND!";
 
 // Color palette for the screen to use
 const unsigned char palette[] = { 
-    0x0f, 0x00, 0x10, 0x13, 
+    0x0f, 0x00, 0x10, 0x30,
     0x0f, 0x01, 0x21, 0x31,
     0x0f, 0x06, 0x16, 0x26,
     0x0f, 0x09, 0x19, 0x29
@@ -70,7 +70,7 @@ void main(void) {
     testVariable = 1;
 
     // Play the first song built into the rom. By default it is the title song from Shiru's game, Lan Master
-    music_play(0);
+    //music_play(0);
 
     // Infinite loop to end things
     while (1) {
