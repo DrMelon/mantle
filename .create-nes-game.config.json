@@ -1,7 +1,7 @@
 {
     "configVersion": 10000,
     "configVersionString": "1.0.0",
-    "name": "mantle2",
+    "name": "mantle",
     "mapper": "mmc1 (skrom)",
     "mirroring": "single screen",
     "useChrRam": false,
