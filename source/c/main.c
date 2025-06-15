@@ -12,8 +12,10 @@
     unsigned char i;
     unsigned char framecount;
     unsigned char spr;
-    unsigned char pad;
+    unsigned char pad,pad_trig;
     unsigned char animFrame;
+    unsigned char playerLevel;
+    unsigned char currentMap;
     WalkingCharacter kris;
 #pragma bss-name(pop)
 
@@ -29,7 +31,7 @@ unsigned char testVariable;
 // Constant variables
 // Anything with const in front of it will go into write-only prg instead of the very limited ram we have.
 //
-const unsigned char welcomeMessage[] = "CONTROLLER NOT FOUND!";
+const unsigned char welcomeMessage[] = "Having fun, Kris..?";
 
 // Color palette for the screen to use
 const unsigned char paletteArea1[] = {
@@ -49,6 +51,10 @@ const unsigned char palSprites[16] = {
 
 const unsigned char** characterWalkAnims[]={
     krisWalkAnims
+};
+
+const unsigned char** characterStrikeAnims[]={
+    krisStrikeAnims
 };
 
 // forward decls
@@ -71,10 +77,8 @@ void main(void) {
     kris.direction = 0;
     kris.animframe = 0;
 
-
     // Turn off the screen
     ppu_off();
-
 
     // Load the background palette for Area 1
     pal_bg(paletteArea1);
@@ -95,6 +99,10 @@ void main(void) {
         ++i;
     }
 
+    // Set up game state
+    playerLevel = 1;
+    currentMap = 0;
+
 
     // Set the scroll to 0,0
     scroll(0, 0);
@@ -112,14 +120,13 @@ void main(void) {
     // Infinite loop to end things
     while (1) {
         framecount++;
-        // If the user is pressing A, make a sound!
-        if (pad_poll(0) & PAD_A) {
-            // Play sound effect 0 on channel 0 (second argument can be 0-3, lower is higher priority)
-            sfx_play(0, 0);
-        }
 
         // Do input
-        pad = pad_poll(0);
+        pad_trig = pad_trigger(0);
+        pad = pad_state(0);
+
+        // Wipe oams (perf?)
+        oam_clear();
 
         // Update characters
         update_character(&kris);
@@ -147,6 +154,13 @@ void update_character(WalkingCharacter* chara)
         case S_NORMAL:
         {
             int did_walk = 0;
+            if(pad_trig&PAD_A && chara->chartype == CH_KRIS && playerLevel > 0)
+            {
+                chara->substate = S_ATTACK;
+                chara->animframe = 0;
+                break;
+            }
+
             if(pad&PAD_DOWN)
             {
                 chara->direction = 0;
@@ -177,6 +191,18 @@ void update_character(WalkingCharacter* chara)
             }
             break;
         }
+        case S_ATTACK:
+        {
+            if(framecount%8 == 0)
+            {
+                chara->animframe++;
+            }
+            if(chara->animframe > 2)
+            {
+                chara->animframe = 0;
+                chara->substate = S_NORMAL;
+            }
+        }
     }
 }
 
@@ -186,6 +212,11 @@ void draw_character(WalkingCharacter* chara)
     if(chara->substate == S_NORMAL)
     {
         spr = oam_meta_spr(chara->xpos, chara->ypos, spr, characterWalkAnims[chara->chartype][chara->animframe%2 + (chara->direction*2)]);
+    }
+    // Character is attacking, play attack anim for facing dir (Kris, Noelle only)
+    if(chara->substate == S_ATTACK)
+    {
+        spr = oam_meta_spr(chara->xpos, chara->ypos, spr, characterStrikeAnims[chara->chartype][chara->animframe + (chara->direction*3)]);
     }
 
 }
