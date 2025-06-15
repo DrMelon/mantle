@@ -2,14 +2,16 @@
 #include "system-defines.h"
 #include "neslib.h"
 #include "actors.h"
-#include "kris_anims.h";
+#include "kris_anims.h"
+#include "maps.h"
 
 //
 // Global Variables (zeropage) 
 // Small, frequently-used variables should go in this space. There are only around 250 bytes to go around, so choose wisely!
 //
 #pragma bss-name(push, "ZEROPAGE")
-    unsigned char i;
+    unsigned char i,x,y;
+    unsigned int attrib_addr;
     unsigned char framecount;
     unsigned char spr;
     unsigned char pad,pad_trig;
@@ -35,10 +37,10 @@ const unsigned char welcomeMessage[] = "Having fun, Kris..?";
 
 // Color palette for the screen to use
 const unsigned char paletteArea1[] = {
-    0x0f, 0x00, 0x10, 0x30,
-    0x27, 0x37, 0x38, 0x28,
-    0x0f, 0x06, 0x16, 0x26,
-    0x0f, 0x09, 0x19, 0x29
+    0x07, 0x00, 0x10, 0x30,
+    0x07, 0x17, 0x27, 0x19,
+    0x07, 0x06, 0x16, 0x26,
+    0x07, 0x09, 0x19, 0x29
 };
 
 // Color palette for Kris & Monsters
@@ -60,7 +62,8 @@ const unsigned char** characterStrikeAnims[]={
 // forward decls
 void update_character(WalkingCharacter* chara);
 void draw_character(WalkingCharacter* chara);
-
+void load_room(unsigned char roomNumber);
+void set_palette_for_bg_tile(unsigned char tx, unsigned char ty, unsigned char palettenum);
 //
 // Main entrypoint
 // This is where your game will start running. It should essentially be an endless loop in most
@@ -89,6 +92,8 @@ void main(void) {
     // Set sprite bank to bank 1
     bank_spr(1);
 
+    load_room(0);
+
     // Write the address $2064 to the ppu, where we can start drawing text on the screen
     vram_adr(0x2064);
 
@@ -98,6 +103,8 @@ void main(void) {
         vram_put(welcomeMessage[i] + 0x80);
         ++i;
     }
+
+    // Load first room of first map.
 
     // Set up game state
     playerLevel = 1;
@@ -193,7 +200,7 @@ void update_character(WalkingCharacter* chara)
         }
         case S_ATTACK:
         {
-            if(framecount%8 == 0)
+            if(framecount%6 == 0)
             {
                 chara->animframe++;
             }
@@ -219,4 +226,55 @@ void draw_character(WalkingCharacter* chara)
         spr = oam_meta_spr(chara->xpos, chara->ypos, spr, characterStrikeAnims[chara->chartype][chara->animframe + (chara->direction*3)]);
     }
 
+}
+
+// TODO: Load room into specific H/V mirror space depending on exit travelled to
+// TODO: Room exit traversal
+void load_room(unsigned char roomNumber)
+{
+   unsigned char currentTileID = 0;
+   // Set palette for desert
+
+
+   for(x = 0; x < 12; x++)
+   {
+       for(y = 0; y < 8; y++)
+       {
+           i = (x + (y*12)) + 4; // add 4 to skip entrances/exits of room
+           currentTileID = desert_room_0[i];
+           vram_adr(NTADR_A((x+2)*2,(y+3)*2));
+           vram_put(desert_metatiles[(currentTileID*5)]);
+           vram_put(desert_metatiles[(currentTileID*5)+1]);
+           vram_adr(NTADR_A((x+2)*2,((y+3)*2+1)));
+           vram_put(desert_metatiles[(currentTileID*5)+2]);
+           vram_put(desert_metatiles[(currentTileID*5)+3]);
+
+           set_palette_for_bg_tile(x+2, y+3, desert_metatiles[(currentTileID*5)+4]);
+       }
+   }
+
+}
+
+void set_palette_for_bg_tile(unsigned char tx, unsigned char ty, unsigned char palettemask)
+{
+   unsigned char tilemask=0;
+   // attrib table is 64 bytes long
+   // each byte controls a square of 4x4 tiles
+   // so for our metatiles, that means each byte controls 2x2 of them
+   // so to set 1 metatile's palette we have to set only 2 bits of that attrib entry
+   // first get current
+   attrib_addr = 0x23C0 + (ty/2) * 8 + (tx/2);
+   vram_adr(attrib_addr);
+   vram_read(&i, 1); // now i contains current value
+   // next we need to calculate the mask for this specific tile
+   if(tx % 2 == 1 && ty % 2 == 1) tilemask = 0b11000000;
+   if(tx % 2 == 0 && ty % 2 == 1) tilemask = 0b00110000;
+   if(tx % 2 == 1 && ty % 2 == 0) tilemask = 0b00001100;
+   if(tx % 2 == 0 && ty % 2 == 0) tilemask = 0b00000011;
+
+   palettemask = i | (palettemask & tilemask);
+   // then mask the existing data out with the mask so that we only set the bits for the current tile
+   // then write that entry back into vram
+   vram_adr(attrib_addr);
+   vram_put(palettemask);
 }

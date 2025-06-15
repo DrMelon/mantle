@@ -12,7 +12,7 @@
     "includeC": true,
     "ciProvider": "none",
     "testProvider": "nes-test",
-    "installEmulator": "fceux",
+    "installEmulator": "mesen",
     "includeCLibrary": "neslib with famitracker",
     "neslibNtscPal": "both",
     "useTutorial": false,
