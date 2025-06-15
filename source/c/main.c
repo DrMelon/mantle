@@ -115,7 +115,7 @@ void main(void) {
     testVariable = 1;
 
     // Play the first song built into the rom. By default it is the title song from Shiru's game, Lan Master
-    //music_play(0);
+    music_play(0);
 
     // Infinite loop to end things
     while (1) {
@@ -151,7 +151,7 @@ void main(void) {
             // Check screen transition direction and move Kris in that direction until threshold is reached
             if(kris.direction == 0)
             {
-                kris.ypos -= 2;
+                kris.ypos -= 4;
                 if(kris.ypos <= 48+4)
                 {
                     // Once Kris is there, switch state back and turn on bgs
@@ -162,7 +162,7 @@ void main(void) {
             }
             if(kris.direction == 1)
             {
-                kris.xpos -= 2;
+                kris.xpos -= 4;
                 if(kris.xpos <= 32+4)
                 {
                     ppu_on_all();
@@ -172,7 +172,7 @@ void main(void) {
             }
             if(kris.direction == 2)
             {
-                kris.ypos += 2;
+                kris.ypos += 4;
                 if(kris.ypos >= 160-4)
                 {
                     ppu_on_all();
@@ -182,7 +182,7 @@ void main(void) {
             }
             if(kris.direction == 3)
             {
-                kris.xpos += 2;
+                kris.xpos += 4;
                 if(kris.xpos >= 208-4)
                 {
                     ppu_on_all();
