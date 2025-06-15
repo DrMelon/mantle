@@ -46,15 +46,15 @@ const unsigned char krisWalkUp1[]={
 const unsigned char krisWalkLeft0[]={
     0, 0, 0x17, 4,
     8, 0, 0x18, 4,
-    0, 8, 0x19, 4,
-    8, 8, 0x1A, 4,
+    -1, 8, 0x19, 4,
+    7, 8, 0x1A, 4,
     128
 };
 const unsigned char krisWalkLeft1[]={
     0, 1, 0x17, 4,
     8, 1, 0x18, 4,
-    1, 9, 0x1B, 4,
-    9, 9, 0x1C, 4,
+    0, 9, 0x1B, 4,
+    8, 9, 0x1C, 4,
     128
 };
 

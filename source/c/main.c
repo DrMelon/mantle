@@ -34,18 +34,19 @@ unsigned char testVariable;
 // Anything with const in front of it will go into write-only prg instead of the very limited ram we have.
 //
 const unsigned char welcomeMessage[] = "Having fun, Kris..?";
+const unsigned char hudMessage[] = "HP -----  LV _____  ";
 
 // Color palette for the screen to use
 const unsigned char paletteArea1[] = {
-    0x07, 0x00, 0x10, 0x30,
-    0x07, 0x17, 0x27, 0x19,
-    0x07, 0x06, 0x16, 0x26,
-    0x07, 0x09, 0x19, 0x29
+    0x17, 0x00, 0x10, 0x30,
+    0x17, 0x27, 0x37, 0x28,
+    0x17, 0x06, 0x16, 0x26,
+    0x17, 0x09, 0x19, 0x29
 };
 
 // Color palette for Kris & Monsters
 const unsigned char palSprites[16] = {
-    0x0f, 0x01, 0x33, 0x3c,
+    0x0f, 0x03, 0x22, 0x3c,
     0x0f, 0x15, 0x18, 0x19,
     0x0f, 0x28, 0x29, 0x2a,
     0x0f, 0x30, 0x10, 0x0f
@@ -64,6 +65,9 @@ void update_character(WalkingCharacter* chara);
 void draw_character(WalkingCharacter* chara);
 void load_room(unsigned char roomNumber);
 void set_palette_for_bg_tile(unsigned char tx, unsigned char ty, unsigned char palettenum);
+int solidity_check(unsigned char px, unsigned char py);
+int tilemap_solid(unsigned char tx, unsigned char ty);
+int tile_solid(unsigned char tile);
 //
 // Main entrypoint
 // This is where your game will start running. It should essentially be an endless loop in most
@@ -73,8 +77,8 @@ void set_palette_for_bg_tile(unsigned char tx, unsigned char ty, unsigned char p
 void main(void) {
 
     // Init Kris
-    kris.xpos = 16;
-    kris.ypos = 16;
+    kris.xpos = 48;
+    kris.ypos = 96;
     kris.chartype = CH_KRIS;
     kris.substate = S_NORMAL;
     kris.direction = 0;
@@ -95,12 +99,12 @@ void main(void) {
     load_room(0);
 
     // Write the address $2064 to the ppu, where we can start drawing text on the screen
-    vram_adr(0x2064);
+    vram_adr(NTADR_A(4,5));
 
     i = 0;
     while (welcomeMessage[i]) {
         // Add 0x60 to the ascii value of each character, to get it to line up with where the ascii table is in our chr file
-        vram_put(welcomeMessage[i] + 0x80);
+        vram_put(hudMessage[i] + 0x80);
         ++i;
     }
 
@@ -114,7 +118,6 @@ void main(void) {
     // Set the scroll to 0,0
     scroll(0, 0);
 
-
     // Turn the screen back on
     ppu_on_all();
 
@@ -127,7 +130,6 @@ void main(void) {
     // Infinite loop to end things
     while (1) {
         framecount++;
-
         // Do input
         pad_trig = pad_trigger(0);
         pad = pad_state(0);
@@ -135,16 +137,18 @@ void main(void) {
         // Wipe oams (perf?)
         oam_clear();
 
+        spr = 0;
+
         // Update characters
         update_character(&kris);
 
+
         // Update monsters & projectiles
 
-        // Set sprite count to 0
-        spr = 0;
 
         // Draw characters
         draw_character(&kris);
+
 
         // Draw monsters & projectiles
 
@@ -171,25 +175,25 @@ void update_character(WalkingCharacter* chara)
             if(pad&PAD_DOWN)
             {
                 chara->direction = 0;
-                chara->ypos++;
+                if(solidity_check(chara->xpos, chara->ypos + 1)) chara->ypos++;
                 did_walk = 1;
             }
             if(pad&PAD_RIGHT)
             {
                 chara->direction = 1;
-                chara->xpos++;
+                if(solidity_check(chara->xpos + 1, chara->ypos)) chara->xpos++;
                 did_walk = 1;
             }
             if(pad&PAD_UP)
             {
                 chara->direction = 2;
-                chara->ypos--;
+                if(solidity_check(chara->xpos, chara->ypos - 1)) chara->ypos--;
                 did_walk = 1;
             }
             if(pad&PAD_LEFT)
             {
                 chara->direction = 3;
-                chara->xpos--;
+                if(solidity_check(chara->xpos - 1, chara->ypos)) chara->xpos--;
                 did_walk = 1;
             }
             if(did_walk && framecount%16 == 0)
@@ -277,4 +281,44 @@ void set_palette_for_bg_tile(unsigned char tx, unsigned char ty, unsigned char p
    // then write that entry back into vram
    vram_adr(attrib_addr);
    vram_put(palettemask);
+}
+
+int solidity_check(unsigned char px, unsigned char py)
+{
+    // TopLeft
+    x = (px+2) >> 4;
+    y = (py+2) >> 4;
+    if(tilemap_solid(x, y)) return 0;
+
+    // TopRight
+    x = (px+14) >> 4;
+    y = (py+2) >> 4;
+    if(tilemap_solid(x, y)) return 0;
+
+    // BottomLeft
+    x = (px+2) >> 4;
+    y = (py+14) >> 4;
+    if(tilemap_solid(x, y)) return 0;
+
+    // BottomRight
+    x = (px+14) >> 4;
+    y = (py+14) >> 4;
+    if(tilemap_solid(x, y)) return 0;
+
+    return 1;
+}
+
+int tilemap_solid(unsigned char tx, unsigned char ty)
+{
+    x = tx - 2; // account for centering
+    y = ty - 3;
+    if(x < 0 || x >= 12) return 0;
+    if(y < 0 || y >= 8) return 0;
+    i = (x + (y*12)) + 4;
+    return tile_solid(desert_room_0[i]);
+}
+
+int tile_solid(unsigned char tile)
+{
+    return tile == 1 || tile == 3 || tile == 4;
 }
