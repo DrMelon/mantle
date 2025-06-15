@@ -1,23 +1,18 @@
 // Include defines for various pieces of the NES hardware
 #include "system-defines.h"
 #include "neslib.h"
+#include "globals.h"
 #include "actors.h"
 #include "kris_anims.h"
 #include "maps.h"
+#include "bank_helpers.h"
+
 
 //
 // Global Variables (zeropage) 
 // Small, frequently-used variables should go in this space. There are only around 250 bytes to go around, so choose wisely!
 //
 #pragma bss-name(push, "ZEROPAGE")
-    unsigned char i,x,y;
-    unsigned int attrib_addr;
-    unsigned char framecount;
-    unsigned char spr;
-    unsigned char pad,pad_trig;
-    unsigned char animFrame;
-    unsigned char playerLevel;
-    unsigned char currentMap;
     WalkingCharacter kris;
 #pragma bss-name(pop)
 
@@ -52,22 +47,13 @@ const unsigned char palSprites[16] = {
     0x0f, 0x30, 0x10, 0x0f
 };
 
-const unsigned char** characterWalkAnims[]={
-    krisWalkAnims
-};
 
-const unsigned char** characterStrikeAnims[]={
-    krisStrikeAnims
-};
 
 // forward decls
-void update_character(WalkingCharacter* chara);
-void draw_character(WalkingCharacter* chara);
-void load_room(unsigned char roomNumber);
+
+void draw_room();
 void set_palette_for_bg_tile(unsigned char tx, unsigned char ty, unsigned char palettenum);
-int solidity_check(unsigned char px, unsigned char py);
-int tilemap_solid(unsigned char tx, unsigned char ty);
-int tile_solid(unsigned char tile);
+void switch_to_room(unsigned char room);
 //
 // Main entrypoint
 // This is where your game will start running. It should essentially be an endless loop in most
@@ -84,6 +70,9 @@ void main(void) {
     kris.direction = 0;
     kris.animframe = 0;
 
+    currentEnvironment = E_DESERT;
+    currentRoom = 0;
+
     // Turn off the screen
     ppu_off();
 
@@ -96,24 +85,25 @@ void main(void) {
     // Set sprite bank to bank 1
     bank_spr(1);
 
-    load_room(0);
 
     // Write the address $2064 to the ppu, where we can start drawing text on the screen
     vram_adr(NTADR_A(4,5));
 
     i = 0;
-    while (welcomeMessage[i]) {
+    while (hudMessage[i]) {
         // Add 0x60 to the ascii value of each character, to get it to line up with where the ascii table is in our chr file
         vram_put(hudMessage[i] + 0x80);
         ++i;
     }
 
-    // Load first room of first map.
 
     // Set up game state
+    currentState = GS_GAMEPLAY;
     playerLevel = 1;
-    currentMap = 0;
+    currentRoom = 0;
 
+    // Load first room of first map.
+    draw_room();
 
     // Set the scroll to 0,0
     scroll(0, 0);
@@ -130,130 +120,106 @@ void main(void) {
     // Infinite loop to end things
     while (1) {
         framecount++;
+
         // Do input
         pad_trig = pad_trigger(0);
         pad = pad_state(0);
 
-        // Wipe oams (perf?)
-        oam_clear();
+        if(currentState == GS_GAMEPLAY)
+        {
+          // Wipe oams (perf?)
+          oam_clear();
+          spr = 0;
 
-        spr = 0;
+          // Update characters
+          bank_push(1);
+          update_character(&kris);
+          bank_pop();
 
-        // Update characters
-        update_character(&kris);
-
-
-        // Update monsters & projectiles
-
-
-        // Draw characters
-        draw_character(&kris);
+          // Update monsters & projectiles
 
 
-        // Draw monsters & projectiles
+          // Draw characters
+          draw_character(&kris);
 
+          // Draw monsters & projectiles
+        }
+        if(currentState == GS_SCREENTRANS)
+        {
+            oam_clear();
+            spr = 0;
+            // Check screen transition direction and move Kris in that direction until threshold is reached
+            if(kris.direction == 0)
+            {
+                kris.ypos -= 2;
+                if(kris.ypos <= 48+4)
+                {
+                    // Once Kris is there, switch state back and turn on bgs
+                    ppu_on_all();
+
+                    currentState = GS_GAMEPLAY;
+                }
+            }
+            if(kris.direction == 1)
+            {
+                kris.xpos -= 2;
+                if(kris.xpos <= 32+4)
+                {
+                    ppu_on_all();
+
+                    currentState = GS_GAMEPLAY;
+                }
+            }
+            if(kris.direction == 2)
+            {
+                kris.ypos += 2;
+                if(kris.ypos >= 160-4)
+                {
+                    ppu_on_all();
+
+                    currentState = GS_GAMEPLAY;
+                }
+            }
+            if(kris.direction == 3)
+            {
+                kris.xpos += 2;
+                if(kris.xpos >= 208-4)
+                {
+                    ppu_on_all();
+
+                    currentState = GS_GAMEPLAY;
+                }
+            }
+            // Render kris
+            draw_character(&kris);
+
+        }
 
         // Don't run until a frame has run.
         ppu_wait_nmi();
+
     }
 }
 
-void update_character(WalkingCharacter* chara)
-{
-    switch (chara->substate)
-    {
-        case S_NORMAL:
-        {
-            int did_walk = 0;
-            if(pad_trig&PAD_A && chara->chartype == CH_KRIS && playerLevel > 0)
-            {
-                chara->substate = S_ATTACK;
-                chara->animframe = 0;
-                break;
-            }
 
-            if(pad&PAD_DOWN)
-            {
-                chara->direction = 0;
-                if(solidity_check(chara->xpos, chara->ypos + 1)) chara->ypos++;
-                did_walk = 1;
-            }
-            if(pad&PAD_RIGHT)
-            {
-                chara->direction = 1;
-                if(solidity_check(chara->xpos + 1, chara->ypos)) chara->xpos++;
-                did_walk = 1;
-            }
-            if(pad&PAD_UP)
-            {
-                chara->direction = 2;
-                if(solidity_check(chara->xpos, chara->ypos - 1)) chara->ypos--;
-                did_walk = 1;
-            }
-            if(pad&PAD_LEFT)
-            {
-                chara->direction = 3;
-                if(solidity_check(chara->xpos - 1, chara->ypos)) chara->xpos--;
-                did_walk = 1;
-            }
-            if(did_walk && framecount%16 == 0)
-            {
-                chara->animframe++;
-            }
-            break;
-        }
-        case S_ATTACK:
-        {
-            if(framecount%6 == 0)
-            {
-                chara->animframe++;
-            }
-            if(chara->animframe > 2)
-            {
-                chara->animframe = 0;
-                chara->substate = S_NORMAL;
-            }
-        }
-    }
-}
-
-void draw_character(WalkingCharacter* chara)
-{
-    // Character is walking, play walk anim for facing dir
-    if(chara->substate == S_NORMAL)
-    {
-        spr = oam_meta_spr(chara->xpos, chara->ypos, spr, characterWalkAnims[chara->chartype][chara->animframe%2 + (chara->direction*2)]);
-    }
-    // Character is attacking, play attack anim for facing dir (Kris, Noelle only)
-    if(chara->substate == S_ATTACK)
-    {
-        spr = oam_meta_spr(chara->xpos, chara->ypos, spr, characterStrikeAnims[chara->chartype][chara->animframe + (chara->direction*3)]);
-    }
-
-}
-
-// TODO: Load room into specific H/V mirror space depending on exit travelled to
-// TODO: Room exit traversal
-void load_room(unsigned char roomNumber)
+void draw_room()
 {
    unsigned char currentTileID = 0;
-   // Set palette for desert
-
 
    for(x = 0; x < 12; x++)
    {
        for(y = 0; y < 8; y++)
        {
            i = (x + (y*12)) + 4; // add 4 to skip entrances/exits of room
-           currentTileID = desert_room_0[i];
+           currentTileID = environment_rooms[currentEnvironment][currentRoom][i];
            vram_adr(NTADR_A((x+2)*2,(y+3)*2));
-           vram_put(desert_metatiles[(currentTileID*5)]);
-           vram_put(desert_metatiles[(currentTileID*5)+1]);
+           vram_put(environment_metatiles[currentEnvironment][(currentTileID*5)]);
+           vram_put(environment_metatiles[currentEnvironment][(currentTileID*5)+1]);
            vram_adr(NTADR_A((x+2)*2,((y+3)*2+1)));
-           vram_put(desert_metatiles[(currentTileID*5)+2]);
-           vram_put(desert_metatiles[(currentTileID*5)+3]);
+           vram_put(environment_metatiles[currentEnvironment][(currentTileID*5)+2]);
+           vram_put(environment_metatiles[currentEnvironment][(currentTileID*5)+3]);
 
-           set_palette_for_bg_tile(x+2, y+3, desert_metatiles[(currentTileID*5)+4]);
+           set_palette_for_bg_tile(x+2, y+3, environment_metatiles[currentEnvironment][(currentTileID*5)+4]);
        }
    }
 
@@ -283,42 +249,16 @@ void set_palette_for_bg_tile(unsigned char tx, unsigned char ty, unsigned char p
    vram_put(palettemask);
 }
 
-int solidity_check(unsigned char px, unsigned char py)
+
+
+void switch_to_room(unsigned char room)
 {
-    // TopLeft
-    x = (px+2) >> 4;
-    y = (py+2) >> 4;
-    if(tilemap_solid(x, y)) return 0;
-
-    // TopRight
-    x = (px+14) >> 4;
-    y = (py+2) >> 4;
-    if(tilemap_solid(x, y)) return 0;
-
-    // BottomLeft
-    x = (px+2) >> 4;
-    y = (py+14) >> 4;
-    if(tilemap_solid(x, y)) return 0;
-
-    // BottomRight
-    x = (px+14) >> 4;
-    y = (py+14) >> 4;
-    if(tilemap_solid(x, y)) return 0;
-
-    return 1;
-}
-
-int tilemap_solid(unsigned char tx, unsigned char ty)
-{
-    x = tx - 2; // account for centering
-    y = ty - 3;
-    if(x < 0 || x >= 12) return 0;
-    if(y < 0 || y >= 8) return 0;
-    i = (x + (y*12)) + 4;
-    return tile_solid(desert_room_0[i]);
-}
-
-int tile_solid(unsigned char tile)
-{
-    return tile == 1 || tile == 3 || tile == 4;
+    currentState = GS_SCREENTRANS;
+    // Turn off PPU
+    ppu_off();
+    // Load next room
+    currentRoom = room;
+    draw_room();
+    // Turn on sprites only
+    ppu_on_spr();
 }

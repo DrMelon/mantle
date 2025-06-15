@@ -1,4 +1,5 @@
 #include "neslib.h";
+#include "bank_helpers.h";
 
 // Kris metasprites
 const unsigned char krisWalkDown0[]={

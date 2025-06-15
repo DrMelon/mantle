@@ -12,6 +12,7 @@
 ; System defines for various registers on the console
 .include "./system-defines.asm"
 .include "./mapper.asm"
+.include "./bank_helpers.asm"
 
 ;
 ; iNES header

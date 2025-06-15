@@ -1,5 +1,5 @@
-#ifndef __CHARACTER_H
-#define __CHARACTER_H
+#ifndef __ACTORS_H
+#define __ACTORS_H
 enum Substate
 {
   S_NORMAL,
@@ -46,4 +46,13 @@ typedef struct
   enum Substate substate;
   enum MonsterType montype;
 } Monster;
+
+const unsigned char** characterWalkAnims[];
+const unsigned char** characterStrikeAnims[];
+
+void switch_to_room(unsigned char room);
+
+void update_character(WalkingCharacter* chara);
+void draw_character(WalkingCharacter* chara);
+
 #endif
