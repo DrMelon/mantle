@@ -1,6 +1,8 @@
 // Include defines for various pieces of the NES hardware
 #include "system-defines.h"
 #include "neslib.h"
+#include "actors.h"
+#include "kris_anims.h";
 
 //
 // Global Variables (zeropage) 
@@ -12,6 +14,7 @@
     unsigned char spr;
     unsigned char pad;
     unsigned char animFrame;
+    WalkingCharacter kris;
 #pragma bss-name(pop)
 
 //
@@ -44,23 +47,13 @@ const unsigned char palSprites[16] = {
     0x0f, 0x30, 0x10, 0x0f
 };
 
-// Kris metasprites
-const unsigned char krisWalkDown0[]={
-    0, 0, 0x01, 4,
-    8, 0, 0x02, 4,
-    0, 8, 0x03, 4,
-    8, 8, 0x04, 4,
-    128
+const unsigned char** characterWalkAnims[]={
+    krisWalkAnims
 };
-const unsigned char krisWalkDown1[]={
-    0, 0, 0x01, 4,
-    8, 0, 0x02, 4,
-    0, 8, 0x05, 4,
-    8, 8, 0x06, 4,
-    128
-};
+
 // forward decls
-void draw_kris(unsigned char drawx, unsigned char drawy);
+void update_character(WalkingCharacter* chara);
+void draw_character(WalkingCharacter* chara);
 
 //
 // Main entrypoint
@@ -69,6 +62,16 @@ void draw_kris(unsigned char drawx, unsigned char drawy);
 // or others and call them as your game expands. 
 // 
 void main(void) {
+
+    // Init Kris
+    kris.xpos = 16;
+    kris.ypos = 16;
+    kris.chartype = CH_KRIS;
+    kris.substate = S_NORMAL;
+    kris.direction = 0;
+    kris.animframe = 0;
+
+
     // Turn off the screen
     ppu_off();
 
@@ -115,12 +118,21 @@ void main(void) {
             sfx_play(0, 0);
         }
 
-        spr = 0;
-        draw_kris(16, 16);
-
-
         // Do input
         pad = pad_poll(0);
+
+        // Update characters
+        update_character(&kris);
+
+        // Update monsters & projectiles
+
+        // Set sprite count to 0
+        spr = 0;
+
+        // Draw characters
+        draw_character(&kris);
+
+        // Draw monsters & projectiles
 
 
         // Don't run until a frame has run.
@@ -128,11 +140,52 @@ void main(void) {
     }
 }
 
-void draw_kris(unsigned char drawx, unsigned char drawy)
+void update_character(WalkingCharacter* chara)
 {
-    if(framecount%16 == 0)
+    switch (chara->substate)
     {
-        animFrame++;
+        case S_NORMAL:
+        {
+            int did_walk = 0;
+            if(pad&PAD_DOWN)
+            {
+                chara->direction = 0;
+                chara->ypos++;
+                did_walk = 1;
+            }
+            if(pad&PAD_RIGHT)
+            {
+                chara->direction = 1;
+                chara->xpos++;
+                did_walk = 1;
+            }
+            if(pad&PAD_UP)
+            {
+                chara->direction = 2;
+                chara->ypos--;
+                did_walk = 1;
+            }
+            if(pad&PAD_LEFT)
+            {
+                chara->direction = 3;
+                chara->xpos--;
+                did_walk = 1;
+            }
+            if(did_walk && framecount%16 == 0)
+            {
+                chara->animframe++;
+            }
+            break;
+        }
     }
-    spr = oam_meta_spr(drawx, drawy, spr, animFrame%2==0?krisWalkDown0:krisWalkDown1);
+}
+
+void draw_character(WalkingCharacter* chara)
+{
+    // Character is walking, play walk anim for facing dir
+    if(chara->substate == S_NORMAL)
+    {
+        spr = oam_meta_spr(chara->xpos, chara->ypos, spr, characterWalkAnims[chara->chartype][chara->animframe%2 + (chara->direction*2)]);
+    }
+
 }
