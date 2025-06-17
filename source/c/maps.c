@@ -2,15 +2,22 @@
 #include "globals.h"
 
 // Format: 4 8x8 tiles that make up this metatile, and palette mask for attrib (actual mask differs based on tile pos)
+// then, tile solidity type (0 = walkable, 1 = not walkable)
 const unsigned char desert_metatiles[]={
-   0x01, 0x02, 0x11, 0x12, 0b01010101,
-   0x03, 0x04, 0x13, 0x14, 0b01010101,
-   0x0B, 0x0C, 0x1B, 0x1C, 0b01010101,
-   0x29, 0x2A, 0x39, 0x3A, 0b01010101,
-   0x2B, 0x2C, 0x3B, 0x3C, 0b01010101
+   0x01, 0x02, 0x11, 0x12, 0b01010101, 0,
+   0x03, 0x04, 0x13, 0x14, 0b01010101, 1,
+   0x0B, 0x0C, 0x1B, 0x1C, 0b01010101, 0,
+   0x29, 0x2A, 0x39, 0x3A, 0b01010101, 1,
+   0x2B, 0x2C, 0x3B, 0x3C, 0b01010101, 1
 };
 
-// Format: S, E, N, W exits, then the map tile layout (12x8 metatiles)
+// Format: S, E, N, W exits, then the map tile layout (12x8 metatiles),
+// then a running list of entities for the room:
+// first, an ID that says what kind of thing it is: 0 = monster, 1 = entrance/exit (like stairs), 2 = sword pickup
+// then an x and a y position
+// then a subtype id for monsters etc
+// then a "unique id" for monsters so we can track which ones are dead-dead
+// list terminates if you reach an id of 128
 const unsigned char desert_room_start[]={
   1, 0, 0, 0,
   3, 4, 3, 4, 3, 4, 3, 4, 3, 4, 3, 4,
@@ -21,6 +28,8 @@ const unsigned char desert_room_start[]={
   1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
   1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
   1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1,
+  2, 4, 5, 0, 0,
+  128
 };
 
 const unsigned char desert_room_movetest[]={
@@ -33,6 +42,7 @@ const unsigned char desert_room_movetest[]={
   1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1,
   1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1,
   1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1,
+  128
 };
 
 const unsigned char* desert_rooms[]={
@@ -85,5 +95,5 @@ int tilemap_solid(unsigned char tx, unsigned char ty)
 
 int tile_solid(unsigned char tile)
 {
-    return tile == 1 || tile == 3 || tile == 4;
+    return environment_metatiles[currentEnvironment][tile*6 + 5];
 }

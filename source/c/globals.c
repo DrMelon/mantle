@@ -13,3 +13,11 @@ ZEROPAGE_DEF(unsigned char, pad);
 ZEROPAGE_DEF(unsigned char, playerLevel);
 ZEROPAGE_DEF(unsigned char, currentRoom);
 ZEROPAGE_DEF(enum Environment, currentEnvironment);
+ZEROPAGE_DEF(unsigned char, spawnedItems);
+
+#pragma bss-name(push, "ZEROPAGE")
+Item itemList[MAX_ITEMS];
+#pragma bss-name(pop)
+
+// Hmm...
+unsigned char deadList[TOTAL_SPAWNABLES];

@@ -13,7 +13,6 @@ const unsigned char** characterStrikeAnims[]={
     krisStrikeAnims
 };
 
-CODE_BANK(1);
 void update_character(WalkingCharacter* chara)
 {
     switch (chara->substate)
@@ -38,7 +37,9 @@ void update_character(WalkingCharacter* chara)
                         did_walk = 1;
                         if(chara->ypos > 160)
                         {
+                            bank_push(0);
                             switch_to_room(environment_rooms[currentEnvironment][currentRoom][0]);
+                            bank_pop();
                         }
                     }
                 if(pad&PAD_RIGHT)
@@ -48,7 +49,9 @@ void update_character(WalkingCharacter* chara)
                         did_walk = 1;
                         if(chara->xpos > 208)
                         {
+                            bank_push(0);
                             switch_to_room(environment_rooms[currentEnvironment][currentRoom][1]);
+                            bank_pop();
                         }
                     }
                 if(pad&PAD_UP)
@@ -58,7 +61,9 @@ void update_character(WalkingCharacter* chara)
                         did_walk = 1;
                         if(chara->ypos < 48)
                         {
+                            bank_push(0);
                             switch_to_room(environment_rooms[currentEnvironment][currentRoom][2]);
+                            bank_pop();
                         }
                     }
                 if(pad&PAD_LEFT)
@@ -68,7 +73,9 @@ void update_character(WalkingCharacter* chara)
                         did_walk = 1;
                         if(chara->xpos < 32)
                         {
-                             switch_to_room(environment_rooms[currentEnvironment][currentRoom][3]);
+                            bank_push(0);
+                            switch_to_room(environment_rooms[currentEnvironment][currentRoom][3]);
+                            bank_pop();
                         }
                     }
             }
@@ -106,4 +113,50 @@ void draw_character(WalkingCharacter* chara)
         spr = oam_meta_spr(chara->xpos, chara->ypos, spr, characterStrikeAnims[chara->chartype][chara->animframe + (chara->direction*3)]);
     }
 
+}
+
+void update_item(Item* item, WalkingCharacter* chara)
+{
+    unsigned char kx, ky;
+    if(item->living != 1)
+    {
+        return;
+    }
+    // Check to see if Kris has walked onto the same tile as this item
+    x = item->xpos >> 4;
+    y = item->ypos >> 4;
+    kx = chara->xpos >> 4;
+    ky = chara->ypos >> 4;
+
+    if(x == kx && y == ky)
+    {
+        // Touching item. Let's do some logic!
+        if(item->itemtype == ITEM_SWORD)
+        {
+            // Increase player level to 1!
+            if(playerLevel < 1)
+            {
+                playerLevel++;
+            }
+            // Play jingle
+            // Destroy self
+            deadList[item->uniqueid] = 1;
+            item->living = 0;
+        }
+    }
+}
+
+const unsigned char swordSprite[]={
+    0, 0, 0x27, 4,
+    0, 8, 0x37, 4,
+    128
+};
+
+void draw_item(Item* item)
+{
+    if(item->living != 1) return;
+    if(item->itemtype == ITEM_SWORD)
+    {
+        spr = oam_meta_spr(item->xpos, item->ypos, spr, swordSprite);
+    }
 }

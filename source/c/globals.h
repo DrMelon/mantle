@@ -3,6 +3,7 @@
 
 #include "bank_helpers.h"
 #include "maps.h"
+#include "actors.h"
 
 enum GameState
 {
@@ -26,7 +27,12 @@ ZEROPAGE_EXTERN(unsigned char, pad);
 ZEROPAGE_EXTERN(unsigned char, playerLevel);
 ZEROPAGE_EXTERN(unsigned char, currentRoom);
 ZEROPAGE_EXTERN(enum Environment, currentEnvironment);
+ZEROPAGE_EXTERN(unsigned char, spawnedItems);
 
+#define MAX_ITEMS 5
+extern Item itemList[];
 
+#define TOTAL_SPAWNABLES 255
+extern unsigned char deadList[];
 
 #endif

@@ -28,6 +28,14 @@ enum MonsterType
   MON_SINGCAT
 };
 
+enum ItemType
+{
+  ITEM_SWORD,
+  ITEM_CANDY,
+  ITEM_ICEKEY,
+  ITEM_SHELTERKEY
+};
+
 typedef struct
 {
   unsigned char xpos;
@@ -47,6 +55,15 @@ typedef struct
   enum MonsterType montype;
 } Monster;
 
+typedef struct
+{
+  unsigned char xpos;
+  unsigned char ypos;
+  enum ItemType itemtype;
+  unsigned char living;
+  unsigned char uniqueid;
+} Item;
+
 const unsigned char** characterWalkAnims[];
 const unsigned char** characterStrikeAnims[];
 
@@ -54,5 +71,8 @@ void switch_to_room(unsigned char room);
 
 void update_character(WalkingCharacter* chara);
 void draw_character(WalkingCharacter* chara);
+
+void update_item(Item* item, WalkingCharacter* chara);
+void draw_item(Item* item);
 
 #endif
