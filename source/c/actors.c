@@ -21,7 +21,6 @@ void update_character(WalkingCharacter* chara)
         {
             int did_walk = 0;
 
-
             if(chara->chartype == CH_KRIS)
             {
                 if(pad_trig&PAD_A && playerLevel > 0)
@@ -137,8 +136,9 @@ void update_item(Item* item, WalkingCharacter* chara)
             if(playerLevel < 1)
             {
                 playerLevel++;
+                // Start playing the song!!
+                music_play(0);
             }
-            // Play jingle
             // Destroy self
             deadList[item->uniqueid] = 1;
             item->living = 0;

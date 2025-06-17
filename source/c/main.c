@@ -92,6 +92,7 @@ void main(void) {
     playerLevel = 0;
     currentEnvironment = E_DESERT;
     currentRoom = 0;
+    soundTestNum = 0;
 
     // Set dead list empty
     for(i = 0; i < TOTAL_SPAWNABLES; i++)
@@ -122,7 +123,7 @@ void main(void) {
     testVariable = 1;
 
     // Play the first song built into the rom. By default it is the title song from Shiru's game, Lan Master
-    music_play(0);
+    //music_play(0);
 
     // Infinite loop to end things
     while (1) {
@@ -140,6 +141,18 @@ void main(void) {
 
           // Update characters
           update_character(&kris);
+
+          // SOUND TEST
+          if(pad_trig & PAD_SELECT)
+          {
+              music_stop();
+              music_play(soundTestNum);
+              soundTestNum++;
+              if(soundTestNum > 5)
+              {
+                soundTestNum = 0;
+              }
+          }
 
           // Update items
           for(i = 0; i < MAX_ITEMS; i++)

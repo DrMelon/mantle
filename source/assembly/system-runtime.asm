@@ -284,7 +284,8 @@ FT_SFX_STREAMS          = 4 ;number of sound effects played at once, 1..4
 ; make sure you update the nmi method in neslib.asm to switch banks too!
 ;
 
-.segment "RODATA"
+;.segment "RODATA"
+.segment "ROM_00"
 
 
 music_data:

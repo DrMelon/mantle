@@ -28,6 +28,7 @@ ZEROPAGE_EXTERN(unsigned char, playerLevel);
 ZEROPAGE_EXTERN(unsigned char, currentRoom);
 ZEROPAGE_EXTERN(enum Environment, currentEnvironment);
 ZEROPAGE_EXTERN(unsigned char, spawnedItems);
+ZEROPAGE_EXTERN(unsigned char, soundTestNum);
 
 #define MAX_ITEMS 5
 extern Item itemList[];
