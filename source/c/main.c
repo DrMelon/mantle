@@ -275,8 +275,8 @@ void load_room()
        if(roomPtr[i] == 2) // Spawn a sword
        {
            itemList[spawnedItems].itemtype = ITEM_SWORD;
-           itemList[spawnedItems].xpos = (roomPtr[i+1] << 4) + 4;
-           itemList[spawnedItems].ypos = (roomPtr[i+2] << 4) + 4;
+           itemList[spawnedItems].xpos = ((roomPtr[i+1]+2) << 4) + 4;
+           itemList[spawnedItems].ypos = ((roomPtr[i+2]+3) << 4) + 4;
            itemList[spawnedItems].living = 1;
            itemList[spawnedItems].uniqueid = roomPtr[i+4];
            spawnedItems++;
