@@ -50,6 +50,8 @@ typedef struct
   unsigned char level;
   enum Substate substate;
   enum MonsterType montype;
+  unsigned char living;
+  unsigned char uniqueid;
 } Monster;
 
 
@@ -60,4 +62,9 @@ void switch_to_room(unsigned char room);
 
 void update_character(WalkingCharacter* chara);
 void draw_character(WalkingCharacter* chara);
+
+void update_monster(Monster* monster);
+void update_mon_walker(Monster* walker);
+
+void draw_monster(Monster* monster);
 #endif

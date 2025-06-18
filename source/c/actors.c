@@ -145,3 +145,17 @@ void draw_character(WalkingCharacter* chara)
     }
 
 }
+
+void update_monster(Monster* monster)
+{
+    if(monster->living != 1) return;
+    if(monster->montype == MON_WALKER)
+    {
+        update_mon_walker(monster);
+    }
+}
+
+void update_mon_walker(Monster* walker)
+{
+
+}
