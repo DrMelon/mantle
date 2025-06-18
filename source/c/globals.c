@@ -15,6 +15,7 @@ ZEROPAGE_DEF(unsigned char, currentRoom);
 ZEROPAGE_DEF(enum Environment, currentEnvironment);
 ZEROPAGE_DEF(unsigned char, spawnedItems);
 ZEROPAGE_DEF(unsigned char, soundTestNum);
+ZEROPAGE_DEF(unsigned char, roomSwitchDir);
 
 #pragma bss-name(push, "ZEROPAGE")
 Item itemList[MAX_ITEMS];

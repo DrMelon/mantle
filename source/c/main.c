@@ -6,6 +6,7 @@
 #include "kris_anims.h"
 #include "maps.h"
 #include "bank_helpers.h"
+#include "items.h"
 
 
 //
@@ -47,13 +48,11 @@ const unsigned char palSprites[16] = {
     0x0f, 0x30, 0x10, 0x0f
 };
 
-
-
 // forward decls
-
 void load_room();
 void set_palette_for_bg_tile(unsigned char tx, unsigned char ty, unsigned char palettenum);
 void switch_to_room(unsigned char room);
+
 //
 // Main entrypoint
 // This is where your game will start running. It should essentially be an endless loop in most
@@ -61,9 +60,6 @@ void switch_to_room(unsigned char room);
 // or others and call them as your game expands. 
 // 
 void main(void) {
-
-
-
     // Turn off the screen
     ppu_off();
 
@@ -75,7 +71,6 @@ void main(void) {
 
     // Set sprite bank to bank 1
     bank_spr(1);
-
 
     // Write the address $2064 to the ppu, where we can start drawing text on the screen
     vram_adr(NTADR_A(4,5));
@@ -121,9 +116,6 @@ void main(void) {
 
     // Update variable used in unit tests
     testVariable = 1;
-
-    // Play the first song built into the rom. By default it is the title song from Shiru's game, Lan Master
-    //music_play(0);
 
     // Infinite loop to end things
     while (1) {
@@ -180,50 +172,45 @@ void main(void) {
             oam_clear();
             spr = 0;
             // Check screen transition direction and move Kris in that direction until threshold is reached
-            if(kris.direction == 0)
+            if(roomSwitchDir == 0)
             {
                 kris.ypos -= 4;
                 if(kris.ypos <= 48+4)
                 {
                     // Once Kris is there, switch state back and turn on bgs
                     ppu_on_all();
-
                     currentState = GS_GAMEPLAY;
                 }
             }
-            if(kris.direction == 1)
+            if(roomSwitchDir == 1)
             {
                 kris.xpos -= 4;
                 if(kris.xpos <= 32+4)
                 {
                     ppu_on_all();
-
                     currentState = GS_GAMEPLAY;
                 }
             }
-            if(kris.direction == 2)
+            if(roomSwitchDir == 2)
             {
                 kris.ypos += 4;
                 if(kris.ypos >= 160-4)
                 {
                     ppu_on_all();
-
                     currentState = GS_GAMEPLAY;
                 }
             }
-            if(kris.direction == 3)
+            if(roomSwitchDir == 3)
             {
                 kris.xpos += 4;
                 if(kris.xpos >= 208-4)
                 {
                     ppu_on_all();
-
                     currentState = GS_GAMEPLAY;
                 }
             }
             // Render kris
             draw_character(&kris);
-
         }
 
         // Don't run until a frame has run.

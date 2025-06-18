@@ -37,6 +37,7 @@ void update_character(WalkingCharacter* chara)
                         if(chara->ypos > 160)
                         {
                             bank_push(0);
+                            roomSwitchDir = 0;
                             switch_to_room(environment_rooms[currentEnvironment][currentRoom][0]);
                             bank_pop();
                         }
@@ -49,6 +50,7 @@ void update_character(WalkingCharacter* chara)
                         if(chara->xpos > 208)
                         {
                             bank_push(0);
+                            roomSwitchDir = 1;
                             switch_to_room(environment_rooms[currentEnvironment][currentRoom][1]);
                             bank_pop();
                         }
@@ -61,6 +63,7 @@ void update_character(WalkingCharacter* chara)
                         if(chara->ypos < 48)
                         {
                             bank_push(0);
+                            roomSwitchDir = 2;
                             switch_to_room(environment_rooms[currentEnvironment][currentRoom][2]);
                             bank_pop();
                         }
@@ -73,6 +76,7 @@ void update_character(WalkingCharacter* chara)
                         if(chara->xpos < 32)
                         {
                             bank_push(0);
+                            roomSwitchDir = 3;
                             switch_to_room(environment_rooms[currentEnvironment][currentRoom][3]);
                             bank_pop();
                         }
@@ -89,6 +93,34 @@ void update_character(WalkingCharacter* chara)
             if(framecount%6 == 0)
             {
                 chara->animframe++;
+            }
+            if(chara->animframe == 1)
+            {
+                // Attack frame - do checks against monsters, smashable tiles, etc
+
+                // Check for smashable tiles (palm tree, cactus) and monsters at location
+                x = (chara->xpos + 8) >> 4;
+                y = (chara->ypos + 8) >> 4;
+                if(chara->direction == 0) y++;
+                else if(chara->direction == 1) x++;
+                else if(chara->direction == 2) y--;
+                else if(chara->direction == 3) x--;
+
+                // Monster check (no pos adjust needed)
+
+
+                // Tile check (adjust pos)
+
+                //x -= 2;
+                //y -= 3;
+                //i = (y*12)+x+4;
+                //if(environment_rooms[currentEnvironment][currentRoom][i] == 1)
+                //{
+                //    set_map_tile_in_room(x, y, 0);
+                //}
+
+                // SFX
+                sfx_play(1, 0);
             }
             if(chara->animframe > 2)
             {
@@ -112,51 +144,4 @@ void draw_character(WalkingCharacter* chara)
         spr = oam_meta_spr(chara->xpos, chara->ypos, spr, characterStrikeAnims[chara->chartype][chara->animframe + (chara->direction*3)]);
     }
 
-}
-
-void update_item(Item* item, WalkingCharacter* chara)
-{
-    unsigned char kx, ky;
-    if(item->living != 1)
-    {
-        return;
-    }
-    // Check to see if Kris has walked onto the same tile as this item
-    x = item->xpos >> 4;
-    y = item->ypos >> 4;
-    kx = chara->xpos >> 4;
-    ky = chara->ypos >> 4;
-
-    if(x == kx && y == ky)
-    {
-        // Touching item. Let's do some logic!
-        if(item->itemtype == ITEM_SWORD)
-        {
-            // Increase player level to 1!
-            if(playerLevel < 1)
-            {
-                playerLevel++;
-                // Start playing the song!!
-                music_play(0);
-            }
-            // Destroy self
-            deadList[item->uniqueid] = 1;
-            item->living = 0;
-        }
-    }
-}
-
-const unsigned char swordSprite[]={
-    0, 0, 0x27, 4,
-    0, 8, 0x37, 4,
-    128
-};
-
-void draw_item(Item* item)
-{
-    if(item->living != 1) return;
-    if(item->itemtype == ITEM_SWORD)
-    {
-        spr = oam_meta_spr(item->xpos, item->ypos, spr, swordSprite);
-    }
 }

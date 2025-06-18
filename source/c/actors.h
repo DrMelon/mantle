@@ -6,7 +6,8 @@ enum Substate
   S_HURT,
   S_WINDUP,
   S_ATTACK,
-  S_DOCILE
+  S_DOCILE,
+  S_DIE
 };
 
 enum CharacterType
@@ -19,21 +20,17 @@ enum CharacterType
 
 enum MonsterType
 {
-  MON_NORM,
-  MON_SHOOT,
+  MON_WALKER,
+  MON_SHOOTER,
   MON_FISH,
   MON_DRAGON,
   MON_FLOWER,
   MON_BIRD,
-  MON_SINGCAT
-};
-
-enum ItemType
-{
-  ITEM_SWORD,
-  ITEM_CANDY,
-  ITEM_ICEKEY,
-  ITEM_SHELTERKEY
+  MON_SINGCAT,
+  MON_MIRROR,
+  MON_STONE,
+  MON_MANTLE,
+  MON_SUMMON
 };
 
 typedef struct
@@ -55,14 +52,6 @@ typedef struct
   enum MonsterType montype;
 } Monster;
 
-typedef struct
-{
-  unsigned char xpos;
-  unsigned char ypos;
-  enum ItemType itemtype;
-  unsigned char living;
-  unsigned char uniqueid;
-} Item;
 
 const unsigned char** characterWalkAnims[];
 const unsigned char** characterStrikeAnims[];
@@ -71,8 +60,4 @@ void switch_to_room(unsigned char room);
 
 void update_character(WalkingCharacter* chara);
 void draw_character(WalkingCharacter* chara);
-
-void update_item(Item* item, WalkingCharacter* chara);
-void draw_item(Item* item);
-
 #endif

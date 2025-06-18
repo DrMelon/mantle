@@ -1,5 +1,6 @@
 #include "maps.h"
 #include "globals.h"
+#include "neslib.h"
 
 // Format: 4 8x8 tiles that make up this metatile, and palette mask for attrib (actual mask differs based on tile pos)
 // then, tile solidity type (0 = walkable, 1 = not walkable)
@@ -89,11 +90,29 @@ int tilemap_solid(unsigned char tx, unsigned char ty)
     y = ty - 3;
     if(x < 0 || x >= 12) return 0;
     if(y < 0 || y >= 8) return 0;
-    i = (x + (y*12)) + 4;
+    i = (x + (y*12)) + ROOM_DATA_OFFSET;
     return tile_solid(environment_rooms[currentEnvironment][currentRoom][i]);
 }
 
 int tile_solid(unsigned char tile)
 {
     return environment_metatiles[currentEnvironment][tile*6 + 5];
+}
+
+void set_map_tile_in_room(unsigned char tx, unsigned char ty, unsigned char tile)
+{
+    // TODO: This makes the screen flicker every time you stab a tree which kind of Sucks; this should happen during vblank instead.
+    // Need to use set_vram_update to DMA some memory over to the ppu instead, and clone the map data on room load to make it modifiable.
+    //ppu_off();
+    //i = tx + (ty*12) + ROOM_DATA_OFFSET;
+    //environment_rooms[currentEnvironment][currentRoom][i] = tile;
+    //vram_adr(NTADR_A((x+2)*2,(y+3)*2));
+    //vram_put(environment_metatiles[currentEnvironment][(tile*6)]);
+    //vram_put(environment_metatiles[currentEnvironment][(tile*6)+1]);
+    //vram_adr(NTADR_A((x+2)*2,((y+3)*2+1)));
+    //vram_put(environment_metatiles[currentEnvironment][(tile*6)+2]);
+    //vram_put(environment_metatiles[currentEnvironment][(tile*6)+3]);
+
+    //set_palette_for_bg_tile(x+2, y+3, environment_metatiles[currentEnvironment][(tile*6)+4]);
+    //ppu_on_all();
 }

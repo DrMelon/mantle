@@ -4,6 +4,7 @@
 #include "bank_helpers.h"
 #include "maps.h"
 #include "actors.h"
+#include "items.h"
 
 enum GameState
 {
@@ -29,6 +30,7 @@ ZEROPAGE_EXTERN(unsigned char, currentRoom);
 ZEROPAGE_EXTERN(enum Environment, currentEnvironment);
 ZEROPAGE_EXTERN(unsigned char, spawnedItems);
 ZEROPAGE_EXTERN(unsigned char, soundTestNum);
+ZEROPAGE_EXTERN(unsigned char, roomSwitchDir);
 
 #define MAX_ITEMS 5
 extern Item itemList[];
