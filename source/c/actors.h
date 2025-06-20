@@ -52,6 +52,8 @@ typedef struct
   enum MonsterType montype;
   unsigned char living;
   unsigned char uniqueid;
+  unsigned char animframe;
+  unsigned char direction;
 } Monster;
 
 
@@ -67,4 +69,5 @@ void update_monster(Monster* monster);
 void update_mon_walker(Monster* walker);
 
 void draw_monster(Monster* monster);
+void draw_walker(Monster* walker);
 #endif

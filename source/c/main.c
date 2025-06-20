@@ -52,6 +52,7 @@ const unsigned char palSprites[16] = {
 void load_room();
 void set_palette_for_bg_tile(unsigned char tx, unsigned char ty, unsigned char palettenum);
 void switch_to_room(unsigned char room);
+void switch_environment(enum Environment env);
 
 //
 // Main entrypoint
@@ -154,6 +155,10 @@ void main(void) {
 
 
           // Update monsters & projectiles
+          for(i = 0; i < MAX_MONSTERS; i++)
+          {
+             update_monster(&monsterList[i]);
+          }
 
 
           // Draw characters
@@ -166,6 +171,10 @@ void main(void) {
           }
 
           // Draw monsters & projectiles
+          for(i = 0; i < MAX_MONSTERS; i++)
+          {
+              draw_monster(&monsterList[i]);
+          }
         }
         if(currentState == GS_SCREENTRANS)
         {
@@ -225,11 +234,11 @@ CODE_BANK(0);
 void load_room()
 {
    unsigned char currentTileID = 0;
-   const unsigned char* roomPtr = 0;
 
    spawnedItems = 0;
 
-   roomPtr = environment_rooms[currentEnvironment][currentRoom];
+   roomPtr = (unsigned char*)environment_rooms[currentEnvironment][currentRoom];
+   metatilesPtr = (unsigned char*)environment_metatiles[currentEnvironment];
    // Load tiles into BG
    for(x = 0; x < 12; x++)
    {
@@ -255,6 +264,12 @@ void load_room()
        itemList[i].living = 0;
    }
 
+   spawnedMonsters = 0;
+   for(i = 0; i < MAX_MONSTERS; i++)
+   {
+       monsterList[i].living = 0;
+   }
+
    // Load entity spawns
    for(i = (12*8) + 4; roomPtr[i] != 128; i+=5)
    {
@@ -267,6 +282,15 @@ void load_room()
            itemList[spawnedItems].living = 1;
            itemList[spawnedItems].uniqueid = roomPtr[i+4];
            spawnedItems++;
+       }
+       if(roomPtr[i] == 0) // Spawn a monster
+       {
+           monsterList[spawnedMonsters].montype = roomPtr[i+3];
+           monsterList[spawnedItems].xpos = ((roomPtr[i+1]+2) << 4) + 4;
+           monsterList[spawnedItems].ypos = ((roomPtr[i+2]+3) << 4) + 4;
+           monsterList[spawnedItems].living = 1;
+           monsterList[spawnedItems].uniqueid = roomPtr[i+4];
+           spawnedMonsters++;
        }
    }
 

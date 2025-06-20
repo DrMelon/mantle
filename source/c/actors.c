@@ -3,7 +3,9 @@
 #include "globals.h"
 #include "bank_helpers.h"
 #include "maps.h"
+
 #include "kris_anims.h"
+#include "monster_anims.h"
 
 const unsigned char** characterWalkAnims[]={
     krisWalkAnims
@@ -107,6 +109,13 @@ void update_character(WalkingCharacter* chara)
                 else if(chara->direction == 3) x--;
 
                 // Monster check (no pos adjust needed)
+                for(i = 0; i < MAX_MONSTERS; i++)
+                {
+                    if(x == (monsterList[i].xpos + 8) >> 4 && y == (monsterList[i].ypos + 8) >> 4)
+                    {
+                        monsterList[i].living = 0;
+                    }
+                }
 
 
                 // Tile check (adjust pos)
@@ -157,5 +166,53 @@ void update_monster(Monster* monster)
 
 void update_mon_walker(Monster* walker)
 {
+    // Walker: walks around in a random pattern.
+    if(walker->substate == S_NORMAL)
+    {
+        if(framecount%10 == 0)
+        {
+            walker->animframe++;
+        }
+        if(framecount%60 == 0) // every second a 1/4 chance to try and change direction
+        {
+            walker->direction = (walker->direction + 1) % 4;
+        }
+        if(framecount%4 == 0)
+        {
+            // try to walk in given direction
+            if(walker->direction == 0)
+            {
+                if(solidity_check(walker->xpos, walker->ypos + 1)) walker->ypos++;
+            }
+            else if(walker->direction == 1)
+            {
+                if(solidity_check(walker->xpos + 1, walker->ypos)) walker->xpos++;
+            }
+            else if(walker->direction == 2)
+            {
+                if(solidity_check(walker->xpos, walker->ypos - 1)) walker->ypos--;
+            }
+            else if(walker->direction == 3)
+            {
+                if(solidity_check(walker->xpos - 1, walker->ypos)) walker->xpos--;
+            }
+        }
+    }
+}
 
+void draw_monster(Monster* monster)
+{
+    if(monster->living != 1) return;
+    if(monster->montype == MON_WALKER)
+    {
+        draw_walker(monster);
+    }
+}
+
+void draw_walker(Monster* walker)
+{
+    if(walker->substate == S_NORMAL)
+    {
+        spr = oam_meta_spr(walker->xpos, walker->ypos, spr, monWalkerAnims[walker->animframe%2]);
+    }
 }

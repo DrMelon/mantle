@@ -5,8 +5,8 @@ enum Environment
 {
    E_DESERT,
    E_ISLAND,
-   E_CITY,
    E_ICEPALACE,
+   E_CITY,
    E_SHELTER
 };
 

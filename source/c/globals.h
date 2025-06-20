@@ -29,11 +29,17 @@ ZEROPAGE_EXTERN(unsigned char, playerLevel);
 ZEROPAGE_EXTERN(unsigned char, currentRoom);
 ZEROPAGE_EXTERN(enum Environment, currentEnvironment);
 ZEROPAGE_EXTERN(unsigned char, spawnedItems);
+ZEROPAGE_EXTERN(unsigned char, spawnedMonsters);
 ZEROPAGE_EXTERN(unsigned char, soundTestNum);
 ZEROPAGE_EXTERN(unsigned char, roomSwitchDir);
+extern unsigned char* roomPtr;
+extern unsigned char* metatilesPtr;
 
 #define MAX_ITEMS 5
 extern Item itemList[];
+
+#define MAX_MONSTERS 16
+extern Monster monsterList[];
 
 #define TOTAL_SPAWNABLES 255
 extern unsigned char deadList[];

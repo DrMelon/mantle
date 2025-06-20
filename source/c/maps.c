@@ -29,6 +29,7 @@ const unsigned char desert_room_start[]={
   1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
   1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
   1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1,
+  0, 3, 2, 0, 1,
   128
 };
 
@@ -91,12 +92,7 @@ int tilemap_solid(unsigned char tx, unsigned char ty)
     if(x < 0 || x >= 12) return 0;
     if(y < 0 || y >= 8) return 0;
     i = (x + (y*12)) + ROOM_DATA_OFFSET;
-    return tile_solid(environment_rooms[currentEnvironment][currentRoom][i]);
-}
-
-int tile_solid(unsigned char tile)
-{
-    return environment_metatiles[currentEnvironment][tile*6 + 5];
+    return metatilesPtr[roomPtr[i]*6 + 5];
 }
 
 void set_map_tile_in_room(unsigned char tx, unsigned char ty, unsigned char tile)

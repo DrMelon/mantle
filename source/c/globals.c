@@ -14,12 +14,16 @@ ZEROPAGE_DEF(unsigned char, playerLevel);
 ZEROPAGE_DEF(unsigned char, currentRoom);
 ZEROPAGE_DEF(enum Environment, currentEnvironment);
 ZEROPAGE_DEF(unsigned char, spawnedItems);
+ZEROPAGE_DEF(unsigned char, spawnedMonsters);
 ZEROPAGE_DEF(unsigned char, soundTestNum);
 ZEROPAGE_DEF(unsigned char, roomSwitchDir);
+
+unsigned char* roomPtr = 0;
+unsigned char* metatilesPtr = 0;
 
 #pragma bss-name(push, "ZEROPAGE")
 Item itemList[MAX_ITEMS];
 #pragma bss-name(pop)
 
-// Hmm...
+Monster monsterList[MAX_MONSTERS];
 unsigned char deadList[TOTAL_SPAWNABLES];
