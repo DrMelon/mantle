@@ -289,6 +289,7 @@ void load_room()
            monsterList[spawnedItems].xpos = ((roomPtr[i+1]+2) << 4) + 4;
            monsterList[spawnedItems].ypos = ((roomPtr[i+2]+3) << 4) + 4;
            monsterList[spawnedItems].living = 1;
+           monsterList[spawnedItems].health = 1;
            monsterList[spawnedItems].uniqueid = roomPtr[i+4];
            spawnedMonsters++;
        }

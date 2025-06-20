@@ -54,6 +54,7 @@ typedef struct
   unsigned char uniqueid;
   unsigned char animframe;
   unsigned char direction;
+  unsigned char health;
 } Monster;
 
 

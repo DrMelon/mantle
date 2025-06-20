@@ -109,12 +109,17 @@ void update_character(WalkingCharacter* chara)
                 else if(chara->direction == 3) x--;
 
                 // Monster check (no pos adjust needed)
-                for(i = 0; i < MAX_MONSTERS; i++)
+                for(i = 0; i < spawnedMonsters; i++)
                 {
                     // hitting MonsterList is *SLOW*. need to keep it in ZP somehow?
                     if(x == (monsterList[i].xpos + 8) >> 4 && y == (monsterList[i].ypos + 8) >> 4)
                     {
-                        monsterList[i].living = 0;
+                        if(monsterList[i].level <= playerLevel && monsterList[i].substate == S_NORMAL)
+                        {
+                            monsterList[i].health--;
+                            monsterList[i].substate = S_HURT;
+                            monsterList[i].animframe = 0;
+                        }
                     }
                 }
 
@@ -163,6 +168,8 @@ void update_monster(Monster* monster)
     {
         update_mon_walker(monster);
     }
+
+
 }
 
 void update_mon_walker(Monster* walker)
@@ -199,6 +206,26 @@ void update_mon_walker(Monster* walker)
             }
         }
     }
+    else if(walker->substate == S_HURT)
+    {
+       if(framecount % 3 == 0)
+       {
+           walker->animframe++;
+           walker->ypos--;
+       }
+       if(walker->animframe > 12)
+       {
+           if(walker->health < 1)
+           {
+               walker->living = 0;
+               deadList[walker->uniqueid] = 1; // update deadlist
+           }
+           else
+           {
+               walker->substate = S_NORMAL;
+           }
+       }
+    }
 }
 
 void draw_monster(Monster* monster)
@@ -215,5 +242,9 @@ void draw_walker(Monster* walker)
     if(walker->substate == S_NORMAL)
     {
         spr = oam_meta_spr(walker->xpos, walker->ypos, spr, monWalkerAnims[walker->animframe%2]);
+    }
+    else if(walker->substate == S_HURT)
+    {
+        spr = oam_meta_spr(walker->xpos, walker->ypos, spr, monWalkerAnims[(walker->animframe%2) + 2]);
     }
 }
