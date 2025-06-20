@@ -181,7 +181,7 @@ void update_mon_walker(Monster* walker)
         {
             walker->animframe++;
         }
-        if(framecount%60 == 0) // every second a 1/4 chance to try and change direction
+        if(framecount%60 == 0 && rand8() > 127) // every second a 1/4 chance to try and change direction
         {
             walker->direction = (walker->direction + 1) % 4;
         }

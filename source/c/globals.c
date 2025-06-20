@@ -3,6 +3,7 @@
 
 ZEROPAGE_DEF(enum GameState, currentState);
 ZEROPAGE_DEF(unsigned char, i);
+ZEROPAGE_DEF(unsigned char, i2);
 ZEROPAGE_DEF(unsigned char, x);
 ZEROPAGE_DEF(unsigned char, y);
 ZEROPAGE_DEF(unsigned int, attrib_addr);

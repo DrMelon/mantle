@@ -155,9 +155,9 @@ void main(void) {
 
 
           // Update monsters & projectiles
-          for(i = 0; i < spawnedMonsters; i++)
+          for(i2 = 0; i2 < spawnedMonsters; i2++)
           {
-             update_monster(&monsterList[i]);
+             update_monster(&monsterList[i2]);
           }
 
 
@@ -286,11 +286,12 @@ void load_room()
        if(roomPtr[i] == 0) // Spawn a monster
        {
            monsterList[spawnedMonsters].montype = roomPtr[i+3];
-           monsterList[spawnedItems].xpos = ((roomPtr[i+1]+2) << 4) + 4;
-           monsterList[spawnedItems].ypos = ((roomPtr[i+2]+3) << 4) + 4;
-           monsterList[spawnedItems].living = 1;
-           monsterList[spawnedItems].health = 1;
-           monsterList[spawnedItems].uniqueid = roomPtr[i+4];
+           monsterList[spawnedMonsters].xpos = ((roomPtr[i+1]+2) << 4) + 4;
+           monsterList[spawnedMonsters].ypos = ((roomPtr[i+2]+3) << 4) + 4;
+           monsterList[spawnedMonsters].living = 1;
+           monsterList[spawnedMonsters].health = 1;
+           monsterList[spawnedMonsters].direction = rand8() >> 6;
+           monsterList[spawnedMonsters].uniqueid = roomPtr[i+4];
            spawnedMonsters++;
        }
    }

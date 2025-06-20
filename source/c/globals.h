@@ -18,6 +18,7 @@ enum GameState
 
 ZEROPAGE_EXTERN(enum GameState, currentState);
 ZEROPAGE_EXTERN(unsigned char, i);
+ZEROPAGE_EXTERN(unsigned char, i2);
 ZEROPAGE_EXTERN(unsigned char, x);
 ZEROPAGE_EXTERN(unsigned char, y);
 ZEROPAGE_EXTERN(unsigned int, attrib_addr);
