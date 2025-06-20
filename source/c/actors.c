@@ -111,6 +111,7 @@ void update_character(WalkingCharacter* chara)
                 // Monster check (no pos adjust needed)
                 for(i = 0; i < MAX_MONSTERS; i++)
                 {
+                    // hitting MonsterList is *SLOW*. need to keep it in ZP somehow?
                     if(x == (monsterList[i].xpos + 8) >> 4 && y == (monsterList[i].ypos + 8) >> 4)
                     {
                         monsterList[i].living = 0;

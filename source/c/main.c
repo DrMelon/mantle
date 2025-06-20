@@ -148,14 +148,14 @@ void main(void) {
           }
 
           // Update items
-          for(i = 0; i < MAX_ITEMS; i++)
+          for(i = 0; i < spawnedItems; i++)
           {
               update_item(&itemList[i], &kris);
           }
 
 
           // Update monsters & projectiles
-          for(i = 0; i < MAX_MONSTERS; i++)
+          for(i = 0; i < spawnedMonsters; i++)
           {
              update_monster(&monsterList[i]);
           }
@@ -165,13 +165,13 @@ void main(void) {
           draw_character(&kris);
 
           // Draw items
-          for(i = 0; i < MAX_ITEMS; i++)
+          for(i = 0; i < spawnedItems; i++)
           {
               draw_item(&itemList[i]);
           }
 
           // Draw monsters & projectiles
-          for(i = 0; i < MAX_MONSTERS; i++)
+          for(i = 0; i < spawnedMonsters; i++)
           {
               draw_monster(&monsterList[i]);
           }
