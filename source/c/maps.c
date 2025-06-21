@@ -1,6 +1,7 @@
 #include "maps.h"
 #include "globals.h"
 #include "neslib.h"
+#include "actors.h"
 
 // Format: 4 8x8 tiles that make up this metatile, and palette mask for attrib (actual mask differs based on tile pos)
 // then, tile solidity type (0 = walkable, 1 = not walkable)
@@ -93,24 +94,57 @@ int tilemap_solid(unsigned char tx, unsigned char ty)
     y = ty - 3;
     if(x < 0 || x >= 12) return 0;
     if(y < 0 || y >= 8) return 0;
-    i = (x + (y*12)) + ROOM_DATA_OFFSET;
-    return metatilesPtr[roomPtr[i]*6 + 5];
+    i = (x + (y*12));
+    return metatilesPtr[currentRoomColl[i]*6 + 5];
+}
+
+void set_map_tile_on_character(WalkingCharacter* chara, unsigned char tile)
+{
+    unsigned short ntrAdr = 0;
+    x = (chara->xpos + 7 >> 4) - 2;
+    y = (chara->ypos + 7 >> 4) - 3;
+    i = x + (y*12);
+    currentRoomColl[i] = tile; // UPDATE TILE COLLISIONS
+    ntrAdr = NTADR_A((x+2)*2,(y+3)*2);
+    palmTreeBuffer[0] = MSB(ntrAdr);
+    palmTreeBuffer[1] = LSB(ntrAdr);
+    palmTreeBuffer[2] = metatilesPtr[tile*6];
+    palmTreeBuffer[3] = MSB(ntrAdr+1);
+    palmTreeBuffer[4] = LSB(ntrAdr+1);
+    palmTreeBuffer[5] = metatilesPtr[tile*6+1];
+    ntrAdr = NTADR_A((x+2)*2,((y+3)*2)+1);
+    palmTreeBuffer[6] = MSB(ntrAdr);
+    palmTreeBuffer[7] = LSB(ntrAdr);
+    palmTreeBuffer[8] = metatilesPtr[tile*6+2];
+    palmTreeBuffer[9] = MSB(ntrAdr+1);
+    palmTreeBuffer[10] = LSB(ntrAdr+1);
+    palmTreeBuffer[11] = metatilesPtr[tile*6+3];
+    palmTreeBuffer[12] = NT_UPD_EOF;
+    set_vram_update(palmTreeBuffer);
+    writingVram = 1;
+
 }
 
 void set_map_tile_in_room(unsigned char tx, unsigned char ty, unsigned char tile)
 {
-    // TODO: This makes the screen flicker every time you stab a tree which kind of Sucks; this should happen during vblank instead.
-    // Need to use set_vram_update to DMA some memory over to the ppu instead, and clone the map data on room load to make it modifiable.
-    //ppu_off();
-    //i = tx + (ty*12) + ROOM_DATA_OFFSET;
-    //environment_rooms[currentEnvironment][currentRoom][i] = tile;
-    //vram_adr(NTADR_A((x+2)*2,(y+3)*2));
-    //vram_put(environment_metatiles[currentEnvironment][(tile*6)]);
-    //vram_put(environment_metatiles[currentEnvironment][(tile*6)+1]);
-    //vram_adr(NTADR_A((x+2)*2,((y+3)*2+1)));
-    //vram_put(environment_metatiles[currentEnvironment][(tile*6)+2]);
-    //vram_put(environment_metatiles[currentEnvironment][(tile*6)+3]);
-
-    //set_palette_for_bg_tile(x+2, y+3, environment_metatiles[currentEnvironment][(tile*6)+4]);
-    //ppu_on_all();
+    unsigned short ntrAdr = 0;
+    i = tx + (ty*12);
+    currentRoomColl[i] = tile; // UPDATE TILE COLLISIONS
+    ntrAdr = NTADR_A((tx+2)*2,(ty+3)*2);
+    palmTreeBuffer[0] = MSB(ntrAdr);
+    palmTreeBuffer[1] = LSB(ntrAdr);
+    palmTreeBuffer[2] = metatilesPtr[tile*6];
+    palmTreeBuffer[3] = MSB(ntrAdr+1);
+    palmTreeBuffer[4] = LSB(ntrAdr+1);
+    palmTreeBuffer[5] = metatilesPtr[tile*6+1];
+    ntrAdr = NTADR_A((tx+2)*2,((ty+3)*2)+1);
+    palmTreeBuffer[6] = MSB(ntrAdr);
+    palmTreeBuffer[7] = LSB(ntrAdr);
+    palmTreeBuffer[8] = metatilesPtr[tile*6+2];
+    palmTreeBuffer[9] = MSB(ntrAdr+1);
+    palmTreeBuffer[10] = LSB(ntrAdr+1);
+    palmTreeBuffer[11] = metatilesPtr[tile*6+3];
+    palmTreeBuffer[12] = NT_UPD_EOF;
+    set_vram_update(palmTreeBuffer);
+    writingVram = 1;
 }

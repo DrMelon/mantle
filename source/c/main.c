@@ -122,6 +122,10 @@ void main(void) {
     while (1) {
         framecount++;
 
+        // Clear vram write flags
+        set_vram_update(NULL);
+        writingVram = 0;
+
         // Do input
         pad_trig = pad_trigger(0);
         pad = pad_state(0);
@@ -160,7 +164,6 @@ void main(void) {
              update_monster(&monsterList[i2]);
           }
 
-
           // Draw characters
           draw_character(&kris);
 
@@ -189,6 +192,7 @@ void main(void) {
                     // Once Kris is there, switch state back and turn on bgs
                     ppu_on_all();
                     currentState = GS_GAMEPLAY;
+                    set_map_tile_on_character(&kris, 0);
                 }
             }
             if(roomSwitchDir == 1)
@@ -198,6 +202,7 @@ void main(void) {
                 {
                     ppu_on_all();
                     currentState = GS_GAMEPLAY;
+                    set_map_tile_on_character(&kris, 0);
                 }
             }
             if(roomSwitchDir == 2)
@@ -207,6 +212,7 @@ void main(void) {
                 {
                     ppu_on_all();
                     currentState = GS_GAMEPLAY;
+                    set_map_tile_on_character(&kris, 0);
                 }
             }
             if(roomSwitchDir == 3)
@@ -216,6 +222,7 @@ void main(void) {
                 {
                     ppu_on_all();
                     currentState = GS_GAMEPLAY;
+                    set_map_tile_on_character(&kris, 0);
                 }
             }
             // Render kris
@@ -245,7 +252,9 @@ void load_room()
        for(y = 0; y < 8; y++)
        {
            i = (x + (y*12)) + 4; // add 4 to skip entrances/exits of room
+           i2 = (x + (y*12));
            currentTileID = roomPtr[i];
+           currentRoomColl[i2] = currentTileID;
            vram_adr(NTADR_A((x+2)*2,(y+3)*2));
            vram_put(environment_metatiles[currentEnvironment][(currentTileID*6)]);
            vram_put(environment_metatiles[currentEnvironment][(currentTileID*6)+1]);

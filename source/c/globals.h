@@ -33,8 +33,10 @@ ZEROPAGE_EXTERN(unsigned char, spawnedItems);
 ZEROPAGE_EXTERN(unsigned char, spawnedMonsters);
 ZEROPAGE_EXTERN(unsigned char, soundTestNum);
 ZEROPAGE_EXTERN(unsigned char, roomSwitchDir);
+ZEROPAGE_EXTERN(unsigned char, writingVram);
 extern unsigned char* roomPtr;
 extern unsigned char* metatilesPtr;
+extern unsigned char currentRoomColl[];
 
 #define MAX_ITEMS 5
 extern Item itemList[];
@@ -44,5 +46,7 @@ extern Monster monsterList[];
 
 #define TOTAL_SPAWNABLES 255
 extern unsigned char deadList[];
+
+extern unsigned char palmTreeBuffer[];
 
 #endif

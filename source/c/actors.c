@@ -96,23 +96,25 @@ void update_character(WalkingCharacter* chara)
             {
                 chara->animframe++;
             }
-            if(chara->animframe == 1)
+            if(chara->animframe == 1 && framecount%6 == 0)
             {
                 // Attack frame - do checks against monsters, smashable tiles, etc
 
-                // Check for smashable tiles (palm tree, cactus) and monsters at location
-                x = (chara->xpos + 8) >> 4;
-                y = (chara->ypos + 8) >> 4;
+                // Check for smashable tiles (palm tree, cactus) and monsters at sword's location
+                // (just check up, down, left, right tile of kris current center location?)
+                x = (chara->xpos + 7) >> 4;
+                y = (chara->ypos + 7) >> 4;
                 if(chara->direction == 0) y++;
                 else if(chara->direction == 1) x++;
                 else if(chara->direction == 2) y--;
                 else if(chara->direction == 3) x--;
 
-                // Monster check (no pos adjust needed)
+                // Monster check
+                // TODO: increase fidelity of sword hitbox or do quick 8px line cast?
+                // up, down, left, right is OK for tiles but kinda sucks for monsters
                 for(i = 0; i < spawnedMonsters; i++)
                 {
-                    // hitting MonsterList is *SLOW*. need to keep it in ZP somehow?
-                    if(x == (monsterList[i].xpos + 8) >> 4 && y == (monsterList[i].ypos + 8) >> 4)
+                    if(x == (monsterList[i].xpos + 7) >> 4 && y == (monsterList[i].ypos + 7) >> 4)
                     {
                         if(monsterList[i].level <= playerLevel && monsterList[i].substate == S_NORMAL)
                         {
@@ -125,14 +127,13 @@ void update_character(WalkingCharacter* chara)
 
 
                 // Tile check (adjust pos)
-
-                //x -= 2;
-                //y -= 3;
-                //i = (y*12)+x+4;
-                //if(environment_rooms[currentEnvironment][currentRoom][i] == 1)
-                //{
-                //    set_map_tile_in_room(x, y, 0);
-                //}
+                x -= 2;
+                y -= 3;
+                i = (y*12)+x+4;
+                if(roomPtr[i] == 1)
+                {
+                    set_map_tile_in_room(x, y, 0);
+                }
 
                 // SFX
                 sfx_play(1, 0);
