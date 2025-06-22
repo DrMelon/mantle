@@ -4,9 +4,9 @@
 #include "globals.h"
 
 const unsigned char hpText[] = "HP ";
-const unsigned char lv1Text[] = "Lv1 ";
-const unsigned char lv2Text[] = "Lv2 ";
-const unsigned char lv3Text[] = "Lv3 ";
+const unsigned char lv1Text[] = "LV1 ";
+const unsigned char lv2Text[] = "LV2 ";
+const unsigned char lv3Text[] = "LV3 ";
 const unsigned char lvMaxText[] = "MAX ";
 
 const unsigned char dialog_0[] = "Looking for someone..?";
