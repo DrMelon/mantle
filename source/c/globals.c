@@ -19,6 +19,7 @@ ZEROPAGE_DEF(unsigned char, spawnedMonsters);
 ZEROPAGE_DEF(unsigned char, soundTestNum);
 ZEROPAGE_DEF(unsigned char, roomSwitchDir);
 ZEROPAGE_DEF(unsigned char, writingVram);
+ZEROPAGE_DEF(unsigned char, hudDirty);
 
 unsigned char* roomPtr = 0;
 unsigned char* metatilesPtr = 0;

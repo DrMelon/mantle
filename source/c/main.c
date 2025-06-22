@@ -7,7 +7,7 @@
 #include "maps.h"
 #include "bank_helpers.h"
 #include "items.h"
-
+#include "ui.h"
 
 //
 // Global Variables (zeropage) 
@@ -29,30 +29,44 @@ unsigned char testVariable;
 // Constant variables
 // Anything with const in front of it will go into write-only prg instead of the very limited ram we have.
 //
-const unsigned char welcomeMessage[] = "Having fun, Kris..?";
-const unsigned char hudMessage[] = "HP -----  LV _____  ";
+
 
 // Color palette for the screen to use
-const unsigned char paletteArea1[] = {
-    0x17, 0x00, 0x10, 0x30,
+const unsigned char paletteDesert[] = {
+    0x17, 0x0f, 0x10, 0x30,
     0x17, 0x27, 0x37, 0x28,
-    0x17, 0x06, 0x16, 0x26,
-    0x17, 0x09, 0x19, 0x29
+    0x17, 0x1c, 0x2c, 0x3c,
+    0x17, 0x11, 0x22, 0x31
 };
 
-// Color palette for Kris & Monsters
-const unsigned char palSprites[16] = {
+// BG Palettes per environment
+const unsigned char* envPalettes[] =
+{
+    paletteDesert
+//    paletteIsland,
+//    paletteIcePalace,
+//    paletteCity,
+//    paletteShelter
+};
+
+// Color palettes for sprites (Kris & Monsters)
+const unsigned char palSpritesDesert[16] = {
     0x0f, 0x03, 0x22, 0x3c,
     0x0f, 0x05, 0x15, 0x24,
     0x0f, 0x1d, 0x1b, 0x20,
     0x0f, 0x10, 0x12, 0x16
 };
 
+const unsigned char* envSprPalettes[] =
+{
+    palSpritesDesert
+};
+
 // forward decls
+void load_environment(enum Environment env);
 void load_room();
 void set_palette_for_bg_tile(unsigned char tx, unsigned char ty, unsigned char palettenum);
 void switch_to_room(unsigned char room);
-void switch_environment(enum Environment env);
 
 //
 // Main entrypoint
@@ -64,29 +78,16 @@ void main(void) {
     // Turn off the screen
     ppu_off();
 
-    // Load the background palette for Area 1
-    pal_bg(paletteArea1);
-
-    // Load the sprite palette
-    pal_spr(palSprites);
-
     // Set sprite bank to bank 1
     bank_spr(1);
 
-    // Write the address $2064 to the ppu, where we can start drawing text on the screen
-    vram_adr(NTADR_A(4,5));
-
-    i = 0;
-    while (hudMessage[i]) {
-        // Add 0x60 to the ascii value of each character, to get it to line up with where the ascii table is in our chr file
-        vram_put(hudMessage[i] + 0x80);
-        ++i;
-    }
+    bank_push(0);
+    draw_ui_borders();
+    bank_pop();
 
     // Set up game state
     currentState = GS_GAMEPLAY;
     playerLevel = 0;
-    currentEnvironment = E_DESERT;
     currentRoom = 0;
     soundTestNum = 0;
 
@@ -104,8 +105,9 @@ void main(void) {
     kris.direction = 0;
     kris.animframe = 0;
 
-    // Load first room of first map.
+    // Load first room of first map, in Desert.
     bank_push(0);
+    load_environment(E_DESERT);
     load_room();
     bank_pop();
 
@@ -190,6 +192,7 @@ void main(void) {
                 if(kris.ypos <= 48+4)
                 {
                     // Once Kris is there, switch state back and turn on bgs
+                    pal_col(0, envPalettes[currentEnvironment][0]);
                     ppu_on_all();
                     currentState = GS_GAMEPLAY;
                     set_map_tile_on_character(&kris, 0);
@@ -200,6 +203,7 @@ void main(void) {
                 kris.xpos -= 4;
                 if(kris.xpos <= 32+4)
                 {
+                    pal_col(0, envPalettes[currentEnvironment][0]);
                     ppu_on_all();
                     currentState = GS_GAMEPLAY;
                     set_map_tile_on_character(&kris, 0);
@@ -210,6 +214,7 @@ void main(void) {
                 kris.ypos += 4;
                 if(kris.ypos >= 160-4)
                 {
+                    pal_col(0, envPalettes[currentEnvironment][0]);
                     ppu_on_all();
                     currentState = GS_GAMEPLAY;
                     set_map_tile_on_character(&kris, 0);
@@ -220,6 +225,7 @@ void main(void) {
                 kris.xpos += 4;
                 if(kris.xpos >= 208-4)
                 {
+                    pal_col(0, envPalettes[currentEnvironment][0]);
                     ppu_on_all();
                     currentState = GS_GAMEPLAY;
                     set_map_tile_on_character(&kris, 0);
@@ -236,8 +242,17 @@ void main(void) {
 }
 
 
-// ROOM HANDLING FUNCTIONS
+// ROOM & ENVIRONMENT HANDLING FUNCTIONS in ROM_00
 CODE_BANK(0);
+
+void load_environment(enum Environment env)
+{
+    currentEnvironment = env;
+
+    pal_bg(envPalettes[currentEnvironment]);
+    pal_spr(envSprPalettes[currentEnvironment]);
+}
+
 void load_room()
 {
    unsigned char currentTileID = 0;
@@ -334,6 +349,9 @@ void set_palette_for_bg_tile(unsigned char tx, unsigned char ty, unsigned char p
 void switch_to_room(unsigned char room)
 {
     currentState = GS_SCREENTRANS;
+
+    pal_col(0, 0x0F);
+    ppu_wait_nmi();
     // Turn off PPU
     ppu_off();
     // Load next room

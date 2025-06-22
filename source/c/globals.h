@@ -34,6 +34,7 @@ ZEROPAGE_EXTERN(unsigned char, spawnedMonsters);
 ZEROPAGE_EXTERN(unsigned char, soundTestNum);
 ZEROPAGE_EXTERN(unsigned char, roomSwitchDir);
 ZEROPAGE_EXTERN(unsigned char, writingVram);
+ZEROPAGE_EXTERN(unsigned char, hudDirty);
 extern unsigned char* roomPtr;
 extern unsigned char* metatilesPtr;
 extern unsigned char currentRoomColl[];
