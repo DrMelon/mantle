@@ -11,6 +11,8 @@ ZEROPAGE_DEF(unsigned char, spr);
 ZEROPAGE_DEF(unsigned char, framecount);
 ZEROPAGE_DEF(unsigned char, pad_trig);
 ZEROPAGE_DEF(unsigned char, pad);
+ZEROPAGE_DEF(unsigned char, playerHp);
+ZEROPAGE_DEF(unsigned char, playerExp);
 ZEROPAGE_DEF(unsigned char, playerLevel);
 ZEROPAGE_DEF(unsigned char, currentRoom);
 ZEROPAGE_DEF(enum Environment, currentEnvironment);

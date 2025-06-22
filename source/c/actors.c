@@ -219,6 +219,8 @@ void update_mon_walker(Monster* walker)
            if(walker->health < 1)
            {
                walker->living = 0;
+               playerExp += 8; // become stronger.
+               hudDirty = 1;
                deadList[walker->uniqueid] = 1; // update deadlist
            }
            else

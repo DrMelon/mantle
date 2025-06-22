@@ -9,8 +9,13 @@ extern const unsigned char lv2Text[];
 extern const unsigned char lv3Text[];
 extern const unsigned char lvMaxText[];
 
+extern const unsigned char barBlocks[];
+
 extern const unsigned char dialog_0[];
 
 extern void draw_ui_borders();
-extern void refresh_hud_bars(int hp, int lvl);
+extern void refresh_hud_bars(char hp, char lvl, char exp);
+
+// RAM
+extern unsigned char hudUpdateBuffer[];
 #endif

@@ -88,8 +88,11 @@ void main(void) {
     // Set up game state
     currentState = GS_GAMEPLAY;
     playerLevel = 0;
+    playerHp = 16;
+    playerExp = 0;
     currentRoom = 0;
     soundTestNum = 0;
+    hudDirty = 1;
 
     // Set dead list empty
     for(i = 0; i < TOTAL_SPAWNABLES; i++)
@@ -138,6 +141,14 @@ void main(void) {
           oam_clear();
           spr = 0;
 
+          // Update level logic
+          if(playerExp == 16 && playerLevel < 4)
+          {
+             playerLevel++;
+             playerExp = 0;
+             hudDirty = 1;
+          }
+
           // Update characters
           update_character(&kris);
 
@@ -179,6 +190,17 @@ void main(void) {
           for(i = 0; i < spawnedMonsters; i++)
           {
               draw_monster(&monsterList[i]);
+          }
+
+          // Update HUD if needed and possible
+          if(hudDirty == 1)
+          {
+            if(writingVram == 0)
+            {
+              bank_push(0);
+              refresh_hud_bars(playerHp, playerLevel, playerExp);
+              bank_pop();
+            }
           }
         }
         if(currentState == GS_SCREENTRANS)

@@ -26,6 +26,8 @@ ZEROPAGE_EXTERN(unsigned char, spr);
 ZEROPAGE_EXTERN(unsigned char, framecount);
 ZEROPAGE_EXTERN(unsigned char, pad_trig);
 ZEROPAGE_EXTERN(unsigned char, pad);
+ZEROPAGE_EXTERN(unsigned char, playerHp);
+ZEROPAGE_EXTERN(unsigned char, playerExp);
 ZEROPAGE_EXTERN(unsigned char, playerLevel);
 ZEROPAGE_EXTERN(unsigned char, currentRoom);
 ZEROPAGE_EXTERN(enum Environment, currentEnvironment);

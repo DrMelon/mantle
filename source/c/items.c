@@ -30,6 +30,7 @@ void update_item(Item* item, WalkingCharacter* chara)
             if(playerLevel < 1)
             {
                 playerLevel++;
+                hudDirty = 1;
                 // Start playing the song!!
                 music_play(0);
             }
