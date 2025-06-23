@@ -1,0 +1,92 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "desert_room_2.tmx",
+    "expandedProjectPaths": [
+        "."
+    ],
+    "fileStates": {
+        "desert_bg.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 5.5
+        },
+        "desert_room0.tmx": {
+            "scale": 2,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 325.25,
+                "y": 93.75
+            }
+        },
+        "desert_room_1.tmx": {
+            "scale": 2.44921875,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 135.55342902711325,
+                "y": 112.89314194577354
+            }
+        },
+        "desert_room_2.tmx": {
+            "scale": 3.404166666666667,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 96.05875152998777,
+                "y": 63.892288861689096
+            }
+        },
+        "desert_room_oasis.tmx": {
+            "scale": 3.404166666666667,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 84.89596083231334,
+                "y": 99.14320685434515
+            }
+        },
+        "desert_room_shop.tmx": {
+            "scale": 4,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 121.625,
+                "y": 46.125
+            }
+        },
+        "desert_room_start.tmx": {
+            "scale": 2,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 143.5,
+                "y": 91.75
+            }
+        }
+    },
+    "last.imagePath": "/run/media/autumn/T7Linux/Projects/mantle/tiled_proj",
+    "map.height": 8,
+    "map.lastUsedFormat": "tmx",
+    "map.tileHeight": 16,
+    "map.tileWidth": 16,
+    "map.width": 12,
+    "openFiles": [
+        "desert_bg.tsx",
+        "desert_room_start.tmx",
+        "desert_room_shop.tmx",
+        "desert_room_1.tmx",
+        "desert_room_oasis.tmx",
+        "desert_room_2.tmx"
+    ],
+    "project": "mantle_maps.tiled-project",
+    "recentFiles": [
+        "desert_bg.tsx",
+        "desert_room_start.tmx",
+        "desert_room_shop.tmx",
+        "desert_room_1.tmx",
+        "desert_room_oasis.tmx",
+        "desert_room_2.tmx"
+    ],
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.tileSize": {
+        "height": 16,
+        "width": 16
+    }
+}
