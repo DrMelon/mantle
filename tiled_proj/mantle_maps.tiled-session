@@ -24,7 +24,7 @@
             "scale": 2.44921875,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 135.55342902711325,
+                "x": 135.75757575757575,
                 "y": 112.89314194577354
             }
         },
@@ -32,16 +32,16 @@
             "scale": 3.404166666666667,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 96.05875152998777,
-                "y": 63.892288861689096
+                "x": 96.20563035495715,
+                "y": 63.89228886168911
             }
         },
         "desert_room_oasis.tmx": {
             "scale": 3.404166666666667,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 84.89596083231334,
-                "y": 99.14320685434515
+                "x": 84.74908200734396,
+                "y": 28.641370869033054
             }
         },
         "desert_room_shop.tmx": {
@@ -56,13 +56,15 @@
             "scale": 2,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 143.5,
-                "y": 91.75
+                "x": 143.25,
+                "y": -28.25
             }
         }
     },
+    "last.exportedFilePath": "/run/media/autumn/T7Linux/Projects/mantle/tiled_proj",
     "last.imagePath": "/run/media/autumn/T7Linux/Projects/mantle/tiled_proj",
     "map.height": 8,
+    "map.lastUsedExportFilter": "CSV files (*.csv)",
     "map.lastUsedFormat": "tmx",
     "map.tileHeight": 16,
     "map.tileWidth": 16,
@@ -77,12 +79,13 @@
     ],
     "project": "mantle_maps.tiled-project",
     "recentFiles": [
-        "desert_bg.tsx",
-        "desert_room_start.tmx",
+        "desert_room0.tmx",
         "desert_room_shop.tmx",
         "desert_room_1.tmx",
         "desert_room_oasis.tmx",
-        "desert_room_2.tmx"
+        "desert_room_2.tmx",
+        "desert_bg.tsx",
+        "desert_room_start.tmx"
     ],
     "tileset.lastUsedFormat": "tsx",
     "tileset.tileSize": {

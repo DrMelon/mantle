@@ -130,7 +130,8 @@ void update_character(WalkingCharacter* chara)
                 x -= 2;
                 y -= 3;
                 i = (y*12)+x+4;
-                if(roomPtr[i] == 1)
+                i2 = roomPtr[i];
+                if(i2 == TILE_D_TREE || i2 == TILE_D_CACTUS || i2 == TILE_D_FERN)
                 {
                     set_map_tile_in_room(x, y, 0);
                 }
