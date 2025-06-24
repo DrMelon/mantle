@@ -305,16 +305,7 @@ void load_room()
 
    // Clear spawned item list
    spawnedItems = 0;
-   for(i = 0; i < MAX_ITEMS; i++)
-   {
-       itemList[i].living = 0;
-   }
-
    spawnedMonsters = 0;
-   for(i = 0; i < MAX_MONSTERS; i++)
-   {
-       monsterList[i].living = 0;
-   }
 
    // Load entity spawns
    for(i = (12*8) + 4; roomPtr[i] != 128; i+=5)
@@ -325,7 +316,6 @@ void load_room()
            itemList[spawnedItems].itemtype = ITEM_SWORD;
            itemList[spawnedItems].xpos = ((roomPtr[i+1]+2) << 4) + 4;
            itemList[spawnedItems].ypos = ((roomPtr[i+2]+3) << 4) + 4;
-           itemList[spawnedItems].living = 1;
            itemList[spawnedItems].uniqueid = roomPtr[i+4];
            spawnedItems++;
        }
@@ -334,7 +324,6 @@ void load_room()
            monsterList[spawnedMonsters].montype = roomPtr[i+3];
            monsterList[spawnedMonsters].xpos = ((roomPtr[i+1]+2) << 4) + 4;
            monsterList[spawnedMonsters].ypos = ((roomPtr[i+2]+3) << 4) + 4;
-           monsterList[spawnedMonsters].living = 1;
            monsterList[spawnedMonsters].health = 1;
            monsterList[spawnedMonsters].direction = rand8() >> 6;
            monsterList[spawnedMonsters].uniqueid = roomPtr[i+4];

@@ -15,6 +15,8 @@ extern const unsigned char dialog_0[];
 
 extern void draw_ui_borders();
 extern void refresh_hud_bars(char hp, char lvl, char exp);
+extern void summon_text(unsigned char* text, char exclusive_state);
+extern void clear_text();
 
 // RAM
 extern unsigned char hudUpdateBuffer[];

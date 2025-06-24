@@ -22,15 +22,13 @@ ZEROPAGE_DEF(unsigned char, soundTestNum);
 ZEROPAGE_DEF(unsigned char, roomSwitchDir);
 ZEROPAGE_DEF(unsigned char, writingVram);
 ZEROPAGE_DEF(unsigned char, hudDirty);
+ZEROPAGE_DEF(unsigned char, textQueued);
 
 unsigned char* roomPtr = 0;
 unsigned char* metatilesPtr = 0;
 unsigned char currentRoomColl[96];
 
-#pragma bss-name(push, "ZEROPAGE")
 Item itemList[MAX_ITEMS];
-#pragma bss-name(pop)
-
 Monster monsterList[MAX_MONSTERS];
 unsigned char deadList[TOTAL_SPAWNABLES];
 

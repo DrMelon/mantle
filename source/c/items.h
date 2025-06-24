@@ -22,5 +22,5 @@ typedef struct
 
 void update_item(Item* item, WalkingCharacter* chara);
 void draw_item(Item* item);
-
+void delete_item(unsigned char idx);
 #endif

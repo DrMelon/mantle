@@ -11,10 +11,6 @@ const unsigned char swordSprite[]={
 void update_item(Item* item, WalkingCharacter* chara)
 {
     unsigned char kx, ky;
-    if(item->living != 1)
-    {
-        return;
-    }
     // Check to see if Kris has walked onto the same tile as this item
     x = item->xpos >> 4;
     y = item->ypos >> 4;
@@ -36,7 +32,8 @@ void update_item(Item* item, WalkingCharacter* chara)
             }
             // Destroy self
             deadList[item->uniqueid] = 1;
-            item->living = 0;
+
+            delete_item(i);
         }
     }
 }
@@ -44,9 +41,15 @@ void update_item(Item* item, WalkingCharacter* chara)
 
 void draw_item(Item* item)
 {
-    if(item->living != 1) return;
     if(item->itemtype == ITEM_SWORD)
     {
         spr = oam_meta_spr(item->xpos, item->ypos, spr, swordSprite);
     }
+}
+
+void delete_item(unsigned char idx)
+{
+    // remove-at-swapback
+    itemList[idx] = itemList[spawnedItems-1];
+    spawnedItems--;
 }

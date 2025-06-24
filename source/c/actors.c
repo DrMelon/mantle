@@ -164,7 +164,6 @@ void draw_character(WalkingCharacter* chara)
 
 void update_monster(Monster* monster)
 {
-    if(monster->living != 1) return;
     if(monster->montype == MON_WALKER)
     {
         update_mon_walker(monster);
@@ -218,10 +217,13 @@ void update_mon_walker(Monster* walker)
        {
            if(walker->health < 1)
            {
-               walker->living = 0;
                playerExp += 8; // become stronger.
                hudDirty = 1;
                deadList[walker->uniqueid] = 1; // update deadlist
+
+               // delete monster
+               // USING i2 HERE BECAUSE i IS STOMPED BY COLLISION CHECKS
+               delete_monster(i2);
            }
            else
            {
@@ -233,7 +235,6 @@ void update_mon_walker(Monster* walker)
 
 void draw_monster(Monster* monster)
 {
-    if(monster->living != 1) return;
     if(monster->montype == MON_WALKER)
     {
         draw_walker(monster);
@@ -250,4 +251,11 @@ void draw_walker(Monster* walker)
     {
         spr = oam_meta_spr(walker->xpos, walker->ypos, spr, monWalkerAnims[(walker->animframe%2) + 2]);
     }
+}
+
+void delete_monster(unsigned char idx)
+{
+    // use a classic remove and swap back to remove a monster from the update list
+    monsterList[idx] = monsterList[spawnedMonsters-1];
+    spawnedMonsters--;
 }

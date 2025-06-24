@@ -50,7 +50,6 @@ typedef struct
   unsigned char level;
   enum Substate substate;
   enum MonsterType montype;
-  unsigned char living;
   unsigned char uniqueid;
   unsigned char animframe;
   unsigned char direction;
@@ -71,4 +70,5 @@ void update_mon_walker(Monster* walker);
 
 void draw_monster(Monster* monster);
 void draw_walker(Monster* walker);
+void delete_monster(unsigned char idx);
 #endif

@@ -10,6 +10,7 @@ enum GameState
 {
     GS_INTRO,
     GS_GAMEPLAY,
+    GS_TEXTBOX,
     GS_SCREENTRANS,
     GS_ENVTRANS,
     GS_DEAD,
@@ -37,6 +38,7 @@ ZEROPAGE_EXTERN(unsigned char, soundTestNum);
 ZEROPAGE_EXTERN(unsigned char, roomSwitchDir);
 ZEROPAGE_EXTERN(unsigned char, writingVram);
 ZEROPAGE_EXTERN(unsigned char, hudDirty);
+ZEROPAGE_EXTERN(unsigned char, textQueued);
 extern unsigned char* roomPtr;
 extern unsigned char* metatilesPtr;
 extern unsigned char currentRoomColl[];
