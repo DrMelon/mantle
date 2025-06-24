@@ -36,7 +36,7 @@ const unsigned char paletteDesert[] = {
     0x17, 0x0f, 0x10, 0x30, // Text
     0x17, 0x27, 0x37, 0x28, // Desert Sand & Vegetation
     0x17, 0x06, 0x16, 0x26, // Red Rocks, Bridges
-    0x17, 0x11, 0x22, 0x31 // Water & Watery Rock
+    0x17, 0x27, 0x22, 0x31 // Water & Watery Rock
 };
 
 // BG Palettes per environment
@@ -101,7 +101,7 @@ void main(void) {
     }
 
     // Init Kris
-    kris.xpos = 80;
+    kris.xpos = 128;
     kris.ypos = 128;
     kris.chartype = CH_KRIS;
     kris.substate = S_NORMAL;

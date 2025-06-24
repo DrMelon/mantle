@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "desert_room_2.tmx",
+    "activeFile": "desert_room_start.tmx",
     "expandedProjectPaths": [
         "."
     ],
@@ -64,8 +64,8 @@
             "scale": 2,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 143.25,
-                "y": 31.75
+                "x": 84.5,
+                "y": 29.75
             }
         }
     },
@@ -80,20 +80,22 @@
     "openFiles": [
         "desert_bg.tsx",
         "desert_room_start.tmx",
-        "desert_room_shop.tmx",
         "desert_room_1.tmx",
+        "desert_room_2.tmx",
         "desert_room_oasis.tmx",
-        "desert_room_2.tmx"
+        "desert_room_shop.tmx",
+        "desert_room_3.tmx"
     ],
     "project": "mantle_maps.tiled-project",
     "recentFiles": [
-        "desert_room0.tmx",
+        "desert_bg.tsx",
+        "desert_room_3.tmx",
         "desert_room_shop.tmx",
-        "desert_room_1.tmx",
         "desert_room_oasis.tmx",
         "desert_room_2.tmx",
-        "desert_bg.tsx",
-        "desert_room_start.tmx"
+        "desert_room_1.tmx",
+        "desert_room_start.tmx",
+        "desert_room0.tmx"
     ],
     "tileset.lastUsedFormat": "tsx",
     "tileset.tileSize": {
