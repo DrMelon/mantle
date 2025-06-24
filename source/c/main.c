@@ -33,10 +33,10 @@ unsigned char testVariable;
 
 // Color palette for the screen to use
 const unsigned char paletteDesert[] = {
-    0x17, 0x0f, 0x10, 0x30,
-    0x17, 0x27, 0x37, 0x28,
-    0x17, 0x1c, 0x2c, 0x3c,
-    0x17, 0x11, 0x22, 0x31
+    0x17, 0x0f, 0x10, 0x30, // Text
+    0x17, 0x27, 0x37, 0x28, // Desert Sand & Vegetation
+    0x17, 0x06, 0x16, 0x26, // Red Rocks, Bridges
+    0x17, 0x11, 0x22, 0x31 // Water & Watery Rock
 };
 
 // BG Palettes per environment
@@ -101,8 +101,8 @@ void main(void) {
     }
 
     // Init Kris
-    kris.xpos = 48;
-    kris.ypos = 96;
+    kris.xpos = 80;
+    kris.ypos = 128;
     kris.chartype = CH_KRIS;
     kris.substate = S_NORMAL;
     kris.direction = 0;
@@ -336,6 +336,7 @@ void load_room()
 void set_palette_for_bg_tile(unsigned char tx, unsigned char ty, unsigned char palettemask)
 {
    unsigned char tilemask=0;
+   unsigned char pal=0;
    // attrib table is 64 bytes long
    // each byte controls a square of 4x4 tiles
    // so for our metatiles, that means each byte controls 2x2 of them
@@ -343,15 +344,14 @@ void set_palette_for_bg_tile(unsigned char tx, unsigned char ty, unsigned char p
    // first get current
    attrib_addr = 0x23C0 + (ty/2) * 8 + (tx/2);
    vram_adr(attrib_addr);
-   vram_read(&i, 1); // now i contains current value
+   vram_read(&pal, 1); // now pal contains current value
    // next we need to calculate the mask for this specific tile
    if(tx % 2 == 1 && ty % 2 == 1) tilemask = 0b11000000;
    if(tx % 2 == 0 && ty % 2 == 1) tilemask = 0b00110000;
    if(tx % 2 == 1 && ty % 2 == 0) tilemask = 0b00001100;
    if(tx % 2 == 0 && ty % 2 == 0) tilemask = 0b00000011;
 
-   palettemask = i | (palettemask & tilemask);
-   // then mask the existing data out with the mask so that we only set the bits for the current tile
+   palettemask = (pal & ~tilemask) | (palettemask & tilemask);   // then mask the existing data out with the mask so that we only set the bits for the current tile
    // then write that entry back into vram
    vram_adr(attrib_addr);
    vram_put(palettemask);
