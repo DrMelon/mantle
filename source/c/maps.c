@@ -128,6 +128,8 @@ void set_map_tile_on_character(WalkingCharacter* chara, unsigned char tile)
     x = (chara->xpos + 7 >> 4) - 2;
     y = (chara->ypos + 7 >> 4) - 3;
     i = x + (y*12);
+    // Only update tile collisions if the tile to replace was a tree or fern
+    if(currentRoomColl[i] != 2 && currentRoomColl[i] != 3) return;
     currentRoomColl[i] = tile; // UPDATE TILE COLLISIONS
     ntrAdr = NTADR_A((x+2)*2,(y+3)*2);
     palmTreeBuffer[0] = MSB(ntrAdr);
