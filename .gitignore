@@ -21,3 +21,4 @@ sound/music.asm
 sound/sfx.asm
 # Python cache
 __pycache__
+ldtk_proj/mantle_desert/backups
