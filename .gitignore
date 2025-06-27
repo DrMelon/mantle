@@ -19,4 +19,5 @@ graphics/*.rle.chr
 # Automatically generated music files
 sound/music.asm
 sound/sfx.asm
-    
+# Python cache
+__pycache__

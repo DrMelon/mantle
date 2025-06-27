@@ -2,6 +2,7 @@
 #include "globals.h"
 #include "neslib.h"
 #include "actors.h"
+#include "desert_maps.h"
 
 // Format: 4 8x8 tiles that make up this metatile, and palette mask for attrib (actual mask differs based on tile pos)
 // then, tile solidity type (0 = walkable, 1 = not walkable)
@@ -49,7 +50,7 @@ const unsigned char desert_metatiles[]={
 // then a subtype id for monsters etc
 // then a "unique id" for monsters so we can track which ones are dead-dead
 // list terminates if you reach an id of 128
-const unsigned char desert_room_start[]={
+const unsigned char desert_room_start_test[]={
   1, 0, 0, 0,
 4,3,4,3,4,3,4,3,4,3,4,3,
 3,4,3,4,3,5,6,4,3,4,3,4,
@@ -77,11 +78,6 @@ const unsigned char desert_room_movetest[]={
   1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1,
   2, 5, 6, 0, 0,
   128
-};
-
-const unsigned char* desert_rooms[]={
-  desert_room_start,
-  desert_room_movetest
 };
 
 const unsigned char* environment_metatiles[]={
