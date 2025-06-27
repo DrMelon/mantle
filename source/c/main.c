@@ -322,8 +322,8 @@ void load_room()
        if(roomPtr[i] == 0) // Spawn a monster
        {
            monsterList[spawnedMonsters].montype = roomPtr[i+3];
-           monsterList[spawnedMonsters].xpos = ((roomPtr[i+1]+2) << 4) + 4;
-           monsterList[spawnedMonsters].ypos = ((roomPtr[i+2]+3) << 4) + 4;
+           monsterList[spawnedMonsters].xpos = ((roomPtr[i+1]+2) << 4);
+           monsterList[spawnedMonsters].ypos = ((roomPtr[i+2]+3) << 4);
            monsterList[spawnedMonsters].health = 1;
            monsterList[spawnedMonsters].direction = rand8() >> 6;
            monsterList[spawnedMonsters].uniqueid = roomPtr[i+4];

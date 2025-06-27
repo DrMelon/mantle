@@ -22,7 +22,7 @@ const unsigned char desert_metatiles[]={
    0x89, 0x8A, 0x99, 0x9A, 0b01010101, 1,
    0x4B, 0x4C, 0x5B, 0x5C, 0b01010101, 1,
    0x6B, 0x6C, 0x7B, 0x7C, 0b01010101, 1,
-   0x31, 0x32, 0x32, 0x31, 0b11111111, 0,
+   0x31, 0x32, 0x32, 0x31, 0b11111111, 1,
    0x21, 0x22, 0x31, 0x32, 0b11111111, 1,
    0x22, 0x31, 0x21, 0x32, 0b11111111, 1,
    0x31, 0x32, 0x21, 0x22, 0b11111111, 1,
@@ -40,12 +40,11 @@ const unsigned char desert_metatiles[]={
    0x00, 0x00, 0x00, 0x00, 0b01010101, 1,
    0x23, 0x24, 0x33, 0x34, 0b01010101, 0,
    0x0F, 0x0F, 0x1F, 0x1F, 0b10101010, 0,
-   0x25, 0x26, 0x35, 0x36, 0b01010101, 1,
 };
 
 // Format: S, E, N, W exits, then the map tile layout (12x8 metatiles),
 // then a running list of entities for the room:
-// first, an ID that says what kind of thing it is: 0 = monster, 1 = entrance/exit (like stairs), 2 = sword pickup
+// first, an ID that says what kind of thing it is: 0 = monster, 1 = entrance/exit (like stairs), 2 = sword pickup, 3 = chest
 // then an x and a y position
 // then a subtype id for monsters etc
 // then a "unique id" for monsters so we can track which ones are dead-dead
@@ -117,8 +116,8 @@ int tilemap_solid(unsigned char tx, unsigned char ty)
 {
     x = tx - 2; // account for centering
     y = ty - 3;
-    if(x < 0 || x >= 12) return 0;
-    if(y < 0 || y >= 8) return 0;
+    if(x < 0 || x >= 12) return 1;
+    if(y < 0 || y >= 8) return 1;
     i = (x + (y*12));
     return metatilesPtr[currentRoomColl[i]*6 + 5];
 }

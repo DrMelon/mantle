@@ -27,6 +27,7 @@ with open(ldtk_file_name) as ldtk_file:
     c_string_for_ldtk_files = "#include \""+ c_file_path +".h\"\n"
     c_string_for_ldtk_files += "#include \"bank_helpers.h\"\n\n"
     c_string_for_ldtk_files += "CODE_BANK(0);\n"
+    environment_ent_counter = 0
 
     for i in range(0, len(ldtk_data.levels)):
         h_string_for_level = "extern const unsigned char " + ldtk_level_prefix + "room_" + str(i) + "[];\n"
@@ -55,7 +56,7 @@ with open(ldtk_file_name) as ldtk_file:
 
         # Then write tile info
         x_num = 0
-        for tile in ldtk_data.levels[i].layer_instances[0].grid_tiles:
+        for tile in ldtk_data.levels[i].layer_instances[1].grid_tiles:
             c_string_for_level += str(tile.t) + ", "
             x_num += 1
             if(x_num == 12):
@@ -63,6 +64,20 @@ with open(ldtk_file_name) as ldtk_file:
                 x_num = 0
 
         # Then write entity info
+        for entity in ldtk_data.levels[i].layer_instances[0].entity_instances:
+            if(entity.identifier == "Walker"):
+                c_string_for_level += "0, "
+                c_string_for_level += str(entity.grid[0]) + ", "
+                c_string_for_level += str(entity.grid[1]) + ", "
+                c_string_for_level += "0, "
+                c_string_for_level += str(environment_ent_counter) + ", \n"
+            if(entity.identifier == "Sword"):
+                c_string_for_level += "2, "
+                c_string_for_level += str(entity.grid[0]) + ", "
+                c_string_for_level += str(entity.grid[1]) + ", "
+                c_string_for_level += "0, "
+                c_string_for_level += str(environment_ent_counter) + ", \n"
+            environment_ent_counter += 1
 
         # Then write entity data terminator
         c_string_for_level += "128\n};\n"
