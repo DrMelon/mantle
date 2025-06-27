@@ -40,7 +40,7 @@ void update_character(WalkingCharacter* chara)
                         {
                             bank_push(0);
                             roomSwitchDir = 0;
-                            switch_to_room(environment_rooms[currentEnvironment][currentRoom][0]);
+                            switch_to_room(roomPtr[0]);
                             bank_pop();
                         }
                     }
@@ -53,7 +53,7 @@ void update_character(WalkingCharacter* chara)
                         {
                             bank_push(0);
                             roomSwitchDir = 1;
-                            switch_to_room(environment_rooms[currentEnvironment][currentRoom][1]);
+                            switch_to_room(roomPtr[1]);
                             bank_pop();
                         }
                     }
@@ -66,7 +66,7 @@ void update_character(WalkingCharacter* chara)
                         {
                             bank_push(0);
                             roomSwitchDir = 2;
-                            switch_to_room(environment_rooms[currentEnvironment][currentRoom][2]);
+                            switch_to_room(roomPtr[2]);
                             bank_pop();
                         }
                     }
@@ -79,7 +79,7 @@ void update_character(WalkingCharacter* chara)
                         {
                             bank_push(0);
                             roomSwitchDir = 3;
-                            switch_to_room(environment_rooms[currentEnvironment][currentRoom][3]);
+                            switch_to_room(roomPtr[3]);
                             bank_pop();
                         }
                     }
@@ -131,9 +131,22 @@ void update_character(WalkingCharacter* chara)
                 y -= 3;
                 i = (y*12)+x+4;
                 i2 = roomPtr[i];
-                if(i2 == TILE_D_TREE || i2 == TILE_D_CACTUS || i2 == TILE_D_FERN)
+
+                if(i2 == TILE_D_FERN && playerLevel >= 2)
                 {
                     set_map_tile_in_room(x, y, 0);
+                }
+                else if(i2 == TILE_D_CACTUS && playerLevel >= 3)
+                {
+                    set_map_tile_in_room(x, y, 0);
+                }
+                else if(i2 == TILE_D_TREE && playerLevel >= 4)
+                {
+                    set_map_tile_in_room(x, y, 0);
+                }
+                else
+                {
+                    // Play *dink* sound!
                 }
 
                 // SFX

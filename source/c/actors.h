@@ -62,8 +62,8 @@ const unsigned char** characterStrikeAnims[];
 
 void switch_to_room(unsigned char room);
 
-void update_character(WalkingCharacter* chara);
-void draw_character(WalkingCharacter* chara);
+extern void update_character(WalkingCharacter* chara);
+extern void draw_character(WalkingCharacter* chara);
 
 void update_monster(Monster* monster);
 void update_mon_walker(Monster* walker);

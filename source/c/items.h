@@ -8,7 +8,8 @@ enum ItemType
   ITEM_SWORD,
   ITEM_CANDY,
   ITEM_ICEKEY,
-  ITEM_SHELTERKEY
+  ITEM_SHELTERKEY,
+  ITEM_TELE,
 };
 
 typedef struct

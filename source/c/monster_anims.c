@@ -10,10 +10,10 @@ const unsigned char walkerWalk0[]={
     128
 };
 const unsigned char walkerWalk1[]={
-    0, 0, 0x1D, 7,
-    8, 0, 0x1D, 7 | OAM_FLIP_H,
-    0, 8, 0x2E, 7 | OAM_FLIP_H,
-    8, 8, 0x2D, 7 | OAM_FLIP_H,
+    1, 0, 0x1D, 7,
+    9, 0, 0x1D, 7 | OAM_FLIP_H,
+    1, 8, 0x2E, 7 | OAM_FLIP_H,
+    9, 8, 0x2D, 7 | OAM_FLIP_H,
     128
 };
 const unsigned char walkerHurt0[]={
