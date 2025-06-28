@@ -339,13 +339,13 @@ void load_room()
            spawnedTeles++;
            continue;
        }
-       if(deadList[roomPtr[i+4]]) continue;
+       if(deadList[roomPtr[i+5]]) continue;
        if(roomPtr[i] == 2) // Spawn a sword
        {
            itemList[spawnedItems].itemtype = ITEM_SWORD;
            itemList[spawnedItems].xpos = ((roomPtr[i+1]+2) << 4) + 12;
            itemList[spawnedItems].ypos = ((roomPtr[i+2]+3) << 4) + 12;
-           itemList[spawnedItems].uniqueid = roomPtr[i+4];
+           itemList[spawnedItems].uniqueid = roomPtr[i+5];
            spawnedItems++;
        }
        else if(roomPtr[i] == 0) // Spawn a monster
@@ -355,7 +355,7 @@ void load_room()
            monsterList[spawnedMonsters].ypos = ((roomPtr[i+2]+3) << 4);
            monsterList[spawnedMonsters].health = 1;
            monsterList[spawnedMonsters].direction = rand8() >> 6;
-           monsterList[spawnedMonsters].uniqueid = roomPtr[i+4];
+           monsterList[spawnedMonsters].uniqueid = roomPtr[i+5];
            spawnedMonsters++;
        }
 

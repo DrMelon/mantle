@@ -996,7 +996,24 @@
 					"seed": 8224892,
 					"overrideTilesetUid": null,
 					"gridTiles": [],
-					"entityInstances": []
+					"entityInstances": [
+						{
+							"__identifier": "Walker",
+							"__grid": [5,5],
+							"__pivot": [0,0],
+							"__tags": [],
+							"__tile": null,
+							"__smartColor": "#957A74",
+							"iid": "3eff3a10-3740-11f0-964e-656e490eb0fe",
+							"width": 16,
+							"height": 16,
+							"defUid": 39,
+							"px": [80,80],
+							"fieldInstances": [],
+							"__worldX": 80,
+							"__worldY": 464
+						}
+					]
 				},
 				{
 					"__identifier": "DesertTiles",
@@ -1176,7 +1193,24 @@
 					"seed": 5690095,
 					"overrideTilesetUid": null,
 					"gridTiles": [],
-					"entityInstances": []
+					"entityInstances": [
+						{
+							"__identifier": "Walker",
+							"__grid": [3,2],
+							"__pivot": [0,0],
+							"__tags": [],
+							"__tile": null,
+							"__smartColor": "#957A74",
+							"iid": "452022b0-3740-11f0-964e-2fede8ebfbea",
+							"width": 16,
+							"height": 16,
+							"defUid": 39,
+							"px": [48,32],
+							"fieldInstances": [],
+							"__worldX": 48,
+							"__worldY": 544
+						}
+					]
 				},
 				{
 					"__identifier": "DesertTiles",
@@ -1555,7 +1589,40 @@
 					"seed": 8807973,
 					"overrideTilesetUid": null,
 					"gridTiles": [],
-					"entityInstances": []
+					"entityInstances": [
+						{
+							"__identifier": "Walker",
+							"__grid": [9,2],
+							"__pivot": [0,0],
+							"__tags": [],
+							"__tile": null,
+							"__smartColor": "#957A74",
+							"iid": "4278f780-3740-11f0-964e-f36be4fb85cf",
+							"width": 16,
+							"height": 16,
+							"defUid": 39,
+							"px": [144,32],
+							"fieldInstances": [],
+							"__worldX": -48,
+							"__worldY": 544
+						},
+						{
+							"__identifier": "Walker",
+							"__grid": [3,4],
+							"__pivot": [0,0],
+							"__tags": [],
+							"__tile": null,
+							"__smartColor": "#957A74",
+							"iid": "43216c80-3740-11f0-964e-1fa0e5993805",
+							"width": 16,
+							"height": 16,
+							"defUid": 39,
+							"px": [48,64],
+							"fieldInstances": [],
+							"__worldX": -144,
+							"__worldY": 576
+						}
+					]
 				},
 				{
 					"__identifier": "DesertTiles",
@@ -1734,7 +1801,56 @@
 					"seed": 3621259,
 					"overrideTilesetUid": null,
 					"gridTiles": [],
-					"entityInstances": []
+					"entityInstances": [
+						{
+							"__identifier": "Walker",
+							"__grid": [7,2],
+							"__pivot": [0,0],
+							"__tags": [],
+							"__tile": null,
+							"__smartColor": "#957A74",
+							"iid": "3d577d80-3740-11f0-964e-7773dff62091",
+							"width": 16,
+							"height": 16,
+							"defUid": 39,
+							"px": [112,32],
+							"fieldInstances": [],
+							"__worldX": -80,
+							"__worldY": 416
+						},
+						{
+							"__identifier": "Walker",
+							"__grid": [7,5],
+							"__pivot": [0,0],
+							"__tags": [],
+							"__tile": null,
+							"__smartColor": "#957A74",
+							"iid": "3d99b6a0-3740-11f0-964e-a7747b9c3bd2",
+							"width": 16,
+							"height": 16,
+							"defUid": 39,
+							"px": [112,80],
+							"fieldInstances": [],
+							"__worldX": -80,
+							"__worldY": 464
+						},
+						{
+							"__identifier": "Walker",
+							"__grid": [2,5],
+							"__pivot": [0,0],
+							"__tags": [],
+							"__tile": null,
+							"__smartColor": "#957A74",
+							"iid": "3e00b5d0-3740-11f0-964e-e1bcabd84a9f",
+							"width": 16,
+							"height": 16,
+							"defUid": 39,
+							"px": [32,80],
+							"fieldInstances": [],
+							"__worldX": -160,
+							"__worldY": 464
+						}
+					]
 				},
 				{
 					"__identifier": "DesertTiles",
@@ -1912,7 +2028,24 @@
 					"seed": 9604162,
 					"overrideTilesetUid": null,
 					"gridTiles": [],
-					"entityInstances": []
+					"entityInstances": [
+						{
+							"__identifier": "Walker",
+							"__grid": [6,3],
+							"__pivot": [0,0],
+							"__tags": [],
+							"__tile": null,
+							"__smartColor": "#957A74",
+							"iid": "3a10b6f0-3740-11f0-964e-ddd790d6b9fd",
+							"width": 16,
+							"height": 16,
+							"defUid": 39,
+							"px": [96,48],
+							"fieldInstances": [],
+							"__worldX": -96,
+							"__worldY": 304
+						}
+					]
 				},
 				{
 					"__identifier": "DesertTiles",
@@ -2089,7 +2222,24 @@
 					"seed": 8948003,
 					"overrideTilesetUid": null,
 					"gridTiles": [],
-					"entityInstances": []
+					"entityInstances": [
+						{
+							"__identifier": "Walker",
+							"__grid": [1,6],
+							"__pivot": [0,0],
+							"__tags": [],
+							"__tile": null,
+							"__smartColor": "#957A74",
+							"iid": "4d5ee240-3740-11f0-964e-51a1d9c38c31",
+							"width": 16,
+							"height": 16,
+							"defUid": 39,
+							"px": [16,96],
+							"fieldInstances": [],
+							"__worldX": -176,
+							"__worldY": 224
+						}
+					]
 				},
 				{
 					"__identifier": "DesertTiles",
@@ -3145,7 +3295,24 @@
 					"seed": 8820981,
 					"overrideTilesetUid": null,
 					"gridTiles": [],
-					"entityInstances": []
+					"entityInstances": [
+						{
+							"__identifier": "Walker",
+							"__grid": [4,4],
+							"__pivot": [0,0],
+							"__tags": [],
+							"__tile": null,
+							"__smartColor": "#957A74",
+							"iid": "49df7f80-3740-11f0-964e-013023ca2d67",
+							"width": 16,
+							"height": 16,
+							"defUid": 39,
+							"px": [64,64],
+							"fieldInstances": [],
+							"__worldX": 256,
+							"__worldY": 448
+						}
+					]
 				},
 				{
 					"__identifier": "DesertTiles",
@@ -3501,7 +3668,24 @@
 					"seed": 4448660,
 					"overrideTilesetUid": null,
 					"gridTiles": [],
-					"entityInstances": []
+					"entityInstances": [
+						{
+							"__identifier": "Walker",
+							"__grid": [3,3],
+							"__pivot": [0,0],
+							"__tags": [],
+							"__tile": null,
+							"__smartColor": "#957A74",
+							"iid": "478d2b10-3740-11f0-964e-37dd2101e1a0",
+							"width": 16,
+							"height": 16,
+							"defUid": 39,
+							"px": [48,48],
+							"fieldInstances": [],
+							"__worldX": 240,
+							"__worldY": 688
+						}
+					]
 				},
 				{
 					"__identifier": "DesertTiles",
