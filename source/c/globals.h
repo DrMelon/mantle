@@ -5,6 +5,7 @@
 #include "maps.h"
 #include "actors.h"
 #include "items.h"
+#include "teleport.h"
 
 enum GameState
 {
@@ -12,6 +13,7 @@ enum GameState
     GS_GAMEPLAY,
     GS_TEXTBOX,
     GS_SCREENTRANS,
+    GS_SCREENTRANS_TELE,
     GS_ENVTRANS,
     GS_DEAD,
     GS_OUTRO
@@ -34,11 +36,13 @@ ZEROPAGE_EXTERN(unsigned char, currentRoom);
 ZEROPAGE_EXTERN(enum Environment, currentEnvironment);
 ZEROPAGE_EXTERN(unsigned char, spawnedItems);
 ZEROPAGE_EXTERN(unsigned char, spawnedMonsters);
+ZEROPAGE_EXTERN(unsigned char, spawnedTeles);
 ZEROPAGE_EXTERN(unsigned char, soundTestNum);
 ZEROPAGE_EXTERN(unsigned char, roomSwitchDir);
 ZEROPAGE_EXTERN(unsigned char, writingVram);
 ZEROPAGE_EXTERN(unsigned char, hudDirty);
 ZEROPAGE_EXTERN(unsigned char, textQueued);
+ZEROPAGE_EXTERN(unsigned char, queueTele);
 extern unsigned char* roomPtr;
 extern unsigned char* metatilesPtr;
 extern unsigned char currentRoomColl[];
@@ -48,6 +52,9 @@ extern Item itemList[];
 
 #define MAX_MONSTERS 16
 extern Monster monsterList[];
+
+#define MAX_TELEPORTERS 2
+extern Teleporter teleList[];
 
 #define TOTAL_SPAWNABLES 255
 extern unsigned char deadList[];

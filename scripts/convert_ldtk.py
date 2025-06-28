@@ -33,12 +33,12 @@ with open(ldtk_file_name) as ldtk_file:
         h_string_for_level = "extern const unsigned char " + ldtk_level_prefix + "room_" + str(i) + "[];\n"
         c_string_for_level = "const unsigned char " + ldtk_level_prefix + "room_" + str(i) + "[] = {\n"
         # Get neighbours.
-        # Any non-existent neighbour is set to a special index, 255.
+        # Any non-existent neighbour is set to a special index.
         # This is used by the game to move the player to the "tree room".
-        s_neighbour = 255
-        e_neighbour = 255
-        n_neighbour = 255
-        w_neighbour = 255
+        s_neighbour = 26
+        e_neighbour = 26
+        n_neighbour = 26
+        w_neighbour = 26
 
         # Extract neighbour indices.
         for neighbour_data in ldtk_data.levels[i].neighbours:
@@ -70,13 +70,22 @@ with open(ldtk_file_name) as ldtk_file:
                 c_string_for_level += str(entity.grid[0]) + ", "
                 c_string_for_level += str(entity.grid[1]) + ", "
                 c_string_for_level += "0, "
+                c_string_for_level += "0, "
                 c_string_for_level += str(environment_ent_counter) + ", \n"
             if(entity.identifier == "Sword"):
                 c_string_for_level += "2, "
                 c_string_for_level += str(entity.grid[0]) + ", "
                 c_string_for_level += str(entity.grid[1]) + ", "
                 c_string_for_level += "0, "
+                c_string_for_level += "0, "
                 c_string_for_level += str(environment_ent_counter) + ", \n"
+            if(entity.identifier == "Teleporter"):
+                c_string_for_level += "1, "
+                c_string_for_level += str(entity.grid[0]) + ", "
+                c_string_for_level += str(entity.grid[1]) + ", "
+                c_string_for_level += str(entity.field_instances[0].value) + ", "
+                c_string_for_level += str(entity.field_instances[1].value) + ", "
+                c_string_for_level += str(entity.field_instances[2].value) + ", \n"
             environment_ent_counter += 1
 
         # Then write entity data terminator

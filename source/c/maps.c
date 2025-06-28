@@ -46,7 +46,7 @@ const unsigned char desert_metatiles[]={
 // then a running list of entities for the room:
 // first, an ID that says what kind of thing it is: 0 = monster, 1 = entrance/exit (like stairs), 2 = sword pickup, 3 = chest
 // then an x and a y position
-// then a subtype id for monsters etc
+// then 2 subtype ids for monsters, tele locations etc
 // then a "unique id" for monsters so we can track which ones are dead-dead
 // list terminates if you reach an id of 128
 const unsigned char desert_room_start_test[]={
@@ -59,9 +59,9 @@ const unsigned char desert_room_start_test[]={
 1,0,0,0,0,0,0,0,0,0,0,1,
 1,0,0,0,0,0,0,0,0,0,0,1,
 1,1,1,1,1,0,0,1,1,1,1,1,
-  0, 5, 5, 0, 1,
-  0, 4, 5, 0, 2,
-  0, 9, 5, 0, 3,
+  0, 5, 5, 0, 0, 1,
+  0, 4, 5, 0, 0, 2,
+  0, 9, 5, 0, 0, 3,
   128
 };
 
@@ -75,7 +75,7 @@ const unsigned char desert_room_movetest[]={
   1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1,
   1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1,
   1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1,
-  2, 5, 6, 0, 0,
+  2, 5, 6, 0, 0, 0,
   128
 };
 

@@ -18,18 +18,20 @@ ZEROPAGE_DEF(unsigned char, currentRoom);
 ZEROPAGE_DEF(enum Environment, currentEnvironment);
 ZEROPAGE_DEF(unsigned char, spawnedItems);
 ZEROPAGE_DEF(unsigned char, spawnedMonsters);
+ZEROPAGE_DEF(unsigned char, spawnedTeles);
 ZEROPAGE_DEF(unsigned char, soundTestNum);
 ZEROPAGE_DEF(unsigned char, roomSwitchDir);
 ZEROPAGE_DEF(unsigned char, writingVram);
 ZEROPAGE_DEF(unsigned char, hudDirty);
 ZEROPAGE_DEF(unsigned char, textQueued);
-
+ZEROPAGE_DEF(unsigned char, queueTele);
 unsigned char* roomPtr = 0;
 unsigned char* metatilesPtr = 0;
 unsigned char currentRoomColl[96];
 
 Item itemList[MAX_ITEMS];
 Monster monsterList[MAX_MONSTERS];
+Teleporter teleList[MAX_TELEPORTERS];
 unsigned char deadList[TOTAL_SPAWNABLES];
 
 unsigned char palmTreeBuffer[16];

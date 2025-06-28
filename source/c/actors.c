@@ -15,6 +15,7 @@ const unsigned char** characterStrikeAnims[]={
     krisStrikeAnims
 };
 
+CODE_BANK(0);
 void update_character(WalkingCharacter* chara)
 {
     switch (chara->substate)
@@ -88,6 +89,20 @@ void update_character(WalkingCharacter* chara)
             {
                 chara->animframe++;
             }
+            if(did_walk && spawnedTeles != 0)
+            {
+                for(i2 = 0; i2 < spawnedTeles; i2++)
+                {
+                    if(chara->xpos+7 >> 4 == teleList[i2].tx+2 && chara->ypos+7 >> 4 == teleList[i2].ty+3)
+                    {
+                        // Do teleport
+                        bank_push(0);
+                        tele_to_room(teleList[i2].targetroom, teleList[i2].targetx+2, teleList[i2].targety+3);
+                        bank_pop();
+                        i2 = spawnedTeles;
+                    }
+                }
+            }
             break;
         }
         case S_ATTACK:
@@ -160,6 +175,7 @@ void update_character(WalkingCharacter* chara)
         }
     }
 }
+CODE_BANK_POP();
 
 void draw_character(WalkingCharacter* chara)
 {

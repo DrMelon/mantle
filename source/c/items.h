@@ -24,4 +24,6 @@ typedef struct
 void update_item(Item* item, WalkingCharacter* chara);
 void draw_item(Item* item);
 void delete_item(unsigned char idx);
+
+void tele_to_room(unsigned char room, unsigned char telex, unsigned char teley);
 #endif

@@ -61,6 +61,7 @@ const unsigned char** characterWalkAnims[];
 const unsigned char** characterStrikeAnims[];
 
 void switch_to_room(unsigned char room);
+void tele_to_room(unsigned char room, unsigned char telex, unsigned char teley);
 
 extern void update_character(WalkingCharacter* chara);
 extern void draw_character(WalkingCharacter* chara);

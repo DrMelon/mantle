@@ -11,7 +11,7 @@
 	"iid": "e2c7fcb0-3740-11f0-ae24-d5574c0baf2f",
 	"jsonVersion": "1.5.3",
 	"appBuildId": 473703,
-	"nextUid": 42,
+	"nextUid": 46,
 	"identifierStyle": "Capitalize",
 	"toc": [],
 	"worldLayout": "GridVania",
@@ -181,6 +181,153 @@
 			"pivotX": 0,
 			"pivotY": 0,
 			"fieldDefs": []
+		},
+		{
+			"identifier": "Teleporter",
+			"uid": 42,
+			"tags": [],
+			"exportToToc": false,
+			"allowOutOfBounds": false,
+			"doc": null,
+			"width": 16,
+			"height": 16,
+			"resizableX": false,
+			"resizableY": false,
+			"minWidth": null,
+			"maxWidth": null,
+			"minHeight": null,
+			"maxHeight": null,
+			"keepAspectRatio": false,
+			"tileOpacity": 1,
+			"fillOpacity": 0.5,
+			"lineOpacity": 1,
+			"hollow": false,
+			"color": "#6EFF00",
+			"renderMode": "Rectangle",
+			"showName": true,
+			"tilesetId": null,
+			"tileRenderMode": "FitInside",
+			"tileRect": null,
+			"uiTileRect": null,
+			"nineSliceBorders": [],
+			"maxCount": 0,
+			"limitScope": "PerLevel",
+			"limitBehavior": "MoveLastOne",
+			"pivotX": 0,
+			"pivotY": 0,
+			"fieldDefs": [
+				{
+					"identifier": "roomid",
+					"doc": null,
+					"__type": "Int",
+					"uid": 43,
+					"type": "F_Int",
+					"isArray": false,
+					"canBeNull": false,
+					"arrayMinLength": null,
+					"arrayMaxLength": null,
+					"editorDisplayMode": "Hidden",
+					"editorDisplayScale": 1,
+					"editorDisplayPos": "Above",
+					"editorLinkStyle": "StraightArrow",
+					"editorDisplayColor": null,
+					"editorAlwaysShow": false,
+					"editorShowInWorld": true,
+					"editorCutLongValues": true,
+					"editorTextSuffix": null,
+					"editorTextPrefix": null,
+					"useForSmartColor": false,
+					"exportToToc": false,
+					"searchable": false,
+					"min": null,
+					"max": null,
+					"regex": null,
+					"acceptFileTypes": null,
+					"defaultOverride": null,
+					"textLanguageMode": null,
+					"symmetricalRef": false,
+					"autoChainRef": true,
+					"allowOutOfLevelRef": true,
+					"allowedRefs": "OnlySame",
+					"allowedRefsEntityUid": null,
+					"allowedRefTags": [],
+					"tilesetUid": null
+				},
+				{
+					"identifier": "targetx",
+					"doc": null,
+					"__type": "Int",
+					"uid": 44,
+					"type": "F_Int",
+					"isArray": false,
+					"canBeNull": false,
+					"arrayMinLength": null,
+					"arrayMaxLength": null,
+					"editorDisplayMode": "Hidden",
+					"editorDisplayScale": 1,
+					"editorDisplayPos": "Above",
+					"editorLinkStyle": "StraightArrow",
+					"editorDisplayColor": null,
+					"editorAlwaysShow": false,
+					"editorShowInWorld": true,
+					"editorCutLongValues": true,
+					"editorTextSuffix": null,
+					"editorTextPrefix": null,
+					"useForSmartColor": false,
+					"exportToToc": false,
+					"searchable": false,
+					"min": null,
+					"max": null,
+					"regex": null,
+					"acceptFileTypes": null,
+					"defaultOverride": null,
+					"textLanguageMode": null,
+					"symmetricalRef": false,
+					"autoChainRef": true,
+					"allowOutOfLevelRef": true,
+					"allowedRefs": "OnlySame",
+					"allowedRefsEntityUid": null,
+					"allowedRefTags": [],
+					"tilesetUid": null
+				},
+				{
+					"identifier": "targety",
+					"doc": null,
+					"__type": "Int",
+					"uid": 45,
+					"type": "F_Int",
+					"isArray": false,
+					"canBeNull": false,
+					"arrayMinLength": null,
+					"arrayMaxLength": null,
+					"editorDisplayMode": "Hidden",
+					"editorDisplayScale": 1,
+					"editorDisplayPos": "Above",
+					"editorLinkStyle": "StraightArrow",
+					"editorDisplayColor": null,
+					"editorAlwaysShow": false,
+					"editorShowInWorld": true,
+					"editorCutLongValues": true,
+					"editorTextSuffix": null,
+					"editorTextPrefix": null,
+					"useForSmartColor": false,
+					"exportToToc": false,
+					"searchable": false,
+					"min": null,
+					"max": null,
+					"regex": null,
+					"acceptFileTypes": null,
+					"defaultOverride": null,
+					"textLanguageMode": null,
+					"symmetricalRef": false,
+					"autoChainRef": true,
+					"allowOutOfLevelRef": true,
+					"allowedRefs": "OnlySame",
+					"allowedRefsEntityUid": null,
+					"allowedRefTags": [],
+					"tilesetUid": null
+				}
+			]
 		}
 	], "tilesets": [
 		{
@@ -251,7 +398,48 @@
 					"seed": 1403315,
 					"overrideTilesetUid": null,
 					"gridTiles": [],
-					"entityInstances": []
+					"entityInstances": [
+						{
+							"__identifier": "Teleporter",
+							"__grid": [9,3],
+							"__pivot": [0,0],
+							"__tags": [],
+							"__tile": null,
+							"__smartColor": "#6EFF00",
+							"iid": "23095100-3740-11f0-964e-8589ac22fb00",
+							"width": 16,
+							"height": 16,
+							"defUid": 42,
+							"px": [144,48],
+							"fieldInstances": [
+								{ "__identifier": "roomid", "__type": "Int", "__value": 19, "__tile": null, "defUid": 43, "realEditorValues": [{ "id": "V_Int", "params": [19] }] },
+								{ "__identifier": "targetx", "__type": "Int", "__value": 5, "__tile": null, "defUid": 44, "realEditorValues": [{ "id": "V_Int", "params": [5] }] },
+								{ "__identifier": "targety", "__type": "Int", "__value": 6, "__tile": null, "defUid": 45, "realEditorValues": [{ "id": "V_Int", "params": [6] }] }
+							],
+							"__worldX": 144,
+							"__worldY": 48
+						},
+						{
+							"__identifier": "Teleporter",
+							"__grid": [10,3],
+							"__pivot": [0,0],
+							"__tags": [],
+							"__tile": null,
+							"__smartColor": "#6EFF00",
+							"iid": "23a25cb0-3740-11f0-964e-1d7680af6600",
+							"width": 16,
+							"height": 16,
+							"defUid": 42,
+							"px": [160,48],
+							"fieldInstances": [
+								{ "__identifier": "roomid", "__type": "Int", "__value": 19, "__tile": null, "defUid": 43, "realEditorValues": [{ "id": "V_Int", "params": [19] }] },
+								{ "__identifier": "targetx", "__type": "Int", "__value": 6, "__tile": null, "defUid": 44, "realEditorValues": [{ "id": "V_Int", "params": [6] }] },
+								{ "__identifier": "targety", "__type": "Int", "__value": 6, "__tile": null, "defUid": 45, "realEditorValues": [{ "id": "V_Int", "params": [6] }] }
+							],
+							"__worldX": 160,
+							"__worldY": 48
+						}
+					]
 				},
 				{
 					"__identifier": "DesertTiles",
@@ -447,22 +635,6 @@
 							"fieldInstances": [],
 							"__worldX": 144,
 							"__worldY": 192
-						},
-						{
-							"__identifier": "Sword",
-							"__grid": [4,5],
-							"__pivot": [0,0],
-							"__tags": [],
-							"__tile": null,
-							"__smartColor": "#0C3AED",
-							"iid": "2b48a580-3740-11f0-ae24-3db4c406c977",
-							"width": 16,
-							"height": 16,
-							"defUid": 41,
-							"px": [64,80],
-							"fieldInstances": [],
-							"__worldX": 64,
-							"__worldY": 208
 						}
 					]
 				},
@@ -1184,7 +1356,28 @@
 					"seed": 9389375,
 					"overrideTilesetUid": null,
 					"gridTiles": [],
-					"entityInstances": []
+					"entityInstances": [
+						{
+							"__identifier": "Teleporter",
+							"__grid": [10,2],
+							"__pivot": [0,0],
+							"__tags": [],
+							"__tile": null,
+							"__smartColor": "#6EFF00",
+							"iid": "b621a620-3740-11f0-964e-7bbbc1123cec",
+							"width": 16,
+							"height": 16,
+							"defUid": 42,
+							"px": [160,32],
+							"fieldInstances": [
+								{ "__identifier": "roomid", "__type": "Int", "__value": 23, "__tile": null, "defUid": 43, "realEditorValues": [{ "id": "V_Int", "params": [23] }] },
+								{ "__identifier": "targetx", "__type": "Int", "__value": 5, "__tile": null, "defUid": 44, "realEditorValues": [{ "id": "V_Int", "params": [5] }] },
+								{ "__identifier": "targety", "__type": "Int", "__value": 6, "__tile": null, "defUid": 45, "realEditorValues": [{ "id": "V_Int", "params": [6] }] }
+							],
+							"__worldX": 160,
+							"__worldY": 672
+						}
+					]
 				},
 				{
 					"__identifier": "DesertTiles",
@@ -3663,7 +3856,48 @@
 					"seed": 7211745,
 					"overrideTilesetUid": null,
 					"gridTiles": [],
-					"entityInstances": []
+					"entityInstances": [
+						{
+							"__identifier": "Teleporter",
+							"__grid": [5,7],
+							"__pivot": [0,0],
+							"__tags": [],
+							"__tile": null,
+							"__smartColor": "#6EFF00",
+							"iid": "82a72920-3740-11f0-964e-53c15863d2a5",
+							"width": 16,
+							"height": 16,
+							"defUid": 42,
+							"px": [80,112],
+							"fieldInstances": [
+								{ "__identifier": "roomid", "__type": "Int", "__value": 0, "__tile": null, "defUid": 43, "realEditorValues": [{ "id": "V_Int", "params": [0] }] },
+								{ "__identifier": "targetx", "__type": "Int", "__value": 9, "__tile": null, "defUid": 44, "realEditorValues": [{ "id": "V_Int", "params": [9] }] },
+								{ "__identifier": "targety", "__type": "Int", "__value": 4, "__tile": null, "defUid": 45, "realEditorValues": [{ "id": "V_Int", "params": [4] }] }
+							],
+							"__worldX": 80,
+							"__worldY": -16
+						},
+						{
+							"__identifier": "Teleporter",
+							"__grid": [6,7],
+							"__pivot": [0,0],
+							"__tags": [],
+							"__tile": null,
+							"__smartColor": "#6EFF00",
+							"iid": "8545efe0-3740-11f0-964e-29ef7504a6bd",
+							"width": 16,
+							"height": 16,
+							"defUid": 42,
+							"px": [96,112],
+							"fieldInstances": [
+								{ "__identifier": "roomid", "__type": "Int", "__value": 0, "__tile": null, "defUid": 43, "realEditorValues": [{ "id": "V_Int", "params": [0] }] },
+								{ "__identifier": "targetx", "__type": "Int", "__value": 10, "__tile": null, "defUid": 44, "realEditorValues": [{ "id": "V_Int", "params": [10] }] },
+								{ "__identifier": "targety", "__type": "Int", "__value": 4, "__tile": null, "defUid": 45, "realEditorValues": [{ "id": "V_Int", "params": [4] }] }
+							],
+							"__worldX": 96,
+							"__worldY": -16
+						}
+					]
 				},
 				{
 					"__identifier": "DesertTiles",
@@ -4353,7 +4587,48 @@
 					"seed": 9377784,
 					"overrideTilesetUid": null,
 					"gridTiles": [],
-					"entityInstances": []
+					"entityInstances": [
+						{
+							"__identifier": "Teleporter",
+							"__grid": [5,7],
+							"__pivot": [0,0],
+							"__tags": [],
+							"__tile": null,
+							"__smartColor": "#6EFF00",
+							"iid": "68cd6520-3740-11f0-964e-47af99729500",
+							"width": 16,
+							"height": 16,
+							"defUid": 42,
+							"px": [80,112],
+							"fieldInstances": [
+								{ "__identifier": "roomid", "__type": "Int", "__value": 5, "__tile": null, "defUid": 43, "realEditorValues": [{ "id": "V_Int", "params": [5] }] },
+								{ "__identifier": "targetx", "__type": "Int", "__value": 10, "__tile": null, "defUid": 44, "realEditorValues": [{ "id": "V_Int", "params": [10] }] },
+								{ "__identifier": "targety", "__type": "Int", "__value": 3, "__tile": null, "defUid": 45, "realEditorValues": [{ "id": "V_Int", "params": [3] }] }
+							],
+							"__worldX": 80,
+							"__worldY": 1008
+						},
+						{
+							"__identifier": "Teleporter",
+							"__grid": [6,7],
+							"__pivot": [0,0],
+							"__tags": [],
+							"__tile": null,
+							"__smartColor": "#6EFF00",
+							"iid": "73a238e0-3740-11f0-964e-81034aa0a55e",
+							"width": 16,
+							"height": 16,
+							"defUid": 42,
+							"px": [96,112],
+							"fieldInstances": [
+								{ "__identifier": "roomid", "__type": "Int", "__value": 5, "__tile": null, "defUid": 43, "realEditorValues": [{ "id": "V_Int", "params": [5] }] },
+								{ "__identifier": "targetx", "__type": "Int", "__value": 10, "__tile": null, "defUid": 44, "realEditorValues": [{ "id": "V_Int", "params": [10] }] },
+								{ "__identifier": "targety", "__type": "Int", "__value": 3, "__tile": null, "defUid": 45, "realEditorValues": [{ "id": "V_Int", "params": [3] }] }
+							],
+							"__worldX": 96,
+							"__worldY": 1008
+						}
+					]
 				},
 				{
 					"__identifier": "DesertTiles",
@@ -4467,8 +4742,8 @@
 						{ "px": [32,112], "src": [32,64], "f": 0, "t": 30, "d": [86], "a": 1 },
 						{ "px": [48,112], "src": [32,64], "f": 0, "t": 30, "d": [87], "a": 1 },
 						{ "px": [64,112], "src": [64,16], "f": 0, "t": 11, "d": [88], "a": 1 },
-						{ "px": [80,112], "src": [96,16], "f": 0, "t": 13, "d": [89], "a": 1 },
-						{ "px": [96,112], "src": [96,16], "f": 0, "t": 13, "d": [90], "a": 1 },
+						{ "px": [80,112], "src": [96,48], "f": 0, "t": 27, "d": [89], "a": 1 },
+						{ "px": [96,112], "src": [96,48], "f": 0, "t": 27, "d": [90], "a": 1 },
 						{ "px": [112,112], "src": [80,16], "f": 0, "t": 12, "d": [91], "a": 1 },
 						{ "px": [128,112], "src": [32,64], "f": 0, "t": 30, "d": [92], "a": 1 },
 						{ "px": [144,112], "src": [32,64], "f": 0, "t": 30, "d": [93], "a": 1 },
@@ -4524,7 +4799,24 @@
 					"seed": 6001451,
 					"overrideTilesetUid": null,
 					"gridTiles": [],
-					"entityInstances": []
+					"entityInstances": [
+						{
+							"__identifier": "Sword",
+							"__grid": [5,3],
+							"__pivot": [0,0],
+							"__tags": [],
+							"__tile": null,
+							"__smartColor": "#0C3AED",
+							"iid": "a92648e0-3740-11f0-964e-f5abc16e0e34",
+							"width": 16,
+							"height": 16,
+							"defUid": 41,
+							"px": [80,48],
+							"fieldInstances": [],
+							"__worldX": 80,
+							"__worldY": 816
+						}
+					]
 				},
 				{
 					"__identifier": "DesertTiles",

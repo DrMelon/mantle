@@ -141,6 +141,13 @@ void main(void) {
           oam_clear();
           spr = 0;
 
+          if(queueTele != 0)
+          {
+            tele_to_room(queueTele, x+2, y+3);
+            queueTele = 0;
+            continue;
+          }
+
           // Update level logic
           if(playerExp == 16 && playerLevel < 4)
           {
@@ -150,7 +157,9 @@ void main(void) {
           }
 
           // Update characters
+          bank_push(0);
           update_character(&kris);
+          bank_pop();
 
           // SOUND TEST
           if(pad_trig & PAD_SELECT)
@@ -256,6 +265,15 @@ void main(void) {
             // Render kris
             draw_character(&kris);
         }
+        if(currentState == GS_SCREENTRANS_TELE)
+        {
+           // Teleporting to room
+           kris.xpos = x << 4;
+           kris.ypos = y << 4;
+           pal_col(0, envPalettes[currentEnvironment][0]);
+           ppu_on_all();
+           currentState = GS_GAMEPLAY;
+        }
 
         // Don't run until a frame has run.
         ppu_wait_nmi();
@@ -306,20 +324,31 @@ void load_room()
    // Clear spawned item list
    spawnedItems = 0;
    spawnedMonsters = 0;
+   spawnedTeles = 0;
 
    // Load entity spawns
-   for(i = (12*8) + 4; roomPtr[i] != 128; i+=5)
+   for(i = (12*8) + 4; roomPtr[i] != 128; i+=6)
    {
+       if(roomPtr[i] == 1) // Entrance/exit/teleporter
+       {
+           teleList[spawnedTeles].tx = roomPtr[i+1];
+           teleList[spawnedTeles].ty = roomPtr[i+2];
+           teleList[spawnedTeles].targetroom = roomPtr[i+3];
+           teleList[spawnedTeles].targetx = roomPtr[i+4];
+           teleList[spawnedTeles].targety = roomPtr[i+5];
+           spawnedTeles++;
+           continue;
+       }
        if(deadList[roomPtr[i+4]]) continue;
        if(roomPtr[i] == 2) // Spawn a sword
        {
            itemList[spawnedItems].itemtype = ITEM_SWORD;
-           itemList[spawnedItems].xpos = ((roomPtr[i+1]+2) << 4) + 4;
-           itemList[spawnedItems].ypos = ((roomPtr[i+2]+3) << 4) + 4;
+           itemList[spawnedItems].xpos = ((roomPtr[i+1]+2) << 4) + 12;
+           itemList[spawnedItems].ypos = ((roomPtr[i+2]+3) << 4) + 12;
            itemList[spawnedItems].uniqueid = roomPtr[i+4];
            spawnedItems++;
        }
-       if(roomPtr[i] == 0) // Spawn a monster
+       else if(roomPtr[i] == 0) // Spawn a monster
        {
            monsterList[spawnedMonsters].montype = roomPtr[i+3];
            monsterList[spawnedMonsters].xpos = ((roomPtr[i+1]+2) << 4);
@@ -329,6 +358,7 @@ void load_room()
            monsterList[spawnedMonsters].uniqueid = roomPtr[i+4];
            spawnedMonsters++;
        }
+
    }
 
 }
@@ -370,5 +400,26 @@ void switch_to_room(unsigned char room)
     load_room();
     // Turn on sprites only for transfer
     ppu_on_spr();
+}
+
+void tele_to_room(unsigned char room, unsigned char telex, unsigned char teley)
+{
+    currentState = GS_SCREENTRANS_TELE;
+
+    pal_col(0, 0x0F); // Black BG
+    ppu_wait_nmi(); // wait till end of frame
+
+    // Turn off PPU
+    ppu_off();
+
+    // Load room
+    currentRoom = room;
+    load_room();
+
+    // Set sprite pos
+    x = telex;
+    y = teley;
+    ppu_on_spr();
+
 }
 CODE_BANK_POP();
