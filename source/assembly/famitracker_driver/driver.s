@@ -232,7 +232,6 @@ var_Pattern_Length:		.res 1						; Global pattern length
 var_Speed:				.res 1						; Speed setting
 var_Tempo:				.res 1						; Tempo setting
 var_InitialBank:		.res 1
-
 ; General
 var_PlayerFlags:		.res 1						; Player flags, bit 0 = playing, bit 1 - 7 unused
 var_Pattern_Pos:		.res 1						; Global pattern row

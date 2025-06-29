@@ -130,7 +130,14 @@ neslib_nmi:
     lda <MUSIC_PLAY
     ror
     bcc :+
+    lda #1
+    sta BP_BANK
+    jsr mmc1_set_prg_bank
     jsr ft_music_play
+    lda #0
+    sta BP_BANK
+    jsr mmc1_set_prg_bank
+
     jmp :++
 :
     lda #$30            ;mute channels when music does not play
@@ -336,7 +343,6 @@ _FT2SfxClearChannel:
 ;------------------------------------------------------------------------------
 
 FamiToneSfxPlay:
-
     asl a                   ;get offset in the effects list
     tay
 
@@ -1093,15 +1099,25 @@ _vram_write:
 ;void __fastcall__ music_play(unsigned char song);
 
 _music_play:
-
+    sta TEMP
+    ;  bank switch
+    lda #1
+    sta BP_BANK
+    jsr mmc1_set_prg_bank
+    lda TEMP
     ldx #<music_data
     stx <ft_music_addr+0
     ldx #>music_data
     stx <ft_music_addr+1
 
+
     ldx <NTSC_MODE
     jsr ft_music_init
-    
+
+    lda #0
+    sta BP_BANK
+    jsr mmc1_set_prg_bank
+
     lda #1
     sta <MUSIC_PLAY
     rts
@@ -1141,8 +1157,8 @@ _music_pause:
 
 _sfx_play:
 
-.if(FT_SFX_ENABLE)
 
+.if(FT_SFX_ENABLE)
     and #$03
     tax
     lda @sfxPriority,x
@@ -1150,10 +1166,11 @@ _sfx_play:
     jsr popa
     jmp FamiToneSfxPlay
 
+
 @sfxPriority:
 
     .byte FT_SFX_CH0,FT_SFX_CH1,FT_SFX_CH2,FT_SFX_CH3
-    
+
 .else
     rts
 .endif
