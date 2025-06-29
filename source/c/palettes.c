@@ -5,7 +5,7 @@
 const unsigned char paletteDesert[] = {
     0x17, 0x0f, 0x16, 0x30, // Text
     0x17, 0x27, 0x37, 0x28, // Desert Sand & Vegetation
-    0x17, 0x06, 0x16, 0x26, // Red Rocks, Bridges
+    0x17, 0x05, 0x16, 0x26, // Red Rocks, Bridges
     0x17, 0x27, 0x22, 0x31 // Water & Watery Rock
 };
 const unsigned char paletteDesertIce[] = {
@@ -14,12 +14,18 @@ const unsigned char paletteDesertIce[] = {
     0x12, 0x03, 0x13, 0x23, // Red Rocks, Bridges
     0x12, 0x27, 0x22, 0x31 // Water & Watery Rock
 };
+const unsigned char paletteIsland[] = {
+    0x09, 0x0f, 0x16, 0x30, // Text
+    0x09, 0x27, 0x37, 0x2A, // Desert Sand & Vegetation
+    0x09, 0x05, 0x16, 0x26, // Red Rocks, Bridges
+    0x09, 0x27, 0x1C, 0x3C // Water & Watery Rock
+};
 // BG Palettes per environment
 // Making this mutable lets us alter the desert palette as needed
 const unsigned char* envPalettes[] =
 {
-    paletteDesert
-//    paletteIsland,
+    paletteDesert,
+    paletteIsland,
 //    paletteIcePalace,
 //    paletteCity,
 //    paletteShelter

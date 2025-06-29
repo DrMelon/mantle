@@ -13,8 +13,8 @@
 
 ; Other chr banks need some data in them - repeated chr data can be replaced.
 .segment "CHR_01"
-    .incbin "./background.chr"
-    .incbin "./sprite.chr"
+    .incbin "./background_island.chr"
+    .incbin "./sprites_mantle.chr"
 .segment "CHR_02"
     .incbin "./background.chr"
     .incbin "./sprite.chr"

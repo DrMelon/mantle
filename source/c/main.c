@@ -6,6 +6,7 @@
 #include "kris_anims.h"
 #include "maps.h"
 #include "bank_helpers.h"
+#include "mapper.h"
 #include "items.h"
 #include "ui.h"
 #include "palettes.h"
@@ -36,7 +37,7 @@ void load_environment(enum Environment env);
 void load_room();
 void set_palette_for_bg_tile(unsigned char tx, unsigned char ty, unsigned char palettenum);
 void switch_to_room(unsigned char room);
-
+void funny_test();
 //
 // Main entrypoint
 // This is where your game will start running. It should essentially be an endless loop in most
@@ -265,13 +266,15 @@ void main(void) {
     }
 }
 
-
 // ROOM & ENVIRONMENT HANDLING FUNCTIONS in ROM_00
 CODE_BANK(0);
 
 void load_environment(enum Environment env)
 {
     currentEnvironment = env;
+
+    mmc1_set_chr_bank_0(env * 2);
+    mmc1_set_chr_bank_1((env * 2) + 1);
 
     pal_bg(envPalettes[currentEnvironment]);
     pal_spr(envSprPalettes[currentEnvironment]);
