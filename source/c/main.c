@@ -31,7 +31,6 @@
 // Anything with const in front of it will go into write-only prg instead of the very limited ram we have.
 //
 
-
 // forward decls
 void load_environment(enum Environment env);
 void load_room();

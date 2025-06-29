@@ -92,6 +92,17 @@
     jmp reset
 .segment "ROM_02" 
     jmp reset
+.segment "ROM_03"
+    jmp reset
+.segment "ROM_04"
+    jmp reset
+.segment "ROM_05"
+    jmp reset
+.segment "ROM_06"
+    jmp reset
+
+
+
 
 ; mmc1 requires in a reset stub in the last bank in the last 16 bytes to boot.
 ; NOTE: If you want to work with all versions of mmc1 (Namely 1C) you'll need to add this stub to every single rom bank.

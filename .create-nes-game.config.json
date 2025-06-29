@@ -8,7 +8,7 @@
     "useSram": false,
     "sramSize": 8,
     "chrBanks": 4,
-    "prgBanks": 4,
+    "prgBanks": 8,
     "includeC": true,
     "ciProvider": "none",
     "testProvider": "nes-test",
