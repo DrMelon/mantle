@@ -189,7 +189,6 @@ void draw_character(WalkingCharacter* chara)
     {
         spr = oam_meta_spr(chara->xpos, chara->ypos, spr, characterStrikeAnims[chara->chartype][chara->animframe + (chara->direction*3)]);
     }
-
 }
 
 void update_monster(Monster* monster)
@@ -198,8 +197,6 @@ void update_monster(Monster* monster)
     {
         update_mon_walker(monster);
     }
-
-
 }
 
 void update_mon_walker(Monster* walker)
