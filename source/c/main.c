@@ -8,6 +8,7 @@
 #include "bank_helpers.h"
 #include "items.h"
 #include "ui.h"
+#include "palettes.h"
 
 //
 // Global Variables (zeropage) 
@@ -23,44 +24,12 @@
 //
 // EXAMPLE: 
 // unsigned char myBigBufferArray[32];
-unsigned char testVariable;
 
 //
 // Constant variables
 // Anything with const in front of it will go into write-only prg instead of the very limited ram we have.
 //
 
-
-// Color palette for the screen to use
-const unsigned char paletteDesert[] = {
-    0x17, 0x0f, 0x16, 0x30, // Text
-    0x17, 0x27, 0x37, 0x28, // Desert Sand & Vegetation
-    0x17, 0x06, 0x16, 0x26, // Red Rocks, Bridges
-    0x17, 0x27, 0x22, 0x31 // Water & Watery Rock
-};
-
-// BG Palettes per environment
-const unsigned char* envPalettes[] =
-{
-    paletteDesert
-//    paletteIsland,
-//    paletteIcePalace,
-//    paletteCity,
-//    paletteShelter
-};
-
-// Color palettes for sprites (Kris & Monsters)
-const unsigned char palSpritesDesert[16] = {
-    0x0f, 0x03, 0x22, 0x3c,
-    0x0f, 0x0f, 0x21, 0x30,
-    0x0f, 0x28, 0x30, 0x15,
-    0x0f, 0x10, 0x12, 0x16
-};
-
-const unsigned char* envSprPalettes[] =
-{
-    palSpritesDesert
-};
 
 // forward decls
 void load_environment(enum Environment env);
@@ -119,9 +88,6 @@ void main(void) {
 
     // Turn the screen back on
     ppu_on_all();
-
-    // Update variable used in unit tests
-    testVariable = 1;
 
     // Infinite loop to end things
     while (1) {
@@ -216,6 +182,24 @@ void main(void) {
         {
             oam_clear();
             spr = 0;
+            // If the room we're switching to is a special room in the desert...
+            if(currentEnvironment == E_DESERT)
+            {
+                //... we switch the palette to the desert-ice palette or the normal desert.
+                if(currentRoom == 27)
+                {
+                    envPalettes[E_DESERT] = paletteDesertIce;
+                    pal_bg(envPalettes[E_DESERT]);
+                    pal_col(0, 0x0F);
+                }
+                else if(currentRoom == 25)
+                {
+                    envPalettes[E_DESERT] = paletteDesert;
+                    pal_bg(envPalettes[E_DESERT]);
+                    pal_col(0, 0x0F);
+                }
+            }
+
             // Check screen transition direction and move Kris in that direction until threshold is reached
             if(roomSwitchDir == 0)
             {
