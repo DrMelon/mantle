@@ -16,6 +16,9 @@ extern const unsigned char dialog_1[];
 extern const unsigned char dialog_2[];
 extern const unsigned char dialog_3[];
 
+extern const unsigned char instruct_0[];
+extern const unsigned char instruct_1[];
+
 extern void draw_ui_borders();
 extern void refresh_hud_bars(char hp, char lvl, char exp);
 extern void queue_text(const unsigned char* textLine, unsigned char mode);

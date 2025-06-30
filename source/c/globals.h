@@ -33,6 +33,7 @@ ZEROPAGE_EXTERN(unsigned char, playerHp);
 ZEROPAGE_EXTERN(unsigned char, playerExp);
 ZEROPAGE_EXTERN(unsigned char, playerLevel);
 ZEROPAGE_EXTERN(unsigned char, currentRoom);
+ZEROPAGE_EXTERN(unsigned char, prevRoom);
 ZEROPAGE_EXTERN(enum Environment, currentEnvironment);
 ZEROPAGE_EXTERN(unsigned char, spawnedItems);
 ZEROPAGE_EXTERN(unsigned char, spawnedMonsters);

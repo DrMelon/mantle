@@ -15,6 +15,7 @@ ZEROPAGE_DEF(unsigned char, playerHp);
 ZEROPAGE_DEF(unsigned char, playerExp);
 ZEROPAGE_DEF(unsigned char, playerLevel);
 ZEROPAGE_DEF(unsigned char, currentRoom);
+ZEROPAGE_DEF(unsigned char, prevRoom);
 ZEROPAGE_DEF(enum Environment, currentEnvironment);
 ZEROPAGE_DEF(unsigned char, spawnedItems);
 ZEROPAGE_DEF(unsigned char, spawnedMonsters);

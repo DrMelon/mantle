@@ -271,6 +271,30 @@ void main(void) {
            pal_col(0, envPalettes[currentEnvironment][0]);
            ppu_on_all();
            currentState = GS_GAMEPLAY;
+
+           //entering/leaving the shop room in the desert?
+           if(currentEnvironment == E_DESERT)
+           {
+                if(currentRoom == 19)
+                {
+                    bank_push(0);
+                    if(playerLevel < 3)
+                    {
+                      queue_text(instruct_0, 1);
+                    }
+                    else if(playerLevel < 4)
+                    {
+                      queue_text(instruct_1, 1);
+                    }
+                    bank_pop();
+                }
+                else if(prevRoom == 19)
+                {
+                    bank_push(0);
+                    clear_text();
+                    bank_pop();
+                }
+            }
         }
 
         // Text routines
@@ -401,6 +425,7 @@ void switch_to_room(unsigned char room)
     // Turn off PPU
     ppu_off();
     // Load next room
+    prevRoom = currentRoom;
     currentRoom = room;
     load_room();
     // Turn on sprites only for transfer
@@ -418,13 +443,13 @@ void tele_to_room(unsigned char room, unsigned char telex, unsigned char teley)
     ppu_off();
 
     // Load room
+    prevRoom = currentRoom;
     currentRoom = room;
     load_room();
 
     // Set sprite pos
     x = telex;
     y = teley;
-    ppu_on_spr();
 
 }
 CODE_BANK_POP();
