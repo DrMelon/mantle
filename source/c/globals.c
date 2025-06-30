@@ -23,8 +23,13 @@ ZEROPAGE_DEF(unsigned char, soundTestNum);
 ZEROPAGE_DEF(unsigned char, roomSwitchDir);
 ZEROPAGE_DEF(unsigned char, writingVram);
 ZEROPAGE_DEF(unsigned char, hudDirty);
-ZEROPAGE_DEF(unsigned char, textQueued);
 ZEROPAGE_DEF(unsigned char, queueTele);
+ZEROPAGE_DEF(unsigned char, textQueued);
+ZEROPAGE_DEF(unsigned char, textLength);
+ZEROPAGE_DEF(unsigned char, textSeekChar);
+ZEROPAGE_DEF(unsigned char, textColOffset);
+ZEROPAGE_DEF(unsigned char, textLineOffset);
+
 unsigned char* roomPtr = 0;
 unsigned char* metatilesPtr = 0;
 unsigned char currentRoomColl[96];

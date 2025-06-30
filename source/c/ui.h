@@ -12,12 +12,18 @@ extern const unsigned char lvMaxText[];
 extern const unsigned char barBlocks[];
 
 extern const unsigned char dialog_0[];
+extern const unsigned char dialog_1[];
+extern const unsigned char dialog_2[];
+extern const unsigned char dialog_3[];
 
 extern void draw_ui_borders();
 extern void refresh_hud_bars(char hp, char lvl, char exp);
-extern void summon_text(unsigned char* text, char exclusive_state);
+extern void queue_text(const unsigned char* textLine, unsigned char mode);
+extern void update_text();
 extern void clear_text();
 
 // RAM
 extern unsigned char hudUpdateBuffer[];
+extern unsigned char textBuffer[];
+extern unsigned char textVRAMBuffer[];
 #endif

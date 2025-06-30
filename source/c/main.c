@@ -139,6 +139,20 @@ void main(void) {
               }
           }
 
+          if(pad_trig & PAD_START)
+          {
+              bank_push(0);
+              if(textLength > 0)
+              {
+                clear_text();
+              }
+              else
+              {
+                queue_text(dialog_3, 1);
+              }
+              bank_pop();
+          }
+
           // Update items
           for(i = 0; i < spawnedItems; i++)
           {
@@ -258,6 +272,11 @@ void main(void) {
            ppu_on_all();
            currentState = GS_GAMEPLAY;
         }
+
+        // Text routines
+        bank_push(0);
+        update_text();
+        bank_pop();
 
         // Don't run until a frame has run.
         ppu_wait_nmi();

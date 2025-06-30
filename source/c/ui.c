@@ -8,18 +8,22 @@ const unsigned char lv1Text[] = "LV1 ";
 const unsigned char lv2Text[] = "LV2 ";
 const unsigned char lv3Text[] = "LV3 ";
 const unsigned char lvMaxText[] = "MAX ";
+const unsigned char lvZeroText[] = "LV0 ";
 
+#define TEXT_LINE_MAX_LEN 27
+#define TEXT_MAX_LINES 2
 const unsigned char dialog_0[] = "Looking for someone..?";
 const unsigned char dialog_1[] = "Or perhaps, for someTHING?";
 const unsigned char dialog_2[] = "Neither will be found here.";
-const unsigned char dialog_3[] = "But <YOU> knew that already, didn't you..?";
+const unsigned char dialog_3[] = "But YOU knew that already, didn't you..?";
 
 const unsigned char barBlocks[] = {0x20, 0x30, 0x40, 0x50, 0x60};
 const unsigned char* lvStrings[] = {lv1Text, lv2Text, lv3Text, lvMaxText};
 
 // RAM
 unsigned char hudUpdateBuffer[24];
-
+unsigned char textBuffer[TEXT_LINE_MAX_LEN*TEXT_MAX_LINES];
+unsigned char textVRAMBuffer[(TEXT_LINE_MAX_LEN*TEXT_MAX_LINES)+28];
 CODE_BANK(0);
 void draw_ui_borders()
 {
@@ -145,4 +149,93 @@ void refresh_hud_bars(char hp, char lvl, char exp)
     hudDirty = 0;
 
 }
+
+void queue_text(const unsigned char* textLine, unsigned char mode)
+{
+   // Process text line and load into buffer
+   i = 0;
+   while(textLine[i])
+   {
+       textBuffer[i] = textLine[i] + 0x80;
+       i++;
+   }
+   textQueued = mode;
+   textLength = i;
+   textColOffset = 0;
+   textLineOffset = 0;
+   textSeekChar = 0;
+}
+
+void update_text()
+{
+  unsigned int ntAdr;
+  if(textQueued == 0) return;
+  // VRAM already being written to, cancel.
+  if(writingVram == 1) return;
+
+  // Text update modes:
+  // 0 = Nothing
+  // 1 = Character-by-character
+  // 2 = All at once
+  // 3 = Clear text
+  if(textQueued == 1)
+  {
+    // Update the next char on the screen.
+    if(textSeekChar < textLength)
+    {
+       if(textColOffset < TEXT_LINE_MAX_LEN)
+       {
+          textColOffset++;
+       }
+       if(textColOffset >= TEXT_LINE_MAX_LEN)
+       {
+          textLineOffset++;
+          textColOffset = 0;
+       }
+
+       // Draw at this x, y
+       ntAdr = NTADR_A(3 + textColOffset, 24 + textLineOffset);
+       textVRAMBuffer[0] = MSB(ntAdr);
+       textVRAMBuffer[1] = LSB(ntAdr);
+       textVRAMBuffer[2] = textBuffer[textSeekChar];
+       textVRAMBuffer[3] = NT_UPD_EOF;
+
+       textSeekChar++;
+       set_vram_update(textVRAMBuffer);
+       writingVram = 1;
+    }
+    else
+    {
+      textQueued = 0;
+    }
+  }
+  else if(textQueued == 3)
+  {
+    for(y = 0; y < TEXT_MAX_LINES; y++)
+    {
+       ntAdr = NTADR_A(3, y+24);
+       textVRAMBuffer[0+(y*(TEXT_LINE_MAX_LEN+3))] = MSB(ntAdr) | NT_UPD_HORZ;
+       textVRAMBuffer[1+(y*(TEXT_LINE_MAX_LEN+3))] = LSB(ntAdr);
+       textVRAMBuffer[2+(y*(TEXT_LINE_MAX_LEN+3))] = TEXT_LINE_MAX_LEN;
+       for(x = 0; x < TEXT_LINE_MAX_LEN; x++)
+       {
+         textVRAMBuffer[3+x+(y*(TEXT_LINE_MAX_LEN+3))] = 0xA0;
+       }
+    }
+    textVRAMBuffer[((TEXT_LINE_MAX_LEN+3)*TEXT_MAX_LINES)] = NT_UPD_EOF;
+    set_vram_update(textVRAMBuffer);
+    writingVram = 1;
+    textQueued = 0;
+    textLength = 0;
+    textSeekChar = 0;
+  }
+}
+
+void clear_text()
+{
+  textQueued = 3;
+  textColOffset = 0;
+  textLineOffset = 0;
+}
+
 CODE_BANK_POP();
