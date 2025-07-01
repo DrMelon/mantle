@@ -15,9 +15,7 @@
 // Global Variables (zeropage) 
 // Small, frequently-used variables should go in this space. There are only around 250 bytes to go around, so choose wisely!
 //
-#pragma bss-name(push, "ZEROPAGE")
-    WalkingCharacter kris;
-#pragma bss-name(pop)
+
 
 //
 // Normal Variables
@@ -115,7 +113,7 @@ void main(void) {
           }
 
           // Update level logic
-          if(playerExp == 16 && playerLevel < 4)
+          if(playerExp >= 16 && playerLevel < 4)
           {
              playerLevel++;
              playerExp = 0;

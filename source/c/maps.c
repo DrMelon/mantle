@@ -5,7 +5,7 @@
 #include "desert_maps.h"
 
 // Format: 4 8x8 tiles that make up this metatile, and palette mask for attrib (actual mask differs based on tile pos)
-// then, tile solidity type (0 = walkable, 1 = not walkable)
+// then, tile solidity type (0 = walkable, 1 = not walkable, 2 = not walkable, hurts)
 const unsigned char desert_metatiles[]={
    0x01, 0x02, 0x11, 0x12, 0b01010101, 0,
    0x03, 0x04, 0x13, 0x14, 0b01010101, 1,
@@ -35,7 +35,7 @@ const unsigned char desert_metatiles[]={
    0x01, 0x02, 0x11, 0x12, 0b10101010, 0,
    0x0B, 0x0C, 0x1B, 0x1C, 0b01010101, 0,
    0x0D, 0x0E, 0x1D, 0x1E, 0b01010101, 0,
-   0x07, 0x08, 0x17, 0x18, 0b01010101, 1,
+   0x07, 0x08, 0x17, 0x18, 0b01010101, 2,
    0x00, 0x00, 0x00, 0x00, 0b01010101, 0,
    0x00, 0x00, 0x00, 0x00, 0b01010101, 1,
    0x23, 0x24, 0x33, 0x34, 0b01010101, 0,

@@ -3,6 +3,7 @@
 #include "globals.h"
 #include "bank_helpers.h"
 #include "maps.h"
+#include "utils.h"
 
 #include "kris_anims.h"
 #include "monster_anims.h"
@@ -115,7 +116,7 @@ void update_character(WalkingCharacter* chara)
             {
                 // Attack frame - do checks against monsters, smashable tiles, etc
 
-                // Check for smashable tiles (palm tree, cactus) and monsters at sword's location
+                // Check for smashable tiles (palm trees, ferns, cacti) and monsters at sword's location
                 // (just check up, down, left, right tile of kris current center location?)
                 x = (chara->xpos + 7) >> 4;
                 y = (chara->ypos + 7) >> 4;
@@ -123,23 +124,6 @@ void update_character(WalkingCharacter* chara)
                 else if(chara->direction == 1) x++;
                 else if(chara->direction == 2) y--;
                 else if(chara->direction == 3) x--;
-
-                // Monster check
-                // TODO: increase fidelity of sword hitbox or do quick 8px line cast?
-                // up, down, left, right is OK for tiles but kinda sucks for monsters
-                for(i = 0; i < spawnedMonsters; i++)
-                {
-                    if(x == (monsterList[i].xpos + 7) >> 4 && y == (monsterList[i].ypos + 7) >> 4)
-                    {
-                        if(monsterList[i].level <= playerLevel && monsterList[i].substate == S_NORMAL)
-                        {
-                            monsterList[i].health--;
-                            monsterList[i].substate = S_HURT;
-                            monsterList[i].animframe = 0;
-                        }
-                    }
-                }
-
 
                 // Tile check (adjust pos)
                 x -= 2;
@@ -162,9 +146,13 @@ void update_character(WalkingCharacter* chara)
                 else
                 {
                     // Play *dink* sound!
+                    // TODO: only play it if the struck tile *is* killable though. reorganize this code!
                 }
 
-                // SFX
+                // Better sword check!
+                sword_check(chara);
+
+                // Sword swing SFX
                 sfx_play(1, 0);
             }
             if(chara->animframe > 2)
@@ -172,7 +160,57 @@ void update_character(WalkingCharacter* chara)
                 chara->animframe = 0;
                 chara->substate = S_NORMAL;
             }
+            break;
         }
+        case S_HURT:
+        {
+            // TODO:
+            // 1. Knockback in opposite direction to facing
+            // 2. Knockback movement needs to check tile solidity
+            break;
+        }
+    }
+}
+
+void sword_check(WalkingCharacter* chara)
+{
+    char offsetx = 0;
+    char offsety = 0;
+    // Check for monsters along the sword's length, based on its direction.
+    if(chara->direction == 0)
+    {
+        offsetx = 4;
+        offsety = 24;
+    }
+    else if(chara->direction == 1)
+    {
+        offsetx = 24;
+        offsety = 12;
+    }
+    else if(chara->direction == 2)
+    {
+        offsetx = 12;
+        offsety = -12;
+    }
+    else if(chara->direction == 3)
+    {
+        offsetx = -12;
+        offsety = 12;
+    }
+    for(i = 0; i < spawnedMonsters; i++)
+    {
+         x = monsterList[i].xpos;
+         y = monsterList[i].ypos;
+         if(point_in_rect(chara->xpos + offsetx, chara->ypos + offsety, x, y, x+16, y+16))
+         {
+             // TODO: Split this level check and substate check so that we can play a *dink* sound on strong monsters
+             if(monsterList[i].level <= playerLevel && monsterList[i].substate == S_NORMAL)
+             {
+                 monsterList[i].health--;
+                 monsterList[i].substate = S_HURT;
+                 monsterList[i].animframe = 0;
+             }
+         }
     }
 }
 CODE_BANK_POP();
@@ -244,8 +282,7 @@ void update_mon_walker(Monster* walker)
        {
            if(walker->health < 1)
            {
-               playerExp += 8; // become stronger.
-               hudDirty = 1;
+               earn_exp();
                deadList[walker->uniqueid] = 1; // update deadlist
 
                // delete monster
@@ -258,6 +295,20 @@ void update_mon_walker(Monster* walker)
            }
        }
     }
+}
+
+void earn_exp()
+{
+    if(currentEnvironment == E_DESERT)
+    {
+        if(playerLevel < 2)
+            playerExp += 6; // become stronger. 3 enemies to hit lv 2
+        else if(playerLevel < 3)
+            playerExp += 1; // become stronger. 16 enemies to hit lv 3.
+        else if(playerLevel < 4)
+            playerExp += 2; // become stronger. 8 enemies to hit lvmax.
+    }
+    hudDirty = 1;
 }
 
 void draw_monster(Monster* monster)

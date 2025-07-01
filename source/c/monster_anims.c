@@ -17,17 +17,17 @@ const unsigned char walkerWalk1[]={
     128
 };
 const unsigned char walkerHurt0[]={
-    0, 0, 0x1D, 7,
-    8, 0, 0x1D, 7 | OAM_FLIP_H,
-    0, 8, 0x2D, 7,
-    8, 8, 0x2D, 7 | OAM_FLIP_H,
+    0, 0, 0x3D, 7,
+    8, 0, 0x3D, 7 | OAM_FLIP_H,
+    0, 8, 0x4D, 7,
+    8, 8, 0x4D, 7 | OAM_FLIP_H,
     128
 };
 const unsigned char walkerHurt1[]={
-    0, 0, 0x1D, 5,
-    8, 0, 0x1D, 5 | OAM_FLIP_H,
-    0, 8, 0x2D, 5,
-    8, 8, 0x2D, 5 | OAM_FLIP_H,
+    0, 0, 0x3D, 5,
+    8, 0, 0x3D, 5 | OAM_FLIP_H,
+    0, 8, 0x4D, 5,
+    8, 8, 0x4D, 5 | OAM_FLIP_H,
     128
 };
 

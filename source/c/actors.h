@@ -60,16 +60,19 @@ typedef struct
 const unsigned char** characterWalkAnims[];
 const unsigned char** characterStrikeAnims[];
 
-void switch_to_room(unsigned char room);
-void tele_to_room(unsigned char room, unsigned char telex, unsigned char teley);
+extern void switch_to_room(unsigned char room);
+extern void tele_to_room(unsigned char room, unsigned char telex, unsigned char teley);
 
+extern void earn_exp();
 extern void update_character(WalkingCharacter* chara);
 extern void draw_character(WalkingCharacter* chara);
+extern void sword_check(WalkingCharacter* chara);
 
-void update_monster(Monster* monster);
-void update_mon_walker(Monster* walker);
+extern void update_monster(Monster* monster);
+extern void update_mon_walker(Monster* walker);
+extern void update_mon_shooter(Monster* shooter);
 
-void draw_monster(Monster* monster);
-void draw_walker(Monster* walker);
-void delete_monster(unsigned char idx);
+extern void draw_monster(Monster* monster);
+extern void draw_walker(Monster* walker);
+extern void delete_monster(unsigned char idx);
 #endif

@@ -20,6 +20,7 @@ ZEROPAGE_DEF(enum Environment, currentEnvironment);
 ZEROPAGE_DEF(unsigned char, spawnedItems);
 ZEROPAGE_DEF(unsigned char, spawnedMonsters);
 ZEROPAGE_DEF(unsigned char, spawnedTeles);
+ZEROPAGE_DEF(unsigned char, spawnedProjectiles);
 ZEROPAGE_DEF(unsigned char, soundTestNum);
 ZEROPAGE_DEF(unsigned char, roomSwitchDir);
 ZEROPAGE_DEF(unsigned char, writingVram);
@@ -30,6 +31,11 @@ ZEROPAGE_DEF(unsigned char, textLength);
 ZEROPAGE_DEF(unsigned char, textSeekChar);
 ZEROPAGE_DEF(unsigned char, textColOffset);
 ZEROPAGE_DEF(unsigned char, textLineOffset);
+ZEROPAGE_DEF(unsigned char, monsterAggression);
+
+#pragma bss-name(push, "ZEROPAGE")
+    WalkingCharacter kris;
+#pragma bss-name(pop)
 
 unsigned char* roomPtr = 0;
 unsigned char* metatilesPtr = 0;
@@ -38,6 +44,7 @@ unsigned char currentRoomColl[96];
 Item itemList[MAX_ITEMS];
 Monster monsterList[MAX_MONSTERS];
 Teleporter teleList[MAX_TELEPORTERS];
+Projectile projList[MAX_PROJECTILES];
 unsigned char deadList[TOTAL_SPAWNABLES];
 
 unsigned char palmTreeBuffer[16];
