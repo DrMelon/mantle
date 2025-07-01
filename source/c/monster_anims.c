@@ -31,6 +31,25 @@ const unsigned char walkerHurt1[]={
     128
 };
 
+const unsigned char shooterWalk0[]={
+
+};
+const unsigned char shooterWalk1[]={
+
+};
+const unsigned char shooterPrepare0[]={
+
+};
+const unsigned char shooterPrepare1[]={
+
+};
+const unsigned char shooterShoot0[]={
+
+};
+const unsigned char shooterShoot1[]={
+
+};
+
 extern const unsigned char* monWalkerAnims[]={
     walkerWalk0,
     walkerWalk1,

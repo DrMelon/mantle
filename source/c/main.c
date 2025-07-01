@@ -81,6 +81,8 @@ void main(void) {
     load_room();
     bank_pop();
 
+    spawn_projectile(80, 80, 0, 64, -64);
+
     // Set the scroll to 0,0
     scroll(0, 0);
 
@@ -163,6 +165,10 @@ void main(void) {
           {
              update_monster(&monsterList[i2]);
           }
+          for(i = 0; i < spawnedProjectiles; i++)
+          {
+             update_projectile(&projList[i]);
+          }
 
           // Draw characters
           draw_character(&kris);
@@ -177,6 +183,11 @@ void main(void) {
           for(i = 0; i < spawnedMonsters; i++)
           {
               draw_monster(&monsterList[i]);
+          }
+
+          for(i = 0; i < spawnedProjectiles; i++)
+          {
+             draw_projectile(&projList[i]);
           }
 
           // Update HUD if needed and possible
@@ -352,6 +363,7 @@ void load_room()
    spawnedItems = 0;
    spawnedMonsters = 0;
    spawnedTeles = 0;
+   spawnedProjectiles = 0;
 
    // Load entity spawns
    for(i = (12*8) + 4; roomPtr[i] != 128; i+=6)
