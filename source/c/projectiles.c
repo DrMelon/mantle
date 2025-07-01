@@ -10,30 +10,29 @@ const unsigned char pelletSprite[]={
 
 void update_projectile(Projectile* proj)
 {
-    unsigned char prevsubx;
-    unsigned char prevsuby;
     // Type-specific logic goes here
 
-    // Subpixel movement: add to subpixel counter. keep previous to do carry checks...
-    // this completely sucks compared to doing this in assembly where i can just read the carry flag to see if the operation wrapped... but it's seemingly impossible just to do a carry branch in C?
-    prevsubx = proj->subx;
-    prevsuby = proj->suby;
+    // Subpixel movement: up to 16 glorious subpixels of precision!
     proj->subx += proj->xvel;
-    proj->suby += proj->yvel;
-    if(prevsubx > 128 && proj->subx < 127)
+    if(proj->subx > 16)
     {
+        proj->subx -= 16;
         proj->xpos++;
     }
-    else if(prevsubx < 127 && proj->subx > 128)
+    if(proj->subx < 0)
     {
+        proj->subx += 16;
         proj->xpos--;
     }
-    if(prevsuby > 128 && proj->suby < 127)
+    proj->suby += proj->yvel;
+    if(proj->suby > 16)
     {
+        proj->suby -= 16;
         proj->ypos++;
     }
-    else if(prevsuby < 127 && proj->suby > 128)
+    if(proj->suby < 0)
     {
+        proj->suby += 16;
         proj->ypos--;
     }
 }
@@ -44,7 +43,7 @@ void draw_projectile(Projectile* proj)
 }
 
 
-void spawn_projectile(unsigned char sx, unsigned char sy, enum ProjectileType type, char xvel, char yvel)
+void spawn_projectile(unsigned char sx, unsigned char sy, enum ProjectileType type, int xvel, int yvel)
 {
     if(spawnedProjectiles < MAX_PROJECTILES)
     {

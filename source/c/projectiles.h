@@ -14,16 +14,16 @@ typedef struct
 {
   unsigned char xpos;
   unsigned char ypos;
-  unsigned char subx;
-  unsigned char suby;
-  char xvel;
-  char yvel;
+  int subx;
+  int suby;
+  int xvel;
+  int yvel;
   enum ProjectileType projtype;
 } Projectile;
 
 
 extern void update_projectile(Projectile* proj);
 extern void draw_projectile(Projectile* proj);
-extern void spawn_projectile(unsigned char sx, unsigned char sy, enum ProjectileType type, char xvel, char yvel);
+extern void spawn_projectile(unsigned char sx, unsigned char sy, enum ProjectileType type, int xvel, int yvel);
 
 #endif

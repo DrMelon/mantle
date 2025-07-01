@@ -81,8 +81,6 @@ void main(void) {
     load_room();
     bank_pop();
 
-    spawn_projectile(80, 80, 0, 64, -64);
-
     // Set the scroll to 0,0
     scroll(0, 0);
 
