@@ -52,13 +52,14 @@ extern const unsigned char* environment_metatiles[];
 
 extern const unsigned char desert_metatiles[];
 extern const unsigned char desert_room_0[];
-extern const unsigned char* desert_rooms[];
 
-extern const unsigned char** environment_rooms[];
+extern const unsigned char* const* environment_rooms[];
 
 int solidity_check(unsigned char px, unsigned char py);
 int tilemap_solid(unsigned char tx, unsigned char ty);
 int tile_solid(unsigned char tile);
+int swim_check(unsigned char tx, unsigned char ty);
+int tilemap_swimmable(unsigned char tx, unsigned char ty);
 void set_map_tile_in_room(unsigned char tx, unsigned char ty, unsigned char tile);
 void set_map_tile_on_character(WalkingCharacter* chara, unsigned char tile);
 

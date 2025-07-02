@@ -49,41 +49,11 @@ const unsigned char desert_metatiles[]={
 // then 2 subtype ids for monsters, tele locations etc
 // then a "unique id" for monsters so we can track which ones are dead-dead
 // list terminates if you reach an id of 128
-const unsigned char desert_room_start_test[]={
-  1, 0, 0, 0,
-4,3,4,3,4,3,4,3,4,3,4,3,
-3,4,3,4,3,5,6,4,3,4,3,4,
-4,3,4,3,4,13,13,3,4,5,6,3,
-3,4,3,4,3,13,13,4,3,7,8,4,
-1,0,0,0,0,0,0,0,0,0,0,1,
-1,0,0,0,0,0,0,0,0,0,0,1,
-1,0,0,0,0,0,0,0,0,0,0,1,
-1,1,1,1,1,0,0,1,1,1,1,1,
-  0, 5, 5, 0, 0, 1,
-  0, 4, 5, 0, 0, 2,
-  0, 9, 5, 0, 0, 3,
-  128
-};
-
-const unsigned char desert_room_movetest[]={
-  1, 0, 0, 0,
-  1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1,
-  1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1,
-  1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-  1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-  1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1,
-  1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1,
-  1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1,
-  1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1,
-  2, 5, 6, 0, 0, 0,
-  128
-};
-
 const unsigned char* environment_metatiles[]={
   desert_metatiles
 };
 
-const unsigned char** environment_rooms[]={
+const unsigned char* const* environment_rooms[]={
   desert_rooms
 };
 
@@ -111,6 +81,43 @@ int solidity_check(unsigned char px, unsigned char py)
 
     return 1;
 }
+
+int swim_check(unsigned char px, unsigned char py)
+{
+    // TopLeft
+    x = (px+2) >> 4;
+    y = (py+2) >> 4;
+    if(tilemap_swimmable(x, y)) return 0;
+
+    // TopRight
+    x = (px+14) >> 4;
+    y = (py+2) >> 4;
+    if(tilemap_swimmable(x, y)) return 0;
+
+    // BottomLeft
+    x = (px+2) >> 4;
+    y = (py+14) >> 4;
+    if(tilemap_swimmable(x, y)) return 0;
+
+    // BottomRight
+    x = (px+14) >> 4;
+    y = (py+14) >> 4;
+    if(tilemap_swimmable(x, y)) return 0;
+
+    return 1;
+}
+
+int tilemap_swimmable(unsigned char tx, unsigned char ty)
+{
+    x = tx - 2; // account for centering
+    y = ty - 3;
+    if(x < 0 || x >= 12) return 1;
+    if(y < 0 || y >= 8) return 1;
+    i = (x + (y*12));
+    i = currentRoomColl[i];
+    return i < 15 || i > 23;
+}
+
 
 int tilemap_solid(unsigned char tx, unsigned char ty)
 {

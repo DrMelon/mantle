@@ -63,6 +63,9 @@ void update_projectile(Projectile* proj)
     {
         projList[i] = projList[spawnedProjectiles-1];
         spawnedProjectiles--;
+
+        // Why does this affect the monsterList?
+        // Some pointer shenanigans?
     }
 
 }
@@ -81,7 +84,6 @@ void spawn_projectile(unsigned char sx, unsigned char sy, enum ProjectileType ty
         spawnedProjectiles++;
     }
 }
-CODE_BANK_POP();
 
 void draw_projectile(Projectile* proj)
 {
@@ -115,3 +117,5 @@ void draw_projectile(Projectile* proj)
         }
     }
 }
+
+CODE_BANK_POP();

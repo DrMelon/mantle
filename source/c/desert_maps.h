@@ -1,7 +1,7 @@
 #ifndef __DESERT__ROOMS_H_
 #define __DESERT__ROOMS_H_
 
-extern const unsigned char* desert_rooms[];
+extern const unsigned char* const desert_rooms[];
 extern const unsigned char desert_room_0[];
 extern const unsigned char desert_room_1[];
 extern const unsigned char desert_room_2[];

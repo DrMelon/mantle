@@ -60,7 +60,7 @@ const unsigned char krisWalkLeft1[]={
 };
 
 
-const unsigned char* krisWalkAnims[]={
+const unsigned char* const krisWalkAnims[]={
     krisWalkDown0,
     krisWalkDown1,
     krisWalkRight0,
@@ -182,7 +182,7 @@ const unsigned char krisStrikeLeft2[]={
 };
 
 
-const unsigned char* krisStrikeAnims[]={
+const unsigned char* const krisStrikeAnims[]={
     krisStrikeDown0,
     krisStrikeDown1,
     krisStrikeDown2,

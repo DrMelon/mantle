@@ -23,7 +23,7 @@ with open(ldtk_file_name) as ldtk_file:
     # Step 2: For each level, produce C file and H file string, using tile information, neighbour information, and entity information.
     h_string_for_ldtk_files = "#ifndef __" + ldtk_level_prefix.upper() + "_ROOMS_H_\n"
     h_string_for_ldtk_files += "#define __" + ldtk_level_prefix.upper() + "_ROOMS_H_\n\n"
-    h_string_for_ldtk_files += "extern const unsigned char* " + ldtk_level_prefix + "rooms[];\n"
+    h_string_for_ldtk_files += "extern const unsigned char* const " + ldtk_level_prefix + "rooms[];\n"
     c_string_for_ldtk_files = "#include \""+ c_file_path +".h\"\n"
     c_string_for_ldtk_files += "#include \"bank_helpers.h\"\n\n"
     c_string_for_ldtk_files += "CODE_BANK(0);\n"
@@ -79,6 +79,13 @@ with open(ldtk_file_name) as ldtk_file:
                 c_string_for_level += "1, "
                 c_string_for_level += "0, "
                 c_string_for_level += str(environment_ent_counter) + ", \n"
+            if(entity.identifier == "Fish"):
+                c_string_for_level += "0, "
+                c_string_for_level += str(entity.grid[0]) + ", "
+                c_string_for_level += str(entity.grid[1]) + ", "
+                c_string_for_level += "2, "
+                c_string_for_level += "0, "
+                c_string_for_level += str(environment_ent_counter) + ", \n"
             if(entity.identifier == "Sword"):
                 c_string_for_level += "2, "
                 c_string_for_level += str(entity.grid[0]) + ", "
@@ -105,7 +112,7 @@ with open(ldtk_file_name) as ldtk_file:
     # Now it's time to write the C/H files.
     h_string_for_ldtk_files += "#endif"
 
-    c_string_for_ldtk_files += "const unsigned char* " + ldtk_level_prefix + "rooms[] = {\n"
+    c_string_for_ldtk_files += "const unsigned char* const " + ldtk_level_prefix + "rooms[] = {\n"
     for i in range(0, len(ldtk_data.levels)):
         c_string_for_ldtk_files += ldtk_level_prefix + "room_" + str(i) + ", \n"
     c_string_for_ldtk_files += "};\n"

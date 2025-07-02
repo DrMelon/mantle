@@ -11,7 +11,7 @@
 	"iid": "e2c7fcb0-3740-11f0-ae24-d5574c0baf2f",
 	"jsonVersion": "1.5.3",
 	"appBuildId": 473703,
-	"nextUid": 48,
+	"nextUid": 49,
 	"identifierStyle": "Capitalize",
 	"toc": [],
 	"worldLayout": "GridVania",
@@ -350,6 +350,41 @@
 			"lineOpacity": 1,
 			"hollow": false,
 			"color": "#E2A356",
+			"renderMode": "Rectangle",
+			"showName": true,
+			"tilesetId": null,
+			"tileRenderMode": "FitInside",
+			"tileRect": null,
+			"uiTileRect": null,
+			"nineSliceBorders": [],
+			"maxCount": 0,
+			"limitScope": "PerLevel",
+			"limitBehavior": "MoveLastOne",
+			"pivotX": 0,
+			"pivotY": 0,
+			"fieldDefs": []
+		},
+		{
+			"identifier": "Fish",
+			"uid": 48,
+			"tags": [],
+			"exportToToc": false,
+			"allowOutOfBounds": false,
+			"doc": null,
+			"width": 16,
+			"height": 16,
+			"resizableX": false,
+			"resizableY": false,
+			"minWidth": null,
+			"maxWidth": null,
+			"minHeight": null,
+			"maxHeight": null,
+			"keepAspectRatio": false,
+			"tileOpacity": 1,
+			"fillOpacity": 1,
+			"lineOpacity": 1,
+			"hollow": false,
+			"color": "#1F41F3",
 			"renderMode": "Rectangle",
 			"showName": true,
 			"tilesetId": null,
@@ -851,7 +886,24 @@
 					"seed": 1888786,
 					"overrideTilesetUid": null,
 					"gridTiles": [],
-					"entityInstances": []
+					"entityInstances": [
+						{
+							"__identifier": "Fish",
+							"__grid": [6,5],
+							"__pivot": [0,0],
+							"__tags": [],
+							"__tile": null,
+							"__smartColor": "#1F41F3",
+							"iid": "8828bb10-3740-11f0-aab4-f7894697fc62",
+							"width": 16,
+							"height": 16,
+							"defUid": 48,
+							"px": [96,80],
+							"fieldInstances": [],
+							"__worldX": 96,
+							"__worldY": 336
+						}
+					]
 				},
 				{
 					"__identifier": "DesertTiles",
@@ -2305,6 +2357,22 @@
 							"fieldInstances": [],
 							"__worldX": -176,
 							"__worldY": 224
+						},
+						{
+							"__identifier": "Fish",
+							"__grid": [2,4],
+							"__pivot": [0,0],
+							"__tags": [],
+							"__tile": null,
+							"__smartColor": "#1F41F3",
+							"iid": "8603df40-3740-11f0-aab4-838e2d757445",
+							"width": 16,
+							"height": 16,
+							"defUid": 48,
+							"px": [32,64],
+							"fieldInstances": [],
+							"__worldX": -160,
+							"__worldY": 192
 						}
 					]
 				},
@@ -3801,6 +3869,22 @@
 							"fieldInstances": [],
 							"__worldX": 240,
 							"__worldY": 688
+						},
+						{
+							"__identifier": "Fish",
+							"__grid": [6,5],
+							"__pivot": [0,0],
+							"__tags": [],
+							"__tile": null,
+							"__smartColor": "#1F41F3",
+							"iid": "8bb193b0-3740-11f0-aab4-df8ed8c0982c",
+							"width": 16,
+							"height": 16,
+							"defUid": 48,
+							"px": [96,80],
+							"fieldInstances": [],
+							"__worldX": 288,
+							"__worldY": 720
 						}
 					]
 				},

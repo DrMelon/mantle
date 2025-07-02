@@ -1,7 +1,14 @@
 #include "monster_anims.h"
 #include "neslib.h"
+#include "bank_helpers.h"
+
+// REMINDER:
+// To move jumptables to ROM instead of RAM,
+// declare type like:
+// const unsigned char* const tableName[];
 
 // Walker metasprites
+CODE_BANK(1);
 const unsigned char walkerWalk0[]={
     0, 0, 0x1D, 7,
     8, 0, 0x1D, 7 | OAM_FLIP_H,
@@ -88,14 +95,110 @@ const unsigned char shooterHurt1[]={
     128
 };
 
-extern const unsigned char* monWalkerAnims[]={
+const unsigned char fishSwimLeft[]={
+    0, 0, 0x4A, 7 | OAM_FLIP_H,
+    8, 0, 0x49, 7 | OAM_FLIP_H,
+    0, 3, 0x4A, 7 | OAM_FLIP_H | OAM_FLIP_V,
+    8, 3, 0x49, 7 | OAM_FLIP_H | OAM_FLIP_V,
+    128
+};
+
+const unsigned char fishSwimRight[]={
+    0, 0, 0x49, 7,
+    8, 0, 0x4A, 7,
+    0, 3, 0x49, 7 | OAM_FLIP_V,
+    8, 3, 0x4A, 7 | OAM_FLIP_V,
+    128
+};
+
+const unsigned char fishSwimUp[]={
+    0, 0, 0x5B, 7 | OAM_FLIP_V,
+    0, 8, 0x4B, 7 | OAM_FLIP_V,
+    3, 0, 0x5B, 7 | OAM_FLIP_V | OAM_FLIP_H,
+    3, 8, 0x4B, 7 | OAM_FLIP_V | OAM_FLIP_H,
+    128
+};
+
+const unsigned char fishSwimDown[]={
+    0, 0, 0x4B, 7,
+    0, 8, 0x5B, 7,
+    3, 0, 0x4B, 7 | OAM_FLIP_H,
+    3, 8, 0x5B, 7 | OAM_FLIP_H,
+    128
+};
+
+const unsigned char fishHurtLeft0[]={
+    0, 0, 0x5A, 7 | OAM_FLIP_H,
+    8, 0, 0x59, 7 | OAM_FLIP_H,
+    0, 3, 0x5A, 7 | OAM_FLIP_H | OAM_FLIP_V,
+    8, 3, 0x59, 7 | OAM_FLIP_H | OAM_FLIP_V,
+    128
+};
+
+const unsigned char fishHurtLeft1[]={
+    0, 0, 0x5A, 5 | OAM_FLIP_H,
+    8, 0, 0x59, 5 | OAM_FLIP_H,
+    0, 3, 0x5A, 5 | OAM_FLIP_H | OAM_FLIP_V,
+    8, 3, 0x59, 5 | OAM_FLIP_H | OAM_FLIP_V,
+    128
+};
+
+const unsigned char fishHurtRight0[]={
+    0, 0, 0x59, 7,
+    8, 0, 0x5A, 7,
+    0, 3, 0x59, 7 | OAM_FLIP_V,
+    8, 3, 0x5A, 7 | OAM_FLIP_V,
+    128
+};
+
+const unsigned char fishHurtRight1[]={
+    0, 0, 0x59, 5,
+    8, 0, 0x5A, 5,
+    0, 3, 0x59, 5 | OAM_FLIP_V,
+    8, 3, 0x5A, 5 | OAM_FLIP_V,
+    128
+};
+
+const unsigned char fishHurtDown0[]={
+    0, 0, 0x4C, 7,
+    0, 8, 0x5C, 7,
+    3, 0, 0x4C, 7 | OAM_FLIP_H,
+    3, 8, 0x5C, 7 | OAM_FLIP_H,
+    128
+};
+
+const unsigned char fishHurtDown1[]={
+    0, 0, 0x4C, 5,
+    0, 8, 0x5C, 5,
+    3, 0, 0x4C, 5 | OAM_FLIP_H,
+    3, 8, 0x5C, 5 | OAM_FLIP_H,
+    128
+};
+
+const unsigned char fishHurtUp0[]={
+    0, 0, 0x5C, 7 | OAM_FLIP_V,
+    0, 8, 0x4C, 7 | OAM_FLIP_V,
+    3, 0, 0x5C, 7 | OAM_FLIP_V | OAM_FLIP_H,
+    3, 8, 0x4C, 7 | OAM_FLIP_V | OAM_FLIP_H,
+    128
+};
+
+const unsigned char fishHurtUp1[]={
+    0, 0, 0x5C, 5 | OAM_FLIP_V,
+    0, 8, 0x4C, 5 | OAM_FLIP_V,
+    3, 0, 0x5C, 5 | OAM_FLIP_V | OAM_FLIP_H,
+    3, 8, 0x4C, 5 | OAM_FLIP_V | OAM_FLIP_H,
+    128
+};
+
+const unsigned char* const monWalkerAnims[]={
     walkerWalk0,
     walkerWalk1,
     walkerHurt0,
     walkerHurt1
 };
 
-extern const unsigned char* monShooterAnims[]={
+const unsigned char* const monShooterAnims[]={
     shooterWalk0,
     shooterWalk1,
     shooterPrepare0,
@@ -105,3 +208,25 @@ extern const unsigned char* monShooterAnims[]={
     shooterHurt0,
     shooterHurt1
 };
+
+// Directionality: 0 = down, 1 = right, 2 = up, 3 = left
+const unsigned char* const fishSwimAnims[]={
+    fishSwimDown,
+    fishSwimRight,
+    fishSwimUp,
+    fishSwimLeft
+};
+
+const unsigned char* const fishHurtAnims[]={
+    fishHurtDown0,
+    fishHurtDown1,
+    fishHurtRight0,
+    fishHurtRight1,
+    fishHurtUp0,
+    fishHurtUp1,
+    fishHurtLeft0,
+    fishHurtLeft1
+};
+
+
+CODE_BANK_POP();

@@ -167,6 +167,7 @@ void main(void) {
           for(i = 0; i < spawnedProjectiles; i++)
           {
              update_projectile(&projList[i]);
+             // TODO: Investigate why projectile deletion sometimes causes subsequent monsters to just Not Appear on other screens (even though _spawnedMonsters is still the correct value and _monsterList is populated.)
           }
           bank_pop();
 
@@ -180,15 +181,17 @@ void main(void) {
           }
 
           // Draw monsters & projectiles
-          for(i = 0; i < spawnedMonsters; i++)
+          bank_push(1);
+          for(i2 = 0; i2 < spawnedMonsters; i2++)
           {
-              draw_monster(&monsterList[i]);
+              draw_monster(&monsterList[i2]);
           }
 
           for(i = 0; i < spawnedProjectiles; i++)
           {
              draw_projectile(&projList[i]);
           }
+          bank_pop();
 
           // Update HUD if needed and possible
           if(hudDirty == 1)
@@ -398,13 +401,11 @@ void load_room()
                monsterList[spawnedMonsters].health = 2;
                monsterList[spawnedMonsters].level = 1;
            }
-           monsterList[spawnedMonsters].direction = rand8() >> 6;
+           monsterList[spawnedMonsters].direction = 0;
            monsterList[spawnedMonsters].uniqueid = roomPtr[i+5];
            spawnedMonsters++;
        }
-
    }
-
 }
 
 void set_palette_for_bg_tile(unsigned char tx, unsigned char ty, unsigned char palettemask)

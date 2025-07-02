@@ -9,11 +9,11 @@
 #include "kris_anims.h"
 #include "monster_anims.h"
 
-const unsigned char** characterWalkAnims[]={
+const unsigned char* const * const characterWalkAnims[]={
     krisWalkAnims
 };
 
-const unsigned char** characterStrikeAnims[]={
+const unsigned char* const * const characterStrikeAnims[]={
     krisStrikeAnims
 };
 
@@ -242,6 +242,10 @@ void update_monster(Monster* monster)
     {
         update_mon_shooter(monster);
     }
+    else if(monster->montype == MON_FISH)
+    {
+        update_mon_fish(monster);
+    }
 }
 
 void update_mon_walker(Monster* walker)
@@ -378,6 +382,77 @@ void update_mon_shooter(Monster* shooter)
     }
 }
 
+void update_mon_fish(Monster* fish)
+{
+    // Fish are different from walking monsters;
+    // they swim instead of walk. Let's just fake this by making their collision function inverted
+    // from normal monsters, so they just "walk" inside solid tiles and only ever place them in water.
+
+    if(fish->substate == S_NORMAL)
+    {
+        // Does this behaviour differ when not in the desert? Yeah, probably. In the dungeon i think.
+        if(currentEnvironment == E_DESERT)
+        {
+           // 1. make the fish move in its current direction
+           // 2. if it hits something solid, make it turn left
+            if(framecount % 4 == 0)
+            {
+                // try to walk in given direction, turn if we can't.
+                if(fish->direction == 0)
+                {
+                    if(swim_check(fish->xpos, fish->ypos + 1))
+                         fish->ypos++;
+                    else
+                        fish->direction++;
+                }
+                else if(fish->direction == 1)
+                {
+                    if(swim_check(fish->xpos + 1, fish->ypos))
+                       fish->xpos++;
+                    else
+                        fish->direction++;
+                }
+                else if(fish->direction == 2)
+                {
+                    if(swim_check(fish->xpos, fish->ypos - 1))
+                       fish->ypos--;
+                    else
+                        fish->direction++;
+                }
+                else if(fish->direction == 3)
+                {
+                    if(swim_check(fish->xpos - 1, fish->ypos))
+                        fish->xpos--;
+                    else
+                        fish->direction = 0;
+                }
+            }
+        }
+    }
+    else if(fish->substate == S_HURT)
+    {
+        if(framecount % 3 == 0)
+        {
+            fish->animframe++;
+            if(fish->animframe > 12)
+            {
+                fish->animframe = 0;
+                if(fish->health == 0)
+                {
+                    // fish dies..!
+                    earn_exp();
+                    deadList[fish->uniqueid] = 1; // update deadlist
+                    delete_monster(i2);
+                }
+                else
+                {
+                    fish->substate = S_NORMAL;
+                }
+            }
+        }
+    }
+}
+
 void earn_exp()
 {
     if(currentEnvironment == E_DESERT)
@@ -391,7 +466,6 @@ void earn_exp()
     }
     hudDirty = 1;
 }
-CODE_BANK_POP();
 
 void draw_monster(Monster* monster)
 {
@@ -399,9 +473,13 @@ void draw_monster(Monster* monster)
     {
         draw_walker(monster);
     }
-    if(monster->montype == MON_SHOOTER)
+    else if(monster->montype == MON_SHOOTER)
     {
         draw_shooter(monster);
+    }
+    else if(monster->montype == MON_FISH)
+    {
+        draw_fish(monster);
     }
 }
 
@@ -437,7 +515,18 @@ void draw_shooter(Monster* shooter)
     }
 }
 
-CODE_BANK(1);
+void draw_fish(Monster* fish)
+{
+    if(fish->substate == S_NORMAL)
+    {
+       spr = oam_meta_spr(fish->xpos, fish->ypos, spr, fishSwimAnims[fish->direction]);
+    }
+    else if(fish->substate == S_HURT)
+    {
+       spr = oam_meta_spr(fish->xpos, fish->ypos, spr, fishHurtAnims[(fish->direction*2)+fish->animframe%2]);
+    }
+}
+
 void delete_monster(unsigned char idx)
 {
     // use a classic remove and swap back to remove a monster from the update list
