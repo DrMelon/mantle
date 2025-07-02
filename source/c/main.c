@@ -403,7 +403,8 @@ void load_room()
                monsterList[spawnedMonsters].health = 2;
                monsterList[spawnedMonsters].level = 1;
            }
-           monsterList[spawnedMonsters].direction = 0;
+           monsterList[spawnedMonsters].direction = rand8();
+           monsterList[spawnedMonsters].direction = monsterList[spawnedMonsters].direction >> 6;
            monsterList[spawnedMonsters].uniqueid = roomPtr[i+5];
            spawnedMonsters++;
        }
