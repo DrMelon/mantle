@@ -74,5 +74,6 @@ extern void update_mon_shooter(Monster* shooter);
 
 extern void draw_monster(Monster* monster);
 extern void draw_walker(Monster* walker);
+extern void draw_shooter(Monster* shooter);
 extern void delete_monster(unsigned char idx);
 #endif

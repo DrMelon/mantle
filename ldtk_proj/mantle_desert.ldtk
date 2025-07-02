@@ -11,7 +11,7 @@
 	"iid": "e2c7fcb0-3740-11f0-ae24-d5574c0baf2f",
 	"jsonVersion": "1.5.3",
 	"appBuildId": 473703,
-	"nextUid": 46,
+	"nextUid": 48,
 	"identifierStyle": "Capitalize",
 	"toc": [],
 	"worldLayout": "GridVania",
@@ -328,6 +328,41 @@
 					"tilesetUid": null
 				}
 			]
+		},
+		{
+			"identifier": "Shooter",
+			"uid": 46,
+			"tags": [],
+			"exportToToc": false,
+			"allowOutOfBounds": false,
+			"doc": null,
+			"width": 16,
+			"height": 16,
+			"resizableX": false,
+			"resizableY": false,
+			"minWidth": null,
+			"maxWidth": null,
+			"minHeight": null,
+			"maxHeight": null,
+			"keepAspectRatio": false,
+			"tileOpacity": 1,
+			"fillOpacity": 1,
+			"lineOpacity": 1,
+			"hollow": false,
+			"color": "#E2A356",
+			"renderMode": "Rectangle",
+			"showName": true,
+			"tilesetId": null,
+			"tileRenderMode": "FitInside",
+			"tileRect": null,
+			"uiTileRect": null,
+			"nineSliceBorders": [],
+			"maxCount": 0,
+			"limitScope": "PerLevel",
+			"limitBehavior": "MoveLastOne",
+			"pivotX": 0,
+			"pivotY": 0,
+			"fieldDefs": []
 		}
 	], "tilesets": [
 		{
@@ -1621,6 +1656,22 @@
 							"fieldInstances": [],
 							"__worldX": -144,
 							"__worldY": 576
+						},
+						{
+							"__identifier": "Shooter",
+							"__grid": [8,4],
+							"__pivot": [0,0],
+							"__tags": [],
+							"__tile": null,
+							"__smartColor": "#E2A356",
+							"iid": "b1009680-3740-11f0-823b-5fb7d4ec7b66",
+							"width": 16,
+							"height": 16,
+							"defUid": 46,
+							"px": [128,64],
+							"fieldInstances": [],
+							"__worldX": -64,
+							"__worldY": 576
 						}
 					]
 				},
@@ -1849,6 +1900,22 @@
 							"fieldInstances": [],
 							"__worldX": -160,
 							"__worldY": 464
+						},
+						{
+							"__identifier": "Shooter",
+							"__grid": [2,2],
+							"__pivot": [0,0],
+							"__tags": [],
+							"__tile": null,
+							"__smartColor": "#E2A356",
+							"iid": "ae22caf0-3740-11f0-823b-bb8af140a4c5",
+							"width": 16,
+							"height": 16,
+							"defUid": 46,
+							"px": [32,32],
+							"fieldInstances": [],
+							"__worldX": -160,
+							"__worldY": 416
 						}
 					]
 				},
@@ -2941,7 +3008,24 @@
 					"seed": 7720394,
 					"overrideTilesetUid": null,
 					"gridTiles": [],
-					"entityInstances": []
+					"entityInstances": [
+						{
+							"__identifier": "Shooter",
+							"__grid": [5,3],
+							"__pivot": [0,0],
+							"__tags": [],
+							"__tile": null,
+							"__smartColor": "#E2A356",
+							"iid": "b9b8cbd0-3740-11f0-823b-8d3ee8ab7968",
+							"width": 16,
+							"height": 16,
+							"defUid": 46,
+							"px": [80,48],
+							"fieldInstances": [],
+							"__worldX": 272,
+							"__worldY": 176
+						}
+					]
 				},
 				{
 					"__identifier": "DesertTiles",
@@ -3118,7 +3202,40 @@
 					"seed": 1483809,
 					"overrideTilesetUid": null,
 					"gridTiles": [],
-					"entityInstances": []
+					"entityInstances": [
+						{
+							"__identifier": "Shooter",
+							"__grid": [7,4],
+							"__pivot": [0,0],
+							"__tags": [],
+							"__tile": null,
+							"__smartColor": "#E2A356",
+							"iid": "b700fed0-3740-11f0-823b-2f0b81778d47",
+							"width": 16,
+							"height": 16,
+							"defUid": 46,
+							"px": [112,64],
+							"fieldInstances": [],
+							"__worldX": 304,
+							"__worldY": 320
+						},
+						{
+							"__identifier": "Shooter",
+							"__grid": [9,2],
+							"__pivot": [0,0],
+							"__tags": [],
+							"__tile": null,
+							"__smartColor": "#E2A356",
+							"iid": "b7447070-3740-11f0-823b-4f3bb198a781",
+							"width": 16,
+							"height": 16,
+							"defUid": 46,
+							"px": [144,32],
+							"fieldInstances": [],
+							"__worldX": 336,
+							"__worldY": 288
+						}
+					]
 				},
 				{
 					"__identifier": "DesertTiles",

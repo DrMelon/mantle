@@ -4,6 +4,7 @@
 #include "bank_helpers.h"
 #include "maps.h"
 #include "utils.h"
+#include "projectiles.h"
 
 #include "kris_anims.h"
 #include "monster_anims.h"
@@ -206,7 +207,8 @@ void sword_check(WalkingCharacter* chara)
              // TODO: Split this level check and substate check so that we can play a *dink* sound on strong monsters
              if(monsterList[i].level <= playerLevel && monsterList[i].substate == S_NORMAL)
              {
-                 monsterList[i].health--;
+                 if(monsterList[i].health > 0)
+                     monsterList[i].health--;
                  monsterList[i].substate = S_HURT;
                  monsterList[i].animframe = 0;
              }
@@ -229,11 +231,16 @@ void draw_character(WalkingCharacter* chara)
     }
 }
 
+CODE_BANK(1);
 void update_monster(Monster* monster)
 {
     if(monster->montype == MON_WALKER)
     {
         update_mon_walker(monster);
+    }
+    else if(monster->montype == MON_SHOOTER)
+    {
+        update_mon_shooter(monster);
     }
 }
 
@@ -280,7 +287,7 @@ void update_mon_walker(Monster* walker)
        }
        if(walker->animframe > 12)
        {
-           if(walker->health < 1)
+           if(walker->health == 0)
            {
                earn_exp();
                deadList[walker->uniqueid] = 1; // update deadlist
@@ -297,6 +304,80 @@ void update_mon_walker(Monster* walker)
     }
 }
 
+void update_mon_shooter(Monster* shooter)
+{
+    // 16-bit math needed here, since signed 8-bit numbers kind of suck to use.
+    int player_offsetx;
+    int player_offsety;
+    if(shooter->substate == S_NORMAL || shooter->substate == S_HURT)
+    {
+        update_mon_walker(shooter); // Behaves like a Walker until it wants to fire spears.
+        if(framecount % 64 == 0)
+        {
+            // Every 64 frames, roll the dice and decide whether to shoot or not.
+            if(rand8() < 127)
+            {
+                shooter->substate = S_WINDUP;
+                shooter->animframe = 0;
+            }
+        }
+    }
+    //else if(shooter->substate == S_HURT)
+    //{
+    //    // TODO: Do hurt anim & knockback for monster.
+    //}
+    else if(shooter->substate == S_WINDUP)
+    {
+        // Winding up to shoot the player.
+        // Toggle the flash anim frame.
+        if(framecount % 2 == 0)
+        {
+            shooter->animframe++;
+        }
+        if(shooter->animframe >= 12)
+        {
+            // Wind-up over, shoot at the player
+            shooter->substate = S_ATTACK;
+            shooter->animframe = 0;
+        }
+    }
+    else if(shooter->substate == S_ATTACK)
+    {
+        if(framecount % 2 == 0)
+        {
+            shooter->animframe++;
+        }
+
+        if(shooter->animframe == 8)
+        {
+            shooter->animframe++;
+            // Create "arrow" projectile, fire it roughly towards the player.
+            // Need to calculate x, y velocity to shoot towards.
+            // So, we need the player's position.
+            player_offsetx = kris.xpos - shooter->xpos;
+            player_offsety = kris.ypos - shooter->ypos;
+
+            // Select x or y major
+            if(abs(player_offsetx) > abs(player_offsety))
+            {
+                player_offsetx = sign(player_offsetx);
+                player_offsety = 0;
+            }
+            else
+            {
+                player_offsety = sign(player_offsety);
+                player_offsetx = 0;
+            }
+
+            spawn_projectile(shooter->xpos+4, shooter->ypos+4, P_ARROW, player_offsetx<<5, player_offsety<<5);
+        }
+        if(shooter->animframe >= 16)
+        {
+            shooter->substate = S_NORMAL;
+        }
+    }
+}
+
 void earn_exp()
 {
     if(currentEnvironment == E_DESERT)
@@ -310,12 +391,17 @@ void earn_exp()
     }
     hudDirty = 1;
 }
+CODE_BANK_POP();
 
 void draw_monster(Monster* monster)
 {
     if(monster->montype == MON_WALKER)
     {
         draw_walker(monster);
+    }
+    if(monster->montype == MON_SHOOTER)
+    {
+        draw_shooter(monster);
     }
 }
 
@@ -331,9 +417,31 @@ void draw_walker(Monster* walker)
     }
 }
 
+void draw_shooter(Monster* shooter)
+{
+    if(shooter->substate == S_NORMAL)
+    {
+        spr = oam_meta_spr(shooter->xpos, shooter->ypos, spr, monShooterAnims[shooter->animframe%2]);
+    }
+    else if(shooter->substate == S_WINDUP)
+    {
+        spr = oam_meta_spr(shooter->xpos, shooter->ypos, spr, monShooterAnims[(shooter->animframe%2) + 2]);
+    }
+    else if(shooter->substate == S_ATTACK)
+    {
+        spr = oam_meta_spr(shooter->xpos, shooter->ypos, spr, monShooterAnims[(shooter->animframe%2) + 4]);
+    }
+    else if(shooter->substate == S_HURT)
+    {
+        spr = oam_meta_spr(shooter->xpos, shooter->ypos, spr, monShooterAnims[(shooter->animframe%2) + 6]);
+    }
+}
+
+CODE_BANK(1);
 void delete_monster(unsigned char idx)
 {
     // use a classic remove and swap back to remove a monster from the update list
     monsterList[idx] = monsterList[spawnedMonsters-1];
     spawnedMonsters--;
 }
+CODE_BANK_POP();

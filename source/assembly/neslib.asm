@@ -130,11 +130,13 @@ neslib_nmi:
     lda <MUSIC_PLAY
     ror
     bcc :+
+    lda BP_BANK
+    sta BP_BANK_TEMP
     lda #1
     sta BP_BANK
     jsr mmc1_set_prg_bank
     jsr ft_music_play
-    lda #0
+    lda BP_BANK_TEMP                      ;bankswitching while playing audio needs to return to *previous* bank!
     sta BP_BANK
     jsr mmc1_set_prg_bank
 
@@ -1101,6 +1103,8 @@ _vram_write:
 _music_play:
     sta TEMP
     ;  bank switch
+    lda BP_BANK
+    sta BP_BANK_TEMP
     lda #1
     sta BP_BANK
     jsr mmc1_set_prg_bank
@@ -1114,7 +1118,7 @@ _music_play:
     ldx <NTSC_MODE
     jsr ft_music_init
 
-    lda #0
+    lda BP_BANK_TEMP
     sta BP_BANK
     jsr mmc1_set_prg_bank
 

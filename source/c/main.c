@@ -159,6 +159,7 @@ void main(void) {
 
 
           // Update monsters & projectiles
+          bank_push(1);
           for(i2 = 0; i2 < spawnedMonsters; i2++)
           {
              update_monster(&monsterList[i2]);
@@ -167,6 +168,7 @@ void main(void) {
           {
              update_projectile(&projList[i]);
           }
+          bank_pop();
 
           // Draw characters
           draw_character(&kris);
@@ -391,6 +393,11 @@ void load_room()
            monsterList[spawnedMonsters].xpos = ((roomPtr[i+1]+2) << 4);
            monsterList[spawnedMonsters].ypos = ((roomPtr[i+2]+3) << 4);
            monsterList[spawnedMonsters].health = 1;
+           if(monsterList[spawnedMonsters].montype == MON_SHOOTER)
+           {
+               monsterList[spawnedMonsters].health = 2;
+               monsterList[spawnedMonsters].level = 1;
+           }
            monsterList[spawnedMonsters].direction = rand8() >> 6;
            monsterList[spawnedMonsters].uniqueid = roomPtr[i+5];
            spawnedMonsters++;
