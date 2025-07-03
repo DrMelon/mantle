@@ -113,16 +113,16 @@ void refresh_hud_bars(char hp, char lvl, char exp)
       i2 = i+i2;
       i = 0;
 
-      // Draw exp bar (same exact same as hp bar)
-      for(i = 0; i < 4; i++)
+      // Draw exp bar (up to 24 exp)
+      for(i = 0; i < 6; i++)
       {
-       // if hp = 0, empty bar.
+       // if exp = 0, empty bar.
        if(exp == 0)
        {
          hudUpdateBuffer[i+i2] = barBlocks[0];
          continue;
        }
-       if((i+1)*4 <= exp)
+       if((i+1)*4 <= exp || playerLevel == 4) // max lvl always shows the bar as full
        {
           hudUpdateBuffer[i+i2] = barBlocks[4];
           continue;

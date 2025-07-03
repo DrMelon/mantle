@@ -13,9 +13,8 @@ enum MonsterType
   MON_BIRD,
   MON_SINGCAT,
   MON_MIRROR,
-  MON_STONE,
-  MON_MANTLE,
-  MON_SUMMON
+  MON_ICEBLOCK
+  // there is no MON_MANTLE. It isn't here, after all.
 };
 
 typedef struct

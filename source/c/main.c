@@ -94,7 +94,7 @@ void main(void) {
           }
 
           // Update level logic
-          if(playerExp >= 16 && playerLevel < 4)
+          if(playerExp >= 24 && playerLevel < 4)
           {
              playerLevel++;
              playerExp = 0;

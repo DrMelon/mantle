@@ -1134,6 +1134,22 @@
 							"fieldInstances": [],
 							"__worldX": 80,
 							"__worldY": 464
+						},
+						{
+							"__identifier": "Walker",
+							"__grid": [9,5],
+							"__pivot": [0,0],
+							"__tags": [],
+							"__tile": null,
+							"__smartColor": "#957A74",
+							"iid": "c6431e40-3740-11f0-98e5-df068ca33f0c",
+							"width": 16,
+							"height": 16,
+							"defUid": 39,
+							"px": [144,80],
+							"fieldInstances": [],
+							"__worldX": 144,
+							"__worldY": 464
 						}
 					]
 				},
@@ -4000,6 +4016,22 @@
 							"fieldInstances": [],
 							"__worldX": 288,
 							"__worldY": 720
+						},
+						{
+							"__identifier": "Walker",
+							"__grid": [8,2],
+							"__pivot": [0,0],
+							"__tags": [],
+							"__tile": null,
+							"__smartColor": "#957A74",
+							"iid": "ca29a740-3740-11f0-98e5-e13ed55da365",
+							"width": 16,
+							"height": 16,
+							"defUid": 39,
+							"px": [128,32],
+							"fieldInstances": [],
+							"__worldX": 320,
+							"__worldY": 672
 						}
 					]
 				},

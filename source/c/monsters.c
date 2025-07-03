@@ -237,9 +237,9 @@ void earn_exp()
     if(currentEnvironment == E_DESERT)
     {
         if(playerLevel < 2)
-            playerExp += 6; // become stronger. 3 enemies to hit lv 2
+            playerExp += 8; // become stronger. 3 enemies to hit lv 2
         else if(playerLevel < 3)
-            playerExp += 1; // become stronger. 16 enemies to hit lv 3.
+            playerExp += 1; // become stronger. 24 enemies to hit lv 3.
         else if(playerLevel < 4)
             playerExp += 2; // become stronger. 8 enemies to hit lvmax.
     }
