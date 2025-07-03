@@ -7,6 +7,7 @@
 #include "items.h"
 #include "teleport.h"
 #include "projectiles.h"
+#include "monsters.h"
 
 enum GameState
 {
@@ -19,6 +20,11 @@ enum GameState
     GS_DEAD,
     GS_OUTRO
 };
+
+//
+// Global Variables (zeropage)
+// Small, frequently-used variables should go in this space. There are only around 250 bytes to go around, so choose wisely!
+//
 
 ZEROPAGE_EXTERN(enum GameState, currentState);
 ZEROPAGE_EXTERN(unsigned char, i);

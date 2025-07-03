@@ -38,6 +38,7 @@ const unsigned char walkerHurt1[]={
     128
 };
 
+// Shooter metasprites.
 const unsigned char shooterWalk0[]={
     1, 0, 0x1D, 6,
     9, 0, 0x1D, 6 | OAM_FLIP_H,
@@ -95,6 +96,7 @@ const unsigned char shooterHurt1[]={
     128
 };
 
+// Fish metasprites.
 const unsigned char fishSwimLeft[]={
     0, 0, 0x4A, 7 | OAM_FLIP_H,
     8, 0, 0x49, 7 | OAM_FLIP_H,
@@ -191,6 +193,47 @@ const unsigned char fishHurtUp1[]={
     128
 };
 
+// Flower metasprites.
+const unsigned char flowerIdle[]={
+    0, 0, 0x31, 6,
+    8, 0, 0x31, 6 | OAM_FLIP_H,
+    0, 8, 0x41, 6,
+    8, 8, 0x41, 6 | OAM_FLIP_H,
+    128
+};
+
+const unsigned char flowerPrepare0[]={
+    0, 0, 0x31, 4,
+    8, 0, 0x31, 4 | OAM_FLIP_H,
+    0, 8, 0x41, 4,
+    8, 8, 0x41, 4 | OAM_FLIP_H,
+    128
+};
+
+const unsigned char flowerPrepare1[]={
+    0, 0, 0x31, 6,
+    8, 0, 0x31, 6 | OAM_FLIP_H,
+    0, 8, 0x41, 6,
+    8, 8, 0x41, 6 | OAM_FLIP_H,
+    128
+};
+
+const unsigned char flowerHurt0[]={
+    0, 0, 0x31, 0,
+    8, 0, 0x31, 0 | OAM_FLIP_H,
+    0, 8, 0x41, 0,
+    8, 8, 0x41, 0 | OAM_FLIP_H,
+    128
+};
+
+const unsigned char flowerHurt1[]={
+    0, 0, 0x31, 6,
+    8, 0, 0x31, 6 | OAM_FLIP_H,
+    0, 8, 0x41, 6,
+    8, 8, 0x41, 6 | OAM_FLIP_H,
+    128
+};
+
 const unsigned char* const monWalkerAnims[]={
     walkerWalk0,
     walkerWalk1,
@@ -228,5 +271,12 @@ const unsigned char* const fishHurtAnims[]={
     fishHurtLeft1
 };
 
+const unsigned char* const flowerAnims[]={
+    flowerIdle,
+    flowerPrepare0,
+    flowerPrepare1,
+    flowerHurt0,
+    flowerHurt1
+};
 
 CODE_BANK_POP();

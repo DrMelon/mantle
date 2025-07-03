@@ -3,9 +3,19 @@
 #include "neslib.h"
 #include "utils.h"
 
-const unsigned char pelletSprite[]={
+const unsigned char pelletSprite0[]={
     0, 0, 0xB4, 6,
     128
+};
+
+const unsigned char pelletSprite1[]={
+    0, 0, 0xA4, 6,
+    128
+};
+
+const unsigned char* const pelletSprites[]={
+    pelletSprite0,
+    pelletSprite1
 };
 
 const unsigned char arrowLeftSprite[]={
@@ -89,7 +99,7 @@ void draw_projectile(Projectile* proj)
 {
     if(proj->projtype == P_FRIENDLINESS_PELLET)
     {
-        spr = oam_meta_spr(proj->xpos, proj->ypos, spr, pelletSprite);
+        spr = oam_meta_spr(proj->xpos, proj->ypos, spr, pelletSprites[framecount%2]);
     }
     else if(proj->projtype == P_ARROW)
     {
