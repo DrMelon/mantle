@@ -613,22 +613,6 @@
 							],
 							"__worldX": 160,
 							"__worldY": 48
-						},
-						{
-							"__identifier": "Lizard",
-							"__grid": [5,5],
-							"__pivot": [0,0],
-							"__tags": [],
-							"__tile": null,
-							"__smartColor": "#FFE000",
-							"iid": "9db08bf0-3740-11f0-9d43-ed01f0311109",
-							"width": 16,
-							"height": 16,
-							"defUid": 51,
-							"px": [80,80],
-							"fieldInstances": [],
-							"__worldX": 80,
-							"__worldY": 80
 						}
 					]
 				},
