@@ -22,11 +22,14 @@ for x in range(0, 8):
         for n in range(0, 30):
             x_value_at_n = 0
             y_value_at_n = 0
+            y_mid_target = y_diff-16;
+            if(y - 4 >= 0): # downwards jump, so always jump up even more
+                y_mid_target = -32;
 
             if(n < 15):
-                y_value_at_n = math.floor(lerp(0, y_diff-16, ease_out(n/15)))
+                y_value_at_n = math.floor(lerp(0, y_mid_target, ease_out(n/15)))
             else:
-                y_value_at_n = math.floor(lerp(y_diff-16, y_diff, ease_in((n-15)/15)))
+                y_value_at_n = math.floor(lerp(y_mid_target, y_diff, ease_in((n-15)/15)))
             x_value_at_n = math.floor(lerp(0, x_diff, n/30))
             jumpArcX[idx][n] = x_value_at_n + 127
             jumpArcY[idx][n] = y_value_at_n + 127
