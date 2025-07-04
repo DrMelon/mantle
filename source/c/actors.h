@@ -6,7 +6,8 @@ enum Substate
   S_HURT,
   S_WINDUP,
   S_ATTACK,
-  S_DOCILE,
+  S_JUMPING,
+  S_FLY,
   S_DIE
 };
 

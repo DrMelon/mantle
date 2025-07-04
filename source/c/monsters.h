@@ -28,20 +28,29 @@ typedef struct
   unsigned char animframe;
   unsigned char direction;
   unsigned char health;
+  unsigned char arcid;
 } Monster;
 
+typedef struct
+{
+  unsigned char jump_arc_type;
+  unsigned char start_x;
+  unsigned char start_y;
+} JumpArcState;
 
 extern void update_monster(Monster* monster);
 extern void update_mon_walker(Monster* walker);
 extern void update_mon_shooter(Monster* shooter);
 extern void update_mon_fish(Monster* fish);
 extern void update_mon_flower(Monster* flower);
+extern void update_mon_lizard(Monster* lizard);
 
 extern void draw_monster(Monster* monster);
 extern void draw_walker(Monster* walker);
 extern void draw_shooter(Monster* shooter);
 extern void draw_fish(Monster* fish);
 extern void draw_flower(Monster* flower);
+extern void draw_lizard(Monster* lizard);
 
 extern void delete_monster(unsigned char idx);
 

@@ -122,7 +122,7 @@ void refresh_hud_bars(char hp, char lvl, char exp)
          hudUpdateBuffer[i+i2] = barBlocks[0];
          continue;
        }
-       if((i+1)*4 <= exp || playerLevel == 4) // max lvl always shows the bar as full
+       if((i+1)*4 <= exp)
        {
           hudUpdateBuffer[i+i2] = barBlocks[4];
           continue;
@@ -167,6 +167,7 @@ void queue_text(const unsigned char* textLine, unsigned char mode)
    textColOffset = 0;
    textLineOffset = 0;
    textSeekChar = 0;
+   textDelay = 2; // Can override this with different line display speeds.
 }
 
 void update_text()
@@ -183,6 +184,7 @@ void update_text()
   // 3 = Clear text
   if(textQueued == 1)
   {
+    if(framecount % textDelay != 0) return; // delay appropriately
     // Update the next char on the screen.
     if(textSeekChar < textLength)
     {

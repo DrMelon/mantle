@@ -56,7 +56,9 @@ ZEROPAGE_EXTERN(unsigned char, textLength);
 ZEROPAGE_EXTERN(unsigned char, textColOffset);
 ZEROPAGE_EXTERN(unsigned char, textLineOffset);
 ZEROPAGE_EXTERN(unsigned char, textSeekChar);
+ZEROPAGE_EXTERN(unsigned char, textDelay);
 ZEROPAGE_EXTERN(unsigned char, monsterAggression);
+ZEROPAGE_EXTERN(unsigned char, jumpArcs);
 
 #pragma bss-name(push, "ZEROPAGE")
     extern WalkingCharacter kris;
@@ -71,6 +73,9 @@ extern Item itemList[];
 
 #define MAX_MONSTERS 16
 extern Monster monsterList[];
+
+#define MAX_JUMP_ARCS 4
+extern JumpArcState jumpArcList[];
 
 #define MAX_TELEPORTERS 2
 extern Teleporter teleList[];

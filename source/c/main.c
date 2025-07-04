@@ -98,6 +98,10 @@ void main(void) {
           {
              playerLevel++;
              playerExp = 0;
+             if(playerLevel == 4)
+             {
+                 playerExp = 24; // full exp
+             }
              hudDirty = 1;
           }
 

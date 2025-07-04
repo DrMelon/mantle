@@ -11,7 +11,7 @@
 	"iid": "e2c7fcb0-3740-11f0-ae24-d5574c0baf2f",
 	"jsonVersion": "1.5.3",
 	"appBuildId": 473703,
-	"nextUid": 50,
+	"nextUid": 52,
 	"identifierStyle": "Capitalize",
 	"toc": [],
 	"worldLayout": "GridVania",
@@ -433,6 +433,76 @@
 			"pivotX": 0,
 			"pivotY": 0,
 			"fieldDefs": []
+		},
+		{
+			"identifier": "BirdA",
+			"uid": 50,
+			"tags": [],
+			"exportToToc": false,
+			"allowOutOfBounds": false,
+			"doc": null,
+			"width": 16,
+			"height": 16,
+			"resizableX": false,
+			"resizableY": false,
+			"minWidth": null,
+			"maxWidth": null,
+			"minHeight": null,
+			"maxHeight": null,
+			"keepAspectRatio": false,
+			"tileOpacity": 1,
+			"fillOpacity": 1,
+			"lineOpacity": 1,
+			"hollow": false,
+			"color": "#08E6F6",
+			"renderMode": "Rectangle",
+			"showName": true,
+			"tilesetId": null,
+			"tileRenderMode": "FitInside",
+			"tileRect": null,
+			"uiTileRect": null,
+			"nineSliceBorders": [],
+			"maxCount": 0,
+			"limitScope": "PerLevel",
+			"limitBehavior": "MoveLastOne",
+			"pivotX": 0,
+			"pivotY": 0,
+			"fieldDefs": []
+		},
+		{
+			"identifier": "Lizard",
+			"uid": 51,
+			"tags": [],
+			"exportToToc": false,
+			"allowOutOfBounds": false,
+			"doc": null,
+			"width": 16,
+			"height": 16,
+			"resizableX": false,
+			"resizableY": false,
+			"minWidth": null,
+			"maxWidth": null,
+			"minHeight": null,
+			"maxHeight": null,
+			"keepAspectRatio": false,
+			"tileOpacity": 1,
+			"fillOpacity": 1,
+			"lineOpacity": 1,
+			"hollow": false,
+			"color": "#FFE000",
+			"renderMode": "Rectangle",
+			"showName": true,
+			"tilesetId": null,
+			"tileRenderMode": "FitInside",
+			"tileRect": null,
+			"uiTileRect": null,
+			"nineSliceBorders": [],
+			"maxCount": 0,
+			"limitScope": "PerLevel",
+			"limitBehavior": "MoveLastOne",
+			"pivotX": 0,
+			"pivotY": 0,
+			"fieldDefs": []
 		}
 	], "tilesets": [
 		{
@@ -543,6 +613,22 @@
 							],
 							"__worldX": 160,
 							"__worldY": 48
+						},
+						{
+							"__identifier": "Lizard",
+							"__grid": [5,5],
+							"__pivot": [0,0],
+							"__tags": [],
+							"__tile": null,
+							"__smartColor": "#FFE000",
+							"iid": "9db08bf0-3740-11f0-9d43-ed01f0311109",
+							"width": 16,
+							"height": 16,
+							"defUid": 51,
+							"px": [80,80],
+							"fieldInstances": [],
+							"__worldX": 80,
+							"__worldY": 80
 						}
 					]
 				},
@@ -2618,7 +2704,28 @@
 					"seed": 4672132,
 					"overrideTilesetUid": null,
 					"gridTiles": [],
-					"entityInstances": []
+					"entityInstances": [
+						{
+							"__identifier": "Teleporter",
+							"__grid": [2,2],
+							"__pivot": [0,0],
+							"__tags": [],
+							"__tile": null,
+							"__smartColor": "#6EFF00",
+							"iid": "96927710-3740-11f0-9d43-2bcd875c6ab1",
+							"width": 16,
+							"height": 16,
+							"defUid": 42,
+							"px": [32,32],
+							"fieldInstances": [
+								{ "__identifier": "roomid", "__type": "Int", "__value": 21, "__tile": null, "defUid": 43, "realEditorValues": [{ "id": "V_Int", "params": [21] }] },
+								{ "__identifier": "targetx", "__type": "Int", "__value": 5, "__tile": null, "defUid": 44, "realEditorValues": [{ "id": "V_Int", "params": [5] }] },
+								{ "__identifier": "targety", "__type": "Int", "__value": 6, "__tile": null, "defUid": 45, "realEditorValues": [{ "id": "V_Int", "params": [6] }] }
+							],
+							"__worldX": -352,
+							"__worldY": 672
+						}
+					]
 				},
 				{
 					"__identifier": "DesertTiles",
@@ -4777,7 +4884,48 @@
 					"seed": 7399855,
 					"overrideTilesetUid": null,
 					"gridTiles": [],
-					"entityInstances": []
+					"entityInstances": [
+						{
+							"__identifier": "Teleporter",
+							"__grid": [5,7],
+							"__pivot": [0,0],
+							"__tags": [],
+							"__tile": null,
+							"__smartColor": "#6EFF00",
+							"iid": "a5750ae0-3740-11f0-9d43-9d2184d8d951",
+							"width": 16,
+							"height": 16,
+							"defUid": 42,
+							"px": [80,112],
+							"fieldInstances": [
+								{ "__identifier": "roomid", "__type": "Int", "__value": 10, "__tile": null, "defUid": 43, "realEditorValues": [{ "id": "V_Int", "params": [10] }] },
+								{ "__identifier": "targetx", "__type": "Int", "__value": 2, "__tile": null, "defUid": 44, "realEditorValues": [{ "id": "V_Int", "params": [2] }] },
+								{ "__identifier": "targety", "__type": "Int", "__value": 3, "__tile": null, "defUid": 45, "realEditorValues": [{ "id": "V_Int", "params": [3] }] }
+							],
+							"__worldX": -304,
+							"__worldY": 624
+						},
+						{
+							"__identifier": "Teleporter",
+							"__grid": [6,7],
+							"__pivot": [0,0],
+							"__tags": [],
+							"__tile": null,
+							"__smartColor": "#6EFF00",
+							"iid": "adcf8fd0-3740-11f0-9d43-35570eab191b",
+							"width": 16,
+							"height": 16,
+							"defUid": 42,
+							"px": [96,112],
+							"fieldInstances": [
+								{ "__identifier": "roomid", "__type": "Int", "__value": 10, "__tile": null, "defUid": 43, "realEditorValues": [{ "id": "V_Int", "params": [10] }] },
+								{ "__identifier": "targetx", "__type": "Int", "__value": 2, "__tile": null, "defUid": 44, "realEditorValues": [{ "id": "V_Int", "params": [2] }] },
+								{ "__identifier": "targety", "__type": "Int", "__value": 3, "__tile": null, "defUid": 45, "realEditorValues": [{ "id": "V_Int", "params": [3] }] }
+							],
+							"__worldX": -288,
+							"__worldY": 624
+						}
+					]
 				},
 				{
 					"__identifier": "DesertTiles",
@@ -5867,7 +6015,56 @@
 					"seed": 8433802,
 					"overrideTilesetUid": null,
 					"gridTiles": [],
-					"entityInstances": []
+					"entityInstances": [
+						{
+							"__identifier": "Flower",
+							"__grid": [5,3],
+							"__pivot": [0,0],
+							"__tags": [],
+							"__tile": null,
+							"__smartColor": "#FFB00B",
+							"iid": "c0a21f50-3740-11f0-bd06-512ea5ccf1d2",
+							"width": 16,
+							"height": 16,
+							"defUid": 49,
+							"px": [80,48],
+							"fieldInstances": [],
+							"__worldX": 656,
+							"__worldY": 560
+						},
+						{
+							"__identifier": "Walker",
+							"__grid": [9,3],
+							"__pivot": [0,0],
+							"__tags": [],
+							"__tile": null,
+							"__smartColor": "#957A74",
+							"iid": "c2b547e0-3740-11f0-bd06-e9814e7c8e4f",
+							"width": 16,
+							"height": 16,
+							"defUid": 39,
+							"px": [144,48],
+							"fieldInstances": [],
+							"__worldX": 720,
+							"__worldY": 560
+						},
+						{
+							"__identifier": "Flower",
+							"__grid": [7,4],
+							"__pivot": [0,0],
+							"__tags": [],
+							"__tile": null,
+							"__smartColor": "#FFB00B",
+							"iid": "8c443fd0-3740-11f0-bd06-cbb3a93ccbac",
+							"width": 16,
+							"height": 16,
+							"defUid": 49,
+							"px": [112,64],
+							"fieldInstances": [],
+							"__worldX": 688,
+							"__worldY": 576
+						}
+					]
 				},
 				{
 					"__identifier": "DesertTiles",
@@ -6038,7 +6235,24 @@
 					"seed": 9791219,
 					"overrideTilesetUid": null,
 					"gridTiles": [],
-					"entityInstances": []
+					"entityInstances": [
+						{
+							"__identifier": "BirdA",
+							"__grid": [10,5],
+							"__pivot": [0,0],
+							"__tags": [],
+							"__tile": null,
+							"__smartColor": "#08E6F6",
+							"iid": "d67324f0-3740-11f0-bd06-e5702eeebf9e",
+							"width": 16,
+							"height": 16,
+							"defUid": 50,
+							"px": [160,80],
+							"fieldInstances": [],
+							"__worldX": 736,
+							"__worldY": 720
+						}
+					]
 				},
 				{
 					"__identifier": "DesertTiles",
@@ -6209,7 +6423,40 @@
 					"seed": 5002171,
 					"overrideTilesetUid": null,
 					"gridTiles": [],
-					"entityInstances": []
+					"entityInstances": [
+						{
+							"__identifier": "Shooter",
+							"__grid": [3,2],
+							"__pivot": [0,0],
+							"__tags": [],
+							"__tile": null,
+							"__smartColor": "#E2A356",
+							"iid": "deb65150-3740-11f0-bd06-cf4644c4ca17",
+							"width": 16,
+							"height": 16,
+							"defUid": 46,
+							"px": [48,32],
+							"fieldInstances": [],
+							"__worldX": 816,
+							"__worldY": 544
+						},
+						{
+							"__identifier": "Shooter",
+							"__grid": [7,5],
+							"__pivot": [0,0],
+							"__tags": [],
+							"__tile": null,
+							"__smartColor": "#E2A356",
+							"iid": "df4746b0-3740-11f0-bd06-bb92984066da",
+							"width": 16,
+							"height": 16,
+							"defUid": 46,
+							"px": [112,80],
+							"fieldInstances": [],
+							"__worldX": 880,
+							"__worldY": 592
+						}
+					]
 				},
 				{
 					"__identifier": "DesertTiles",
@@ -6387,7 +6634,40 @@
 					"seed": 6767320,
 					"overrideTilesetUid": null,
 					"gridTiles": [],
-					"entityInstances": []
+					"entityInstances": [
+						{
+							"__identifier": "Flower",
+							"__grid": [1,3],
+							"__pivot": [0,0],
+							"__tags": [],
+							"__tile": null,
+							"__smartColor": "#FFB00B",
+							"iid": "eb901cd0-3740-11f0-bd06-eb69881e1606",
+							"width": 16,
+							"height": 16,
+							"defUid": 49,
+							"px": [16,48],
+							"fieldInstances": [],
+							"__worldX": 784,
+							"__worldY": 688
+						},
+						{
+							"__identifier": "Flower",
+							"__grid": [8,6],
+							"__pivot": [0,0],
+							"__tags": [],
+							"__tile": null,
+							"__smartColor": "#FFB00B",
+							"iid": "ec0d3c10-3740-11f0-bd06-b5faf626669c",
+							"width": 16,
+							"height": 16,
+							"defUid": 49,
+							"px": [128,96],
+							"fieldInstances": [],
+							"__worldX": 896,
+							"__worldY": 736
+						}
+					]
 				},
 				{
 					"__identifier": "DesertTiles",
@@ -6564,7 +6844,40 @@
 					"seed": 2573066,
 					"overrideTilesetUid": null,
 					"gridTiles": [],
-					"entityInstances": []
+					"entityInstances": [
+						{
+							"__identifier": "Walker",
+							"__grid": [3,6],
+							"__pivot": [0,0],
+							"__tags": [],
+							"__tile": null,
+							"__smartColor": "#957A74",
+							"iid": "fcb0b9c0-3740-11f0-bd06-cdec386f2841",
+							"width": 16,
+							"height": 16,
+							"defUid": 39,
+							"px": [48,96],
+							"fieldInstances": [],
+							"__worldX": 1008,
+							"__worldY": 736
+						},
+						{
+							"__identifier": "Walker",
+							"__grid": [10,4],
+							"__pivot": [0,0],
+							"__tags": [],
+							"__tile": null,
+							"__smartColor": "#957A74",
+							"iid": "fd8261a0-3740-11f0-bd06-9b186097c769",
+							"width": 16,
+							"height": 16,
+							"defUid": 39,
+							"px": [160,64],
+							"fieldInstances": [],
+							"__worldX": 1120,
+							"__worldY": 704
+						}
+					]
 				},
 				{
 					"__identifier": "DesertTiles",
@@ -6735,7 +7048,40 @@
 					"seed": 7180201,
 					"overrideTilesetUid": null,
 					"gridTiles": [],
-					"entityInstances": []
+					"entityInstances": [
+						{
+							"__identifier": "Shooter",
+							"__grid": [10,2],
+							"__pivot": [0,0],
+							"__tags": [],
+							"__tile": null,
+							"__smartColor": "#E2A356",
+							"iid": "0828ab50-3740-11f0-bd06-379118b9a365",
+							"width": 16,
+							"height": 16,
+							"defUid": 46,
+							"px": [160,32],
+							"fieldInstances": [],
+							"__worldX": 1120,
+							"__worldY": 544
+						},
+						{
+							"__identifier": "Shooter",
+							"__grid": [6,4],
+							"__pivot": [0,0],
+							"__tags": [],
+							"__tile": null,
+							"__smartColor": "#E2A356",
+							"iid": "3cc6f9c0-3740-11f0-bd06-e7f50ee0dddc",
+							"width": 16,
+							"height": 16,
+							"defUid": 46,
+							"px": [96,64],
+							"fieldInstances": [],
+							"__worldX": 1056,
+							"__worldY": 576
+						}
+					]
 				},
 				{
 					"__identifier": "DesertTiles",
@@ -6906,7 +7252,24 @@
 					"seed": 6319224,
 					"overrideTilesetUid": null,
 					"gridTiles": [],
-					"entityInstances": []
+					"entityInstances": [
+						{
+							"__identifier": "Walker",
+							"__grid": [6,2],
+							"__pivot": [0,0],
+							"__tags": [],
+							"__tile": null,
+							"__smartColor": "#957A74",
+							"iid": "107e4e40-3740-11f0-bd06-13e2970e9838",
+							"width": 16,
+							"height": 16,
+							"defUid": 39,
+							"px": [96,32],
+							"fieldInstances": [],
+							"__worldX": 1056,
+							"__worldY": 416
+						}
+					]
 				},
 				{
 					"__identifier": "DesertTiles",

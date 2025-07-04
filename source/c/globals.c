@@ -31,7 +31,9 @@ ZEROPAGE_DEF(unsigned char, textLength);
 ZEROPAGE_DEF(unsigned char, textSeekChar);
 ZEROPAGE_DEF(unsigned char, textColOffset);
 ZEROPAGE_DEF(unsigned char, textLineOffset);
+ZEROPAGE_DEF(unsigned char, textDelay);
 ZEROPAGE_DEF(unsigned char, monsterAggression);
+ZEROPAGE_DEF(unsigned char, jumpArcs);
 
 #pragma bss-name(push, "ZEROPAGE")
     WalkingCharacter kris;
@@ -46,5 +48,6 @@ Monster monsterList[MAX_MONSTERS];
 Teleporter teleList[MAX_TELEPORTERS];
 Projectile projList[MAX_PROJECTILES];
 unsigned char deadList[TOTAL_SPAWNABLES];
+JumpArcState jumpArcList[MAX_JUMP_ARCS];
 
 unsigned char palmTreeBuffer[16];

@@ -6,6 +6,7 @@
 #include "globals.h"
 #include "utils.h"
 #include "maps.h"
+#include "jump_luts.h"
 
 CODE_BANK(1);
 void update_monster(Monster* monster)
@@ -25,6 +26,10 @@ void update_monster(Monster* monster)
     else if(monster->montype == MON_FLOWER)
     {
         update_mon_flower(monster);
+    }
+    else if(monster->montype == MON_LIZARD)
+    {
+        update_mon_lizard(monster);
     }
 }
 
@@ -241,7 +246,7 @@ void earn_exp()
         else if(playerLevel < 3)
             playerExp += 1; // become stronger. 24 enemies to hit lv 3.
         else if(playerLevel < 4)
-            playerExp += 2; // become stronger. 8 enemies to hit lvmax.
+            playerExp += 2; // become stronger. 12 enemies to hit lvmax.
     }
     hudDirty = 1;
 }
@@ -315,6 +320,116 @@ void update_mon_flower(Monster* flower)
     }
 }
 
+void update_mon_lizard(Monster* lizard)
+{
+    unsigned char jump_tile_walkable = 0;
+    JumpArcState* jump_arc;
+    int test_tile_x = 0;
+    int test_tile_y = 0;
+    // Lizards:
+    // They walk randomly like the Walkers. Then, they jump!
+    if(lizard->substate == S_NORMAL)
+    {
+        update_mon_walker(lizard);
+
+        // Randomly choose when to jump.
+        if(framecount % 64 == 0)
+        {
+            // Every 64 frames, roll the dice and decide whether to shoot or not.
+            if(rand8() < 127)
+            {
+                lizard->substate = S_WINDUP;
+                lizard->animframe = 0;
+            }
+        }
+    }
+    else if(lizard->substate == S_WINDUP)
+    {
+        if(framecount % 2 == 0)
+        {
+            lizard->animframe++;
+
+            if(lizard->animframe > 16)
+            {
+                // 1. They will pick a tile to jump to.
+                // |-> Picking a tile appears to be a random walkable tile within 5 tiles of the current tile.
+                while(jump_tile_walkable != 1)
+                {
+                    test_tile_x = rand8() >> 5; // get a number from 0-7
+                    test_tile_y = rand8() >> 5;
+                    test_tile_x -= 4; // now it's -4 - 3
+                    test_tile_y -= 4;
+
+                    test_tile_x = (lizard->xpos >> 4) + test_tile_x;
+                    test_tile_y = (lizard->ypos >> 4) + test_tile_y;
+
+                    if(test_tile_x < 0) test_tile_x = 0;
+                    if(test_tile_y < 0) test_tile_y = 0;
+                    if(test_tile_x > 11) test_tile_x = 11;
+                    if(test_tile_y > 7) test_tile_y = 7;
+
+                    jump_tile_walkable = !tilemap_solid(test_tile_x, test_tile_y);
+                }
+
+
+                // 2. They will initiate a jump to that tile.
+                // |-> The jump arc draws no shadow, but draws a target to help the player see where the lizard is going. Might need to skip this..?
+                // |-> The arc's X position proceeds linearly. The Y position always travels at least one tile above the target tile's y pos,
+                // |-> at the midpoint of the arc. The smooth-ish movement might necessitate a LUT or subpixel movement. LUT's probably the lightest way of doing it
+                // |-> The lizard can be hit in the air, unlike the bird.
+
+                if(jumpArcs < MAX_JUMP_ARCS)
+                {
+                    lizard->substate = S_JUMPING;
+                    lizard->animframe = 0;
+                    lizard->arcid = jumpArcs;
+
+                    // set up a jump arc and select type.
+
+                    // first calculate the jump arc type.
+                    test_tile_x = test_tile_x - (lizard->xpos >> 4) + 4; // get back to 0-7 on each axis
+                    test_tile_y = test_tile_y - (lizard->ypos >> 4) + 4;
+
+                    jumpArcList[jumpArcs].jump_arc_type = test_tile_x + (test_tile_y * 8); // 8 possible x-axis values, 8 possible y-axis values.
+                    jumpArcList[jumpArcs].start_x = lizard->xpos;
+                    jumpArcList[jumpArcs].start_y = lizard->ypos;
+                    jumpArcs++;
+                }
+
+            }
+        }
+    }
+    else if(lizard->substate == S_JUMPING)
+    {
+        jump_arc = &jumpArcList[lizard->arcid];
+        // Evaluate the jump arc for the current anim frame.
+        // Jump arcs universally take 2 seconds.
+        // We update at half-rate, so it's about 30 frames.
+        if(framecount % 2 == 0)
+        {
+            // get jump x coords and jump y coords for current frame
+            if(lizard->animframe < 30)
+            {
+                // need to access bank 2
+                x = lizard->animframe;
+                y = jump_arc->jump_arc_type;
+                banked_call(2, jumpLutXLookup);
+                lizard->xpos = x + jump_arc->start_x - 127;
+                x = lizard->animframe;
+                banked_call(2, jumpLutYLookup);
+                lizard->ypos = x + jump_arc->start_y - 127;
+                lizard->animframe++;
+            }
+            else
+            {
+                jumpArcList[lizard->arcid] = jumpArcList[jumpArcs];
+                lizard->arcid = 0;
+                jumpArcs--;
+                lizard->substate = S_NORMAL;
+            }
+        }
+    }
+}
 
 // DRAWING ROUTINES
 void draw_monster(Monster* monster)
@@ -334,6 +449,10 @@ void draw_monster(Monster* monster)
     else if(monster->montype == MON_FLOWER)
     {
         draw_flower(monster);
+    }
+    else if(monster->montype == MON_LIZARD)
+    {
+        draw_lizard(monster);
     }
 }
 
@@ -395,6 +514,17 @@ void draw_flower(Monster* flower)
    {
        spr = oam_meta_spr(flower->xpos, flower->ypos, spr, flowerAnims[3+(flower->animframe%2)]);
    }
+}
+
+void draw_lizard(Monster* lizard)
+{
+    if(lizard->substate == S_NORMAL)
+        spr = oam_meta_spr(lizard->xpos, lizard->ypos, spr, flowerAnims[0]);
+    else if(lizard->substate == S_WINDUP)
+        spr = oam_meta_spr(lizard->xpos, lizard->ypos, spr, flowerAnims[1+(lizard->animframe%2)]);
+    else if(lizard->substate == S_JUMPING)
+        spr = oam_meta_spr(lizard->xpos, lizard->ypos, spr, fishSwimAnims[0]);
+
 }
 
 void delete_monster(unsigned char idx)
