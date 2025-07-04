@@ -205,12 +205,20 @@ void sword_check(WalkingCharacter* chara)
          if(point_in_rect(chara->xpos + offsetx, chara->ypos + offsety, x, y, x+16, y+16))
          {
              // TODO: Split this level check and substate check so that we can play a *dink* sound on strong monsters
-             if(monsterList[i].level <= playerLevel && (monsterList[i].substate == S_NORMAL || monsterList[i].substate == S_WINDUP))
+             if(monsterList[i].level <= playerLevel && (monsterList[i].substate == S_NORMAL || monsterList[i].substate == S_WINDUP || monsterList[i].substate == S_JUMPING))
              {
                  if(monsterList[i].health > 0)
                      monsterList[i].health--;
                  monsterList[i].substate = S_HURT;
-                 monsterList[i].animframe = 0;
+                 if(monsterList[i].montype != MON_LIZARD)
+                 {
+                     monsterList[i].animframe = 0;
+                 }
+                 else if(monsterList[i].arcid == 255)
+                 {
+                     // Lizard is not jumping, do regular hurt logic
+                     monsterList[i].animframe = 0;
+                 }
              }
          }
     }

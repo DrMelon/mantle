@@ -423,11 +423,51 @@ void update_mon_lizard(Monster* lizard)
             else
             {
                 jumpArcList[lizard->arcid] = jumpArcList[jumpArcs];
-                lizard->arcid = 0;
+                lizard->arcid = 255;
                 jumpArcs--;
                 lizard->substate = S_NORMAL;
             }
         }
+    }
+    else if(lizard->substate == S_HURT)
+    {
+        if(lizard->arcid != 255) // lizard is jumping, do special hurt logic
+        {
+            if(framecount % 64 == 0)
+            {
+                if(lizard->health < 1)
+                {
+                    earn_exp();
+                    delete_monster(i2);
+                    deadList[lizard->uniqueid] = 1; // update deadlist
+                }
+                else
+                {
+                    lizard->substate = S_JUMPING;
+                }
+            }
+        }
+        else
+        {
+            if(framecount % 2 == 0)
+            {
+                lizard->animframe++;
+                if(lizard->animframe > 12)
+                {
+                    if(lizard->health < 1)
+                    {
+                        earn_exp();
+                        delete_monster(i2);
+                        deadList[lizard->uniqueid] = 1;
+                    }
+                    else
+                    {
+                        lizard->substate = S_NORMAL;
+                    }
+                }
+            }
+        }
+
     }
 }
 
@@ -518,13 +558,24 @@ void draw_flower(Monster* flower)
 
 void draw_lizard(Monster* lizard)
 {
+    unsigned char liz_face_right = 0;
+    liz_face_right = lizard->direction < 2;
     if(lizard->substate == S_NORMAL)
-        spr = oam_meta_spr(lizard->xpos, lizard->ypos, spr, flowerAnims[0]);
+    {
+        spr = oam_meta_spr(lizard->xpos, lizard->ypos, spr, lizardIdleAnims[liz_face_right]);
+    }
     else if(lizard->substate == S_WINDUP)
-        spr = oam_meta_spr(lizard->xpos, lizard->ypos, spr, flowerAnims[1+(lizard->animframe%2)]);
+    {
+        spr = oam_meta_spr(lizard->xpos, lizard->ypos, spr, lizardPrepareAnims[(liz_face_right*2)+(lizard->animframe%2)]);
+    }
     else if(lizard->substate == S_JUMPING)
-        spr = oam_meta_spr(lizard->xpos, lizard->ypos, spr, fishSwimAnims[0]);
-
+    {
+        spr = oam_meta_spr(lizard->xpos, lizard->ypos, spr, lizardJumpAnims[liz_face_right]);
+    }
+    else if(lizard->substate == S_HURT)
+    {
+        spr = oam_meta_spr(lizard->xpos, lizard->ypos, spr, lizardHurtAnims[(liz_face_right*2)+(framecount%2)]);
+    }
 }
 
 void delete_monster(unsigned char idx)

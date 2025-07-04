@@ -234,6 +234,71 @@ const unsigned char flowerHurt1[]={
     128
 };
 
+const unsigned char lizardIdleRight[]={
+    8, 0, 0x84, 6 | OAM_FLIP_H,
+    0, 0, 0x85, 6 | OAM_FLIP_H,
+    8, 8, 0x94, 6 | OAM_FLIP_H,
+    0, 8, 0x95, 6 | OAM_FLIP_H,
+    128
+};
+
+const unsigned char lizardIdleLeft[]={
+    0, 0, 0x84, 6,
+    8, 0, 0x85, 6,
+    0, 8, 0x94, 6,
+    8, 8, 0x95, 6,
+    128
+};
+
+const unsigned char lizardJumpRight[]={
+    8, 0, 0x86, 6 | OAM_FLIP_H,
+    0, 0, 0x87, 6 | OAM_FLIP_H,
+    8, 8, 0x96, 6 | OAM_FLIP_H,
+    0, 8, 0x97, 6 | OAM_FLIP_H,
+    128
+};
+
+const unsigned char lizardJumpLeft[]={
+    0, 0, 0x86, 6,
+    8, 0, 0x87, 6,
+    0, 8, 0x96, 6,
+    8, 8, 0x97, 6,
+    128
+};
+
+const unsigned char lizardPrepareLeft[]={
+    0, 0, 0x84, 4,
+    8, 0, 0x85, 4,
+    0, 8, 0x94, 4,
+    8, 8, 0x95, 4,
+    128
+};
+
+
+const unsigned char lizardPrepareRight[]={
+    8, 0, 0x84, 4 | OAM_FLIP_H,
+    0, 0, 0x85, 4 | OAM_FLIP_H,
+    8, 8, 0x94, 4 | OAM_FLIP_H,
+    0, 8, 0x95, 4 | OAM_FLIP_H,
+    128
+};
+
+const unsigned char lizardHurtLeft[]={
+    0, 0, 0x86, 0,
+    8, 0, 0x87, 0,
+    0, 8, 0x96, 0,
+    8, 8, 0x97, 0,
+    128
+};
+
+const unsigned char lizardHurtRight[]={
+    8, 0, 0x86, 0 | OAM_FLIP_H,
+    0, 0, 0x87, 0 | OAM_FLIP_H,
+    8, 8, 0x96, 0 | OAM_FLIP_H,
+    0, 8, 0x97, 0 | OAM_FLIP_H,
+    128
+};
+
 const unsigned char* const monWalkerAnims[]={
     walkerWalk0,
     walkerWalk1,
@@ -277,6 +342,27 @@ const unsigned char* const flowerAnims[]={
     flowerPrepare1,
     flowerHurt0,
     flowerHurt1
+};
+
+const unsigned char* const lizardIdleAnims[]={
+    lizardIdleLeft,
+    lizardIdleRight
+};
+const unsigned char* const lizardPrepareAnims[]={
+    lizardIdleLeft,
+    lizardPrepareLeft,
+    lizardIdleRight,
+    lizardPrepareRight
+};
+const unsigned char* const lizardJumpAnims[]={
+    lizardJumpLeft,
+    lizardJumpRight
+};
+const unsigned char* const lizardHurtAnims[]={
+    lizardJumpLeft,
+    lizardHurtLeft,
+    lizardJumpRight,
+    lizardHurtRight
 };
 
 CODE_BANK_POP();

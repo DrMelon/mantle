@@ -81,12 +81,19 @@ void load_room()
            monsterList[spawnedMonsters].xpos = ((roomPtr[i+1]+2) << 4);
            monsterList[spawnedMonsters].ypos = ((roomPtr[i+2]+3) << 4);
            monsterList[spawnedMonsters].health = 1;
-           monsterList[spawnedMonsters].level = 1;
            monsterList[spawnedMonsters].substate = S_NORMAL;
            if(monsterList[spawnedMonsters].montype == MON_SHOOTER)
            {
                monsterList[spawnedMonsters].health = 2;
-               monsterList[spawnedMonsters].level = 1;
+           }
+           if(monsterList[spawnedMonsters].montype == MON_FISH)
+           {
+               monsterList[spawnedMonsters].level = 2;
+           }
+           if(monsterList[spawnedMonsters].montype == MON_LIZARD)
+           {
+               monsterList[spawnedMonsters].health = 3;
+               monsterList[spawnedMonsters].arcid = 255;
            }
            monsterList[spawnedMonsters].direction = rand8();
            monsterList[spawnedMonsters].direction = monsterList[spawnedMonsters].direction >> 6;
