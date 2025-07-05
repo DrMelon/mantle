@@ -31,8 +31,9 @@ typedef struct
 } WalkingCharacter;
 
 
-const unsigned char* const * const characterWalkAnims[];
-const unsigned char* const * const characterStrikeAnims[];
+extern const unsigned char* const * const characterWalkAnims[];
+extern const unsigned char* const * const characterStrikeAnims[];
+extern const unsigned char* const * const characterHurtAnims[];
 
 extern void switch_to_room(unsigned char room);
 extern void tele_to_room(unsigned char room, unsigned char telex, unsigned char teley);
@@ -41,6 +42,7 @@ extern void earn_exp();
 extern void update_character(WalkingCharacter* chara);
 extern void draw_character(WalkingCharacter* chara);
 extern void sword_check(WalkingCharacter* chara);
+extern void get_hurt(WalkingCharacter* chara);
 
 
 #endif

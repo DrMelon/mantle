@@ -8,6 +8,12 @@ const unsigned char swordSprite[]={
     128
 };
 
+const unsigned char candySprite[]={
+    0, 0, 0xA8, 4,
+    4, 4, 0xA8, 4 | OAM_FLIP_H | OAM_FLIP_V,
+    128
+};
+
 void update_item(Item* item, WalkingCharacter* chara)
 {
     unsigned char kx, ky;
@@ -47,6 +53,17 @@ void update_item(Item* item, WalkingCharacter* chara)
 
             delete_item(i);
         }
+        else if(item->itemtype == ITEM_CANDY)
+        {
+            if(playerHp < 16)
+            {
+                playerHp += 6;
+                if(playerHp > 16) playerHp = 16;
+                hudDirty = 1;
+            }
+
+            delete_item(i);
+        }
     }
 }
 
@@ -57,6 +74,10 @@ void draw_item(Item* item)
     {
         spr = oam_meta_spr(item->xpos, item->ypos, spr, swordSprite);
     }
+    else if(item->itemtype == ITEM_CANDY)
+    {
+        spr = oam_meta_spr(item->xpos, item->ypos, spr, candySprite);
+    }
 }
 
 void delete_item(unsigned char idx)
@@ -64,4 +85,18 @@ void delete_item(unsigned char idx)
     // remove-at-swapback
     itemList[idx] = itemList[spawnedItems-1];
     spawnedItems--;
+    oam_clear();
 }
+
+CODE_BANK(1);
+void spawn_candy(unsigned char px, unsigned char py)
+{
+    if(spawnedItems < MAX_ITEMS && rand8() < 64)
+    {
+        itemList[spawnedItems].itemtype = ITEM_CANDY;
+        itemList[spawnedItems].xpos = (px >> 4) << 4;
+        itemList[spawnedItems].ypos = (py >> 4) << 4;
+        spawnedItems++;
+    }
+}
+CODE_BANK_POP();

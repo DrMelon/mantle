@@ -17,13 +17,13 @@ typedef struct
   unsigned char xpos;
   unsigned char ypos;
   enum ItemType itemtype;
-  unsigned char living;
   unsigned char uniqueid;
 } Item;
 
 void update_item(Item* item, WalkingCharacter* chara);
 void draw_item(Item* item);
 void delete_item(unsigned char idx);
+void spawn_candy(unsigned char px, unsigned char py);
 
 void tele_to_room(unsigned char room, unsigned char telex, unsigned char teley);
 #endif

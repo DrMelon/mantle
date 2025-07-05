@@ -196,3 +196,46 @@ const unsigned char* const krisStrikeAnims[]={
     krisStrikeLeft1,
     krisStrikeLeft2
 };
+
+const unsigned char krisHurtDown[]={
+    0, 0, 0x01, 3,
+    8, 0, 0x02, 3,
+    0, 8, 0x03, 3,
+    8, 8, 0x04, 3,
+    128
+};
+
+const unsigned char krisHurtRight[]={
+    0, 0, 0x07, 3,
+    8, 0, 0x08, 3,
+    0, 8, 0x09, 3,
+    8, 8, 0x0A, 3,
+    128
+};
+
+const unsigned char krisHurtUp[]={
+    0, 0, 0x11, 3,
+    8, 0, 0x12, 3,
+    0, 8, 0x13, 3,
+    8, 8, 0x14, 3,
+    128
+};
+
+const unsigned char krisHurtLeft[]={
+    0, 0, 0x17, 3,
+    8, 0, 0x18, 3,
+    -1, 8, 0x19, 3,
+    7, 8, 0x1A, 3,
+    128
+};
+
+const unsigned char* const krisHurtAnims[]={
+    krisHurtDown,
+    krisWalkDown0,
+    krisHurtRight,
+    krisWalkRight0,
+    krisHurtUp,
+    krisWalkUp0,
+    krisHurtLeft,
+    krisWalkLeft0,
+};

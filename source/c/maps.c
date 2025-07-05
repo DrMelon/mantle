@@ -82,6 +82,56 @@ int solidity_check(unsigned char px, unsigned char py)
     return 1;
 }
 
+int solidity_check_nocactus(unsigned char px, unsigned char py)
+{
+    // TopLeft
+    x = (px+2) >> 4;
+    y = (py+2) >> 4;
+    if(tilemap_solid_nocactus(x, y)) return 0;
+
+    // TopRight
+    x = (px+14) >> 4;
+    y = (py+2) >> 4;
+    if(tilemap_solid_nocactus(x, y)) return 0;
+
+    // BottomLeft
+    x = (px+2) >> 4;
+    y = (py+14) >> 4;
+    if(tilemap_solid_nocactus(x, y)) return 0;
+
+    // BottomRight
+    x = (px+14) >> 4;
+    y = (py+14) >> 4;
+    if(tilemap_solid_nocactus(x, y)) return 0;
+
+    return 1;
+}
+
+int cactus_check(unsigned char px, unsigned char py)
+{
+    // TopLeft
+    x = (px+4) >> 4;
+    y = (py+4) >> 4;
+    if(tilemap_ouchie(x, y)) return 0;
+
+    // TopRight
+    x = (px+12) >> 4;
+    y = (py+4) >> 4;
+    if(tilemap_ouchie(x, y)) return 0;
+
+    // BottomLeft
+    x = (px+4) >> 4;
+    y = (py+12) >> 4;
+    if(tilemap_ouchie(x, y)) return 0;
+
+    // BottomRight
+    x = (px+12) >> 4;
+    y = (py+12) >> 4;
+    if(tilemap_ouchie(x, y)) return 0;
+
+    return 1;
+}
+
 int swim_check(unsigned char px, unsigned char py)
 {
     // TopLeft
@@ -118,6 +168,25 @@ int tilemap_swimmable(unsigned char tx, unsigned char ty)
     return i < 15 || i > 23;
 }
 
+int tilemap_ouchie(unsigned char tx, unsigned char ty)
+{
+    x = tx - 2; // account for centering
+    y = ty - 3;
+    if(x < 0 || x >= 12) return 1;
+    if(y < 0 || y >= 8) return 1;
+    i = (x + (y*12));
+    return metatilesPtr[currentRoomColl[i]*6 + 5] == 2;
+}
+
+int tilemap_solid_nocactus(unsigned char tx, unsigned char ty)
+{
+    x = tx - 2; // account for centering
+    y = ty - 3;
+    if(x < 0 || x >= 12) return 1;
+    if(y < 0 || y >= 8) return 1;
+    i = (x + (y*12));
+    return metatilesPtr[currentRoomColl[i]*6 + 5] == 1;
+}
 
 int tilemap_solid(unsigned char tx, unsigned char ty)
 {

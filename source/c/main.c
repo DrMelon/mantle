@@ -83,7 +83,6 @@ void main(void) {
         if(currentState == GS_GAMEPLAY)
         {
           // Wipe oams (perf?)
-          oam_clear();
           spr = 0;
 
           if(queueTele != 0)
@@ -98,6 +97,10 @@ void main(void) {
           {
              playerLevel++;
              playerExp = 0;
+             if(playerLevel == 2 && currentEnvironment == E_DESERT)
+             {
+                 monsterAggression++; // monsters only become violent and dangerous after lvl 2 in the desert
+             }
              if(playerLevel == 4)
              {
                  playerExp = 24; // full exp

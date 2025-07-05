@@ -7,6 +7,7 @@
 #include "utils.h"
 #include "maps.h"
 #include "jump_luts.h"
+#include "items.h"
 
 CODE_BANK(1);
 void update_monster(Monster* monster)
@@ -100,7 +101,7 @@ void update_mon_shooter(Monster* shooter)
     if(shooter->substate == S_NORMAL || shooter->substate == S_HURT)
     {
         update_mon_walker(shooter); // Behaves like a Walker until it wants to fire spears.
-        if(framecount % 64 == 0)
+        if(framecount % 64 == 0 && monsterAggression > 0)
         {
             // Every 64 frames, roll the dice and decide whether to shoot or not.
             if(rand8() < 127)
@@ -259,7 +260,7 @@ void update_mon_flower(Monster* flower)
     {
        // flowers seethe with anger and desire only to blast bullets directly at the player's head
        flower->animframe++;
-       if(flower->animframe > 120 && rand8()<40)
+       if(flower->animframe > 120 && rand8()<40 && monsterAggression > 0)
        {
            flower->substate = S_WINDUP;
            flower->animframe = 0;
@@ -581,7 +582,9 @@ void draw_lizard(Monster* lizard)
 void delete_monster(unsigned char idx)
 {
     // use a classic remove and swap back to remove a monster from the update list
+    spawn_candy(monsterList[idx].xpos, monsterList[idx].ypos);
     monsterList[idx] = monsterList[spawnedMonsters-1];
     spawnedMonsters--;
+    oam_clear();
 }
 CODE_BANK_POP();

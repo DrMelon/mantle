@@ -56,7 +56,11 @@ extern const unsigned char desert_room_0[];
 extern const unsigned char* const* environment_rooms[];
 
 int solidity_check(unsigned char px, unsigned char py);
+int solidity_check_nocactus(unsigned char px, unsigned char py);
+int cactus_check(unsigned char px, unsigned char py);
 int tilemap_solid(unsigned char tx, unsigned char ty);
+int tilemap_solid_nocactus(unsigned char tx, unsigned char ty);
+int tilemap_ouchie(unsigned char tx, unsigned char ty);
 int tile_solid(unsigned char tile);
 int swim_check(unsigned char tx, unsigned char ty);
 int tilemap_swimmable(unsigned char tx, unsigned char ty);

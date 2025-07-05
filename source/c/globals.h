@@ -68,7 +68,7 @@ extern unsigned char* roomPtr;
 extern unsigned char* metatilesPtr;
 extern unsigned char currentRoomColl[];
 
-#define MAX_ITEMS 5
+#define MAX_ITEMS 8
 extern Item itemList[];
 
 #define MAX_MONSTERS 16

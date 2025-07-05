@@ -3,4 +3,5 @@
 
 extern const unsigned char* const krisWalkAnims[];
 extern const unsigned char* const krisStrikeAnims[];
+extern const unsigned char* const krisHurtAnims[];
 #endif

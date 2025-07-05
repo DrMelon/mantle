@@ -74,8 +74,7 @@ void update_projectile(Projectile* proj)
         projList[i] = projList[spawnedProjectiles-1];
         spawnedProjectiles--;
 
-        // Why does this affect the monsterList?
-        // Some pointer shenanigans?
+        oam_clear();
     }
 
 }

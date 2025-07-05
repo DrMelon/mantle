@@ -12,6 +12,11 @@ void load_environment(enum Environment env)
 {
     currentEnvironment = env;
 
+    if(env == E_DESERT)
+    {
+        monsterAggression = 0; // Monsters start docile in the desert.
+    }
+
     mmc1_set_chr_bank_0(env * 2);
     mmc1_set_chr_bank_1((env * 2) + 1);
 
@@ -81,6 +86,7 @@ void load_room()
            monsterList[spawnedMonsters].xpos = ((roomPtr[i+1]+2) << 4);
            monsterList[spawnedMonsters].ypos = ((roomPtr[i+2]+3) << 4);
            monsterList[spawnedMonsters].health = 1;
+           monsterList[spawnedMonsters].level = 1;
            monsterList[spawnedMonsters].substate = S_NORMAL;
            if(monsterList[spawnedMonsters].montype == MON_SHOOTER)
            {

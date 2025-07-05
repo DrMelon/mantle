@@ -17,6 +17,10 @@ const unsigned char* const * const characterStrikeAnims[]={
     krisStrikeAnims
 };
 
+const unsigned char* const * const characterHurtAnims[]={
+    krisHurtAnims
+};
+
 CODE_BANK(0);
 void update_character(WalkingCharacter* chara)
 {
@@ -28,64 +32,111 @@ void update_character(WalkingCharacter* chara)
 
             if(chara->chartype == CH_KRIS)
             {
+                // Do projectile and monster damage checks
+                if(monsterAggression > 0 && framecount % 2 == 0)
+                {
+                    for(i = 0; i < spawnedMonsters; i++)
+                    {
+                        if(monsterList[i].substate == S_NORMAL || monsterList[i].substate == S_JUMPING)
+                        {
+                            if(point_in_rect(monsterList[i].xpos + 8, monsterList[i].ypos + 8, chara->xpos+2, chara->ypos+2, chara->xpos+14, chara->ypos+14))
+                            {
+                                get_hurt(chara);
+                                break;
+                            }
+                        }
+                    }
+                    for(i = 0; i < spawnedProjectiles; i++)
+                    {
+                        if(projList[i].projtype != P_ICEMAGIC)
+                        {
+                            if(point_in_rect(projList[i].xpos + 4, projList[i].ypos + 4, chara->xpos+4, chara->ypos+4, chara->xpos+12, chara->ypos+12))
+                            {
+                                get_hurt(chara);
+                                break;
+                            }
+                        }
+                    }
+                }
+
                 if(pad_trig&PAD_A && playerLevel > 0)
-                    {
-                        chara->substate = S_ATTACK;
-                        chara->animframe = 0;
-                        break;
-                    }
+                {
+                    chara->substate = S_ATTACK;
+                    chara->animframe = 0;
+                    break;
+                }
                 if(pad&PAD_DOWN)
+                {
+                    chara->direction = 0;
+                    if(solidity_check_nocactus(chara->xpos, chara->ypos + 1)) chara->ypos++;
+                    if(!cactus_check(chara->xpos, chara->ypos))
                     {
-                        chara->direction = 0;
-                        if(solidity_check(chara->xpos, chara->ypos + 1)) chara->ypos++;
-                        did_walk = 1;
-                        if(chara->ypos > 160)
-                        {
-                            bank_push(0);
-                            roomSwitchDir = 0;
-                            switch_to_room(roomPtr[0]);
-                            bank_pop();
-                        }
+                        get_hurt(chara);
+                        chara->ypos -= 4;
                     }
+                    did_walk = 1;
+                    if(chara->ypos > 160)
+                    {
+                        bank_push(0);
+                        roomSwitchDir = 0;
+                        switch_to_room(roomPtr[0]);
+                        bank_pop();
+                    }
+                }
                 if(pad&PAD_RIGHT)
+                {
+                    chara->direction = 1;
+                    if(solidity_check_nocactus(chara->xpos + 1, chara->ypos)) chara->xpos++;
+                    if(!cactus_check(chara->xpos, chara->ypos))
                     {
-                        chara->direction = 1;
-                        if(solidity_check(chara->xpos + 1, chara->ypos)) chara->xpos++;
-                        did_walk = 1;
-                        if(chara->xpos > 208)
-                        {
-                            bank_push(0);
-                            roomSwitchDir = 1;
-                            switch_to_room(roomPtr[1]);
-                            bank_pop();
-                        }
+                        get_hurt(chara);
+                        chara->xpos -= 4;
                     }
+                    did_walk = 1;
+                    if(chara->xpos > 208)
+                    {
+                        bank_push(0);
+                        roomSwitchDir = 1;
+                        switch_to_room(roomPtr[1]);
+                        bank_pop();
+                    }
+                }
                 if(pad&PAD_UP)
+                {
+                    chara->direction = 2;
+                    if(solidity_check_nocactus(chara->xpos, chara->ypos - 1)) chara->ypos--;
+                    if(!cactus_check(chara->xpos, chara->ypos))
                     {
-                        chara->direction = 2;
-                        if(solidity_check(chara->xpos, chara->ypos - 1)) chara->ypos--;
-                        did_walk = 1;
-                        if(chara->ypos < 48)
-                        {
-                            bank_push(0);
-                            roomSwitchDir = 2;
-                            switch_to_room(roomPtr[2]);
-                            bank_pop();
-                        }
+                        get_hurt(chara);
+                        chara->ypos += 4;
                     }
+                    did_walk = 1;
+                    if(chara->ypos < 48)
+                    {
+                        bank_push(0);
+                        roomSwitchDir = 2;
+                        switch_to_room(roomPtr[2]);
+                        bank_pop();
+                    }
+                }
                 if(pad&PAD_LEFT)
+                {
+                    chara->direction = 3;
+                    if(solidity_check_nocactus(chara->xpos - 1, chara->ypos)) chara->xpos--;
+                    if(!cactus_check(chara->xpos, chara->ypos))
                     {
-                        chara->direction = 3;
-                        if(solidity_check(chara->xpos - 1, chara->ypos)) chara->xpos--;
-                        did_walk = 1;
-                        if(chara->xpos < 32)
-                        {
-                            bank_push(0);
-                            roomSwitchDir = 3;
-                            switch_to_room(roomPtr[3]);
-                            bank_pop();
-                        }
+                        get_hurt(chara);
+                        chara->xpos += 4;
                     }
+                    did_walk = 1;
+                    if(chara->xpos < 32)
+                    {
+                        bank_push(0);
+                        roomSwitchDir = 3;
+                        switch_to_room(roomPtr[3]);
+                        bank_pop();
+                    }
+                }
             }
             if(did_walk && framecount%16 == 0)
             {
@@ -112,6 +163,7 @@ void update_character(WalkingCharacter* chara)
             if(framecount%6 == 0)
             {
                 chara->animframe++;
+                oam_clear();
             }
             if(chara->animframe == 1 && framecount%6 == 0)
             {
@@ -165,9 +217,58 @@ void update_character(WalkingCharacter* chara)
         }
         case S_HURT:
         {
-            // TODO:
             // 1. Knockback in opposite direction to facing
             // 2. Knockback movement needs to check tile solidity
+            if(framecount % 3 == 0)
+            {
+                chara->animframe++;
+
+                if(chara->chartype == CH_KRIS)
+                {
+                    if(chara->direction == 2)
+                    {
+                        if(solidity_check(chara->xpos, chara->ypos + 2)) chara->ypos+=2;
+                    }
+                    if(chara->direction == 3)
+                    {
+                        if(solidity_check(chara->xpos + 2, chara->ypos)) chara->xpos+=2;
+                    }
+                    if(chara->direction == 0)
+                    {
+                        if(solidity_check(chara->xpos, chara->ypos - 2)) chara->ypos-=2;
+                    }
+                    if(chara->direction == 1)
+                    {
+                        if(solidity_check(chara->xpos - 2, chara->ypos)) chara->xpos-=2;
+                    }
+                }
+            }
+
+            // After anim over, check death status.
+            if(chara->animframe >= 6)
+            {
+                // It's die time!
+                if(chara->chartype == CH_KRIS)
+                {
+                    // TODO: Game death sequence, then restart from last environment/flag point.
+                    if(playerHp < 1)
+                    {
+                        // do someething
+                    }
+                    else
+                    {
+                        chara->substate = S_NORMAL;
+                    }
+                }
+                else
+                {
+                    // Susie/Ralsei must shrimply disappear... and award a lot of exp.
+                    if(playerLevel < 3)
+                        playerLevel++;
+                    // Play level up jingle
+                    // TODO: Disappear susie/ralsei
+                }
+            }
             break;
         }
     }
@@ -223,6 +324,19 @@ void sword_check(WalkingCharacter* chara)
          }
     }
 }
+
+void get_hurt(WalkingCharacter *chara)
+{
+    if(chara->substate == S_NORMAL)
+    {
+        chara->substate = S_HURT;
+        if(chara->chartype == CH_KRIS)
+            playerHp--;
+        chara->animframe = 0;
+        hudDirty = 1;
+    }
+}
+
 CODE_BANK_POP();
 
 void draw_character(WalkingCharacter* chara)
@@ -236,6 +350,11 @@ void draw_character(WalkingCharacter* chara)
     if(chara->substate == S_ATTACK)
     {
         spr = oam_meta_spr(chara->xpos, chara->ypos, spr, characterStrikeAnims[chara->chartype][chara->animframe + (chara->direction*3)]);
+    }
+    // Character is hurt, play hurt anim for facing dir
+    if(chara->substate == S_HURT)
+    {
+        spr = oam_meta_spr(chara->xpos, chara->ypos, spr, characterHurtAnims[chara->chartype][(chara->animframe%2) + (chara->direction*2)]);
     }
 }
 
