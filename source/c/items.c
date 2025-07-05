@@ -1,6 +1,7 @@
 #include "items.h"
 #include "globals.h"
 #include "neslib.h"
+#include "utils.h"
 
 const unsigned char swordSprite[]={
     0, 0, 0x27, 4,
@@ -16,14 +17,9 @@ const unsigned char candySprite[]={
 
 void update_item(Item* item, WalkingCharacter* chara)
 {
-    unsigned char kx, ky;
     // Check to see if Kris has walked onto the same tile as this item
-    x = item->xpos >> 4;
-    y = item->ypos >> 4;
-    kx = chara->xpos >> 4;
-    ky = chara->ypos >> 4;
 
-    if(x == kx && y == ky)
+    if(point_in_rect(item->xpos+4, item->ypos+4, chara->xpos, chara->ypos, chara->xpos+16, chara->ypos+16))
     {
         // Touching item. Let's do some logic!
         if(item->itemtype == ITEM_SWORD)
@@ -91,11 +87,12 @@ void delete_item(unsigned char idx)
 CODE_BANK(1);
 void spawn_candy(unsigned char px, unsigned char py)
 {
-    if(spawnedItems < MAX_ITEMS && rand8() < 64)
+    // Increasing chance to spawn candy as hp gets low
+    if(spawnedItems < MAX_ITEMS && rand8() < (64 + (2*(16-playerHp))))
     {
         itemList[spawnedItems].itemtype = ITEM_CANDY;
-        itemList[spawnedItems].xpos = (px >> 4) << 4;
-        itemList[spawnedItems].ypos = (py >> 4) << 4;
+        itemList[spawnedItems].xpos = px;
+        itemList[spawnedItems].ypos = py;
         spawnedItems++;
     }
 }
