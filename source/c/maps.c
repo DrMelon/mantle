@@ -40,6 +40,7 @@ const unsigned char desert_metatiles[]={
    0x00, 0x00, 0x00, 0x00, 0b01010101, 1,
    0x23, 0x24, 0x33, 0x34, 0b01010101, 0,
    0x0F, 0x0F, 0x1F, 0x1F, 0b10101010, 0,
+   0x10, 0x10, 0x10, 0x10, 0b00000000, 0
 };
 
 // Format: S, E, N, W exits, then the map tile layout (12x8 metatiles),
@@ -233,8 +234,7 @@ void set_map_tile_on_character(WalkingCharacter* chara, unsigned char tile)
 void set_map_tile_in_room(unsigned char tx, unsigned char ty, unsigned char tile)
 {
     unsigned short ntrAdr = 0;
-    i = tx + (ty*12);
-    currentRoomColl[i] = tile; // UPDATE TILE COLLISIONS
+    currentRoomColl[tx + (ty*12)] = tile; // UPDATE TILE COLLISIONS
     ntrAdr = NTADR_A((tx+2)*2,(ty+3)*2);
     palmTreeBuffer[0] = MSB(ntrAdr);
     palmTreeBuffer[1] = LSB(ntrAdr);
@@ -252,4 +252,20 @@ void set_map_tile_in_room(unsigned char tx, unsigned char ty, unsigned char tile
     palmTreeBuffer[12] = NT_UPD_EOF;
     set_vram_update(palmTreeBuffer);
     writingVram = 1;
+}
+
+void draw_black_tile_in_room(unsigned char tx, unsigned char ty)
+{
+    tx += 2;
+    ty += 3;
+
+    if(currentEnvironment == E_DESERT)
+    {
+        set_map_tile_in_room(tx-2, ty-3, TILE_D_BLACK);
+        attrib_addr = 0x23C0 + ((ty)/2) * 8 + ((tx)/2);
+        palmTreeBuffer[12] = MSB(attrib_addr);
+        palmTreeBuffer[13] = LSB(attrib_addr);
+        palmTreeBuffer[14] = 0b00000000;
+        palmTreeBuffer[15] = NT_UPD_EOF;
+    }
 }

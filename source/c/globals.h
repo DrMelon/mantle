@@ -21,6 +21,9 @@ enum GameState
     GS_OUTRO
 };
 
+// Bank Assignments
+#define ROOM_LOGIC_BANK 0
+
 //
 // Global Variables (zeropage)
 // Small, frequently-used variables should go in this space. There are only around 250 bytes to go around, so choose wisely!
@@ -30,7 +33,9 @@ ZEROPAGE_EXTERN(enum GameState, currentState);
 ZEROPAGE_EXTERN(unsigned char, i);
 ZEROPAGE_EXTERN(unsigned char, i2);
 ZEROPAGE_EXTERN(unsigned char, x);
+ZEROPAGE_EXTERN(unsigned char, x2);
 ZEROPAGE_EXTERN(unsigned char, y);
+ZEROPAGE_EXTERN(unsigned char, y2);
 ZEROPAGE_EXTERN(unsigned int, attrib_addr);
 ZEROPAGE_EXTERN(unsigned char, spr);
 ZEROPAGE_EXTERN(unsigned char, framecount);

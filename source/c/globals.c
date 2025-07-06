@@ -5,7 +5,9 @@ ZEROPAGE_DEF(enum GameState, currentState);
 ZEROPAGE_DEF(unsigned char, i);
 ZEROPAGE_DEF(unsigned char, i2);
 ZEROPAGE_DEF(unsigned char, x);
+ZEROPAGE_DEF(unsigned char, x2);
 ZEROPAGE_DEF(unsigned char, y);
+ZEROPAGE_DEF(unsigned char, y2);
 ZEROPAGE_DEF(unsigned int, attrib_addr);
 ZEROPAGE_DEF(unsigned char, spr);
 ZEROPAGE_DEF(unsigned char, framecount);
@@ -50,4 +52,4 @@ Projectile projList[MAX_PROJECTILES];
 unsigned char deadList[TOTAL_SPAWNABLES];
 JumpArcState jumpArcList[MAX_JUMP_ARCS];
 
-unsigned char palmTreeBuffer[16];
+unsigned char palmTreeBuffer[32];

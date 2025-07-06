@@ -57,7 +57,7 @@ void main(void) {
     kris.animframe = 0;
 
     // Load first room of first map, in Desert.
-    bank_push(0);
+    bank_push(ROOM_LOGIC_BANK);
     load_environment(E_DESERT);
     load_room();
     bank_pop();
@@ -87,7 +87,9 @@ void main(void) {
 
           if(queueTele != 0)
           {
+            bank_push(ROOM_LOGIC_BANK);
             tele_to_room(queueTele, x+2, y+3);
+            bank_pop();
             queueTele = 0;
             continue;
           }
@@ -268,8 +270,71 @@ void main(void) {
            // Teleporting to room
            kris.xpos = x << 4;
            kris.ypos = y << 4;
-           pal_col(0, envPalettes[currentEnvironment][0]);
+
+           // Black out screen in a spiral pattern
+           x = 0;
+           y = 0;
+           x2 = 11;
+           y2 = 7;
+           oam_clear();
+           while(x <= x2 && y <= y2)
+           {
+              // Spiral running right
+              for(i = x; i <= x2; i++)
+              {
+                  bank_push(ROOM_LOGIC_BANK);
+                  draw_black_tile_in_room(i, y);
+                  bank_pop();
+                  ppu_wait_frame();
+              }
+              y++;
+
+              // Spiral running down
+              for(i = y; i <= y2; i++)
+              {
+                  bank_push(ROOM_LOGIC_BANK);
+                  draw_black_tile_in_room(x2, i);
+                  bank_pop();
+                  ppu_wait_frame();
+              }
+              x2--;
+
+              // Spiral running left
+              for(i = x2; i >= x && i != 255; i--)
+              {
+                  bank_push(ROOM_LOGIC_BANK);
+                  draw_black_tile_in_room(i, y2);
+                  bank_pop();
+                  ppu_wait_frame();
+              }
+              y2--;
+
+              // Spiral running up
+              for(i = y2; i >= y; i--)
+              {
+                  bank_push(ROOM_LOGIC_BANK);
+                  draw_black_tile_in_room(x, i);
+                  bank_pop();
+                  ppu_wait_frame();
+              }
+              x++;
+
+           }
+
+           set_vram_update(NULL);
+
+           pal_col(0, 0x0F); // Black BG
+           ppu_wait_nmi(); // wait till end of frame
+
+           // Turn off PPU
+           ppu_off();
+
+           // Load room
+           load_room();
+
            ppu_on_all();
+
+           pal_col(0, envPalettes[currentEnvironment][0]);
            currentState = GS_GAMEPLAY;
 
            //entering/leaving the shop room in the desert?

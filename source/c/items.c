@@ -88,7 +88,7 @@ CODE_BANK(1);
 void spawn_candy(unsigned char px, unsigned char py)
 {
     // Increasing chance to spawn candy as hp gets low
-    if(spawnedItems < MAX_ITEMS && rand8() < (64 + (2*(16-playerHp))))
+    if(spawnedItems < MAX_ITEMS && rand8() < (48 + (2*(16-playerHp))))
     {
         itemList[spawnedItems].itemtype = ITEM_CANDY;
         itemList[spawnedItems].xpos = px;

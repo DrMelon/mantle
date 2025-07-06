@@ -6,7 +6,7 @@
 #include "mapper.h"
 
 // ROOM & ENVIRONMENT HANDLING FUNCTIONS in ROM_00
-CODE_BANK(0);
+CODE_BANK(ROOM_LOGIC_BANK);
 
 void load_environment(enum Environment env)
 {
@@ -152,21 +152,11 @@ void switch_to_room(unsigned char room)
 void tele_to_room(unsigned char room, unsigned char telex, unsigned char teley)
 {
     currentState = GS_SCREENTRANS_TELE;
-
-    pal_col(0, 0x0F); // Black BG
-    ppu_wait_nmi(); // wait till end of frame
-
-    // Turn off PPU
-    ppu_off();
-
-    // Load room
-    prevRoom = currentRoom;
-    currentRoom = room;
-    load_room();
-
     // Set sprite pos
     x = telex;
     y = teley;
 
+    prevRoom = currentRoom;
+    currentRoom = room;
 }
 CODE_BANK_POP();

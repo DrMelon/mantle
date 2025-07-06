@@ -47,6 +47,7 @@ enum Environment
 #define TILE_D_EMPTYFULL 30
 #define TILE_D_PEBBLES 31
 #define TILE_D_BRIDGE 32
+#define TILE_D_BLACK 33
 
 extern const unsigned char* environment_metatiles[];
 
@@ -55,19 +56,18 @@ extern const unsigned char desert_room_0[];
 
 extern const unsigned char* const* environment_rooms[];
 
-int solidity_check(unsigned char px, unsigned char py);
-int solidity_check_nocactus(unsigned char px, unsigned char py);
-int cactus_check(unsigned char px, unsigned char py);
-int tilemap_solid(unsigned char tx, unsigned char ty);
-int tilemap_solid_nocactus(unsigned char tx, unsigned char ty);
-int tilemap_ouchie(unsigned char tx, unsigned char ty);
-int tile_solid(unsigned char tile);
-int swim_check(unsigned char tx, unsigned char ty);
-int tilemap_swimmable(unsigned char tx, unsigned char ty);
-void set_map_tile_in_room(unsigned char tx, unsigned char ty, unsigned char tile);
-void set_map_tile_on_character(WalkingCharacter* chara, unsigned char tile);
-
-extern void set_palette_for_bg_tile(unsigned char tx, unsigned char ty, unsigned char palettemask);
+extern int solidity_check(unsigned char px, unsigned char py);
+extern int solidity_check_nocactus(unsigned char px, unsigned char py);
+extern int cactus_check(unsigned char px, unsigned char py);
+extern int tilemap_solid(unsigned char tx, unsigned char ty);
+extern int tilemap_solid_nocactus(unsigned char tx, unsigned char ty);
+extern int tilemap_ouchie(unsigned char tx, unsigned char ty);
+extern int tile_solid(unsigned char tile);
+extern int swim_check(unsigned char tx, unsigned char ty);
+extern int tilemap_swimmable(unsigned char tx, unsigned char ty);
+extern void set_map_tile_in_room(unsigned char tx, unsigned char ty, unsigned char tile);
+extern void set_map_tile_on_character(WalkingCharacter* chara, unsigned char tile);
+extern void draw_black_tile_in_room(unsigned char tx, unsigned char ty);
 
 
 #endif
