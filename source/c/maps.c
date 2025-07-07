@@ -3,6 +3,7 @@
 #include "neslib.h"
 #include "actors.h"
 #include "desert_maps.h"
+#include "island_maps.h"
 
 // Format: 4 8x8 tiles that make up this metatile, and palette mask for attrib (actual mask differs based on tile pos)
 // then, tile solidity type (0 = walkable, 1 = not walkable, 2 = not walkable, hurts)
@@ -53,11 +54,13 @@ const unsigned char desert_metatiles[]={
 // then a "unique id" for monsters so we can track which ones are dead-dead
 // list terminates if you reach an id of 128
 const unsigned char* environment_metatiles[]={
-  desert_metatiles
+  desert_metatiles,
+  //island_metatiles
 };
 
 const unsigned char* const* environment_rooms[]={
-  desert_rooms
+  desert_rooms,
+  island_rooms
 };
 
 int solidity_check(unsigned char px, unsigned char py)
