@@ -23,6 +23,7 @@ enum GameState
 
 // Bank Assignments
 #define ROOM_LOGIC_BANK 0
+#define CHEAT_CODES_BANK 6
 
 //
 // Global Variables (zeropage)
@@ -65,14 +66,17 @@ ZEROPAGE_EXTERN(unsigned char, textDelay);
 ZEROPAGE_EXTERN(unsigned char, monsterAggression);
 ZEROPAGE_EXTERN(unsigned char, jumpArcs);
 
+
 #pragma bss-name(push, "ZEROPAGE")
     extern WalkingCharacter kris;
 #pragma bss-name(pop)
 
+// Fast-access room pointers
 extern unsigned char* roomPtr;
 extern unsigned char* metatilesPtr;
 extern unsigned char currentRoomColl[];
 
+// Buffers for actors
 #define MAX_ITEMS 8
 extern Item itemList[];
 
@@ -91,6 +95,11 @@ extern unsigned char deadList[];
 #define MAX_PROJECTILES 8
 extern Projectile projList[];
 
+// Tile update buffer for killing trees (and more)
 extern unsigned char palmTreeBuffer[];
+
+// Narrative/theatrics
+extern unsigned char treeRoomVisits; // Number of times visited the Tree Room
+
 
 #endif

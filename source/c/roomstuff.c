@@ -15,6 +15,7 @@ void load_environment(enum Environment env)
     if(env == E_DESERT)
     {
         monsterAggression = 0; // Monsters start docile in the desert.
+        treeRoomVisits = 0;
     }
 
     mmc1_set_chr_bank_0(env * 2);
@@ -40,6 +41,23 @@ void load_room()
            i = (x + (y*12)) + 4; // add 4 to skip entrances/exits of room
            i2 = (x + (y*12));
            currentTileID = roomPtr[i];
+           if(x == 4 && y == 4)
+           {
+                if(currentEnvironment == E_DESERT && currentRoom == 26)
+                {
+                        // Are we in the Tree Room?
+                        // Increment the tree-room-visits counter
+                        treeRoomVisits++;
+
+                        if(treeRoomVisits >= 4)
+                        {
+                             treeRoomVisits = 4;
+                             // Spawn the chest instead of the usual tile
+                             currentTileID = TILE_D_CHEST_CLOSED;
+                        }
+                }
+           }
+
            currentRoomColl[i2] = currentTileID;
            vram_adr(NTADR_A((x+2)*2,(y+3)*2));
            vram_put(environment_metatiles[currentEnvironment][(currentTileID*6)]);

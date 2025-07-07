@@ -48,6 +48,8 @@ enum Environment
 #define TILE_D_PEBBLES 31
 #define TILE_D_BRIDGE 32
 #define TILE_D_BLACK 33
+#define TILE_D_CHEST_CLOSED 34
+#define TILE_D_CHEST_OPEN 35
 
 extern const unsigned char* environment_metatiles[];
 

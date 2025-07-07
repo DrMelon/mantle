@@ -17,6 +17,8 @@ const unsigned char dialog_1[] = "Or perhaps, for someTHING?";
 const unsigned char dialog_2[] = "Neither will be found here.";
 const unsigned char dialog_3[] = "But YOU knew that already, didn't you..?";
 
+const unsigned char icekey_found_0[] = "YOU GOT THE ICE KEY";
+
 const unsigned char instruct_0[] = "     BECOME STRONGER";
 const unsigned char instruct_1[] = "     BECAME STRONGER";
 
@@ -27,6 +29,7 @@ const unsigned char* lvStrings[] = {lv1Text, lv2Text, lv3Text, lvMaxText};
 unsigned char hudUpdateBuffer[24];
 unsigned char textBuffer[TEXT_LINE_MAX_LEN*TEXT_MAX_LINES];
 unsigned char textVRAMBuffer[(TEXT_LINE_MAX_LEN*TEXT_MAX_LINES)+28];
+
 CODE_BANK(0);
 void draw_ui_borders()
 {

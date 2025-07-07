@@ -11,6 +11,7 @@
 #include "items.h"
 #include "ui.h"
 #include "palettes.h"
+#include "cheats.h"
 
 // forward decls
 void load_environment(enum Environment env);
@@ -68,6 +69,10 @@ void main(void) {
     // Turn the screen back on
     ppu_on_all();
 
+    #ifdef CHEATS_ENABLED
+    cheatInputIdx = 0;
+    #endif
+
     // Infinite loop to end things
     while (1) {
         framecount++;
@@ -79,6 +84,13 @@ void main(void) {
         // Do input
         pad_trig = pad_trigger(0);
         pad = pad_state(0);
+
+        // do cheats check if cheats compiled
+        #ifdef CHEATS_ENABLED
+        bank_push(CHEAT_CODES_BANK);
+        update_cheats();
+        bank_pop();
+        #endif
 
         if(currentState == GS_GAMEPLAY)
         {

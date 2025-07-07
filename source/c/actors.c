@@ -5,6 +5,8 @@
 #include "maps.h"
 #include "utils.h"
 #include "projectiles.h"
+#include "ui.h"
+#include "roomstuff.h"
 
 #include "kris_anims.h"
 #include "monster_anims.h"
@@ -59,10 +61,14 @@ void update_character(WalkingCharacter* chara)
                     }
                 }
 
-                if(pad_trig&PAD_A && playerLevel > 0)
+                if(pad_trig&PAD_A)
                 {
-                    chara->substate = S_ATTACK;
-                    chara->animframe = 0;
+                    if(playerLevel > 0)
+                    {
+                        chara->substate = S_ATTACK;
+                        chara->animframe = 0;
+                    }
+
                     break;
                 }
                 if(pad&PAD_DOWN)
@@ -181,8 +187,8 @@ void update_character(WalkingCharacter* chara)
                 // Tile check (adjust pos)
                 x -= 2;
                 y -= 3;
-                i = (y*12)+x+4;
-                i2 = roomPtr[i];
+                i = (y*12)+x;
+                i2 = currentRoomColl[i];
 
                 if(i2 == TILE_D_FERN && playerLevel >= 2)
                 {
@@ -195,6 +201,24 @@ void update_character(WalkingCharacter* chara)
                 else if(i2 == TILE_D_TREE && playerLevel >= 4)
                 {
                     set_map_tile_in_room(x, y, 0);
+                }
+                else if(i2 == TILE_D_CHEST_CLOSED)
+                {
+                    // Open the chest and perform the Ice Key theatric.
+
+                    // Stop any music currently playing, then play the ice key jingle
+                    music_stop();
+
+                    // Spawn the ice key sprite above the chest
+
+                    // Summon the ice key text crawl and set text delay high
+                    queue_text(icekey_found_0, 1);
+                    textDelay = 6;
+                    // Set the tile to the Open Chest tile
+                    set_map_tile_in_room(x, y, TILE_D_CHEST_OPEN);
+
+                    // TODO: Set the appropriate Theatrics flag & timer so that we can transition to the 2nd stage at the right time.
+                    load_environment(E_ISLAND);
                 }
                 else
                 {
