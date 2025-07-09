@@ -3,7 +3,7 @@
 #include "neslib.h"
 #include "globals.h"
 #include "bank_helpers.h"
-
+#include "roomstuff.h"
 
 #ifdef CHEATS_ENABLED
 
@@ -75,8 +75,7 @@ void update_cheats()
     }
     else if(cheat_check(skipToIslandCheat))
     {
-       // TODO: Load island section
-
+       banked_call(ROOM_LOGIC_BANK, skip_to_island);
        return;
     }
     else if(cheat_check(secretMessageA))

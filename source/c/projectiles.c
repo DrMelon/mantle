@@ -3,6 +3,7 @@
 #include "neslib.h"
 #include "utils.h"
 
+CODE_BANK(MONSTER_PROJECTILES_BANK);
 const unsigned char pelletSprite0[]={
     0, 0, 0xB4, 6,
     128
@@ -39,7 +40,6 @@ const unsigned char arrowDownSprite[]={
     128
 };
 
-CODE_BANK(1);
 void update_projectile(Projectile* proj)
 {
     // Type-specific logic goes here

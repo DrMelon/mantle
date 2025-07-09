@@ -84,19 +84,19 @@ enum Environment
 #define TILE_I_DELTDOOR_BL 30
 #define TILE_I_DELTDOOR_BR 31
 #define TILE_I_DUNGEONWALL_L 32
-#define TILE_I_DUNGEONWALL_R 34
-#define TILE_I_DUNGEONWALL_D 35
-#define TILE_I_DUNGEONWALL_U 36
-#define TILE_I_DUNGEONCORN_TL 37
-#define TILE_I_DUNGEONCORN_TR 38
-#define TILE_I_DUNGEONCORN_BL 39
-#define TILE_I_DUNGEONCORN_BR 40
-#define TILE_I_WATERFALL_TL 41
-#define TILE_I_WATERFALL_TR 42
-#define TILE_I_SMALLDOOR 43
-#define TILE_I_WBRIDGE_L 44
-#define TILE_I_WBRIDGE_R 45
-
+#define TILE_I_DUNGEONWALL_R 33
+#define TILE_I_DUNGEONWALL_D 34
+#define TILE_I_DUNGEONWALL_U 35
+#define TILE_I_DUNGEONCORN_TL 36
+#define TILE_I_DUNGEONCORN_TR 37
+#define TILE_I_DUNGEONCORN_BL 38
+#define TILE_I_DUNGEONCORN_BR 39
+#define TILE_I_WATERFALL_TL 40
+#define TILE_I_WATERFALL_TR 41
+#define TILE_I_SMALLDOOR 42
+#define TILE_I_WBRIDGE_L 43
+#define TILE_I_WBRIDGE_R 44
+#define TILE_I_BLACK 45
 
 extern const unsigned char* const environment_metatiles[];
 
@@ -105,15 +105,15 @@ extern const unsigned char island_metatiles[];
 
 extern const unsigned char* const* environment_rooms[];
 
-extern int solidity_check(unsigned char px, unsigned char py);
-extern int solidity_check_nocactus(unsigned char px, unsigned char py);
-extern int cactus_check(unsigned char px, unsigned char py);
-extern int tilemap_solid(unsigned char tx, unsigned char ty);
-extern int tilemap_solid_nocactus(unsigned char tx, unsigned char ty);
-extern int tilemap_ouchie(unsigned char tx, unsigned char ty);
-extern int tile_solid(unsigned char tile);
-extern int swim_check(unsigned char tx, unsigned char ty);
-extern int tilemap_swimmable(unsigned char tx, unsigned char ty);
+extern unsigned char solidity_check(unsigned char px, unsigned char py);
+extern unsigned char solidity_check_nocactus(unsigned char px, unsigned char py);
+extern unsigned char cactus_check(unsigned char px, unsigned char py);
+extern unsigned char tilemap_solid(unsigned char tx, unsigned char ty);
+extern unsigned char tilemap_solid_nocactus(unsigned char tx, unsigned char ty);
+extern unsigned char tilemap_ouchie(unsigned char tx, unsigned char ty);
+extern unsigned char tile_solid(unsigned char tile);
+extern unsigned char swim_check(unsigned char tx, unsigned char ty);
+extern unsigned char tilemap_swimmable(unsigned char tx, unsigned char ty);
 extern void set_map_tile_in_room(unsigned char tx, unsigned char ty, unsigned char tile);
 extern void set_map_tile_on_character(WalkingCharacter* chara, unsigned char tile);
 extern void draw_black_tile_in_room(unsigned char tx, unsigned char ty);

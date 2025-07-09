@@ -14,8 +14,19 @@ void load_environment(enum Environment env)
 
     if(env == E_DESERT)
     {
+        currentRoom = 0;
         monsterAggression = 0; // Monsters start docile in the desert.
         treeRoomVisits = 0;
+    }
+    if(env == E_ISLAND)
+    {
+        currentRoom = 3;
+        monsterAggression = 0; // Monsters start docile in the island too, but get angry faster.
+        playerLevel = 0;
+        playerHp = 16;
+        playerExp = 0;
+        kris.xpos = 130;
+        kris.ypos = 120;
     }
 
     mmc1_set_chr_bank_0(env * 2);
@@ -177,4 +188,14 @@ void tele_to_room(unsigned char room, unsigned char telex, unsigned char teley)
     prevRoom = currentRoom;
     currentRoom = room;
 }
+
+// REQUIRES BANKED CALL
+void skip_to_island()
+{
+    ppu_off();
+    load_environment(E_ISLAND);
+    load_room();
+    ppu_on_all();
+}
+
 CODE_BANK_POP();

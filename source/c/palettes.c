@@ -41,5 +41,6 @@ const unsigned char palSpritesDesert[16] = {
 
 const unsigned char* envSprPalettes[] =
 {
-    palSpritesDesert
+    palSpritesDesert,
+    palSpritesDesert, // REPLACE WITH ISLAND SPRITE PALETTE
 };

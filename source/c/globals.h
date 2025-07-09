@@ -23,6 +23,9 @@ enum GameState
 
 // Bank Assignments
 #define ROOM_LOGIC_BANK 0
+#define MONSTER_PROJECTILES_BANK 1
+#define JUMP_LUT_BANK 2
+#define KRIS_ANIMS_BANK 2
 #define CHEAT_CODES_BANK 6
 
 //

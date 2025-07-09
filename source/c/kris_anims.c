@@ -1,7 +1,9 @@
 #include "neslib.h";
+#include "globals.h";
 #include "bank_helpers.h";
 
 // Kris metasprites
+CODE_BANK(KRIS_ANIMS_BANK);
 const unsigned char krisWalkDown0[]={
     0, 0, 0x01, 4,
     8, 0, 0x02, 4,
@@ -239,3 +241,5 @@ const unsigned char* const krisHurtAnims[]={
     krisHurtLeft,
     krisWalkLeft0,
 };
+
+CODE_BANK_POP();

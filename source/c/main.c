@@ -161,7 +161,7 @@ void main(void) {
 
 
           // Update monsters & projectiles
-          bank_push(1);
+          bank_push(MONSTER_PROJECTILES_BANK);
           for(i2 = 0; i2 < spawnedMonsters; i2++)
           {
              update_monster(&monsterList[i2]);
@@ -174,7 +174,9 @@ void main(void) {
           bank_pop();
 
           // Draw characters
+          bank_push(KRIS_ANIMS_BANK);
           draw_character(&kris);
+          bank_pop();
 
           // Draw items
           for(i = 0; i < spawnedItems; i++)
@@ -183,7 +185,7 @@ void main(void) {
           }
 
           // Draw monsters & projectiles
-          bank_push(1);
+          bank_push(MONSTER_PROJECTILES_BANK);
           for(i2 = 0; i2 < spawnedMonsters; i2++)
           {
               draw_monster(&monsterList[i2]);
@@ -275,7 +277,9 @@ void main(void) {
                 }
             }
             // Render kris
+            bank_push(KRIS_ANIMS_BANK);
             draw_character(&kris);
+            bank_pop();
         }
         if(currentState == GS_SCREENTRANS_TELE)
         {

@@ -190,41 +190,57 @@ void update_character(WalkingCharacter* chara)
                 i = (y*12)+x;
                 i2 = currentRoomColl[i];
 
-                if(i2 == TILE_D_FERN && playerLevel >= 2)
+                if(currentEnvironment == E_DESERT)
                 {
-                    set_map_tile_in_room(x, y, 0);
-                }
-                else if(i2 == TILE_D_CACTUS && playerLevel >= 3)
-                {
-                    set_map_tile_in_room(x, y, 0);
-                }
-                else if(i2 == TILE_D_TREE && playerLevel >= 4)
-                {
-                    set_map_tile_in_room(x, y, 0);
-                }
-                else if(i2 == TILE_D_CHEST_CLOSED)
-                {
-                    // Open the chest and perform the Ice Key theatric.
+                    if(i2 == TILE_D_FERN && playerLevel >= 2)
+                    {
+                        set_map_tile_in_room(x, y, 0);
+                    }
+                    else if(i2 == TILE_D_CACTUS && playerLevel >= 3)
+                    {
+                        set_map_tile_in_room(x, y, 0);
+                    }
+                    else if(i2 == TILE_D_TREE && playerLevel >= 4)
+                    {
+                        set_map_tile_in_room(x, y, 0);
+                    }
+                    else if(i2 == TILE_D_CHEST_CLOSED)
+                    {
+                        // Open the chest and perform the Ice Key theatric.
 
-                    // Stop any music currently playing, then play the ice key jingle
-                    music_stop();
+                        // Stop any music currently playing, then play the ice key jingle
+                        music_stop();
 
-                    // Spawn the ice key sprite above the chest
+                        // Spawn the ice key sprite above the chest
 
-                    // Summon the ice key text crawl and set text delay high
-                    queue_text(icekey_found_0, 1);
-                    textDelay = 6;
-                    // Set the tile to the Open Chest tile
-                    set_map_tile_in_room(x, y, TILE_D_CHEST_OPEN);
+                        // Summon the ice key text crawl and set text delay high
+                        queue_text(icekey_found_0, 1);
+                        textDelay = 6;
+                        // Set the tile to the Open Chest tile
+                        set_map_tile_in_room(x, y, TILE_D_CHEST_OPEN);
 
-                    // TODO: Set the appropriate Theatrics flag & timer so that we can transition to the 2nd stage at the right time.
-                    load_environment(E_ISLAND);
+                        // TODO: Set the appropriate Theatrics flag & timer so that we can transition to the 2nd stage at the right time.
+                        //skip_to_island();
+                    }
+                    else
+                    {
+                        // Play *dink* sound!
+                        // TODO: only play it if the struck tile *is* killable though. reorganize this code!
+                    }
                 }
-                else
+                else if(currentEnvironment == E_ISLAND)
                 {
-                    // Play *dink* sound!
-                    // TODO: only play it if the struck tile *is* killable though. reorganize this code!
+                    if(i2 == TILE_I_FERN && playerLevel >= 2)
+                    {
+                        set_map_tile_in_room(x, y, 0);
+                    }
+                    else if(i2 == TILE_I_WFERN && playerLevel >= 2)
+                    {
+                        set_map_tile_in_room(x, y, TILE_I_WATER);
+                    }
                 }
+
+
 
                 // Better sword check!
                 sword_check(chara);
@@ -363,6 +379,8 @@ void get_hurt(WalkingCharacter *chara)
 
 CODE_BANK_POP();
 
+CODE_BANK(KRIS_ANIMS_BANK);
+
 void draw_character(WalkingCharacter* chara)
 {
     // Character is walking, play walk anim for facing dir
@@ -381,4 +399,4 @@ void draw_character(WalkingCharacter* chara)
         spr = oam_meta_spr(chara->xpos, chara->ypos, spr, characterHurtAnims[chara->chartype][(chara->animframe%2) + (chara->direction*2)]);
     }
 }
-
+CODE_BANK_POP();

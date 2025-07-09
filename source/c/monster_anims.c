@@ -1,6 +1,7 @@
 #include "monster_anims.h"
 #include "neslib.h"
 #include "bank_helpers.h"
+#include "globals.h"
 
 // REMINDER:
 // To move jumptables to ROM instead of RAM,
@@ -8,7 +9,7 @@
 // const unsigned char* const tableName[];
 
 // Walker metasprites
-CODE_BANK(1);
+CODE_BANK(MONSTER_PROJECTILES_BANK);
 const unsigned char walkerWalk0[]={
     0, 0, 0x1D, 7,
     8, 0, 0x1D, 7 | OAM_FLIP_H,

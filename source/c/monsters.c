@@ -9,7 +9,7 @@
 #include "jump_luts.h"
 #include "items.h"
 
-CODE_BANK(1);
+CODE_BANK(MONSTER_PROJECTILES_BANK);
 void update_monster(Monster* monster)
 {
     if(monster->montype == MON_WALKER)
@@ -414,10 +414,10 @@ void update_mon_lizard(Monster* lizard)
                 // need to access bank 2
                 x = lizard->animframe;
                 y = jump_arc->jump_arc_type;
-                banked_call(2, jumpLutXLookup);
+                banked_call(JUMP_LUT_BANK, jumpLutXLookup);
                 lizard->xpos = x + jump_arc->start_x - 127;
                 x = lizard->animframe;
-                banked_call(2, jumpLutYLookup);
+                banked_call(JUMP_LUT_BANK, jumpLutYLookup);
                 lizard->ypos = x + jump_arc->start_y - 127;
                 lizard->animframe++;
             }
