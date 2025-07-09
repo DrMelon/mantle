@@ -10,6 +10,10 @@
 unsigned char cheatInputIdx;
 unsigned char lastEightInputs[8];
 const unsigned char maxLevelCheat[] = { PAD_B, PAD_RIGHT, PAD_LEFT, PAD_RIGHT, PAD_UP, PAD_UP, PAD_DOWN, PAD_DOWN };
+const unsigned char refillHpCheat[] = { PAD_B, PAD_UP, PAD_B, PAD_DOWN, PAD_B, PAD_UP, PAD_B, PAD_DOWN };
+const unsigned char skipToIslandCheat[] = { PAD_B, PAD_UP, PAD_UP, PAD_UP, PAD_B, PAD_DOWN, PAD_DOWN, PAD_DOWN };
+const unsigned char secretMessageA[] = { PAD_B, PAD_A, PAD_UP, PAD_RIGHT, PAD_A, PAD_DOWN, PAD_DOWN, PAD_RIGHT };
+const unsigned char secretMessageB[] = { PAD_UP, PAD_UP, PAD_DOWN, PAD_DOWN, PAD_LEFT, PAD_RIGHT, PAD_LEFT, PAD_RIGHT };
 
 CODE_BANK(CHEAT_CODES_BANK);
 void update_cheats()
@@ -57,22 +61,39 @@ void update_cheats()
   if(did_input)
   {
     // Scan through all the last inputs and match
-    if(max_level_cheat_check())
+    if(cheat_check(maxLevelCheat))
     {
        playerLevel = 4;
        hudDirty = 1;
+       return;
+    }
+    else if(cheat_check(refillHpCheat))
+    {
+        playerHp = 16;
+        hudDirty = 1;
+        return;
+    }
+    else if(cheat_check(skipToIslandCheat))
+    {
+       // TODO: Load island section
+
+       return;
+    }
+    else if(cheat_check(secretMessageA))
+    {
+//       queue_text(secret_message_a0)
        return;
     }
   }
 
 }
 
-unsigned char max_level_cheat_check()
+unsigned char cheat_check(const unsigned char* cheat)
 {
     for(i = 0; i < 8; i++)
     {
         i2 = ((8 - cheatInputIdx) + i) % 8; // offset through the ring buffer
-        if(lastEightInputs[i] != maxLevelCheat[i2])
+        if(lastEightInputs[i] != cheat[i2])
         {
             // As soon as one check is failed, return
             return 0;

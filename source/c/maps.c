@@ -46,6 +46,10 @@ const unsigned char desert_metatiles[]={
    0x47, 0x48, 0x57, 0x58, 0b10101010, 1
 };
 
+const unsigned char island_metatiles[]={
+
+};
+
 // Format: S, E, N, W exits, then the map tile layout (12x8 metatiles),
 // then a running list of entities for the room:
 // first, an ID that says what kind of thing it is: 0 = monster, 1 = entrance/exit (like stairs), 2 = sword pickup, 3 = chest
@@ -53,9 +57,9 @@ const unsigned char desert_metatiles[]={
 // then 2 subtype ids for monsters, tele locations etc
 // then a "unique id" for monsters so we can track which ones are dead-dead
 // list terminates if you reach an id of 128
-const unsigned char* environment_metatiles[]={
+const unsigned char* const environment_metatiles[]={
   desert_metatiles,
-  //island_metatiles
+  island_metatiles
 };
 
 const unsigned char* const* environment_rooms[]={

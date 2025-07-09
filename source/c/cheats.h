@@ -8,9 +8,11 @@
 extern unsigned char cheatInputIdx;
 extern unsigned char lastEightInputs[];
 extern const unsigned char maxLevelCheat[];
+extern const unsigned char refillHpCheat[];
+extern const unsigned char skipToIslandCheat[];
 
 extern void update_cheats();
-extern unsigned char max_level_cheat_check();
+extern unsigned char cheat_check(const unsigned char* cheat);
 
 #endif
 #endif
