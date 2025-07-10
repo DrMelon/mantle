@@ -11,14 +11,26 @@
 
 enum GameState
 {
-    GS_INTRO,
     GS_GAMEPLAY,
-    GS_TEXTBOX,
     GS_SCREENTRANS,
     GS_SCREENTRANS_TELE,
     GS_ENVTRANS,
-    GS_DEAD,
-    GS_OUTRO
+    GS_NOTHING
+};
+
+enum Theatric
+{
+    TH_INTRO,
+    TH_LOAD_IN_HEART,
+    TH_DIE,
+    TH_GETSWORD,
+    TH_GETICEKEY,
+    TH_USEICEKEY,
+    TH_GETSHELTERKEY,
+    TH_USED_UP,
+    TH_TWISTEDSPAWN,
+    TH_TWISTEDSPAWNFAST,
+    TH_OUTRO
 };
 
 // Bank Assignments
@@ -27,6 +39,7 @@ enum GameState
 #define JUMP_LUT_BANK 2
 #define KRIS_ANIMS_BANK 2
 #define CHEAT_CODES_BANK 6
+#define INTRO_BANK 3
 
 //
 // Global Variables (zeropage)
@@ -68,7 +81,10 @@ ZEROPAGE_EXTERN(unsigned char, textSeekChar);
 ZEROPAGE_EXTERN(unsigned char, textDelay);
 ZEROPAGE_EXTERN(unsigned char, monsterAggression);
 ZEROPAGE_EXTERN(unsigned char, jumpArcs);
-
+ZEROPAGE_EXTERN(unsigned char, theatricActive);
+ZEROPAGE_EXTERN(unsigned char, theatricIndex);
+ZEROPAGE_EXTERN(unsigned char, theatricStage);
+ZEROPAGE_EXTERN(unsigned char, theatricTimer);
 
 #pragma bss-name(push, "ZEROPAGE")
     extern WalkingCharacter kris;

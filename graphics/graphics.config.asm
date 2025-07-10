@@ -19,6 +19,5 @@
     .incbin "./background.chr"
     .incbin "./sprite.chr"
 .segment "CHR_03"
-    .incbin "./background.chr"
-    .incbin "./sprite.chr"
-
+    .incbin "./background_intro.chr"
+    .incbin "./sprites_mantle.chr"

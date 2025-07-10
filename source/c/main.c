@@ -12,6 +12,7 @@
 #include "ui.h"
 #include "palettes.h"
 #include "cheats.h"
+#include "intro.h"
 
 // forward decls
 void load_environment(enum Environment env);
@@ -27,15 +28,12 @@ void main(void) {
     // Turn off the screen
     ppu_off();
 
-    // Set sprite bank to bank 1
-    bank_spr(1);
-
     bank_push(0);
     draw_ui_borders();
     bank_pop();
 
     // Set up game state
-    currentState = GS_GAMEPLAY;
+    currentState = GS_NOTHING; // transition to GS_GAMEPLAY after...
     playerLevel = 0;
     playerHp = 16;
     playerExp = 0;
@@ -58,6 +56,7 @@ void main(void) {
     kris.animframe = 0;
 
     // Load first room of first map, in Desert.
+    // TODO: delay this until after the intro is over
     bank_push(ROOM_LOGIC_BANK);
     load_environment(E_DESERT);
     load_room();
@@ -67,11 +66,17 @@ void main(void) {
     scroll(0, 0);
 
     // Turn the screen back on
-    ppu_on_all();
+    //ppu_on_all();
 
     #ifdef CHEATS_ENABLED
     cheatInputIdx = 0;
     #endif
+
+    // Initialise intro
+
+    bank_push(INTRO_BANK);
+    load_and_show_intro();
+    bank_pop();
 
     // Infinite loop to end things
     while (1) {
@@ -92,6 +97,19 @@ void main(void) {
         bank_pop();
         #endif
 
+        // Always update theatrics, no matter which game state
+        // this lets us do theatrics *during* gameplay etc
+        if(theatricActive == 1)
+        {
+            if(theatricIndex == TH_INTRO)
+            {
+                bank_push(INTRO_BANK);
+                update_intro();
+                bank_pop();
+            }
+        }
+
+        // Main state machine selection
         if(currentState == GS_GAMEPLAY)
         {
           // Wipe oams (perf?)
@@ -208,7 +226,7 @@ void main(void) {
             }
           }
         }
-        if(currentState == GS_SCREENTRANS)
+        else if(currentState == GS_SCREENTRANS)
         {
             oam_clear();
             spr = 0;
@@ -281,7 +299,7 @@ void main(void) {
             draw_character(&kris);
             bank_pop();
         }
-        if(currentState == GS_SCREENTRANS_TELE)
+        else if(currentState == GS_SCREENTRANS_TELE)
         {
            // Teleporting to room
            kris.xpos = x << 4;

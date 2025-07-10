@@ -36,6 +36,10 @@ ZEROPAGE_DEF(unsigned char, textLineOffset);
 ZEROPAGE_DEF(unsigned char, textDelay);
 ZEROPAGE_DEF(unsigned char, monsterAggression);
 ZEROPAGE_DEF(unsigned char, jumpArcs);
+ZEROPAGE_DEF(unsigned char, theatricActive);
+ZEROPAGE_DEF(unsigned char, theatricIndex);
+ZEROPAGE_DEF(unsigned char, theatricStage);
+ZEROPAGE_DEF(unsigned char, theatricTimer);
 
 #pragma bss-name(push, "ZEROPAGE")
     WalkingCharacter kris;

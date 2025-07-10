@@ -2,6 +2,12 @@
 
 
 // Color palette for the screen to use
+const unsigned char paletteIntro[] = {
+    0x01, 0x11, 0x21, 0x30, // Logo & Text
+    0x01, 0x19, 0x29, 0x0F, // Green & Black
+    0x01, 0x02, 0x11, 0x21, // Fade Level 1
+    0x01, 0x0F, 0x01, 0x11, // Fade Level 2 (should have 0x0F bg)
+};
 const unsigned char paletteDesert[] = {
     0x17, 0x0f, 0x16, 0x30, // Text
     0x17, 0x27, 0x37, 0x28, // Desert Sand & Vegetation
@@ -39,7 +45,7 @@ const unsigned char palSpritesDesert[16] = {
     0x0f, 0x10, 0x12, 0x16
 };
 
-const unsigned char* envSprPalettes[] =
+const unsigned char* const envSprPalettes[] =
 {
     palSpritesDesert,
     palSpritesDesert, // REPLACE WITH ISLAND SPRITE PALETTE
