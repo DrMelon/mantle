@@ -18,6 +18,13 @@ void load_environment(enum Environment env)
 {
     currentEnvironment = env;
 
+    // Set dead list empty (as it is a per-environment tracker)
+    for(i = 0; i < TOTAL_SPAWNABLES; i++)
+    {
+      deadList[i] = 0;
+    }
+
+
     if(env == E_DESERT)
     {
         currentRoom = 0;

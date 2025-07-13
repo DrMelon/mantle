@@ -46,11 +46,6 @@ void main(void) {
     soundTestNum = 0;
     hudDirty = 1;
 
-    // Set dead list empty
-    for(i = 0; i < TOTAL_SPAWNABLES; i++)
-    {
-      deadList[i] = 0;
-    }
 
     // Init Kris
     kris.xpos = 128;
