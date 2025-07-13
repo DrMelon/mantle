@@ -23,7 +23,7 @@ const unsigned char* const * const characterHurtAnims[]={
     krisHurtAnims
 };
 
-CODE_BANK(0);
+CODE_BANK(ACTOR_LOGIC_BANK);
 void update_character(WalkingCharacter* chara)
 {
     switch (chara->substate)
@@ -83,10 +83,8 @@ void update_character(WalkingCharacter* chara)
                     did_walk = 1;
                     if(chara->ypos > 160)
                     {
-                        bank_push(0);
                         roomSwitchDir = 0;
-                        switch_to_room(roomPtr[0]);
-                        bank_pop();
+                        banked_call(ROOM_LOGIC_BANK, switch_to_room);
                     }
                 }
                 if(pad&PAD_RIGHT)
@@ -101,10 +99,8 @@ void update_character(WalkingCharacter* chara)
                     did_walk = 1;
                     if(chara->xpos > 208)
                     {
-                        bank_push(0);
                         roomSwitchDir = 1;
-                        switch_to_room(roomPtr[1]);
-                        bank_pop();
+                        banked_call(ROOM_LOGIC_BANK, switch_to_room);
                     }
                 }
                 if(pad&PAD_UP)
@@ -119,10 +115,8 @@ void update_character(WalkingCharacter* chara)
                     did_walk = 1;
                     if(chara->ypos < 48)
                     {
-                        bank_push(0);
                         roomSwitchDir = 2;
-                        switch_to_room(roomPtr[2]);
-                        bank_pop();
+                        banked_call(ROOM_LOGIC_BANK, switch_to_room);
                     }
                 }
                 if(pad&PAD_LEFT)
@@ -137,10 +131,8 @@ void update_character(WalkingCharacter* chara)
                     did_walk = 1;
                     if(chara->xpos < 32)
                     {
-                        bank_push(0);
                         roomSwitchDir = 3;
-                        switch_to_room(roomPtr[3]);
-                        bank_pop();
+                        banked_call(ROOM_LOGIC_BANK, switch_to_room);
                     }
                 }
             }
@@ -155,9 +147,11 @@ void update_character(WalkingCharacter* chara)
                     if(chara->xpos+7 >> 4 == teleList[i2].tx+2 && chara->ypos+7 >> 4 == teleList[i2].ty+3)
                     {
                         // Do teleport
-                        bank_push(0);
-                        tele_to_room(teleList[i2].targetroom, teleList[i2].targetx+2, teleList[i2].targety+3);
-                        bank_pop();
+                        x = teleList[i2].targetroom;
+                        x2 = teleList[i2].targetx+2;
+                        y2 = teleList[i2].targety+3;
+
+                        banked_call(ROOM_LOGIC_BANK, tele_to_room);
                         i2 = spawnedTeles;
                     }
                 }
@@ -214,7 +208,9 @@ void update_character(WalkingCharacter* chara)
                         // Spawn the ice key sprite above the chest
 
                         // Summon the ice key text crawl and set text delay high
-                        queue_text(icekey_found_0, 1);
+                        //queue_text(icekey_found_0, 1);
+                        x2 = 0;
+                        banked_call(UI_BANK, queue_text_banked);
                         textDelay = 6;
                         // Set the tile to the Open Chest tile
                         set_map_tile_in_room(x, y, TILE_D_CHEST_OPEN);

@@ -73,7 +73,7 @@ void update_intro()
         // this is done initially by just toggling bg color
         if(framecount % 40 == 0)
         {
-            if(framecount == 90)
+            if(framecount == 90) // every 1.5s, resets the framecount. this lets us control the sequence better
             {
                framecount = 0;
                // prevents uneven wrapping at 255
@@ -358,8 +358,6 @@ void update_intro()
             if(y2 == 100 && framecount % 8 == 0)
             {
                 theatricActive = 0;
-
-
 
                 // fill screen with black tiles
                 ppu_off();

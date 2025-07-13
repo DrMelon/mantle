@@ -18,7 +18,7 @@
 void load_environment(enum Environment env);
 void load_room();
 void set_palette_for_bg_tile(unsigned char tx, unsigned char ty, unsigned char palettenum);
-void switch_to_room(unsigned char room);
+void switch_to_room();
 
 //
 // Main entrypoint
@@ -33,7 +33,7 @@ void main(void) {
     bank_spr(1);
 
     // init sound driver
-    bank_push(5);
+    bank_push(MUSIC_BANK);
     famistudio_init(FAMISTUDIO_PLATFORM_NTSC, music_data_mantle);
     bank_pop();
 
@@ -73,7 +73,7 @@ void main(void) {
     load_and_show_intro();
     bank_pop();
 
-    bank_push(5);
+    bank_push(MUSIC_BANK);
     famistudio_music_play(0);
     bank_pop();
 
@@ -117,7 +117,10 @@ void main(void) {
           if(queueTele != 0)
           {
             bank_push(ROOM_LOGIC_BANK);
-            tele_to_room(queueTele, x+2, y+3);
+            x2 = x+2;
+            y2 = y+3;
+            x = queueTele;
+            tele_to_room();
             bank_pop();
             queueTele = 0;
             continue;
@@ -140,27 +143,24 @@ void main(void) {
           }
 
           // Update characters
-          bank_push(0);
+          bank_push(ACTOR_LOGIC_BANK);
           update_character(&kris);
           bank_pop();
 
           // SOUND TEST
           if(pad_trig & PAD_SELECT)
           {
-              //music_stop();
-              //music_play(soundTestNum);
+
+              bank_push(MUSIC_BANK);
+              famistudio_music_stop();
+              famistudio_music_play(soundTestNum);
+              bank_pop();
               soundTestNum++;
-              if(soundTestNum > 5)
+              if(soundTestNum > 10)
               {
                 soundTestNum = 0;
               }
           }
-
-          if(pad_trig & PAD_START)
-          {
-              mmc1_set_chr_bank_1(1);
-          }
-
           // Update items
           for(i = 0; i < spawnedItems; i++)
           {
@@ -185,6 +185,12 @@ void main(void) {
           draw_character(&kris);
           bank_pop();
 
+          if(currentState != GS_GAMEPLAY)
+          {
+             // if we switched state while updating, don't draw monsters or items or anything. just early out.
+             goto skipToHud;
+          }
+
           // Draw items
           for(i = 0; i < spawnedItems; i++)
           {
@@ -204,6 +210,8 @@ void main(void) {
           }
           bank_pop();
 
+          skipToHud:
+
           // Update HUD if needed and possible
           if(hudDirty == 1)
           {
@@ -217,6 +225,7 @@ void main(void) {
         }
         else if(currentState == GS_SCREENTRANS)
         {
+
             oam_clear();
             spr = 0;
             // If the room we're switching to is a special room in the desert...

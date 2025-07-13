@@ -26,6 +26,7 @@ extern const unsigned char instruct_1[];
 extern void draw_ui_borders();
 extern void init_hud_refresh_banked();
 extern void refresh_hud_bars(char hp, char lvl, char exp);
+extern void queue_text_banked();
 extern void queue_text(const unsigned char* textLine, unsigned char mode);
 extern void update_text();
 extern void clear_text();

@@ -25,5 +25,5 @@ void draw_item(Item* item);
 void delete_item(unsigned char idx);
 void spawn_candy(unsigned char px, unsigned char py);
 
-void tele_to_room(unsigned char room, unsigned char telex, unsigned char teley);
+void tele_to_room();
 #endif

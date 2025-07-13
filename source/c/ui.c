@@ -32,7 +32,7 @@ unsigned char hudUpdateBuffer[24];
 unsigned char textBuffer[TEXT_LINE_MAX_LEN*TEXT_MAX_LINES];
 unsigned char textVRAMBuffer[(TEXT_LINE_MAX_LEN*TEXT_MAX_LINES)+28];
 
-CODE_BANK(0);
+CODE_BANK(UI_BANK);
 void draw_ui_borders()
 {
     // Draw the HUD borders
@@ -161,6 +161,15 @@ void refresh_hud_bars(char hp, char lvl, char exp)
     writingVram = 1;
     hudDirty = 0;
 
+}
+
+// BANKED: x2 = text line
+void queue_text_banked()
+{
+    if(x2 == 0)
+    {
+        queue_text(icekey_found_0, 1);
+    }
 }
 
 void queue_text(const unsigned char* textLine, unsigned char mode)

@@ -56,6 +56,6 @@ Projectile projList[MAX_PROJECTILES];
 unsigned char deadList[TOTAL_SPAWNABLES];
 JumpArcState jumpArcList[MAX_JUMP_ARCS];
 
-unsigned char palmTreeBuffer[32];
+unsigned char palmTreeBuffer[64];
 
 unsigned char treeRoomVisits = 0;

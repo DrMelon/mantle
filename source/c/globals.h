@@ -36,11 +36,13 @@ enum Theatric
 // Bank Assignments
 #define ROOM_LOGIC_BANK 0
 #define MONSTER_PROJECTILES_BANK 1
+#define ACTOR_LOGIC_BANK 3
 #define JUMP_LUT_BANK 2
 #define KRIS_ANIMS_BANK 2
 #define CHEAT_CODES_BANK 6
 #define INTRO_BANK 3
 #define MUSIC_BANK 5
+#define UI_BANK 0
 
 //
 // Global Variables (zeropage)

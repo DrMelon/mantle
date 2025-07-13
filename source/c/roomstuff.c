@@ -9,6 +9,33 @@
 // ROOM & ENVIRONMENT HANDLING FUNCTIONS in ROM_00
 CODE_BANK(ROOM_LOGIC_BANK);
 
+const unsigned char heartSpr0[]={
+   4, 4, 0x90, 3,
+   128
+};
+
+const unsigned char heartSpr1[]={
+   0, 0, 0x01, 4,
+   8, 0, 0x02, 4,
+   4, 4, 0x90, 3,
+   128
+};
+
+const unsigned char heartSpr2[]={
+   0, 0, 0x01, 0,
+   8, 0, 0x02, 0,
+   0, 8, 0x03, 0,
+   8, 8, 0x04, 0,
+   128
+};
+
+const unsigned char* const loadingHeartAnim[]={
+    heartSpr0, // heart alone
+    heartSpr1, // kris top half of sprite on top of heart
+    heartSpr2 // full kris body
+};
+
+
 void load_env_target_banked()
 {
     load_environment(currentEnvironment);
@@ -54,6 +81,9 @@ void load_environment(enum Environment env)
 
 void load_room_intro()
 {
+   unsigned char currentTileID = 0;
+   unsigned int ntrAdr = 0;
+   unsigned char palmask = 0;
    // 1. Set up the "loading heart" sprite and set OAM mem, drawing it when ready.
    // also, load the room collision data while we're here and set up the relevant room pointers etc.
    framecount = 0;
@@ -67,6 +97,9 @@ void load_room_intro()
    roomPtr = (unsigned char*)environment_rooms[currentEnvironment][currentRoom];
    metatilesPtr = (unsigned char*)environment_metatiles[currentEnvironment];
 
+   // load heart and draw it
+   spr = oam_meta_spr(kris.xpos, kris.ypos, spr, loadingHeartAnim[0]);
+
    // Wait for 1 second
    while(framecount < 60)
    {
@@ -79,14 +112,145 @@ void load_room_intro()
    ppu_wait_nmi(); // wait till end of frame
 
    // 3. For each tile line in the room, load and draw room line and attribs, and wait for a handful of frame between, like the teleport blackout.
-
    // 4. As the line approaches kris's position and midpoint, load in kris's top and bottom half sprites and set OAM mem.
+   for(y = 0; y < 8; y++)
+   {
+        if(y+3 == kris.ypos >> 4)
+        {
+            spr = 0;
+            spr = oam_meta_spr(kris.xpos, kris.ypos, spr, loadingHeartAnim[1]);
+        }
+        else if(y+3 > kris.ypos >> 4)
+        {
+            spr = 0;
+            spr = oam_meta_spr(kris.xpos, kris.ypos, spr, loadingHeartAnim[2]);
+        }
+        framecount = 0;
+
+        // TODO: Set attribute table.
+        // Since each attribute *memory entry* controls a 4x4 grid of tiles, we'll need to calculate
+        // each of the 4 tiles for the current memory entry. so we only want to do it when y % 2 == 0.
+        if(y % 2 == 0 || y == 7)
+        {
+           palmask = 0;
+           ntrAdr = 0x23C0 + (((y+3)/2) * 8) + 1;
+           palmTreeBuffer[0] = MSB(ntrAdr) | NT_UPD_HORZ;
+           palmTreeBuffer[1] = LSB(ntrAdr);
+           palmTreeBuffer[2] = 6;
+           for(x = 0; x < 6; x++)
+           {
+              // calculate the 4x4 as required
+
+              // bottomright
+              if(y != 7)
+              {
+                x2 = x<<1;
+                y2 = y+1;
+                i = (x2 + (y2*12)) + 4;
+                currentTileID = roomPtr[i]; // get tile id for this tile & calc this part of the mask
+                palmask |= metatilesPtr[(currentTileID*6)+4] & 0b11000000;
+
+                // bottomleft
+                x2++;
+                i = (x2 + (y2*12)) + 4;
+                currentTileID = roomPtr[i];
+                palmask |= metatilesPtr[(currentTileID*6)+4] & 0b00110000;
+              }
+              // topright
+              if(y > 0)
+              {
+                x2 = x<<1;
+                y2 = y;
+                i = (x2 + (y2*12)) + 4;
+                currentTileID = roomPtr[i];
+                palmask |= metatilesPtr[(currentTileID*6)+4] & 0b00001100;
+
+                // topleft
+                x2++;
+                i = (x2 + (y2*12)) + 4;
+                currentTileID = roomPtr[i];
+                palmask |= metatilesPtr[(currentTileID*6)+4] & 0b00000011;
+              }
+
+              palmTreeBuffer[3+x] = palmask;
+           }
+           palmTreeBuffer[9] = NT_UPD_EOF;
+           set_vram_update(palmTreeBuffer);
+           framecount++;
+           ppu_wait_nmi();
+        }
+
+
+        ntrAdr = NTADR_A(4,(y+3)*2);
+        palmTreeBuffer[0] = MSB(ntrAdr) | NT_UPD_HORZ;
+        palmTreeBuffer[1] = LSB(ntrAdr);
+        palmTreeBuffer[2] = 24;
+        for(x = 0; x < 12; x++)
+        {
+            i = (x + (y*12)) + 4; // add 4 to skip entrances/exits of room
+            i2 = (x + (y*12));
+            currentTileID = roomPtr[i];
+
+            // queue up a line update
+            palmTreeBuffer[(x*2)+3] = metatilesPtr[currentTileID*6];
+            palmTreeBuffer[(x*2)+4] = metatilesPtr[(currentTileID*6)+1];
+
+            writingVram = 1;
+        }
+
+        palmTreeBuffer[27] = NT_UPD_EOF;
+
+        set_vram_update(palmTreeBuffer);
+        framecount++;
+        ppu_wait_nmi();
+
+        ntrAdr = NTADR_A(4,((y+3)*2)+1);
+        palmTreeBuffer[0] = MSB(ntrAdr) | NT_UPD_HORZ;
+        palmTreeBuffer[1] = LSB(ntrAdr);
+        palmTreeBuffer[2] = 24;
+        for(x = 0; x < 12; x++)
+        {
+            i = (x + (y*12)) + 4; // add 4 to skip entrances/exits of room
+            i2 = (x + (y*12));
+            currentTileID = roomPtr[i];
+            currentRoomColl[i2] = currentTileID; // set collision
+
+            // queue up a line update
+            palmTreeBuffer[(x*2)+3] = metatilesPtr[(currentTileID*6)+2];
+            palmTreeBuffer[(x*2)+4] = metatilesPtr[(currentTileID*6)+3];
+            writingVram = 1;
+        }
+        palmTreeBuffer[27] = NT_UPD_EOF;
+
+        set_vram_update(palmTreeBuffer);
+        while(framecount < 30)
+        {
+            framecount++;
+            ppu_wait_nmi();
+        }
+
+
+   }
+
 
    // 5. once all lines are drawn, hand over to game state completely. we did it, folks!
    // don't forget to load the teleporters though.
-   currentState = GS_GAMEPLAY;
+   for(i = (12*8) + 4; roomPtr[i] != 128; i+=6)
+   {
+       if(roomPtr[i] == 1) // Entrance/exit/teleporter
+       {
+           teleList[spawnedTeles].tx = roomPtr[i+1];
+           teleList[spawnedTeles].ty = roomPtr[i+2];
+           teleList[spawnedTeles].targetroom = roomPtr[i+3];
+           teleList[spawnedTeles].targetx = roomPtr[i+4];
+           teleList[spawnedTeles].targety = roomPtr[i+5];
+           spawnedTeles++;
+           continue;
+       }
+    }
 
- 
+
+   currentState = GS_GAMEPLAY;
 }
 
 void load_room()
@@ -122,13 +286,13 @@ void load_room()
 
            currentRoomColl[i2] = currentTileID;
            vram_adr(NTADR_A((x+2)*2,(y+3)*2));
-           vram_put(environment_metatiles[currentEnvironment][(currentTileID*6)]);
-           vram_put(environment_metatiles[currentEnvironment][(currentTileID*6)+1]);
+           vram_put(metatilesPtr[(currentTileID*6)]);
+           vram_put(metatilesPtr[(currentTileID*6)+1]);
            vram_adr(NTADR_A((x+2)*2,((y+3)*2+1)));
-           vram_put(environment_metatiles[currentEnvironment][(currentTileID*6)+2]);
-           vram_put(environment_metatiles[currentEnvironment][(currentTileID*6)+3]);
+           vram_put(metatilesPtr[(currentTileID*6)+2]);
+           vram_put(metatilesPtr[(currentTileID*6)+3]);
 
-           set_palette_for_bg_tile(x+2, y+3, environment_metatiles[currentEnvironment][(currentTileID*6)+4]);
+           set_palette_for_bg_tile(x+2, y+3, metatilesPtr[(currentTileID*6)+4]);
        }
    }
 
@@ -213,24 +377,29 @@ void set_palette_for_bg_tile(unsigned char tx, unsigned char ty, unsigned char p
    vram_put(palettemask);
 }
 
-void switch_to_room(unsigned char room)
+void switch_to_room()
 {
+    unsigned char room = roomPtr[roomSwitchDir];
     currentState = GS_SCREENTRANS;
 
-    pal_col(0, 0x0F);
-    ppu_wait_nmi();
-    // Turn off PPU
-    ppu_off();
     // Load next room
     prevRoom = currentRoom;
     currentRoom = room;
+
+    pal_col(0, 0x0F);
+    ppu_wait_nmi();
+    ppu_off();
     load_room();
-    // Turn on sprites only for transfer
-    ppu_on_spr();
+    ppu_on_spr(); // sprite only for transfer
+
 }
 
-void tele_to_room(unsigned char room, unsigned char telex, unsigned char teley)
+// BANKED: x=  room, x2 = telex, y2 = teley
+void tele_to_room()
 {
+    unsigned char room = x;
+    unsigned char telex = x2;
+    unsigned char teley = y2;
     currentState = GS_SCREENTRANS_TELE;
     // Set sprite pos
     x = telex;
