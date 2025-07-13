@@ -6,6 +6,7 @@
 #include "mapper.h"
 #include "palettes.h"
 #include "ui.h"
+#include "roomstuff.h"
 
 CODE_BANK(INTRO_BANK);
 
@@ -59,7 +60,7 @@ void load_and_show_intro()
     pal_col(2, 0x29);
     pal_col(3, 0x29);
 
-    // start the music - the whooshing waves, that then give way to the intro tune.
+    // back in main, start the music - the whooshing waves, that then give way to the intro tune.
 
     ppu_on_all();
 }
@@ -70,7 +71,7 @@ void update_intro()
     {
         // begin the initial sequence, with the green & blue flashes
         // this is done initially by just toggling bg color
-        if(framecount % 45 == 0)
+        if(framecount % 40 == 0)
         {
             if(framecount == 90)
             {
@@ -125,7 +126,7 @@ void update_intro()
                 pal_col(2, paletteIntro[14]);
                 pal_col(3, paletteIntro[15]);
             }
-            if(theatricTimer== 2)
+            if(theatricTimer== 3)
             {
                 // first-stage fadeup
                 pal_col(0, 0x01);
@@ -133,7 +134,7 @@ void update_intro()
                 pal_col(2, paletteIntro[10]);
                 pal_col(3, paletteIntro[11]);
             }
-            else if(theatricTimer == 3)
+            else if(theatricTimer == 4)
             {
                 // fade-up complete
                 pal_col(0, 0x01);
@@ -141,7 +142,7 @@ void update_intro()
                 pal_col(2, paletteIntro[2]);
                 pal_col(3, paletteIntro[3]);
             }
-            else if(theatricTimer == 4)
+            else if(theatricTimer == 5)
             {
                 // fade-up complete, show controller disconnected screen now
 
@@ -173,7 +174,7 @@ void update_intro()
 
                 ppu_on_all(); // turn it back on
             }
-            else if(theatricTimer == 6) // wait for controller to "be plugged in"
+            else if(theatricTimer == 7) // wait for controller to "be plugged in"
             {
                 // now we can move to the final stage, showing the green & black patterns before finally performing a first-load of the selected environment (currentEnvironment),
                 // showing the SOUL within minikris,
@@ -345,18 +346,34 @@ void update_intro()
         }
         else if(theatricTimer == 7)
         {
-            y += y2 >> 3;
-            if(y2 < 255)
+            y += y2 >> 2;
+            if(y2 < 100)
             {
                 y2++;
             }
 
             scroll(0, y);
 
-            // Once scroll has accelerated enough and framecount is at a 1-second boundary, end intro and begin the initial room "load-in" sequence.
-            if(y2 == 255 && framecount % 60 == 0)
+            // Once scroll has accelerated enough and framecount is at a boundary, end intro and begin the initial room "load-in" sequence.
+            if(y2 == 100 && framecount % 8 == 0)
             {
                 theatricActive = 0;
+
+
+
+                // fill screen with black tiles
+                ppu_off();
+                // load target environment
+                banked_call(ROOM_LOGIC_BANK, load_env_target_banked);
+                vram_adr(NTADR_A(0, 0));
+                vram_fill(0x10, 0x3C0);
+                ppu_on_all();
+
+
+                // begin loading room in special mode
+                banked_call(ROOM_LOGIC_BANK, load_room_intro);
+
+
             }
 
         }

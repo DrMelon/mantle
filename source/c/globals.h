@@ -40,7 +40,7 @@ enum Theatric
 #define KRIS_ANIMS_BANK 2
 #define CHEAT_CODES_BANK 6
 #define INTRO_BANK 3
-#define MUSIC_BANK 6
+#define MUSIC_BANK 5
 
 //
 // Global Variables (zeropage)

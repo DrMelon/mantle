@@ -4,9 +4,15 @@
 #include "globals.h"
 #include "palettes.h"
 #include "mapper.h"
+#include "ui.h"
 
 // ROOM & ENVIRONMENT HANDLING FUNCTIONS in ROM_00
 CODE_BANK(ROOM_LOGIC_BANK);
+
+void load_env_target_banked()
+{
+    load_environment(currentEnvironment);
+}
 
 void load_environment(enum Environment env)
 {
@@ -29,6 +35,9 @@ void load_environment(enum Environment env)
         kris.ypos = 120;
     }
 
+    kris.direction = 0;
+    kris.animframe = 0;
+
     mmc1_set_chr_bank_0(env * 2);
     mmc1_set_chr_bank_1((env * 2) + 1);
 
@@ -36,11 +45,46 @@ void load_environment(enum Environment env)
     pal_spr(envSprPalettes[currentEnvironment]);
 }
 
+void load_room_intro()
+{
+   // 1. Set up the "loading heart" sprite and set OAM mem, drawing it when ready.
+   // also, load the room collision data while we're here and set up the relevant room pointers etc.
+   framecount = 0;
+   scroll(0, 0);
+   oam_clear();
+   spr = 0;
+   spawnedItems = 0;
+   spawnedMonsters = 0;
+   spawnedTeles = 0;
+   spawnedProjectiles = 0;
+   roomPtr = (unsigned char*)environment_rooms[currentEnvironment][currentRoom];
+   metatilesPtr = (unsigned char*)environment_metatiles[currentEnvironment];
+
+   // Wait for 1 second
+   while(framecount < 60)
+   {
+       framecount++;
+       ppu_wait_nmi();
+   }
+
+   // 2. Draw UI and wait for a frame
+   banked_call(0, init_hud_refresh_banked);
+   ppu_wait_nmi(); // wait till end of frame
+
+   // 3. For each tile line in the room, load and draw room line and attribs, and wait for a handful of frame between, like the teleport blackout.
+
+   // 4. As the line approaches kris's position and midpoint, load in kris's top and bottom half sprites and set OAM mem.
+
+   // 5. once all lines are drawn, hand over to game state completely. we did it, folks!
+   // don't forget to load the teleporters though.
+   currentState = GS_GAMEPLAY;
+
+ 
+}
+
 void load_room()
 {
    unsigned char currentTileID = 0;
-
-   spawnedItems = 0;
 
    roomPtr = (unsigned char*)environment_rooms[currentEnvironment][currentRoom];
    metatilesPtr = (unsigned char*)environment_metatiles[currentEnvironment];

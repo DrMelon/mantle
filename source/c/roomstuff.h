@@ -3,7 +3,9 @@
 
 #include "maps.h"
 
+extern void load_env_target_banked();
 extern void load_environment(enum Environment env);
+extern void load_room_intro();
 extern void load_room();
 extern void set_palette_for_bg_tile(unsigned char tx, unsigned char ty, unsigned char palettemask);
 extern void switch_to_room(unsigned char room);

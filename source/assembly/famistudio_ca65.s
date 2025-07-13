@@ -84,7 +84,7 @@
 
 .define FAMISTUDIO_CA65_ZP_SEGMENT   ZEROPAGE ;
 .define FAMISTUDIO_CA65_RAM_SEGMENT  BSS ; RAM
-.define FAMISTUDIO_CA65_CODE_SEGMENT ROM_06 ; could this go in ROM_XX?
+.define FAMISTUDIO_CA65_CODE_SEGMENT ROM_05 ; could this go in ROM_XX?
 
 ;======================================================================================================================
 ; 2) AUDIO EXPANSION CONFIGURATION

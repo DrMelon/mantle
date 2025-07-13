@@ -46,6 +46,11 @@ void draw_ui_borders()
     }
 }
 
+void init_hud_refresh_banked()
+{
+    refresh_hud_bars(16, 0, 0);
+}
+
 void refresh_hud_bars(char hp, char lvl, char exp)
 {
     unsigned int ntAdr = NTADR_A(4, 5); // starting pos of HUD ui

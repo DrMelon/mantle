@@ -28,12 +28,12 @@ void main(void) {
     // Turn off the screen
     ppu_off();
 
-    bank_push(0);
-    draw_ui_borders();
-    bank_pop();
+    // Init bg and spr banks
+    bank_bg(0);
+    bank_spr(1);
 
     // init sound driver
-    bank_push(6);
+    bank_push(5);
     famistudio_init(FAMISTUDIO_PLATFORM_NTSC, music_data_mantle);
     bank_pop();
 
@@ -60,12 +60,7 @@ void main(void) {
     kris.direction = 0;
     kris.animframe = 0;
 
-    // Load first room of first map, in Desert.
-    // TODO: delay this until after the intro is over
-    bank_push(ROOM_LOGIC_BANK);
-    load_environment(E_DESERT);
-    load_room();
-    bank_pop();
+
 
     // Set the scroll to 0,0
     scroll(0, 0);
@@ -83,7 +78,7 @@ void main(void) {
     load_and_show_intro();
     bank_pop();
 
-    bank_push(6);
+    bank_push(5);
     famistudio_music_play(0);
     bank_pop();
 
@@ -168,16 +163,7 @@ void main(void) {
 
           if(pad_trig & PAD_START)
           {
-              bank_push(0);
-              if(textLength > 0)
-              {
-                clear_text();
-              }
-              else
-              {
-                queue_text(dialog_3, 1);
-              }
-              bank_pop();
+              mmc1_set_chr_bank_1(1);
           }
 
           // Update items
@@ -411,8 +397,5 @@ void main(void) {
 
         // Don't run until a frame has run.
         ppu_wait_nmi();
-        bank_push(6);
-        famistudio_update();
-        bank_pop();
     }
 }

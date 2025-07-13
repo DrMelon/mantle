@@ -264,6 +264,6 @@
 .segment "DMC"
     .incbin "../../sound/MANTLE_songs.dmc"
 
-.segment "ROM_06"
+.segment "ROM_05"
 music_data:
     .include "../../sound/MANTLE_songs.s"

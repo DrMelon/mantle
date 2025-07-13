@@ -123,6 +123,16 @@ neslib_nmi:
 
 @skipNtsc:
 
+    lda BP_BANK
+    sta BP_BANK_TEMP
+    lda #5
+    sta BP_BANK
+    jsr mmc1_set_prg_bank
+    jsr famistudio_update
+    lda BP_BANK_TEMP
+    sta BP_BANK
+    jsr mmc1_set_prg_bank
+
     rts
 
 
