@@ -209,7 +209,7 @@ void update_character(WalkingCharacter* chara)
                         // Open the chest and perform the Ice Key theatric.
 
                         // Stop any music currently playing, then play the ice key jingle
-                        music_stop();
+                        //music_stop();
 
                         // Spawn the ice key sprite above the chest
 
@@ -246,7 +246,7 @@ void update_character(WalkingCharacter* chara)
                 sword_check(chara);
 
                 // Sword swing SFX
-                sfx_play(1, 0);
+                //sfx_play(1, 0);
             }
             if(chara->animframe > 2)
             {

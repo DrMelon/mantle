@@ -147,14 +147,6 @@ detectNTSC:
     sta PREV_4003
     sta PREV_4007
     
-    jsr _music_stop
-
-.if(FT_SFX_ENABLE)
-    ldx #<sounds_data
-    ldy #>sounds_data
-    jsr FamiToneSfxInit
-.endif
-
     lda #$fd
     sta <RAND_SEED
     sta <RAND_SEED+1
@@ -165,6 +157,3 @@ detectNTSC:
     sta PPU_OAM_ADDR
 
     jmp _main           ;no parameters
-
-    ; Famitracker driver uses .s for file extension, but is otherwise normal asm
-    .include "famitracker_driver/driver.s"

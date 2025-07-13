@@ -11,7 +11,7 @@
 // 060414 - many fixes and improvements, including sequental VRAM updates
 // previous versions were created since mid-2011, there were many updates
 
-
+#include "famistudio_cc65.h"
 
 
 
@@ -107,25 +107,6 @@ unsigned char __fastcall__ oam_meta_spr(unsigned char x,unsigned char y,unsigned
 //hide all remaining sprites from given offset
 
 void __fastcall__ oam_hide_rest(unsigned char sprid);
-
-
-
-//play a music in FamiTone format
-
-void __fastcall__ music_play(unsigned char song);
-
-//stop music
-
-void __fastcall__ music_stop(void);
-
-//pause and unpause music
-
-void __fastcall__ music_pause(unsigned char pause);
-
-//play FamiTone sound effect on channel 0..3
-
-void __fastcall__ sfx_play(unsigned char sound,unsigned char channel);
-
 
 
 //poll controller and return flags like PAD_LEFT etc, input is pad number (0 or 1)

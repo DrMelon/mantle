@@ -32,6 +32,11 @@ void main(void) {
     draw_ui_borders();
     bank_pop();
 
+    // init sound driver
+    bank_push(6);
+    famistudio_init(FAMISTUDIO_PLATFORM_NTSC, music_data_mantle);
+    bank_pop();
+
     // Set up game state
     currentState = GS_NOTHING; // transition to GS_GAMEPLAY after...
     playerLevel = 0;
@@ -76,6 +81,10 @@ void main(void) {
 
     bank_push(INTRO_BANK);
     load_and_show_intro();
+    bank_pop();
+
+    bank_push(6);
+    famistudio_music_play(0);
     bank_pop();
 
     // Infinite loop to end things
@@ -148,8 +157,8 @@ void main(void) {
           // SOUND TEST
           if(pad_trig & PAD_SELECT)
           {
-              music_stop();
-              music_play(soundTestNum);
+              //music_stop();
+              //music_play(soundTestNum);
               soundTestNum++;
               if(soundTestNum > 5)
               {
@@ -402,6 +411,8 @@ void main(void) {
 
         // Don't run until a frame has run.
         ppu_wait_nmi();
-
+        bank_push(6);
+        famistudio_update();
+        bank_pop();
     }
 }

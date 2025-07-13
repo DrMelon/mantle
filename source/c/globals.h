@@ -40,6 +40,7 @@ enum Theatric
 #define KRIS_ANIMS_BANK 2
 #define CHEAT_CODES_BANK 6
 #define INTRO_BANK 3
+#define MUSIC_BANK 6
 
 //
 // Global Variables (zeropage)
@@ -120,5 +121,7 @@ extern unsigned char palmTreeBuffer[];
 // Narrative/theatrics
 extern unsigned char treeRoomVisits; // Number of times visited the Tree Room
 
+// Music/sound data
+extern unsigned char music_data_mantle[];
 
 #endif

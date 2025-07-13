@@ -13,7 +13,7 @@
     "ciProvider": "none",
     "testProvider": "nes-test",
     "installEmulator": "mesen",
-    "includeCLibrary": "neslib with famitracker",
+    "includeCLibrary": "neslib with famistudio",
     "neslibNtscPal": "both",
     "useTutorial": false,
     "tutorialGroup": null,
