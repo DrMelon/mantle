@@ -22,6 +22,8 @@ const unsigned char icekey_found_0[] = "YOU GOT THE ICE KEY";
 const unsigned char instruct_0[] = "     BECOME STRONGER";
 const unsigned char instruct_1[] = "     BECAME STRONGER";
 
+const unsigned char intro_0[] = "| NO CONTROLLER |";
+
 const unsigned char barBlocks[] = {0x20, 0x30, 0x40, 0x50, 0x60};
 const unsigned char* lvStrings[] = {lv1Text, lv2Text, lv3Text, lvMaxText};
 

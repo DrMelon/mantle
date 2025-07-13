@@ -127,17 +127,17 @@ void main(void) {
           // Update level logic
           if(playerExp >= 24 && playerLevel < 4)
           {
-             playerLevel++;
-             playerExp = 0;
-             if(playerLevel == 2 && currentEnvironment == E_DESERT)
-             {
-                 monsterAggression++; // monsters only become violent and dangerous after lvl 2 in the desert
-             }
-             if(playerLevel == 4)
-             {
-                 playerExp = 24; // full exp
-             }
-             hudDirty = 1;
+            playerLevel++;
+            playerExp = 0;
+            if(playerLevel == 2 && currentEnvironment == E_DESERT)
+            {
+                monsterAggression++; // monsters only become violent and dangerous after lvl 2 in the desert
+            }
+            if(playerLevel == 4)
+            {
+                playerExp = 24; // full exp
+            }
+            hudDirty = 1;
           }
 
           // Update characters
@@ -182,12 +182,11 @@ void main(void) {
           bank_push(MONSTER_PROJECTILES_BANK);
           for(i2 = 0; i2 < spawnedMonsters; i2++)
           {
-             update_monster(&monsterList[i2]);
+            update_monster(&monsterList[i2]);
           }
           for(i = 0; i < spawnedProjectiles; i++)
           {
-             update_projectile(&projList[i]);
-             // TODO: Investigate why projectile deletion sometimes causes subsequent monsters to just Not Appear on other screens (even though _spawnedMonsters is still the correct value and _monsterList is populated.)
+            update_projectile(&projList[i]);
           }
           bank_pop();
 
@@ -211,7 +210,7 @@ void main(void) {
 
           for(i = 0; i < spawnedProjectiles; i++)
           {
-             draw_projectile(&projList[i]);
+            draw_projectile(&projList[i]);
           }
           bank_pop();
 
@@ -301,18 +300,18 @@ void main(void) {
         }
         else if(currentState == GS_SCREENTRANS_TELE)
         {
-           // Teleporting to room
-           kris.xpos = x << 4;
-           kris.ypos = y << 4;
+          // Teleporting to room
+          kris.xpos = x << 4;
+          kris.ypos = y << 4;
 
-           // Black out screen in a spiral pattern
-           x = 0;
-           y = 0;
-           x2 = 11;
-           y2 = 7;
-           oam_clear();
-           while(x <= x2 && y <= y2)
-           {
+          // Black out screen in a spiral pattern
+          x = 0;
+          y = 0;
+          x2 = 11;
+          y2 = 7;
+          oam_clear();
+          while(x <= x2 && y <= y2)
+          {
               // Spiral running right
               for(i = x; i <= x2; i++)
               {
@@ -353,27 +352,27 @@ void main(void) {
               }
               x++;
 
-           }
+          }
 
-           set_vram_update(NULL);
+          set_vram_update(NULL);
 
-           pal_col(0, 0x0F); // Black BG
-           ppu_wait_nmi(); // wait till end of frame
+          pal_col(0, 0x0F); // Black BG
+          ppu_wait_nmi(); // wait till end of frame
 
-           // Turn off PPU
-           ppu_off();
+          // Turn off PPU
+          ppu_off();
 
-           // Load room
-           load_room();
+          // Load room
+          load_room();
 
-           ppu_on_all();
+          ppu_on_all();
 
-           pal_col(0, envPalettes[currentEnvironment][0]);
-           currentState = GS_GAMEPLAY;
+          pal_col(0, envPalettes[currentEnvironment][0]);
+          currentState = GS_GAMEPLAY;
 
-           //entering/leaving the shop room in the desert?
-           if(currentEnvironment == E_DESERT)
-           {
+          //entering/leaving the shop room in the desert?
+          if(currentEnvironment == E_DESERT)
+          {
                 if(currentRoom == 19)
                 {
                     bank_push(0);
@@ -406,4 +405,3 @@ void main(void) {
 
     }
 }
-
