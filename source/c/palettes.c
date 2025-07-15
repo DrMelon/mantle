@@ -26,6 +26,12 @@ const unsigned char paletteIsland[] = {
     0x09, 0x05, 0x16, 0x26, // Red Rocks, Bridges
     0x09, 0x27, 0x1C, 0x3C // Water & Watery Rock
 };
+const unsigned char paletteIcePalace[]={
+    0x02, 0x02, 0x11, 0x1C, // Ice Palace Floor & Walls
+    0x02, 0x02, 0x11, 0x1C, // Ice Palace Floor & Walls
+    0x02, 0x02, 0x11, 0x1C, // Ice Palace Floor & Walls
+    0x02, 0x02, 0x11, 0x1C //
+};
 // BG Palettes per environment
 // Making this mutable lets us alter the desert palette as needed
 const unsigned char* envPalettes[] =

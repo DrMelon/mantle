@@ -156,17 +156,17 @@ void main(void) {
               famistudio_music_play(soundTestNum);
               bank_pop();
               soundTestNum++;
-              if(soundTestNum > 10)
+              if(soundTestNum > 9)
               {
                 soundTestNum = 0;
               }
           }
+
           // Update items
           for(i = 0; i < spawnedItems; i++)
           {
               update_item(&itemList[i], &kris);
           }
-
 
           // Update monsters & projectiles
           bank_push(MONSTER_PROJECTILES_BANK);

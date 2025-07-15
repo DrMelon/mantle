@@ -98,6 +98,29 @@ enum Environment
 #define TILE_I_WBRIDGE_R 44
 #define TILE_I_BLACK 45
 
+#define TILE_IP_FLOOR 0
+#define TILE_IP_WATER 1
+#define TILE_IP_WALL_L 2
+#define TILE_IP_WALL_R 3
+#define TILE_IP_WALL_D 4
+#define TILE_IP_WALL_U 5
+#define TILE_IP_CORN_TL 6
+#define TILE_IP_CORN_TR 7
+#define TILE_IP_CORN_BL 8
+#define TILE_IP_CORN_BR 9
+#define TILE_IP_EMPTY 10
+#define TILE_IP_EMPTY_SOLID 11
+#define TILE_IP_BRICKWALL 12
+#define TILE_IP_DELTDOOR_TL 13
+#define TILE_IP_DELTDOOR_TR 14
+#define TILE_IP_DELTDOOR_BL 15
+#define TILE_IP_DELTDOOR_BR 16
+#define TILE_IP_BUTTON 17
+#define TILE_IP_BUTTON_DOWN 18
+#define TILE_IP_PUZDOOR_L 19
+#define TILE_IP_PUZDOOR_R 20
+
+
 extern const unsigned char* const environment_metatiles[];
 
 extern const unsigned char desert_metatiles[];
