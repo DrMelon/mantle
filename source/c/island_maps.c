@@ -1,7 +1,8 @@
 #include "source/c/island_maps.h"
 #include "bank_helpers.h"
+#include "globals.h"
 
-CODE_BANK(0);
+CODE_BANK(ROOM_LOGIC_BANK);
 const unsigned char island_room_0[] = {
 1, 6, 12, 8,
 4, 4, 4, 4, 4, 0, 0, 4, 4, 4, 4, 4, 

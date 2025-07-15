@@ -13,12 +13,7 @@
 #include "palettes.h"
 #include "cheats.h"
 #include "intro.h"
-
-// forward decls
-void load_environment(enum Environment env);
-void load_room();
-void set_palette_for_bg_tile(unsigned char tx, unsigned char ty, unsigned char palettenum);
-void switch_to_room();
+#include "utils.h"
 
 //
 // Main entrypoint
@@ -55,8 +50,6 @@ void main(void) {
     kris.direction = 0;
     kris.animframe = 0;
 
-
-
     // Set the scroll to 0,0
     scroll(0, 0);
 
@@ -73,9 +66,7 @@ void main(void) {
     load_and_show_intro();
     bank_pop();
 
-    bank_push(MUSIC_BANK);
-    famistudio_music_play(0);
-    bank_pop();
+    music_play(MUSIC_INTRO);
 
     // Infinite loop to end things
     while (1) {
@@ -185,12 +176,6 @@ void main(void) {
           draw_character(&kris);
           bank_pop();
 
-          if(currentState != GS_GAMEPLAY)
-          {
-             // if we switched state while updating, don't draw monsters or items or anything. just early out.
-             goto skipToHud;
-          }
-
           // Draw items
           for(i = 0; i < spawnedItems; i++)
           {
@@ -209,8 +194,6 @@ void main(void) {
             draw_projectile(&projList[i]);
           }
           bank_pop();
-
-          skipToHud:
 
           // Update HUD if needed and possible
           if(hudDirty == 1)
@@ -362,7 +345,9 @@ void main(void) {
           ppu_off();
 
           // Load room
+          bank_push(ROOM_LOGIC_BANK);
           load_room();
+          bank_pop();
 
           ppu_on_all();
 
@@ -374,7 +359,7 @@ void main(void) {
           {
                 if(currentRoom == 19)
                 {
-                    bank_push(0);
+                    bank_push(UI_BANK);
                     if(playerLevel < 3)
                     {
                       queue_text(instruct_0, 1);
@@ -387,15 +372,41 @@ void main(void) {
                 }
                 else if(prevRoom == 19)
                 {
-                    bank_push(0);
+                    bank_push(UI_BANK);
                     clear_text();
                     bank_pop();
                 }
             }
         }
+        else if(currentState == GS_DEATH)
+        {
+            // in death state, wait for a couple of seconds, then switch Kris' sprite from being their body to being just the heart, and turn the background to
+            // "darker than dark"
+            if(framecount == 120 && kris.animframe == 0)
+            {
+              framecount = 0;
+              oam_clear();
+              kris.animframe = 1;
+              pal_col(0, 0x0D); // "darker than dark"
+            }
+            else if(framecount == 120 && kris.animframe == 1)
+            {
+              // then go back to the last "checkpoint" (based on environment and flags)
+              // load environment and load room
+              bank_push(ROOM_LOGIC_BANK);
+              reload_area();
+              bank_pop();
+              currentState = GS_GAMEPLAY;
+            }
+
+            bank_push(KRIS_ANIMS_BANK);
+            draw_character(&kris);
+            bank_pop();
+
+        }
 
         // Text routines
-        bank_push(0);
+        bank_push(UI_BANK);
         update_text();
         bank_pop();
 

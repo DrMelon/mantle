@@ -242,4 +242,14 @@ const unsigned char* const krisHurtAnims[]={
     krisWalkLeft0,
 };
 
+const unsigned char krisHeart[]={
+    4, 4, 0x90, 3,
+    128
+};
+
+const unsigned char* const krisDieAnims[]={
+    krisWalkDown0,
+    krisHeart
+};
+
 CODE_BANK_POP();

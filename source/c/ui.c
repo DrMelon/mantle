@@ -12,12 +12,14 @@ const unsigned char lvZeroText[] = "LV0 ";
 
 #define TEXT_LINE_MAX_LEN 27
 #define TEXT_MAX_LINES 2
-const unsigned char dialog_0[] = "Looking for someone..?";
-const unsigned char dialog_1[] = "Or perhaps, for someTHING?";
-const unsigned char dialog_2[] = "Neither will be found here.";
-const unsigned char dialog_3[] = "But YOU knew that already, didn't you..?";
+const unsigned char cave_dialog_0[] = "Looking for someone..?";
+const unsigned char cave_dialog_1[] = "Or perhaps, for someTHING?";
+const unsigned char cave_dialog_2[] = "Neither will be found here.";
+const unsigned char cave_dialog_3[] = "But you knew that already, didn't you..?";
 
 const unsigned char icekey_found_0[] = "YOU GOT THE ICE KEY";
+
+const unsigned char secret_message_0[] = "Oh, nice try...\nbut no dice, friend!";
 
 const unsigned char instruct_0[] = "     BECOME STRONGER";
 const unsigned char instruct_1[] = "     BECAME STRONGER";
@@ -169,6 +171,11 @@ void queue_text_banked()
     if(x2 == 0)
     {
         queue_text(icekey_found_0, 1);
+        textDelay = 6;
+    }
+    else if(x2 == 1)
+    {
+        queue_text(secret_message_0, 1);
     }
 }
 
@@ -215,6 +222,13 @@ void update_text()
        {
           textLineOffset++;
           textColOffset = 0;
+       }
+       if(textBuffer[textSeekChar]-0x80 == '\n')
+       {
+          textLineOffset++;
+          textColOffset = 0;
+          textSeekChar++;
+          return;
        }
 
        // Draw at this x, y

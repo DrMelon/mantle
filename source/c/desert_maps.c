@@ -1,7 +1,8 @@
 #include "source/c/desert_maps.h"
 #include "bank_helpers.h"
+#include "globals.h"
 
-CODE_BANK(0);
+CODE_BANK(ROOM_LOGIC_BANK);
 const unsigned char desert_room_0[] = {
 1, 12, 19, 11,
 4, 3, 4, 3, 4, 3, 4, 3, 4, 3, 4, 3, 

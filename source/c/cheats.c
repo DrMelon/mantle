@@ -4,6 +4,7 @@
 #include "globals.h"
 #include "bank_helpers.h"
 #include "roomstuff.h"
+#include "ui.h"
 
 #ifdef CHEATS_ENABLED
 
@@ -12,8 +13,7 @@ unsigned char lastEightInputs[8];
 const unsigned char maxLevelCheat[] = { PAD_B, PAD_RIGHT, PAD_LEFT, PAD_RIGHT, PAD_UP, PAD_UP, PAD_DOWN, PAD_DOWN };
 const unsigned char refillHpCheat[] = { PAD_B, PAD_UP, PAD_B, PAD_DOWN, PAD_B, PAD_UP, PAD_B, PAD_DOWN };
 const unsigned char skipToIslandCheat[] = { PAD_B, PAD_UP, PAD_UP, PAD_UP, PAD_B, PAD_DOWN, PAD_DOWN, PAD_DOWN };
-const unsigned char secretMessageA[] = { PAD_B, PAD_A, PAD_UP, PAD_RIGHT, PAD_A, PAD_DOWN, PAD_DOWN, PAD_RIGHT };
-const unsigned char secretMessageB[] = { PAD_UP, PAD_UP, PAD_DOWN, PAD_DOWN, PAD_LEFT, PAD_RIGHT, PAD_LEFT, PAD_RIGHT };
+const unsigned char secretMessage[] = { PAD_UP, PAD_UP, PAD_DOWN, PAD_DOWN, PAD_LEFT, PAD_RIGHT, PAD_LEFT, PAD_RIGHT };
 
 CODE_BANK(CHEAT_CODES_BANK);
 void update_cheats()
@@ -78,12 +78,13 @@ void update_cheats()
        banked_call(ROOM_LOGIC_BANK, skip_to_island);
        return;
     }
-    else if(cheat_check(secretMessageA))
+    else if(cheat_check(secretMessage))
     {
-//       queue_text(secret_message_a0)
+       x2 = 1;
+       banked_call(UI_BANK, queue_text_banked);
        return;
     }
-  }
+   }
 
 }
 

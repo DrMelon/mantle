@@ -45,8 +45,8 @@ ZEROPAGE_DEF(unsigned char, theatricTimer);
     WalkingCharacter kris;
 #pragma bss-name(pop)
 
-unsigned char* roomPtr = 0;
-unsigned char* metatilesPtr = 0;
+const unsigned char* roomPtr = 0;
+const unsigned char* metatilesPtr = 0;
 unsigned char currentRoomColl[96];
 
 Item itemList[MAX_ITEMS];

@@ -35,6 +35,25 @@ const unsigned char* const loadingHeartAnim[]={
     heartSpr2 // full kris body
 };
 
+void reload_area()
+{
+    // Load env
+    load_environment(currentEnvironment);
+    oam_clear();
+    spr = 0;
+
+    pal_col(0, 0x0F); // Black BG
+    ppu_wait_nmi(); // wait till end of frame
+    // Turn off PPU
+    ppu_off();
+    // Load room
+    load_room();
+
+    ppu_on_all();
+
+    pal_col(0, envPalettes[currentEnvironment][0]);
+    hudDirty = 1;
+}
 
 void load_env_target_banked()
 {
@@ -51,12 +70,16 @@ void load_environment(enum Environment env)
       deadList[i] = 0;
     }
 
-
     if(env == E_DESERT)
     {
+        playerHp = 16;
+        playerExp = 0;
+        playerLevel = 0;
         currentRoom = 0;
         monsterAggression = 0; // Monsters start docile in the desert.
         treeRoomVisits = 0;
+        kris.xpos = 128;
+        kris.ypos = 128;
     }
     if(env == E_ISLAND)
     {
@@ -71,12 +94,14 @@ void load_environment(enum Environment env)
 
     kris.direction = 0;
     kris.animframe = 0;
+    kris.substate = S_NORMAL;
 
     mmc1_set_chr_bank_0(env * 2);
     mmc1_set_chr_bank_1((env * 2) + 1);
 
     pal_bg(envPalettes[currentEnvironment]);
     pal_spr(envSprPalettes[currentEnvironment]);
+
 }
 
 void load_room_intro()
@@ -94,8 +119,8 @@ void load_room_intro()
    spawnedMonsters = 0;
    spawnedTeles = 0;
    spawnedProjectiles = 0;
-   roomPtr = (unsigned char*)environment_rooms[currentEnvironment][currentRoom];
-   metatilesPtr = (unsigned char*)environment_metatiles[currentEnvironment];
+   roomPtr = environment_rooms[currentEnvironment][currentRoom];
+   metatilesPtr = environment_metatiles[currentEnvironment];
 
    // load heart and draw it
    spr = oam_meta_spr(kris.xpos, kris.ypos, spr, loadingHeartAnim[0]);

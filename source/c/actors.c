@@ -236,9 +236,7 @@ void update_character(WalkingCharacter* chara)
                     }
                 }
 
-
-
-                // Better sword check!
+                // Better sword check for monsters!
                 sword_check(chara);
 
                 // Sword swing SFX
@@ -289,7 +287,16 @@ void update_character(WalkingCharacter* chara)
                     // TODO: Game death sequence, then restart from last environment/flag point.
                     if(playerHp < 1)
                     {
-                        // do someething
+                        // play a death sound
+                        oam_clear();
+                        chara->animframe = 0;
+                        chara->substate = S_DIE;
+                        currentState = GS_DEATH;
+                        pal_col(0, 0x0F); // black BG
+                        ppu_off();
+                        ppu_on_spr(); // sprites only
+                        music_stop();
+                        framecount = 0;
                     }
                     else
                     {
@@ -393,6 +400,10 @@ void draw_character(WalkingCharacter* chara)
     if(chara->substate == S_HURT)
     {
         spr = oam_meta_spr(chara->xpos, chara->ypos, spr, characterHurtAnims[chara->chartype][(chara->animframe%2) + (chara->direction*2)]);
+    }
+    if(chara->substate == S_DIE)
+    {
+        spr = oam_meta_spr(chara->xpos, chara->ypos, spr, krisDieAnims[(chara->animframe%2)]);
     }
 }
 CODE_BANK_POP();

@@ -33,11 +33,12 @@ void update_item(Item* item, WalkingCharacter* chara)
                 // TODO: Delay this, but play the jingle instead.
                 // Then after the jingle, teleport out and *then* start the music.
                 // TODO: play the weirder version in the islands environment
-                //music_play(0);
+
 
                 // teleport out of the sword zone
                 if(currentEnvironment == E_DESERT)
                 {
+                    music_play(MUSIC_SWORD);
                     x = 5;
                     y = 3;
                     queueTele = 5;

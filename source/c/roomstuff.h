@@ -11,5 +11,6 @@ extern void set_palette_for_bg_tile(unsigned char tx, unsigned char ty, unsigned
 extern void switch_to_room();
 extern void tele_to_room();
 extern void skip_to_island();
+extern void reload_area();
 
 #endif

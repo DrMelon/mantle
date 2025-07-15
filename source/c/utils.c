@@ -1,4 +1,6 @@
 #include "utils.h"
+#include "globals.h"
+#include "famistudio_cc65.h"
 
 unsigned char point_in_rect(unsigned char px, unsigned char py, unsigned char sx, unsigned char sy, unsigned char ex, unsigned char ey)
 {
@@ -21,4 +23,18 @@ int abs(int value)
     if(value < 0)
         return value * -1;
     return value;
+}
+
+void music_play(unsigned char music)
+{
+    bank_push(MUSIC_BANK);
+    famistudio_music_play(music);
+    bank_pop();
+}
+
+void music_stop()
+{
+    bank_push(MUSIC_BANK);
+    famistudio_music_stop();
+    bank_pop();
 }

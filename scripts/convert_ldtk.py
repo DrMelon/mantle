@@ -25,8 +25,9 @@ with open(ldtk_file_name) as ldtk_file:
     h_string_for_ldtk_files += "#define __" + ldtk_level_prefix.upper() + "_ROOMS_H_\n\n"
     h_string_for_ldtk_files += "extern const unsigned char* const " + ldtk_level_prefix + "rooms[];\n"
     c_string_for_ldtk_files = "#include \""+ c_file_path +".h\"\n"
-    c_string_for_ldtk_files += "#include \"bank_helpers.h\"\n\n"
-    c_string_for_ldtk_files += "CODE_BANK(0);\n"
+    c_string_for_ldtk_files += "#include \"bank_helpers.h\"\n"
+    c_string_for_ldtk_files += "#include \"globals.h\"\n\n"
+    c_string_for_ldtk_files += "CODE_BANK(ROOM_LOGIC_BANK);\n"
     environment_ent_counter = 0
 
     for i in range(0, len(ldtk_data.levels)):

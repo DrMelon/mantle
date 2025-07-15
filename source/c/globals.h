@@ -15,6 +15,7 @@ enum GameState
     GS_SCREENTRANS,
     GS_SCREENTRANS_TELE,
     GS_ENVTRANS,
+    GS_DEATH,
     GS_NOTHING
 };
 
@@ -34,7 +35,7 @@ enum Theatric
 };
 
 // Bank Assignments
-#define ROOM_LOGIC_BANK 0
+#define ROOM_LOGIC_BANK 4
 #define MONSTER_PROJECTILES_BANK 1
 #define ACTOR_LOGIC_BANK 3
 #define JUMP_LUT_BANK 2
@@ -43,6 +44,9 @@ enum Theatric
 #define INTRO_BANK 3
 #define MUSIC_BANK 5
 #define UI_BANK 0
+
+#define MUSIC_INTRO 0
+#define MUSIC_SWORD 1
 
 //
 // Global Variables (zeropage)
@@ -94,8 +98,8 @@ ZEROPAGE_EXTERN(unsigned char, theatricTimer);
 #pragma bss-name(pop)
 
 // Fast-access room pointers
-extern unsigned char* roomPtr;
-extern unsigned char* metatilesPtr;
+extern const unsigned char* roomPtr;
+extern const unsigned char* metatilesPtr;
 extern unsigned char currentRoomColl[];
 
 // Buffers for actors
