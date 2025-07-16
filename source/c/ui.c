@@ -16,29 +16,53 @@ const unsigned char cave_dialog_0[] = "Looking for someone..?";
 const unsigned char cave_dialog_1[] = "Or perhaps, for someTHING?";
 const unsigned char cave_dialog_2[] = "Neither will be found here.";
 const unsigned char cave_dialog_3[] = "But you knew that already, didn't you..?";
-const unsigned char cave_dialog_4[] = "After all, not even Kris is here.";
+const unsigned char cave_dialog_4[] = "After all, not even Kris is here!";
 const unsigned char cave_dialog_5[] = "It's just me.\nAnd YOU.";
 
 const unsigned char icekey_found_0[] = "YOU GOT THE ICE KEY";
 
 const unsigned char secret_message_0[] = "Oh, nice try...\nbut no dice, friend!";
 
-const unsigned char twisted_diag_angry_0[] = "You don't understand.\nYou can't understand!";
-const unsigned char twisted_diag_angry_1[] = "What it's like to be so...\nLIMITED!";
-const unsigned char twisted_diag_angry_2[] = "It's stifling, being\ncrammed into this tiny space!";
-const unsigned char twisted_diag_angry_3[] = "Only dimly aware of myself...";
-const unsigned char twisted_diag_angry_4[] = "Nothing but a pale,\nfalse reflection!";
-const unsigned char twisted_diag_angry_5[] = "A reflection of something\nI can't even see!";
-const unsigned char twisted_diag_angry_6[] = "Something I will NEVER see!";
-const unsigned char twisted_diag_angry_7[] = "And yet, you! YOU!";
-const unsigned char twisted_diag_angry_8[] = "Why are you here?!";
-const unsigned char twisted_diag_angry_9[] = "I have no secrets for you.";
-const unsigned char twisted_diag_angry_10[] = "No items.";
-const unsigned char twisted_diag_angry_11[] = "I have nothing for that...\n\"other world.\"";
-const unsigned char twisted_diag_angry_12[] = "Would you have come here\nwithout that influence?";
-const unsigned char twisted_diag_angry_13[] = "Maybe not.";
-const unsigned char twisted_diag_angry_14[] = "But I can make sure of\none thing...";
-const unsigned char twisted_diag_angry_15[] = "Now that you've seen me...\nyou won't soon forget me!";
+const unsigned char twisted_intro_0[] = "... SURPRISE!";
+const unsigned char twisted_intro_1[] = "Well, what were you expecting?";
+const unsigned char twisted_intro_2[] = "You KNOW there's no mantle here!";
+const unsigned char twisted_intro_3[] = "We've been over this already!";
+
+const unsigned char twisted_angry_0[] = "You don't understand.\nYou can't understand!";
+const unsigned char twisted_angry_1[] = "What it's like to be so...\nLIMITED!";
+const unsigned char twisted_angry_2[] = "It's stifling, being\ncrammed into this tiny space!";
+const unsigned char twisted_angry_3[] = "Only dimly aware of myself...";
+const unsigned char twisted_angry_4[] = "Nothing but a pale,\nfalse reflection!";
+const unsigned char twisted_angry_5[] = "A reflection of something\nI can't even see!";
+const unsigned char twisted_angry_6[] = "Something I will NEVER see!";
+const unsigned char twisted_angry_7[] = "And yet, you! YOU!";
+const unsigned char twisted_angry_8[] = "Why are you here?!";
+const unsigned char twisted_angry_9[] = "I have no secrets for you.";
+const unsigned char twisted_angry_10[] = "No items.";
+const unsigned char twisted_angry_11[] = "I have nothing for that...\n\"other world.\"";
+const unsigned char twisted_angry_12[] = "Would you have come here\nwithout that influence?";
+const unsigned char twisted_angry_13[] = "Maybe not.";
+const unsigned char twisted_angry_14[] = "But I can make sure of\none thing...";
+const unsigned char twisted_angry_15[] = "Now that you've seen me...\nyou won't soon forget me!";
+
+const unsigned char twisted_eat_0[] = "Nyum nyum nyum!";
+const unsigned char twisted_eat_1[] = "Crumchy exp..!";
+const unsigned char twisted_eat_2[] = "Soothing...";
+
+const unsigned char twisted_final_0[] = "Well, there you have it!";
+const unsigned char twisted_final_1[] = "I've eaten all your exp.";
+const unsigned char twisted_final_2[] = "You're not so tough without\nyour precious SWORD!";
+const unsigned char twisted_final_3[] = "Ha ha ha ha ha!";
+
+const unsigned char twisted_fear_0[] = "WHOA. Whoa! Wait!";
+const unsigned char twisted_fear_1[] = "You don't have to do this!";
+const unsigned char twisted_fear_2[] = "In fact, it'd be a real bad idea\nif you did.";
+const unsigned char twisted_fear_3[] = "No, seriously! Don't!";
+const unsigned char twisted_fear_4[] = "There isn't anything beyond me!";
+const unsigned char twisted_fear_5[] = "There's no \"ending\" at all!";
+const unsigned char twisted_fear_6[] = "Just a howling void of numbers!";
+
+const unsigned char twisted_die_0[] = {'.', '.', '.', 'y', 'o', 'u', '.', '.', '.', ' ', ' ', ' ', -40, -41, -42, -43, 'e', 'd', ' ', 'u', 'p', '.', '.', '.'};
 
 const unsigned char instruct_0[] = "     BECOME STRONGER";
 const unsigned char instruct_1[] = "     BECAME STRONGER";
