@@ -9,6 +9,7 @@ const unsigned char krisWalkDown0[]={
     8, 0, 0x02, 4,
     0, 8, 0x03, 4,
     8, 8, 0x04, 4,
+ //   5, 9, 0x0D, 2, // scarf
     128
 };
 const unsigned char krisWalkDown1[]={
@@ -16,6 +17,7 @@ const unsigned char krisWalkDown1[]={
     8, 0, 0x02, 4,
     0, 8, 0x05, 4,
     8, 8, 0x06, 4,
+//    5, 9, 0x0D, 2, // scarf
     128
 };
 const unsigned char krisWalkRight0[]={
@@ -23,6 +25,7 @@ const unsigned char krisWalkRight0[]={
     8, 0, 0x08, 4,
     0, 8, 0x09, 4,
     8, 8, 0x0A, 4,
+  //  8, 9, 0x0F, 2, // scarf
     128
 };
 const unsigned char krisWalkRight1[]={
@@ -30,6 +33,7 @@ const unsigned char krisWalkRight1[]={
     8, 1, 0x08, 4,
     1, 9, 0x0B, 4,
     9, 9, 0x0C, 4,
+ //   8, 10, 0x0F, 2, // scarf
     128
 };
 const unsigned char krisWalkUp0[]={
@@ -250,6 +254,15 @@ const unsigned char krisHeart[]={
 const unsigned char* const krisDieAnims[]={
     krisWalkDown0,
     krisHeart
+};
+
+const unsigned char krisHold[]={
+    0, 0, 0xC1, 0,
+    8, 0, 0xC2, 0,
+    0, 8, 0xD1, 0,
+    8, 8, 0xD2, 0,
+
+    128
 };
 
 CODE_BANK_POP();

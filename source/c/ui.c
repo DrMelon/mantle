@@ -16,10 +16,29 @@ const unsigned char cave_dialog_0[] = "Looking for someone..?";
 const unsigned char cave_dialog_1[] = "Or perhaps, for someTHING?";
 const unsigned char cave_dialog_2[] = "Neither will be found here.";
 const unsigned char cave_dialog_3[] = "But you knew that already, didn't you..?";
+const unsigned char cave_dialog_4[] = "After all, not even Kris is here.";
+const unsigned char cave_dialog_5[] = "It's just me.\nAnd YOU.";
 
 const unsigned char icekey_found_0[] = "YOU GOT THE ICE KEY";
 
 const unsigned char secret_message_0[] = "Oh, nice try...\nbut no dice, friend!";
+
+const unsigned char twisted_diag_angry_0[] = "You don't understand.\nYou can't understand!";
+const unsigned char twisted_diag_angry_1[] = "What it's like to be so...\nLIMITED!";
+const unsigned char twisted_diag_angry_2[] = "It's stifling, being\ncrammed into this tiny space!";
+const unsigned char twisted_diag_angry_3[] = "Only dimly aware of myself...";
+const unsigned char twisted_diag_angry_4[] = "Nothing but a pale,\nfalse reflection!";
+const unsigned char twisted_diag_angry_5[] = "A reflection of something\nI can't even see!";
+const unsigned char twisted_diag_angry_6[] = "Something I will NEVER see!";
+const unsigned char twisted_diag_angry_7[] = "And yet, you! YOU!";
+const unsigned char twisted_diag_angry_8[] = "Why are you here?!";
+const unsigned char twisted_diag_angry_9[] = "I have no secrets for you.";
+const unsigned char twisted_diag_angry_10[] = "No items.";
+const unsigned char twisted_diag_angry_11[] = "I have nothing for that...\n\"other world.\"";
+const unsigned char twisted_diag_angry_12[] = "Would you have come here\nwithout that influence?";
+const unsigned char twisted_diag_angry_13[] = "Maybe not.";
+const unsigned char twisted_diag_angry_14[] = "But I can make sure of\none thing...";
+const unsigned char twisted_diag_angry_15[] = "Now that you've seen me...\nyou won't soon forget me!";
 
 const unsigned char instruct_0[] = "     BECOME STRONGER";
 const unsigned char instruct_1[] = "     BECAME STRONGER";
