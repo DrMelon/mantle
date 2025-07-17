@@ -2,6 +2,7 @@
 #define __MONSTERS_H_
 
 #include "actors.h"
+#include "jump_arc.h"
 
 enum MonsterType
 {
@@ -30,13 +31,6 @@ typedef struct
   unsigned char health;
   unsigned char arcid;
 } Monster;
-
-typedef struct
-{
-  unsigned char jump_arc_type;
-  unsigned char start_x;
-  unsigned char start_y;
-} JumpArcState;
 
 extern void update_monster(Monster* monster);
 extern void update_mon_walker(Monster* walker);

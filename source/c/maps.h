@@ -129,8 +129,10 @@ extern const unsigned char island_metatiles[];
 extern const unsigned char* const* environment_rooms[];
 
 extern unsigned char solidity_check(unsigned char px, unsigned char py);
+extern unsigned char bridge_check(unsigned char px, unsigned char py);
 extern unsigned char solidity_check_nocactus(unsigned char px, unsigned char py);
 extern unsigned char cactus_check(unsigned char px, unsigned char py);
+extern unsigned char tile_at(unsigned char tx, unsigned char ty);
 extern unsigned char tilemap_solid(unsigned char tx, unsigned char ty);
 extern unsigned char tilemap_solid_nocactus(unsigned char tx, unsigned char ty);
 extern unsigned char tilemap_ouchie(unsigned char tx, unsigned char ty);

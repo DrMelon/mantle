@@ -9,7 +9,6 @@ enum ItemType
   ITEM_CANDY,
   ITEM_ICEKEY,
   ITEM_SHELTERKEY,
-  ITEM_TELE,
 };
 
 typedef struct
@@ -25,5 +24,4 @@ void draw_item(Item* item);
 void delete_item(unsigned char idx);
 void spawn_candy(unsigned char px, unsigned char py);
 
-void tele_to_room();
 #endif

@@ -8,6 +8,7 @@
 #include "teleport.h"
 #include "projectiles.h"
 #include "monsters.h"
+#include "rafts.h"
 
 enum GameState
 {
@@ -75,6 +76,7 @@ ZEROPAGE_EXTERN(unsigned char, spawnedItems);
 ZEROPAGE_EXTERN(unsigned char, spawnedMonsters);
 ZEROPAGE_EXTERN(unsigned char, spawnedTeles);
 ZEROPAGE_EXTERN(unsigned char, spawnedProjectiles);
+ZEROPAGE_EXTERN(unsigned char, spawnedRafts);
 ZEROPAGE_EXTERN(unsigned char, soundTestNum);
 ZEROPAGE_EXTERN(unsigned char, roomSwitchDir);
 ZEROPAGE_EXTERN(unsigned char, writingVram);
@@ -120,6 +122,9 @@ extern unsigned char deadList[];
 
 #define MAX_PROJECTILES 8
 extern Projectile projList[];
+
+#define MAX_RAFTS 2
+extern Raft raftList[];
 
 // Tile update buffer for killing trees (and more)
 extern unsigned char palmTreeBuffer[];

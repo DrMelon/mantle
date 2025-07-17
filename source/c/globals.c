@@ -23,6 +23,7 @@ ZEROPAGE_DEF(unsigned char, spawnedItems);
 ZEROPAGE_DEF(unsigned char, spawnedMonsters);
 ZEROPAGE_DEF(unsigned char, spawnedTeles);
 ZEROPAGE_DEF(unsigned char, spawnedProjectiles);
+ZEROPAGE_DEF(unsigned char, spawnedRafts);
 ZEROPAGE_DEF(unsigned char, soundTestNum);
 ZEROPAGE_DEF(unsigned char, roomSwitchDir);
 ZEROPAGE_DEF(unsigned char, writingVram);
@@ -55,6 +56,7 @@ Teleporter teleList[MAX_TELEPORTERS];
 Projectile projList[MAX_PROJECTILES];
 unsigned char deadList[TOTAL_SPAWNABLES];
 JumpArcState jumpArcList[MAX_JUMP_ARCS];
+Raft raftList[MAX_RAFTS];
 
 unsigned char palmTreeBuffer[64];
 

@@ -1,5 +1,10 @@
 #ifndef __ACTORS_H
 #define __ACTORS_H
+
+typedef struct WalkingCharacter WalkingCharacter;
+
+#include "rafts.h"
+
 enum Substate
 {
   S_NORMAL,
@@ -20,16 +25,17 @@ enum CharacterType
 };
 
 
-typedef struct
+struct WalkingCharacter
 {
   unsigned char xpos;
   unsigned char ypos;
   unsigned char direction; // 0 = down, 1 = right, 2 = up, 3 = left
   unsigned char animframe;
+  unsigned char arcid; // for jump arcs getting onto/off rafts
+  Raft* raft; // for raft handling
   enum Substate substate;
   enum CharacterType chartype;
-} WalkingCharacter;
-
+};
 
 extern const unsigned char* const * const characterWalkAnims[];
 extern const unsigned char* const * const characterStrikeAnims[];

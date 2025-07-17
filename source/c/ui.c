@@ -99,7 +99,6 @@ void init_hud_refresh_banked()
 void refresh_hud_bars(char hp, char lvl, char exp)
 {
     unsigned int ntAdr = NTADR_A(4, 5); // starting pos of HUD ui
-    char expCalc; // TODO: expcalc
     // begin hud update buffer
     // MSB|NT_UPD_HORZ, LSB, LEN, [bytes] for a horizontal sequence
     hudUpdateBuffer[0] = MSB(ntAdr)|NT_UPD_HORZ;

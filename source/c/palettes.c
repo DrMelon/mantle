@@ -50,9 +50,18 @@ const unsigned char palSpritesDesert[16] = {
     0x0f, 0x28, 0x30, 0x15,
     0x0f, 0x10, 0x12, 0x16
 };
+const unsigned char palSpritesIsland[16] = {
+    0x0f, 0x03, 0x22, 0x3c,
+    0x0f, 0x05, 0x16, 0x26,
+    0x0f, 0x28, 0x30, 0x15,
+    0x0f, 0x10, 0x12, 0x16
+};
 
 const unsigned char* const envSprPalettes[] =
 {
     palSpritesDesert,
-    palSpritesDesert, // REPLACE WITH ISLAND SPRITE PALETTE
+    palSpritesIsland,
+    //palSpritesIcePalace
+    //palSpritesCity,
+    //palSprites
 };

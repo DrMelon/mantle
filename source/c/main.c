@@ -136,6 +136,10 @@ void main(void) {
           // Update characters
           bank_push(ACTOR_LOGIC_BANK);
           update_character(&kris);
+          for(i = 0; i < spawnedRafts; i++)
+          {
+            update_raft(&raftList[i]);
+          }
           bank_pop();
 
           // SOUND TEST
@@ -174,6 +178,13 @@ void main(void) {
           // Draw characters
           bank_push(KRIS_ANIMS_BANK);
           draw_character(&kris);
+          bank_pop();
+
+          bank_push(ACTOR_LOGIC_BANK);
+          for(i = 0; i < spawnedRafts; i++)
+          {
+            draw_raft(&raftList[i]);
+          }
           bank_pop();
 
           // Draw items

@@ -115,6 +115,14 @@ with open(ldtk_file_name) as ldtk_file:
                 c_string_for_level += str(entity.field_instances[0].value) + ", "
                 c_string_for_level += str(entity.field_instances[1].value) + ", "
                 c_string_for_level += str(entity.field_instances[2].value) + ", \n"
+            if(entity.identifier == "Raft"):
+                c_string_for_level += "3, "
+                c_string_for_level += str(entity.grid[0]) + ", "
+                c_string_for_level += str(entity.grid[1]) + ", "
+                c_string_for_level += "0, "
+                c_string_for_level += "0, "
+                c_string_for_level += str(environment_ent_counter) + ", \n"
+
             environment_ent_counter += 1
 
         # Then write entity data terminator

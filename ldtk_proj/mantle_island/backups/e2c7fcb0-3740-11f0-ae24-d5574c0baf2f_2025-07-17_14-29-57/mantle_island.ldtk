@@ -1581,24 +1581,7 @@
 					"seed": 3856593,
 					"overrideTilesetUid": null,
 					"gridTiles": [],
-					"entityInstances": [
-						{
-							"__identifier": "Raft",
-							"__grid": [4,2],
-							"__pivot": [0,0],
-							"__tags": [],
-							"__tile": null,
-							"__smartColor": "#781E09",
-							"iid": "21261370-5e50-11f0-92c5-4f55e51fdf05",
-							"width": 16,
-							"height": 16,
-							"defUid": 91,
-							"px": [64,32],
-							"fieldInstances": [],
-							"__worldX": 256,
-							"__worldY": 32
-						}
-					]
+					"entityInstances": []
 				},
 				{
 					"__identifier": "IslandTiles",

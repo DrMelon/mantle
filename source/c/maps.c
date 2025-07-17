@@ -141,6 +141,21 @@ unsigned char solidity_check(unsigned char px, unsigned char py)
     return 1;
 }
 
+unsigned char bridge_check(unsigned char px, unsigned char py)
+{
+    x = (px) >> 4;
+    y = (py) >> 4;
+    if(currentEnvironment == E_ISLAND)
+    {
+        return tile_at(x, y) == TILE_I_BRIDGE_DOCK;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+
 unsigned char solidity_check_nocactus(unsigned char px, unsigned char py)
 {
     // TopLeft
@@ -216,6 +231,16 @@ unsigned char swim_check(unsigned char px, unsigned char py)
     return 1;
 }
 
+unsigned char tile_at(unsigned char tx, unsigned char ty)
+{
+    x = tx - 2;
+    y = ty - 3;
+    if(x < 0 || x >= 12) return 255;
+    if(y < 0 || y >= 8) return 255;
+    i = (x + (y*12));
+    return currentRoomColl[i];
+}
+
 unsigned char tilemap_swimmable(unsigned char tx, unsigned char ty)
 {
     x = tx - 2; // account for centering
@@ -260,6 +285,10 @@ unsigned char tilemap_solid(unsigned char tx, unsigned char ty)
 void set_map_tile_on_character(WalkingCharacter* chara, unsigned char tile)
 {
     unsigned short ntrAdr = 0;
+    if(currentEnvironment == E_ISLAND)
+    {
+        return;
+    }
     x = (chara->xpos + 7 >> 4) - 2;
     y = (chara->ypos + 7 >> 4) - 3;
     i = x + (y*12);

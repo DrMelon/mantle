@@ -7,7 +7,8 @@
 #include "projectiles.h"
 #include "ui.h"
 #include "roomstuff.h"
-
+#include "jump_arc.h"
+#include "jump_luts.h"
 #include "kris_anims.h"
 #include "monster_anims.h"
 
@@ -26,6 +27,7 @@ const unsigned char* const * const characterHurtAnims[]={
 CODE_BANK(ACTOR_LOGIC_BANK);
 void update_character(WalkingCharacter* chara)
 {
+    JumpArcState* jump_arc;
     switch (chara->substate)
     {
         case S_NORMAL:
@@ -74,11 +76,19 @@ void update_character(WalkingCharacter* chara)
                 if(pad&PAD_DOWN)
                 {
                     chara->direction = 0;
-                    if(solidity_check_nocactus(chara->xpos, chara->ypos + 1)) chara->ypos++;
-                    if(!cactus_check(chara->xpos, chara->ypos))
+                    if(chara->raft == NULL)
                     {
-                        get_hurt(chara);
-                        chara->ypos -= 4;
+                        if(solidity_check_nocactus(chara->xpos, chara->ypos + 1)) chara->ypos++;
+
+                        if(!cactus_check(chara->xpos, chara->ypos))
+                        {
+                            get_hurt(chara);
+                            chara->ypos -= 4;
+                        }
+                    }
+                    else // rafting!
+                    {
+                        if(swim_check(chara->xpos, chara->ypos + 1)) chara->ypos++;
                     }
                     did_walk = 1;
                     if(chara->ypos > 160)
@@ -90,11 +100,18 @@ void update_character(WalkingCharacter* chara)
                 if(pad&PAD_RIGHT)
                 {
                     chara->direction = 1;
-                    if(solidity_check_nocactus(chara->xpos + 1, chara->ypos)) chara->xpos++;
-                    if(!cactus_check(chara->xpos, chara->ypos))
+                    if(chara->raft == NULL)
                     {
-                        get_hurt(chara);
-                        chara->xpos -= 4;
+                        if(solidity_check_nocactus(chara->xpos + 1, chara->ypos)) chara->xpos++;
+                        if(!cactus_check(chara->xpos, chara->ypos))
+                        {
+                            get_hurt(chara);
+                            chara->xpos -= 4;
+                        }
+                    }
+                    else
+                    {
+                        if(swim_check(chara->xpos + 1, chara->ypos)) chara->xpos++;
                     }
                     did_walk = 1;
                     if(chara->xpos > 208)
@@ -106,11 +123,18 @@ void update_character(WalkingCharacter* chara)
                 if(pad&PAD_UP)
                 {
                     chara->direction = 2;
-                    if(solidity_check_nocactus(chara->xpos, chara->ypos - 1)) chara->ypos--;
-                    if(!cactus_check(chara->xpos, chara->ypos))
+                    if(chara->raft == NULL)
                     {
-                        get_hurt(chara);
-                        chara->ypos += 4;
+                        if(solidity_check_nocactus(chara->xpos, chara->ypos - 1)) chara->ypos--;
+                        if(!cactus_check(chara->xpos, chara->ypos))
+                        {
+                            get_hurt(chara);
+                            chara->ypos += 4;
+                        }
+                    }
+                    else
+                    {
+                        if(swim_check(chara->xpos, chara->ypos - 1)) chara->ypos--;
                     }
                     did_walk = 1;
                     if(chara->ypos < 48)
@@ -122,11 +146,18 @@ void update_character(WalkingCharacter* chara)
                 if(pad&PAD_LEFT)
                 {
                     chara->direction = 3;
-                    if(solidity_check_nocactus(chara->xpos - 1, chara->ypos)) chara->xpos--;
-                    if(!cactus_check(chara->xpos, chara->ypos))
+                    if(chara->raft == NULL)
                     {
-                        get_hurt(chara);
-                        chara->xpos += 4;
+                        if(solidity_check_nocactus(chara->xpos - 1, chara->ypos)) chara->xpos--;
+                        if(!cactus_check(chara->xpos, chara->ypos))
+                        {
+                            get_hurt(chara);
+                            chara->xpos += 4;
+                        }
+                    }
+                    else
+                    {
+                       if(swim_check(chara->xpos - 1, chara->ypos)) chara->xpos--;
                     }
                     did_walk = 1;
                     if(chara->xpos < 32)
@@ -138,7 +169,10 @@ void update_character(WalkingCharacter* chara)
             }
             if(did_walk && framecount%16 == 0)
             {
-                chara->animframe++;
+                if(chara->raft == NULL)
+                {
+                    chara->animframe++;
+                }
             }
             if(did_walk && spawnedTeles != 0)
             {
@@ -153,6 +187,55 @@ void update_character(WalkingCharacter* chara)
 
                         banked_call(ROOM_LOGIC_BANK, tele_to_room);
                         i2 = spawnedTeles;
+                    }
+                }
+            }
+            if(did_walk && spawnedRafts != 0)
+            {
+                // TODO: attempt to board a raft if we're not on one and one is here
+                if(chara->raft == NULL)
+                {
+                    for(i2 = 0; i2 < spawnedRafts; i2++)
+                    {
+                        if((raftList[i2].xpos - 1 < chara->xpos+16 && raftList[i2].xpos+16 > chara->xpos-1) &&
+                        (raftList[i2].ypos - 1 < chara->ypos+16 && raftList[i2].ypos+16 > chara->ypos-1))
+                        {
+                            // attempt to board this raft
+                            board_raft(chara, &raftList[i2]);
+                        }
+                    }
+                }
+
+                // TODO: attempt to leave a raft if we *are* on one and the tile one pixel over from us is a dock
+                else
+                {
+                    if(chara->direction == 0)
+                    {
+                        if(bridge_check(chara->xpos+7, chara->ypos + 20))
+                        {
+                            leave_raft(chara, chara->raft, (chara->xpos+4) >> 4, ((chara->ypos+4) >> 4) + 1);
+                        }
+                    }
+                    else if(chara->direction == 1)
+                    {
+                        if(bridge_check(chara->xpos+20, chara->ypos+7))
+                        {
+                            leave_raft(chara, chara->raft, ((chara->xpos+4) >> 4)+1, (chara->ypos+4) >> 4);
+                        }
+                    }
+                    else if(chara->direction == 2)
+                    {
+                        if(bridge_check(chara->xpos+7, chara->ypos - 7))
+                        {
+                            leave_raft(chara, chara->raft, (chara->xpos+4) >> 4, ((chara->ypos+4) >> 4) - 1);
+                        }
+                    }
+                    else if(chara->direction == 3)
+                    {
+                        if(bridge_check(chara->xpos - 7, chara->ypos+7))
+                        {
+                            leave_raft(chara, chara->raft, ((chara->xpos+4) >> 4)-1, (chara->ypos+4) >> 4);
+                        }
                     }
                 }
             }
@@ -314,6 +397,39 @@ void update_character(WalkingCharacter* chara)
             }
             break;
         }
+        case S_JUMPING:
+        {
+            // follow jump arc
+            jump_arc = &jumpArcList[chara->arcid];
+            // Evaluate the jump arc for the current anim frame.
+            // Jump arcs universally take 2 seconds.
+            // We update at half-rate, so it's about 30 frames.
+            if(framecount % 2 == 0)
+            {
+                // get jump x coords and jump y coords for current frame
+                if(chara->animframe < 30)
+                {
+                    // need to access bank 2
+                    x = chara->animframe;
+                    y = jump_arc->jump_arc_type;
+                    banked_call(JUMP_LUT_BANK, jumpLutXLookup);
+                    chara->xpos = x + jump_arc->start_x - 127;
+                    x = chara->animframe;
+                    banked_call(JUMP_LUT_BANK, jumpLutYLookup);
+                    chara->ypos = x + jump_arc->start_y - 127;
+                    chara->animframe++;
+                }
+                else
+                {
+                    jumpArcList[chara->arcid] = jumpArcList[jumpArcs];
+                    chara->arcid = 255;
+                    jumpArcs--;
+                    chara->substate = S_NORMAL;
+                }
+            }
+
+            break;
+        }
     }
 }
 
@@ -405,5 +521,10 @@ void draw_character(WalkingCharacter* chara)
     {
         spr = oam_meta_spr(chara->xpos, chara->ypos, spr, krisDieAnims[(chara->animframe%2)]);
     }
+    if(chara->substate == S_JUMPING)
+    {
+        spr = oam_meta_spr(chara->xpos, chara->ypos, spr, characterWalkAnims[chara->chartype][0 + (chara->direction*2)]);
+    }
+
 }
 CODE_BANK_POP();

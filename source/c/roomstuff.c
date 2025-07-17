@@ -5,6 +5,7 @@
 #include "palettes.h"
 #include "mapper.h"
 #include "ui.h"
+#include "rafts.h"
 
 // ROOM & ENVIRONMENT HANDLING FUNCTIONS in ROM_00
 CODE_BANK(ROOM_LOGIC_BANK);
@@ -98,6 +99,8 @@ void load_environment(enum Environment env)
 
     mmc1_set_chr_bank_0(env * 2);
     mmc1_set_chr_bank_1((env * 2) + 1);
+
+    spawnedRafts = 0; // only reset raft spawns when starting an environment over
 
     pal_bg(envPalettes[currentEnvironment]);
     pal_spr(envSprPalettes[currentEnvironment]);
@@ -308,6 +311,16 @@ void load_room()
                         }
                 }
            }
+           if(y == 4)
+           {
+             if(x == 5 || x == 6)
+             {
+                if(currentEnvironment == E_ISLAND && currentRoom == 15 && prevRoom == 6) // in island bridge room, take away bridge if on raft
+                {
+                   currentTileID = TILE_I_WATER;
+                }
+             }
+           }
 
            currentRoomColl[i2] = currentTileID;
            vram_adr(NTADR_A((x+2)*2,(y+3)*2));
@@ -374,6 +387,15 @@ void load_room()
            monsterList[spawnedMonsters].direction = monsterList[spawnedMonsters].direction >> 6;
            monsterList[spawnedMonsters].uniqueid = roomPtr[i+5];
            spawnedMonsters++;
+       }
+       else if(roomPtr[i] == 3) // spawn a raft
+       {
+            raftList[spawnedRafts].xpos = ((roomPtr[i+1]+2)) << 4;
+            raftList[spawnedRafts].ypos = ((roomPtr[i+2]+3)) << 4;
+            raftList[spawnedRafts].assignedchar = NULL;
+            raftList[spawnedRafts].currentRoom = currentRoom;
+            spawnedRafts++;
+            deadList[roomPtr[i+5]] = 1; // do *not* respawn rafts conventionally.
        }
    }
 }
