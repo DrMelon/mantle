@@ -1403,22 +1403,6 @@
 							],
 							"__worldX": -480,
 							"__worldY": -528
-						},
-						{
-							"__identifier": "Sword",
-							"__grid": [5,2],
-							"__pivot": [0,0],
-							"__tags": [],
-							"__tile": null,
-							"__smartColor": "#0C3AED",
-							"iid": "91b74510-5e50-11f0-9f14-ed24b017d780",
-							"width": 16,
-							"height": 16,
-							"defUid": 41,
-							"px": [80,32],
-							"fieldInstances": [],
-							"__worldX": -496,
-							"__worldY": -608
 						}
 					]
 				},

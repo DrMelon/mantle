@@ -249,7 +249,11 @@ unsigned char tilemap_swimmable(unsigned char tx, unsigned char ty)
     if(y < 0 || y >= 8) return 1;
     i = (x + (y*12));
     i = currentRoomColl[i];
-    return i < 15 || (i > 23 && i != 40 && i != 41);
+    if(currentEnvironment == E_DESERT)
+        return i < 15 || i > 23;
+    if(currentEnvironment == E_ISLAND)
+        return i != TILE_I_WATER && i != TILE_I_WATERFALL_TL && i != TILE_I_WATERFALL_TR;
+    return 0;
 }
 
 unsigned char tilemap_ouchie(unsigned char tx, unsigned char ty)

@@ -43,6 +43,13 @@ void update_item(Item* item, WalkingCharacter* chara)
                     y = 3;
                     queueTele = 5;
                 }
+                else if(currentEnvironment == E_ISLAND)
+                {
+                    music_play(MUSIC_SWORD_SLOW);
+                    queueTele = 0;
+                    x = 2;
+                    y = 3;
+                }
 
             }
             // Destroy self

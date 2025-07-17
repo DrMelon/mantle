@@ -33,6 +33,7 @@ void main(void) {
     bank_pop();
 
     // Set up game state
+    queueTele = 255;
     currentState = GS_NOTHING; // transition to GS_GAMEPLAY after...
     playerLevel = 0;
     playerHp = 16;
@@ -105,7 +106,7 @@ void main(void) {
           // Wipe oams (perf?)
           spr = 0;
 
-          if(queueTele != 0)
+          if(queueTele != 255)
           {
             bank_push(ROOM_LOGIC_BANK);
             x2 = x+2;
@@ -113,7 +114,7 @@ void main(void) {
             x = queueTele;
             tele_to_room();
             bank_pop();
-            queueTele = 0;
+            queueTele = 255;
             continue;
           }
 

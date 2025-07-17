@@ -180,6 +180,13 @@ void update_character(WalkingCharacter* chara)
                 {
                     if(chara->xpos+7 >> 4 == teleList[i2].tx+2 && chara->ypos+7 >> 4 == teleList[i2].ty+3)
                     {
+                        // Remove raft, if any
+                        if(chara->raft != NULL)
+                        {
+                            chara->raft->assignedchar = NULL;
+                            chara->raft = NULL;
+                        }
+
                         // Do teleport
                         x = teleList[i2].targetroom;
                         x2 = teleList[i2].targetx+2;
@@ -197,6 +204,7 @@ void update_character(WalkingCharacter* chara)
                 {
                     for(i2 = 0; i2 < spawnedRafts; i2++)
                     {
+                        if(raftList[i2].currentRoom != currentRoom) continue; // don't hop on rafts that aren't in the same room, dummy
                         if(chara->direction == 0)
                         {
                             if(point_in_rect(chara->xpos+7, chara->ypos+18, raftList[i2].xpos, raftList[i2].ypos, raftList[i2].xpos+16, raftList[i2].ypos+16))
@@ -436,33 +444,28 @@ void update_character(WalkingCharacter* chara)
             // follow jump arc
             jump_arc = &jumpArcList[chara->arcid];
             // Evaluate the jump arc for the current anim frame.
-            // Jump arcs universally take 2 seconds.
-            // We update at half-rate, so it's about 30 frames.
-            if(framecount % 2 == 0)
+            // get jump x coords and jump y coords for current frame
+            if(chara->animframe < 30)
             {
-                // get jump x coords and jump y coords for current frame
-                if(chara->animframe < 30)
-                {
-                    // need to access bank 2
-                    x = chara->animframe;
-                    y = jump_arc->jump_arc_type;
-                    banked_call(JUMP_LUT_BANK, jumpLutXLookup);
-                    chara->xpos = x + jump_arc->start_x - 127;
-                    x = chara->animframe;
-                    banked_call(JUMP_LUT_BANK, jumpLutYLookup);
-                    chara->ypos = x + jump_arc->start_y - 127;
-                    chara->animframe++;
-                }
-                else
-                {
-                    jumpArcList[chara->arcid] = jumpArcList[jumpArcs];
-                    chara->arcid = 255;
-                    jumpArcs--;
-                    chara->substate = S_NORMAL;
-                    chara->xpos = ((chara->xpos+7) >> 4) << 4;
-                    chara->ypos = ((chara->ypos+7) >> 4) << 4;
+                // need to access bank 2
+                x = chara->animframe;
+                y = jump_arc->jump_arc_type;
+                banked_call(JUMP_LUT_BANK, jumpLutXLookup);
+                chara->xpos = x + jump_arc->start_x - 127;
+                x = chara->animframe;
+                banked_call(JUMP_LUT_BANK, jumpLutYLookup);
+                chara->ypos = x + jump_arc->start_y - 127;
+                chara->animframe++;
+            }
+            else
+            {
+                jumpArcList[chara->arcid] = jumpArcList[jumpArcs];
+                chara->arcid = 255;
+                jumpArcs--;
+                chara->substate = S_NORMAL;
+                chara->xpos = ((chara->xpos+7) >> 4) << 4;
+                chara->ypos = ((chara->ypos+7) >> 4) << 4;
 
-                }
             }
 
             break;
