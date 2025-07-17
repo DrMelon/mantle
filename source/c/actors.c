@@ -192,49 +192,83 @@ void update_character(WalkingCharacter* chara)
             }
             if(did_walk && spawnedRafts != 0)
             {
-                // TODO: attempt to board a raft if we're not on one and one is here
+                // TODO: attempt to board a raft if we're not on one and one is nearby
                 if(chara->raft == NULL)
                 {
                     for(i2 = 0; i2 < spawnedRafts; i2++)
                     {
-                        if((raftList[i2].xpos - 1 < chara->xpos+16 && raftList[i2].xpos+16 > chara->xpos-1) &&
-                        (raftList[i2].ypos - 1 < chara->ypos+16 && raftList[i2].ypos+16 > chara->ypos-1))
+                        if(chara->direction == 0)
                         {
-                            // attempt to board this raft
-                            board_raft(chara, &raftList[i2]);
+                            if(point_in_rect(chara->xpos+7, chara->ypos+18, raftList[i2].xpos, raftList[i2].ypos, raftList[i2].xpos+16, raftList[i2].ypos+16))
+                            {
+                                // attempt to board this raft
+                                board_raft(chara, &raftList[i2]);
+                            }
+                        }
+                        else if(chara->direction == 1)
+                        {
+                            if(point_in_rect(chara->xpos+18, chara->ypos+7, raftList[i2].xpos, raftList[i2].ypos, raftList[i2].xpos+16, raftList[i2].ypos+16))
+                            {
+                                // attempt to board this raft
+                                board_raft(chara, &raftList[i2]);
+                            }
+                        }
+                        else if(chara->direction == 2)
+                        {
+                            if(point_in_rect(chara->xpos+7, chara->ypos-2, raftList[i2].xpos, raftList[i2].ypos, raftList[i2].xpos+16, raftList[i2].ypos+16))
+                            {
+                                // attempt to board this raft
+                                board_raft(chara, &raftList[i2]);
+                            }
+                        }
+                        else if(chara->direction == 3)
+                        {
+                            if(point_in_rect(chara->xpos-2, chara->ypos+7, raftList[i2].xpos, raftList[i2].ypos, raftList[i2].xpos+16, raftList[i2].ypos+16))
+                            {
+                                // attempt to board this raft
+                                board_raft(chara, &raftList[i2]);
+                            }
                         }
                     }
                 }
 
-                // TODO: attempt to leave a raft if we *are* on one and the tile one pixel over from us is a dock
+                // TODO: attempt to leave a raft if we *are* on one and the tile one over from us is a dock
                 else
                 {
                     if(chara->direction == 0)
                     {
-                        if(bridge_check(chara->xpos+7, chara->ypos + 20))
+                        if(bridge_check(chara->xpos+7, chara->ypos+18))
                         {
-                            leave_raft(chara, chara->raft, (chara->xpos+4) >> 4, ((chara->ypos+4) >> 4) + 1);
+                            chara->xpos = ((chara->xpos+7) >> 4) << 4;
+                            chara->ypos = ((chara->ypos+7) >> 4) << 4;
+                            leave_raft(chara, chara->raft, (chara->xpos) >> 4, ((chara->ypos) >> 4) + 1);
                         }
                     }
                     else if(chara->direction == 1)
                     {
-                        if(bridge_check(chara->xpos+20, chara->ypos+7))
+                        if(bridge_check(chara->xpos+18, chara->ypos+7))
                         {
-                            leave_raft(chara, chara->raft, ((chara->xpos+4) >> 4)+1, (chara->ypos+4) >> 4);
+                            chara->xpos = ((chara->xpos+7) >> 4) << 4;
+                            chara->ypos = ((chara->ypos+7) >> 4) << 4;
+                            leave_raft(chara, chara->raft, ((chara->xpos) >> 4)+1, (chara->ypos) >> 4);
                         }
                     }
                     else if(chara->direction == 2)
                     {
-                        if(bridge_check(chara->xpos+7, chara->ypos - 7))
+                        if(bridge_check(chara->xpos+7, chara->ypos-2))
                         {
-                            leave_raft(chara, chara->raft, (chara->xpos+4) >> 4, ((chara->ypos+4) >> 4) - 1);
+                            chara->xpos = ((chara->xpos+7) >> 4) << 4;
+                            chara->ypos = ((chara->ypos+7) >> 4) << 4;
+                            leave_raft(chara, chara->raft, (chara->xpos) >> 4, ((chara->ypos) >> 4) - 1);
                         }
                     }
                     else if(chara->direction == 3)
                     {
-                        if(bridge_check(chara->xpos - 7, chara->ypos+7))
+                        if(bridge_check(chara->xpos-2, chara->ypos+7))
                         {
-                            leave_raft(chara, chara->raft, ((chara->xpos+4) >> 4)-1, (chara->ypos+4) >> 4);
+                            chara->xpos = ((chara->xpos+7) >> 4) << 4;
+                            chara->ypos = ((chara->ypos+7) >> 4) << 4;
+                            leave_raft(chara, chara->raft, ((chara->xpos) >> 4)-1, (chara->ypos) >> 4);
                         }
                     }
                 }
@@ -425,6 +459,9 @@ void update_character(WalkingCharacter* chara)
                     chara->arcid = 255;
                     jumpArcs--;
                     chara->substate = S_NORMAL;
+                    chara->xpos = ((chara->xpos+7) >> 4) << 4;
+                    chara->ypos = ((chara->ypos+7) >> 4) << 4;
+
                 }
             }
 

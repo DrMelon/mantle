@@ -145,7 +145,7 @@ unsigned char bridge_check(unsigned char px, unsigned char py)
 {
     x = (px) >> 4;
     y = (py) >> 4;
-    if(currentEnvironment == E_ISLAND)
+    if(currentEnvironment == E_ISLAND && currentRoom != 15) // ignores bridges in waterfall area
     {
         return tile_at(x, y) == TILE_I_BRIDGE_DOCK;
     }
@@ -249,7 +249,7 @@ unsigned char tilemap_swimmable(unsigned char tx, unsigned char ty)
     if(y < 0 || y >= 8) return 1;
     i = (x + (y*12));
     i = currentRoomColl[i];
-    return i < 15 || i > 23;
+    return i < 15 || (i > 23 && i != 40 && i != 41);
 }
 
 unsigned char tilemap_ouchie(unsigned char tx, unsigned char ty)

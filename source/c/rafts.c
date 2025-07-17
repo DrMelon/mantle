@@ -19,6 +19,9 @@ void board_raft(WalkingCharacter* chara, Raft* raft)
 {
   int test_tile_x = 0;
   int test_tile_y = 0;
+  chara->xpos = ((chara->xpos+7) >> 4) << 4;
+  chara->ypos = ((chara->ypos+7) >> 4) << 4;
+
   raft->assignedchar = chara;
   chara->raft = raft;
 
@@ -62,7 +65,7 @@ void draw_raft(Raft* raft)
   if(currentRoom != raft->currentRoom) return; // don't draw unless in same room as raft.
   if(framecount % 32 > 16) yoffset = 1;
 
-  if(raft->assignedchar != NULL) yoffset += 4;
+  if(raft->assignedchar != NULL && raft->assignedchar->substate == S_NORMAL) yoffset += 4;
 
   spr = oam_meta_spr(raft->xpos, raft->ypos + yoffset, spr, raftSprite);
 }
@@ -71,10 +74,10 @@ void leave_raft(WalkingCharacter* chara, Raft* raft, unsigned char tx, unsigned 
 {
   int test_tile_x = 0;
   int test_tile_y = 0;
-  if(currentRoom == 15) return; // prevent leaving the raft in the bridge room in the island
+  raft->xpos = ((chara->xpos + 7) >> 4) << 4;
+  raft->ypos = ((chara->ypos + 7) >> 4) << 4;
+
   raft->assignedchar = NULL;
-  raft->xpos = ((raft->xpos + 5) >> 4) << 4;
-  raft->ypos = ((raft->ypos + 5) >> 4) << 4;
   chara->raft = NULL;
 
   // calculate a jump arc for the player
