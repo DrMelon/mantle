@@ -14,6 +14,7 @@ const unsigned char maxLevelCheat[] = { PAD_B, PAD_RIGHT, PAD_LEFT, PAD_RIGHT, P
 const unsigned char refillHpCheat[] = { PAD_B, PAD_UP, PAD_B, PAD_DOWN, PAD_B, PAD_UP, PAD_B, PAD_DOWN };
 const unsigned char skipToIslandCheat[] = { PAD_B, PAD_UP, PAD_UP, PAD_UP, PAD_B, PAD_DOWN, PAD_DOWN, PAD_DOWN };
 const unsigned char secretMessage[] = { PAD_UP, PAD_UP, PAD_DOWN, PAD_DOWN, PAD_LEFT, PAD_RIGHT, PAD_LEFT, PAD_RIGHT };
+const unsigned char secretMessage2[] = { PAD_LEFT, PAD_RIGHT, PAD_LEFT, PAD_RIGHT, PAD_B, PAD_A, PAD_SELECT, PAD_START};
 
 CODE_BANK(CHEAT_CODES_BANK);
 void update_cheats()
@@ -56,6 +57,18 @@ void update_cheats()
       cheatInputIdx = (cheatInputIdx + 1) % 8;
       did_input = 1;
   }
+  if(pad_trig & PAD_SELECT)
+  {
+      lastEightInputs[cheatInputIdx] = PAD_SELECT;
+      cheatInputIdx = (cheatInputIdx + 1) % 8;
+      did_input = 1;
+  }
+  if(pad_trig & PAD_START)
+  {
+      lastEightInputs[cheatInputIdx] = PAD_START;
+      cheatInputIdx = (cheatInputIdx + 1) % 8;
+      did_input = 1;
+  }
 
   // Read over the cheat inputs and see if any cheats match
   if(did_input)
@@ -81,6 +94,10 @@ void update_cheats()
     else if(cheat_check(secretMessage))
     {
        x2 = 1;
+       return;
+    }
+    else if(cheat_check(secretMessage2) && x2 == 1)
+    {
        banked_call(UI_BANK, queue_text_banked);
        return;
     }

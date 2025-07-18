@@ -9,6 +9,7 @@
 #include "projectiles.h"
 #include "monsters.h"
 #include "rafts.h"
+#include "twisted.h"
 
 enum GameState
 {
@@ -99,6 +100,7 @@ ZEROPAGE_EXTERN(unsigned char, theatricTimer);
 
 #pragma bss-name(push, "ZEROPAGE")
     extern WalkingCharacter kris;
+    extern Twisted twisted;
 #pragma bss-name(pop)
 
 // Fast-access room pointers

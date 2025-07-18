@@ -44,6 +44,7 @@ ZEROPAGE_DEF(unsigned char, theatricTimer);
 
 #pragma bss-name(push, "ZEROPAGE")
     WalkingCharacter kris;
+    Twisted twisted;
 #pragma bss-name(pop)
 
 const unsigned char* roomPtr = 0;
