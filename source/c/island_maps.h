@@ -48,4 +48,5 @@ extern const unsigned char island_room_42[];
 extern const unsigned char island_room_43[];
 extern const unsigned char island_room_44[];
 extern const unsigned char island_room_45[];
+extern const unsigned char island_room_46[];
 #endif

@@ -49,6 +49,7 @@ enum Theatric
 #define MUSIC_INTRO 0
 #define MUSIC_SWORD 1
 #define MUSIC_SWORD_SLOW 2
+#define MUSIC_NORTHERNLIGHT 3
 
 //
 // Global Variables (zeropage)

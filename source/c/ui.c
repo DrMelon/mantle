@@ -21,6 +21,8 @@ const unsigned char cave_dialog_5[] = "It's just me.\nAnd YOU.";
 
 const unsigned char icekey_found_0[] = "YOU GOT THE ICE KEY";
 
+const unsigned char northernlight_0[] = "GO TO\nNORTHERN LIGHT";
+
 const unsigned char secret_message_0[] = "Oh, nice try...\nbut no dice, friend!";
 
 const unsigned char twisted_intro_0[] = "... SURPRISE!";

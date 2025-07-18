@@ -359,6 +359,10 @@ void update_character(WalkingCharacter* chara)
                     {
                         set_map_tile_in_room(x, y, TILE_I_WATER);
                     }
+                    else if(currentRoom == 23 && playerLevel >= 2 && x == 7 && y == 3)
+                    {
+                        set_map_tile_in_room(x, y, TILE_I_STAIRS);
+                    }
                 }
 
                 // Better sword check for monsters!

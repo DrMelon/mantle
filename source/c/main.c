@@ -240,6 +240,22 @@ void main(void) {
                     pal_col(0, 0x0F);
                 }
             }
+            // If the room we're switching to is on the northern side of the ocean...
+            else if(currentEnvironment == E_ISLAND)
+            {
+                if(currentRoom == 44 || currentRoom == 43 || currentRoom == 42)
+                {
+                  envPalettes[E_ISLAND] = paletteIslandIce;
+                  pal_bg(envPalettes[E_ISLAND]);
+                  pal_col(0, 0x0F);
+                }
+                else if(currentRoom == 34 || currentRoom == 35 || currentRoom == 36)
+                {
+                  envPalettes[E_ISLAND] = paletteIsland;
+                  pal_bg(envPalettes[E_ISLAND]);
+                  pal_col(0, 0x0F);
+                }
+            }
 
             // Check screen transition direction and move Kris in that direction until threshold is reached
             if(roomSwitchDir == 0)
@@ -350,11 +366,31 @@ void main(void) {
 
           set_vram_update(NULL);
 
+
+
           pal_col(0, 0x0F); // Black BG
           ppu_wait_nmi(); // wait till end of frame
 
           // Turn off PPU
           ppu_off();
+
+          // Switch to ice palette when teleporting into the NorthernLight rooms.
+          if(currentEnvironment == E_ISLAND)
+          {
+            if(currentRoom == 29 || currentRoom == 28)
+            {
+              envPalettes[E_ISLAND] = paletteIslandIce;
+              pal_bg(envPalettes[E_ISLAND]);
+              pal_col(0, 0x0F);
+            }
+            else if(prevRoom == 29 || prevRoom == 28)
+            {
+              envPalettes[E_ISLAND] = paletteIsland;
+              pal_bg(envPalettes[E_ISLAND]);
+              pal_col(0, 0x0F);
+            }
+          }
+
 
           // Load room
           bank_push(ROOM_LOGIC_BANK);
@@ -388,7 +424,25 @@ void main(void) {
                     clear_text();
                     bank_pop();
                 }
+          }
+          else if(currentEnvironment == E_ISLAND)
+          {
+            // Entering a Northern Light room
+            if(currentRoom == 28 || currentRoom == 29)
+            {
+                bank_push(UI_BANK);
+                queue_text(northernlight_0, 1);
+                bank_pop();
+                music_play(MUSIC_NORTHERNLIGHT);
             }
+            else if(prevRoom == 28 || prevRoom == 29)
+            {
+                bank_push(UI_BANK);
+                clear_text();
+                bank_pop();
+                music_play(MUSIC_SWORD_SLOW);
+            }
+          }
         }
         else if(currentState == GS_DEATH)
         {
