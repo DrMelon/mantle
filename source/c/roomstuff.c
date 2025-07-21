@@ -82,7 +82,7 @@ void load_environment(enum Environment env)
         kris.xpos = 128;
         kris.ypos = 128;
     }
-    if(env == E_ISLAND)
+    else if(env == E_ISLAND)
     {
         currentRoom = 3;
         monsterAggression = 0; // Monsters start docile in the island too, but get angry faster.
@@ -92,13 +92,32 @@ void load_environment(enum Environment env)
         kris.xpos = 130;
         kris.ypos = 120;
     }
+    else if(env == E_ICEPALACE)
+    {
+       currentRoom = 0;
+       monsterAggression = 1;
+       playerLevel = 2;
+       playerHp = 16;
+       playerExp = 0;
+       kris.xpos = 128;
+       kris.ypos = 128;
+    }
 
     kris.direction = 0;
     kris.animframe = 0;
     kris.substate = S_NORMAL;
 
-    mmc1_set_chr_bank_0(env * 2);
-    mmc1_set_chr_bank_1((env * 2) + 1);
+    if(env == E_ICEPALACE)
+    {
+      // force E_ISLAND loading for E_ICEPALACE chr banks, since we reuse some tiles
+      mmc1_set_chr_bank_0(E_ISLAND * 2);
+      mmc1_set_chr_bank_1((E_ISLAND * 2) + 1);
+    }
+    else
+    {
+      mmc1_set_chr_bank_0(env * 2);
+      mmc1_set_chr_bank_1((env * 2) + 1);
+    }
 
     spawnedRafts = 0; // only reset raft spawns when starting an environment over
 
@@ -448,7 +467,7 @@ void tele_to_room()
     unsigned char telex = x2;
     unsigned char teley = y2;
     currentState = GS_SCREENTRANS_TELE;
-    // Set sprite pos
+    // Set sprite pos when main game update occurs
     x = telex;
     y = teley;
 
@@ -461,6 +480,14 @@ void skip_to_island()
 {
     ppu_off();
     load_environment(E_ISLAND);
+    load_room();
+    ppu_on_all();
+}
+
+void skip_to_ice_palace()
+{
+    ppu_off();
+    load_environment(E_ICEPALACE);
     load_room();
     ppu_on_all();
 }

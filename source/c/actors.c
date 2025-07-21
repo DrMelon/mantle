@@ -341,12 +341,12 @@ void update_character(WalkingCharacter* chara)
                         set_map_tile_in_room(x, y, TILE_D_CHEST_OPEN);
 
                         // TODO: Set the appropriate Theatrics flag & timer so that we can transition to the 2nd stage at the right time.
-                        //skip_to_island();
+                        skip_to_island();
                     }
                     else
                     {
                         // Play *dink* sound!
-                        // TODO: only play it if the struck tile *is* killable though. reorganize this code!
+                        // TODO: only play it if the struck tile *is* killable though.
                     }
                 }
                 else if(currentEnvironment == E_ISLAND)
@@ -363,12 +363,18 @@ void update_character(WalkingCharacter* chara)
                     {
                         set_map_tile_in_room(x, y, TILE_I_STAIRS);
                     }
+                    else if(i2 == TILE_I_DELTDOOR_BL || i2 == TILE_I_DELTDOOR_BR)
+                    {
+                        // Made it to the ice key door.
+                        // TODO: Do the "UNLOCKED WITH ICE KEY" text, wait for a sec, then transport to ice palace interior
+                        skip_to_ice_palace();
+                    }
                 }
 
                 // Better sword check for monsters!
                 sword_check(chara);
 
-                // Sword swing SFX
+                // TODO: Sword swing SFX, should play on button press
                 //sfx_play(1, 0);
             }
             if(chara->animframe > 2)

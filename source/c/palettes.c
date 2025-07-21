@@ -33,10 +33,10 @@ const unsigned char paletteIslandIce[] = {
     0x17, 0x21, 0x1C, 0x3C // Water & Watery Rock
 };
 const unsigned char paletteIcePalace[]={
-    0x02, 0x02, 0x11, 0x1C, // Ice Palace Floor & Walls
-    0x02, 0x02, 0x11, 0x1C, // Ice Palace Floor & Walls
-    0x02, 0x02, 0x11, 0x1C, // Ice Palace Floor & Walls
-    0x02, 0x02, 0x11, 0x1C //
+    0x01, 0x0f, 0x16, 0x30, // Text
+    0x01, 0x01, 0x13, 0x21, // Ice Palace Floors & Walls
+    0x01, 0x02, 0x11, 0x1C, // Ice Palace Buttons and Doors
+    0x01, 0x02, 0x11, 0x1C, // Ice Palace Orange Trees (baseball team ass name)
 };
 // BG Palettes per environment
 // Making this mutable lets us alter the desert palette as needed
@@ -44,7 +44,7 @@ const unsigned char* envPalettes[] =
 {
     paletteDesert,
     paletteIsland,
-//    paletteIcePalace,
+    paletteIcePalace,
 //    paletteCity,
 //    paletteShelter
 };
@@ -62,12 +62,18 @@ const unsigned char palSpritesIsland[16] = {
     0x0f, 0x28, 0x30, 0x15,
     0x0f, 0x10, 0x12, 0x16
 };
+const unsigned char palSpritesIcePalace[16] = {
+    0x0f, 0x03, 0x22, 0x3c,
+    0x0f, 0x05, 0x16, 0x26,
+    0x0f, 0x28, 0x30, 0x15,
+    0x0f, 0x10, 0x12, 0x16
+};
 
 const unsigned char* const envSprPalettes[] =
 {
     palSpritesDesert,
     palSpritesIsland,
-    //palSpritesIcePalace
+    palSpritesIcePalace
     //palSpritesCity,
     //palSprites
 };

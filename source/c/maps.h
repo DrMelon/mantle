@@ -9,6 +9,8 @@ enum Environment
    E_ISLAND,
    E_ICEPALACE,
    E_CITY,
+   E_DUNGEON,
+   E_SHELTERFOREST,
    E_SHELTER
 };
 
@@ -119,12 +121,14 @@ enum Environment
 #define TILE_IP_BUTTON_DOWN 18
 #define TILE_IP_PUZDOOR_L 19
 #define TILE_IP_PUZDOOR_R 20
+#define TILE_IP_BLACK 21
 
 
 extern const unsigned char* const environment_metatiles[];
 
 extern const unsigned char desert_metatiles[];
 extern const unsigned char island_metatiles[];
+extern const unsigned char icepalace_metatiles[];
 
 extern const unsigned char* const* environment_rooms[];
 

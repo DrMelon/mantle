@@ -30,10 +30,8 @@ void update_item(Item* item, WalkingCharacter* chara)
                 playerLevel++;
                 hudDirty = 1;
                 // Start playing the song!!
-                // TODO: Delay this, but play the jingle instead.
+                // TODO: Delay this, but play the jingle instead. Use a theatric!
                 // Then after the jingle, teleport out and *then* start the music.
-                // TODO: play the weirder version in the islands environment
-
 
                 // teleport out of the sword zone
                 if(currentEnvironment == E_DESERT)

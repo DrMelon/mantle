@@ -4,6 +4,7 @@
 #include "actors.h"
 #include "desert_maps.h"
 #include "island_maps.h"
+#include "icepalace_maps.h"
 #include "bank_helpers.h"
 
 // Format: 4 8x8 tiles that make up this metatile, and palette mask for attrib (actual mask differs based on tile pos)
@@ -91,11 +92,27 @@ const unsigned char island_metatiles[]={
     0x67, 0x68, 0x77, 0x78, 0b10101010, 0,  /* TILE_I_WATERFALL_TL 40 */
     0x69, 0x6A, 0x79, 0x7A, 0b10101010, 0,  /* TILE_I_WATERFALL_TR 41 */
     0x65, 0x66, 0x75, 0x76, 0b10101010, 0,  /* TILE_I_SMALLDOOR 42 */
-/* TILE_I_WBRIDGE_L 43 */
-/* TILE_I_WBRIDGE_R 44 */
     0x10, 0x10, 0x10, 0x10, 0b00000000, 0,
     0x10, 0x10, 0x10, 0x10, 0b00000000, 0,
     0x10, 0x10, 0x10, 0x10, 0b00000000, 0,
+    0x10, 0x10, 0x10, 0x10, 0b00000000, 0,
+};
+
+const unsigned char icepalace_metatiles[]={
+    0x2B, 0x2C, 0x3B, 0x3C, 0b01010101, 0,
+    0x09, 0x0A, 0x19, 0x1A, 0b01010101, 1,
+    0x10, 0x4B, 0x10, 0x5B, 0b01010101, 1,
+    0x4C, 0x10, 0x5C, 0x10, 0b01010101, 1,
+    0x10, 0x10, 0x47, 0x48, 0b01010101, 1,
+    0x57, 0x57, 0x10, 0x10, 0b01010101, 1,
+    0x10, 0x10, 0x10, 0x4A, 0b01010101, 1,
+    0x10, 0x10, 0x49, 0x10, 0b01010101, 1,
+    0x10, 0x5A, 0x10, 0x10, 0b01010101, 1,
+    0x59, 0x10, 0x10, 0x10, 0b01010101, 1,
+//... TODO: the rest of the owl
+
+
+
     0x10, 0x10, 0x10, 0x10, 0b00000000, 0,
 };
 
@@ -108,12 +125,14 @@ const unsigned char island_metatiles[]={
 // list terminates if you reach an id of 128
 const unsigned char* const environment_metatiles[]={
   desert_metatiles,
-  island_metatiles
+  island_metatiles,
+  icepalace_metatiles,
 };
 
 const unsigned char* const* environment_rooms[]={
   desert_rooms,
-  island_rooms
+  island_rooms,
+  palace_rooms,
 };
 
 unsigned char solidity_check(unsigned char px, unsigned char py)
