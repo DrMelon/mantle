@@ -38,6 +38,30 @@ const unsigned char paletteIcePalace[]={
     0x01, 0x02, 0x11, 0x1C, // Ice Palace Buttons and Doors
     0x01, 0x02, 0x11, 0x1C, // Ice Palace Orange Trees (baseball team ass name)
 };
+const unsigned char paletteCity[]={
+    0x21, 0x02, 0x12, 0x17, // Text, City Walls & Windows
+    0x21, 0x12, 0x0C, 0x22, // City Floors & Walls
+    0x21, 0x22, 0x27, 0x25, // City Bollards
+    0x21, 0x07, 0x17, 0x27, // City Dungeons
+};
+const unsigned char paletteDungeon[]={
+    0x0f, 0x0f, 0x16, 0x30, // Text
+    0x0f, 0x03, 0x14, 0x27, // Dungeon Floors & walls
+    0x0f, 0x22, 0x27, 0x25, // Dungeon Orange Trees
+    0x0f, 0x07, 0x17, 0x27, //
+};
+const unsigned char paletteForest[]={
+    0x28, 0x0f, 0x16, 0x30, // Text
+    0x28, 0x08, 0x18, 0x16, // Forest & Shelter Door
+    0x28, 0x22, 0x27, 0x25, //
+    0x28, 0x07, 0x17, 0x27, //
+};
+const unsigned char paletteShelter[]={
+    0x0f, 0x0f, 0x16, 0x30, // Text
+    0x0f, 0x03, 0x14, 0x27, // Shelter Floors & Walls 1
+    0x0f, 0x05, 0x16, 0x27, // Shelter Floors & Walls 2
+    0x0f, 0x2D, 0x3D, 0x30, // Shelter Floors & Walls 3
+};
 // BG Palettes per environment
 // Making this mutable lets us alter the desert palette as needed
 const unsigned char* envPalettes[] =
@@ -45,8 +69,10 @@ const unsigned char* envPalettes[] =
     paletteDesert,
     paletteIsland,
     paletteIcePalace,
-//    paletteCity,
-//    paletteShelter
+    paletteCity,
+    paletteDungeon,
+    paletteForest,
+    paletteShelter
 };
 
 // Color palettes for sprites (Kris & Monsters)
