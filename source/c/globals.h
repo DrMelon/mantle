@@ -24,8 +24,6 @@ enum GameState
 enum Theatric
 {
     TH_INTRO,
-    TH_LOAD_IN_HEART,
-    TH_DIE,
     TH_GETSWORD,
     TH_GETICEKEY,
     TH_USEICEKEY,
