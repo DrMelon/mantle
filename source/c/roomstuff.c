@@ -395,7 +395,8 @@ void load_room()
            }
            if(monsterList[spawnedMonsters].montype == MON_FISH)
            {
-               monsterList[spawnedMonsters].level = 2;
+               if(currentEnvironment == E_DESERT)
+                 monsterList[spawnedMonsters].level = 2;
            }
            if(monsterList[spawnedMonsters].montype == MON_LIZARD)
            {

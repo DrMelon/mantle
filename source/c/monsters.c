@@ -175,8 +175,8 @@ void update_mon_fish(Monster* fish)
 
     if(fish->substate == S_NORMAL)
     {
-        // Does this behaviour differ when not in the desert? Yeah, probably. In the dungeon i think.
-        if(currentEnvironment == E_DESERT)
+        // Fish behave differently whether they are in the overworld or dungeons.
+        if(currentEnvironment == E_DESERT || currentEnvironment == E_ISLAND)
         {
            // 1. make the fish move in its current direction
            // 2. if it hits something solid, make it turn left
@@ -248,6 +248,14 @@ void earn_exp()
             playerExp += 1; // become stronger. 24 enemies to hit lv 3.
         else if(playerLevel < 4)
             playerExp += 2; // become stronger. 12 enemies to hit lvmax.
+    }
+    if(currentEnvironment == E_ISLAND)
+    {
+        monsterAggression = 1; // monsters become aggressive on the Island as soon as one dies.
+        if(playerLevel < 2)
+            playerExp += 2;// 10 enemies to hit lv2.
+        if(playerExp == 20)
+            playerExp += 4; // last one counts extra
     }
     hudDirty = 1;
 }
