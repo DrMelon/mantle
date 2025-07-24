@@ -30,25 +30,12 @@ void update_item(Item* item, WalkingCharacter* chara)
                 playerLevel++;
                 hudDirty = 1;
                 // Start playing the song!!
-                // TODO: Delay this, but play the jingle instead. Use a theatric!
+                // TODO: Delay this, but play the jingle instead.
                 // Then after the jingle, teleport out and *then* start the music.
-
-                // teleport out of the sword zone
-                if(currentEnvironment == E_DESERT)
-                {
-                    music_play(MUSIC_SWORD);
-                    x = 5;
-                    y = 3;
-                    queueTele = 5;
-                }
-                else if(currentEnvironment == E_ISLAND)
-                {
-                    music_play(MUSIC_SWORD_SLOW);
-                    queueTele = 0;
-                    x = 2;
-                    y = 3;
-                }
-
+                theatricActive = 1;
+                theatricIndex = TH_GETSWORD;
+                theatricStage = 0;
+                theatricTimer = 0;
             }
             // Destroy self
             deadList[item->uniqueid] = 1;

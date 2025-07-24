@@ -28,6 +28,7 @@ CODE_BANK(ACTOR_LOGIC_BANK);
 void update_character(WalkingCharacter* chara)
 {
     JumpArcState* jump_arc;
+    unsigned char control_override = 0;
     switch (chara->substate)
     {
         case S_NORMAL:
@@ -63,109 +64,120 @@ void update_character(WalkingCharacter* chara)
                     }
                 }
 
-                if(pad_trig&PAD_A)
+                if(theatricActive == 1) // if certain theatrics are on, don't take input.
                 {
-                    if(playerLevel > 0)
+                    if(theatricIndex == TH_GETSWORD || theatricIndex == TH_GETICEKEY)
                     {
-                        chara->substate = S_ATTACK;
-                        chara->animframe = 0;
+                        control_override = 1;
                     }
+                }
+                if(control_override == 0)
+                {
+                    if(pad_trig&PAD_A)
+                    {
+                        if(playerLevel > 0)
+                        {
+                            chara->substate = S_ATTACK;
+                            chara->animframe = 0;
+                        }
 
-                    break;
-                }
-                if(pad&PAD_DOWN)
-                {
-                    chara->direction = 0;
-                    if(chara->raft == NULL)
+                        break;
+                    }
+                    if(pad&PAD_DOWN)
                     {
-                        if(solidity_check_nocactus(chara->xpos, chara->ypos + 1)) chara->ypos++;
+                        chara->direction = 0;
+                        if(chara->raft == NULL)
+                        {
+                            if(solidity_check_nocactus(chara->xpos, chara->ypos + 1)) chara->ypos++;
 
-                        if(!cactus_check(chara->xpos, chara->ypos))
+                            if(!cactus_check(chara->xpos, chara->ypos))
+                            {
+                                get_hurt(chara);
+                                chara->ypos -= 4;
+                            }
+                        }
+                        else // rafting!
                         {
-                            get_hurt(chara);
-                            chara->ypos -= 4;
+                            if(swim_check(chara->xpos, chara->ypos + 1)) chara->ypos++;
+                        }
+                        did_walk = 1;
+                        if(chara->ypos > 160)
+                        {
+                            roomSwitchDir = 0;
+                            banked_call(ROOM_LOGIC_BANK, switch_to_room);
                         }
                     }
-                    else // rafting!
+                    if(pad&PAD_RIGHT)
                     {
-                        if(swim_check(chara->xpos, chara->ypos + 1)) chara->ypos++;
-                    }
-                    did_walk = 1;
-                    if(chara->ypos > 160)
-                    {
-                        roomSwitchDir = 0;
-                        banked_call(ROOM_LOGIC_BANK, switch_to_room);
-                    }
-                }
-                if(pad&PAD_RIGHT)
-                {
-                    chara->direction = 1;
-                    if(chara->raft == NULL)
-                    {
-                        if(solidity_check_nocactus(chara->xpos + 1, chara->ypos)) chara->xpos++;
-                        if(!cactus_check(chara->xpos, chara->ypos))
+                        chara->direction = 1;
+                        if(chara->raft == NULL)
                         {
-                            get_hurt(chara);
-                            chara->xpos -= 4;
+                            if(solidity_check_nocactus(chara->xpos + 1, chara->ypos)) chara->xpos++;
+                            if(!cactus_check(chara->xpos, chara->ypos))
+                            {
+                                get_hurt(chara);
+                                chara->xpos -= 4;
+                            }
+                        }
+                        else
+                        {
+                            if(swim_check(chara->xpos + 1, chara->ypos)) chara->xpos++;
+                        }
+                        did_walk = 1;
+                        if(chara->xpos > 208)
+                        {
+                            roomSwitchDir = 1;
+                            banked_call(ROOM_LOGIC_BANK, switch_to_room);
                         }
                     }
-                    else
+                    if(pad&PAD_UP)
                     {
-                        if(swim_check(chara->xpos + 1, chara->ypos)) chara->xpos++;
-                    }
-                    did_walk = 1;
-                    if(chara->xpos > 208)
-                    {
-                        roomSwitchDir = 1;
-                        banked_call(ROOM_LOGIC_BANK, switch_to_room);
-                    }
-                }
-                if(pad&PAD_UP)
-                {
-                    chara->direction = 2;
-                    if(chara->raft == NULL)
-                    {
-                        if(solidity_check_nocactus(chara->xpos, chara->ypos - 1)) chara->ypos--;
-                        if(!cactus_check(chara->xpos, chara->ypos))
+                        chara->direction = 2;
+                        if(chara->raft == NULL)
                         {
-                            get_hurt(chara);
-                            chara->ypos += 4;
+                            if(solidity_check_nocactus(chara->xpos, chara->ypos - 1)) chara->ypos--;
+                            if(!cactus_check(chara->xpos, chara->ypos))
+                            {
+                                get_hurt(chara);
+                                chara->ypos += 4;
+                            }
+                        }
+                        else
+                        {
+                            if(swim_check(chara->xpos, chara->ypos - 1)) chara->ypos--;
+                        }
+                        did_walk = 1;
+                        if(chara->ypos < 48)
+                        {
+                            roomSwitchDir = 2;
+                            banked_call(ROOM_LOGIC_BANK, switch_to_room);
                         }
                     }
-                    else
+                    if(pad&PAD_LEFT)
                     {
-                        if(swim_check(chara->xpos, chara->ypos - 1)) chara->ypos--;
-                    }
-                    did_walk = 1;
-                    if(chara->ypos < 48)
-                    {
-                        roomSwitchDir = 2;
-                        banked_call(ROOM_LOGIC_BANK, switch_to_room);
-                    }
-                }
-                if(pad&PAD_LEFT)
-                {
-                    chara->direction = 3;
-                    if(chara->raft == NULL)
-                    {
-                        if(solidity_check_nocactus(chara->xpos - 1, chara->ypos)) chara->xpos--;
-                        if(!cactus_check(chara->xpos, chara->ypos))
+                        chara->direction = 3;
+                        if(chara->raft == NULL)
                         {
-                            get_hurt(chara);
-                            chara->xpos += 4;
+                            if(solidity_check_nocactus(chara->xpos - 1, chara->ypos)) chara->xpos--;
+                            if(!cactus_check(chara->xpos, chara->ypos))
+                            {
+                                get_hurt(chara);
+                                chara->xpos += 4;
+                            }
+                        }
+                        else
+                        {
+                        if(swim_check(chara->xpos - 1, chara->ypos)) chara->xpos--;
+                        }
+                        did_walk = 1;
+                        if(chara->xpos < 32)
+                        {
+                            roomSwitchDir = 3;
+                            banked_call(ROOM_LOGIC_BANK, switch_to_room);
                         }
                     }
-                    else
-                    {
-                       if(swim_check(chara->xpos - 1, chara->ypos)) chara->xpos--;
-                    }
-                    did_walk = 1;
-                    if(chara->xpos < 32)
-                    {
-                        roomSwitchDir = 3;
-                        banked_call(ROOM_LOGIC_BANK, switch_to_room);
-                    }
                 }
+
             }
             if(did_walk && framecount%16 == 0)
             {
@@ -328,9 +340,7 @@ void update_character(WalkingCharacter* chara)
                         // Open the chest and perform the Ice Key theatric.
 
                         // Stop any music currently playing, then play the ice key jingle
-                        //music_stop();
-
-                        // Spawn the ice key sprite above the chest
+                        music_stop();
 
                         // Summon the ice key text crawl and set text delay high
                         //queue_text(icekey_found_0, 1);
@@ -341,7 +351,10 @@ void update_character(WalkingCharacter* chara)
                         set_map_tile_in_room(x, y, TILE_D_CHEST_OPEN);
 
                         // TODO: Set the appropriate Theatrics flag & timer so that we can transition to the 2nd stage at the right time.
-                        skip_to_island();
+                        theatricActive = 1;
+                        theatricIndex = TH_GETICEKEY;
+                        theatricStage = 0;
+                        theatricTimer = 0;
                     }
                     else
                     {
@@ -552,29 +565,49 @@ CODE_BANK(KRIS_ANIMS_BANK);
 
 void draw_character(WalkingCharacter* chara)
 {
-    // Character is walking, play walk anim for facing dir
-    if(chara->substate == S_NORMAL)
+    unsigned char sprite_override = 0;
+    if(theatricActive == 1)
     {
-        spr = oam_meta_spr(chara->xpos, chara->ypos, spr, characterWalkAnims[chara->chartype][chara->animframe%2 + (chara->direction*2)]);
+        // theatric is on, we might want to override the sprite
+        if(theatricIndex == TH_GETSWORD)
+        {
+            spr = oam_meta_spr(chara->xpos, chara->ypos, spr, krisHold);
+            sprite_override = 1;
+        }
+        else if(theatricIndex == TH_GETICEKEY)
+        {
+            spr = oam_meta_spr(chara->xpos, chara->ypos, spr, krisHoldIceKey);
+            sprite_override = 1;
+        }
     }
-    // Character is attacking, play attack anim for facing dir (Kris, Noelle only)
-    if(chara->substate == S_ATTACK)
+
+    if(sprite_override == 0)
     {
-        spr = oam_meta_spr(chara->xpos, chara->ypos, spr, characterStrikeAnims[chara->chartype][chara->animframe + (chara->direction*3)]);
+        // Character is walking, play walk anim for facing dir
+        if(chara->substate == S_NORMAL)
+        {
+            spr = oam_meta_spr(chara->xpos, chara->ypos, spr, characterWalkAnims[chara->chartype][chara->animframe%2 + (chara->direction*2)]);
+        }
+        // Character is attacking, play attack anim for facing dir (Kris, Noelle only)
+        else if(chara->substate == S_ATTACK)
+        {
+            spr = oam_meta_spr(chara->xpos, chara->ypos, spr, characterStrikeAnims[chara->chartype][chara->animframe + (chara->direction*3)]);
+        }
+        // Character is hurt, play hurt anim for facing dir
+        else if(chara->substate == S_HURT)
+        {
+            spr = oam_meta_spr(chara->xpos, chara->ypos, spr, characterHurtAnims[chara->chartype][(chara->animframe%2) + (chara->direction*2)]);
+        }
+        else if(chara->substate == S_DIE)
+        {
+            spr = oam_meta_spr(chara->xpos, chara->ypos, spr, krisDieAnims[(chara->animframe%2)]);
+        }
+        else if(chara->substate == S_JUMPING)
+        {
+            spr = oam_meta_spr(chara->xpos, chara->ypos, spr, characterWalkAnims[chara->chartype][0 + (chara->direction*2)]);
+        }
     }
-    // Character is hurt, play hurt anim for facing dir
-    if(chara->substate == S_HURT)
-    {
-        spr = oam_meta_spr(chara->xpos, chara->ypos, spr, characterHurtAnims[chara->chartype][(chara->animframe%2) + (chara->direction*2)]);
-    }
-    if(chara->substate == S_DIE)
-    {
-        spr = oam_meta_spr(chara->xpos, chara->ypos, spr, krisDieAnims[(chara->animframe%2)]);
-    }
-    if(chara->substate == S_JUMPING)
-    {
-        spr = oam_meta_spr(chara->xpos, chara->ypos, spr, characterWalkAnims[chara->chartype][0 + (chara->direction*2)]);
-    }
+
 
 }
 CODE_BANK_POP();

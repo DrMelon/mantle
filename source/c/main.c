@@ -98,6 +98,49 @@ void main(void) {
                 update_intro();
                 bank_pop();
             }
+            else if(theatricIndex == TH_GETSWORD)
+            {
+              //simply run down a timer and expire this theatric when done
+              theatricTimer++;
+              if(theatricTimer > 240)
+              {
+                theatricTimer = 0;
+                theatricIndex = 0;
+                theatricActive = 0;
+                // teleport out of the sword zone and play the sword tune
+                if(currentEnvironment == E_DESERT)
+                {
+                    music_play(MUSIC_SWORD);
+                    x = 5;
+                    y = 3;
+                    queueTele = 5;
+                }
+                else if(currentEnvironment == E_ISLAND)
+                {
+                    music_play(MUSIC_SWORD_SLOW);
+                    queueTele = 0;
+                    x = 2;
+                    y = 3;
+                }
+              }
+            }
+            else if(theatricIndex == TH_GETICEKEY)
+            {
+              // wait until ominous music/jingle stops
+              theatricTimer++;
+              if(theatricTimer > 240)
+              {
+                theatricTimer = 0;
+                theatricIndex = 0;
+                theatricActive = 0;
+                // clear text
+                textQueued = 3;
+                // go to ice palace
+                bank_push(ROOM_LOGIC_BANK);
+                skip_to_island();
+                bank_pop();
+              }
+            }
         }
 
         // Main state machine selection

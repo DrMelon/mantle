@@ -257,6 +257,18 @@ const unsigned char* const krisDieAnims[]={
 };
 
 const unsigned char krisHold[]={
+    4, -16, 0x27, 4,
+    4, -8, 0x37, 4,
+    0, 0, 0xC1, 0,
+    8, 0, 0xC2, 0,
+    0, 8, 0xD1, 0,
+    8, 8, 0xD2, 0,
+
+    128
+};
+
+const unsigned char krisHoldIceKey[]={
+    // add ice key
     0, 0, 0xC1, 0,
     8, 0, 0xC2, 0,
     0, 8, 0xD1, 0,
