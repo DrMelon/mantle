@@ -14,6 +14,8 @@ const unsigned char maxLevelCheat[] = { PAD_B, PAD_RIGHT, PAD_LEFT, PAD_RIGHT, P
 const unsigned char refillHpCheat[] = { PAD_B, PAD_UP, PAD_B, PAD_DOWN, PAD_B, PAD_UP, PAD_B, PAD_DOWN };
 const unsigned char skipToIslandCheat[] = { PAD_B, PAD_UP, PAD_UP, PAD_UP, PAD_B, PAD_DOWN, PAD_DOWN, PAD_DOWN };
 const unsigned char skipToPalaceCheat[] = { PAD_B, PAD_UP, PAD_UP, PAD_UP, PAD_B, PAD_LEFT, PAD_LEFT, PAD_LEFT };
+const unsigned char skipToCityCheat[] = { PAD_B, PAD_UP, PAD_UP, PAD_UP, PAD_B, PAD_RIGHT, PAD_RIGHT, PAD_RIGHT };
+const unsigned char skipToForestCheat[] = { PAD_B, PAD_UP, PAD_UP, PAD_UP, PAD_B, PAD_UP, PAD_UP, PAD_UP };
 const unsigned char secretMessage[] = { PAD_UP, PAD_UP, PAD_DOWN, PAD_DOWN, PAD_LEFT, PAD_RIGHT, PAD_LEFT, PAD_RIGHT };
 const unsigned char secretMessage2[] = { PAD_LEFT, PAD_RIGHT, PAD_LEFT, PAD_RIGHT, PAD_B, PAD_A, PAD_SELECT, PAD_START};
 
@@ -106,6 +108,16 @@ void update_cheats()
     {
        banked_call(UI_BANK, queue_text_banked);
        return;
+    }
+    else if(cheat_check(skipToCityCheat))
+    {
+       banked_call(ROOM_LOGIC_BANK, skip_to_city);
+       return;
+    }
+    else if(cheat_check(skipToForestCheat))
+    {
+      banked_call(ROOM_LOGIC_BANK, skip_to_forest);
+      return;
     }
    }
 

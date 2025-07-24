@@ -1278,28 +1278,7 @@
 					"seed": 8733411,
 					"overrideTilesetUid": null,
 					"gridTiles": [],
-					"entityInstances": [
-						{
-							"__identifier": "Teleporter",
-							"__grid": [8,4],
-							"__pivot": [0,0],
-							"__tags": [],
-							"__tile": null,
-							"__smartColor": "#6EFF00",
-							"iid": "89bebc00-5e50-11f0-aacb-e3a5ed7478cc",
-							"width": 16,
-							"height": 16,
-							"defUid": 42,
-							"px": [128,64],
-							"fieldInstances": [
-								{ "__identifier": "roomid", "__type": "Int", "__value": 12, "__tile": null, "defUid": 43, "realEditorValues": [{ "id": "V_Int", "params": [12] }] },
-								{ "__identifier": "targetx", "__type": "Int", "__value": 5, "__tile": null, "defUid": 44, "realEditorValues": [{ "id": "V_Int", "params": [5] }] },
-								{ "__identifier": "targety", "__type": "Int", "__value": 6, "__tile": null, "defUid": 45, "realEditorValues": [{ "id": "V_Int", "params": [6] }] }
-							],
-							"__worldX": 896,
-							"__worldY": -64
-						}
-					]
+					"entityInstances": []
 				},
 				{
 					"__identifier": "CityTiles",
@@ -2525,46 +2504,6 @@
 							"fieldInstances": [],
 							"__worldX": 848,
 							"__worldY": 192
-						},
-						{
-							"__identifier": "Teleporter",
-							"__grid": [5,7],
-							"__pivot": [0,0],
-							"__tags": [],
-							"__tile": null,
-							"__smartColor": "#6EFF00",
-							"iid": "752b3f70-5e50-11f0-aacb-774658f9ba11",
-							"width": 16,
-							"height": 16,
-							"defUid": 42,
-							"px": [80,112],
-							"fieldInstances": [
-								{ "__identifier": "roomid", "__type": "Int", "__value": 8, "__tile": null, "defUid": 43, "realEditorValues": [{ "id": "V_Int", "params": [8] }] },
-								{ "__identifier": "targetx", "__type": "Int", "__value": 6, "__tile": null, "defUid": 44, "realEditorValues": [{ "id": "V_Int", "params": [6] }] },
-								{ "__identifier": "targety", "__type": "Int", "__value": 3, "__tile": null, "defUid": 45, "realEditorValues": [{ "id": "V_Int", "params": [3] }] }
-							],
-							"__worldX": 848,
-							"__worldY": 240
-						},
-						{
-							"__identifier": "Teleporter",
-							"__grid": [6,7],
-							"__pivot": [0,0],
-							"__tags": [],
-							"__tile": null,
-							"__smartColor": "#6EFF00",
-							"iid": "759aa310-5e50-11f0-aacb-37728fe53fb5",
-							"width": 16,
-							"height": 16,
-							"defUid": 42,
-							"px": [96,112],
-							"fieldInstances": [
-								{ "__identifier": "roomid", "__type": "Int", "__value": 8, "__tile": null, "defUid": 43, "realEditorValues": [{ "id": "V_Int", "params": [8] }] },
-								{ "__identifier": "targetx", "__type": "Int", "__value": 6, "__tile": null, "defUid": 44, "realEditorValues": [{ "id": "V_Int", "params": [6] }] },
-								{ "__identifier": "targety", "__type": "Int", "__value": 3, "__tile": null, "defUid": 45, "realEditorValues": [{ "id": "V_Int", "params": [3] }] }
-							],
-							"__worldX": 864,
-							"__worldY": 240
 						}
 					]
 				},

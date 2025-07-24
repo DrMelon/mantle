@@ -5,6 +5,8 @@
 #include "desert_maps.h"
 #include "island_maps.h"
 #include "icepalace_maps.h"
+#include "city_maps.h"
+#include "forest_maps.h"
 #include "bank_helpers.h"
 
 // Format: 4 8x8 tiles that make up this metatile, and palette mask for attrib (actual mask differs based on tile pos)
@@ -116,6 +118,55 @@ const unsigned char icepalace_metatiles[]={
     0x10, 0x10, 0x10, 0x10, 0b00000000, 0,
 };
 
+const unsigned char city_metatiles[]={
+    0x60, 0x60, 0x60, 0x60, 0b01010101, 0,  //TILE_CITY_FLOOR 0
+    0x01, 0x02, 0x11, 0x12, 0b01010101, 0,    //TILE_CITY_FLOOR_DETAIL 1
+    0x21, 0x21, 0x60, 0x60, 0b01010101, 0,    //TILE_CITY_FLOOR_SHADOW 2
+    0x03, 0x04, 0x13, 0x14, 0b00000000, 1,    //TILE_CITY_WALL_DETAIL 3
+    0x05, 0x06, 0x15, 0x16, 0b00000000, 1,    //TILE_CITY_WALL_SCREEN 4
+    0x0B, 0x0C, 0x1B, 0x1C, 0b00000000, 1,    //TILE_CITY_WALL_ANGLEDETAIL_L 5
+    0x0D, 0x0E, 0x1D, 0x1E, 0b00000000, 1,    //TILE_CITY_WALL_ANGLEDETAIL_R 6
+    0x2B, 0x2C, 0x3B, 0x3C, 0b00000000, 1,    //TILE_CITY_WALL_ANGLEWINDOW_L 7
+    0x2D, 0x2E, 0x3D, 0x3E, 0b00000000, 1,    //TILE_CITY_WALL_ANGLEWINDOW_R 8
+    0x07, 0x08, 0x17, 0x18, 0b01010101, 0,    //TILE_CITY_WALL_ANGLEFLOOR_L 9
+    0x09, 0x0A, 0x19, 0x1A, 0b01010101, 0,    //TILE_CITY_WALL_ANGLEFLOOR_R 10
+    0x20, 0x20, 0x20, 0x20, 0b01010101, 0,    //TILE_CITY_UMBRA 11
+    0x23, 0x24, 0x33, 0x34, 0b10101010, 1,    //TILE_CITY_BOLLARD 12
+    0x43, 0x44, 0x53, 0x54, 0b10101010, 1,    //TILE_CITY_BOLLARD_V 13
+    0x23, 0x44, 0x53, 0x54, 0b10101010, 1,    //TILE_CITY_BOLLARD_CORNER 14
+    0x25, 0x26, 0x35, 0x36, 0b00000000, 1,    //TILE_CITY_WALL_WINDOW 15
+    0x27, 0x28, 0x37, 0x38, 0b00000000, 0,    //TILE_CITY_MANHOLE 16
+    0x45, 0x46, 0x55, 0x56, 0b11111111, 0,    //TILE_CITY_STAIRS 17
+    0x20, 0x20, 0x20, 0x20, 0b00000000, 1,    //TILE_CITY_WALLDARK 18
+    0x00, 0x00, 0x00, 0x00, 0b00000000, 1,    //TILE_CITY_WALLLIGHT 19
+    0x10, 0x10, 0x10, 0x10, 0b00000000, 0, // TILE_CITY_BLACK 20
+};
+
+const unsigned char forest_metatiles[]={
+    0x00, 0x00, 0x00, 0x00, 0b01010101, 0,    //TILE_FOREST_FLOOR 0
+    0x62, 0x63, 0x72, 0x73, 0b01010101, 1,    //TILE_FOREST_TREES_E 1
+    0x64, 0x65, 0x74, 0x75, 0b01010101, 1,    //TILE_FOREST_TREES_CORN_E 2
+    0x66, 0x67, 0x76, 0x77, 0b01010101, 1,    //TILE_FOREST_TREES_N 3
+    0x80, 0x81, 0x90, 0x91, 0b01010101, 1,    //TILE_FOREST_TREES_S 4
+    0x82, 0x83, 0x92, 0x93, 0b01010101, 1,    //TILE_FOREST_TREES_N2 5
+    0x84, 0x85, 0x94, 0x95, 0b01010101, 1,    //TILE_FOREST_TREES_CORN_W 6
+    0x86, 0x87, 0x96, 0x97, 0b01010101, 1,    //TILE_FOREST_TREES_W 7
+    0x00, 0x59, 0x68, 0x69, 0b01010101, 1,    //TILE_FOREST_SHELTER0 8
+    0x5A, 0x5B, 0x6A, 0x6B, 0b01010101, 1,    //TILE_FOREST_SHELTER1 9
+    0x5C, 0x5D, 0x6C, 0x6D, 0b01010101, 1,    //TILE_FOREST_SHELTER2 10
+    0x00, 0x00, 0x6E, 0x00, 0b01010101, 1,    //TILE_FOREST_SHELTER3 11
+    0x00, 0x79, 0x88, 0x89, 0b01010101, 1,    //TILE_FOREST_SHELTER4 12
+    0x7A, 0x7B, 0x8A, 0x8B, 0b01010101, 1,    //TILE_FOREST_SHELTER5 13
+    0x7C, 0x7D, 0x8C, 0x8D, 0b01010101, 1,    //TILE_FOREST_SHELTER6 14
+    0x7E, 0x00, 0x8E, 0x00, 0b01010101, 1,    //TILE_FOREST_SHELTER7 15
+    0x98, 0x99, 0x00, 0x00, 0b01010101, 0,    //TILE_FOREST_SHELTER8 16
+    0x9A, 0x9B, 0x00, 0x00, 0b01010101, 0,    //TILE_FOREST_SHELTER9 17
+    0x9C, 0x9D, 0x00, 0x00, 0b01010101, 0,    //TILE_FOREST_SHELTER10 18
+    0x9E, 0x00, 0x00, 0x00, 0b01010101, 0,    //TILE_FOREST_SHELTER11 19
+    0x00, 0x00, 0x70, 0x00, 0b01010101, 0,    //TILE_FOREST_GRASS 20
+    0x10, 0x10, 0x10, 0x10, 0b01010101, 0,    //TILE_FOREST_BLACK 21
+};
+
 // Format: S, E, N, W exits, then the map tile layout (12x8 metatiles),
 // then a running list of entities for the room:
 // first, an ID that says what kind of thing it is: 0 = monster, 1 = entrance/exit (like stairs), 2 = sword pickup, 3 = chest
@@ -127,12 +178,20 @@ const unsigned char* const environment_metatiles[]={
   desert_metatiles,
   island_metatiles,
   icepalace_metatiles,
+  city_metatiles,
+  city_metatiles, // TODO: dungeon_metatiles
+  forest_metatiles,
+  // TODO: shelter_metatiles
 };
 
 const unsigned char* const* environment_rooms[]={
   desert_rooms,
   island_rooms,
   palace_rooms,
+  city_rooms,
+  city_rooms, //TODO: dungeon_rooms
+  shelterforest_rooms,
+  //shelter_rooms,
 };
 
 unsigned char solidity_check(unsigned char px, unsigned char py)
@@ -308,7 +367,7 @@ unsigned char tilemap_solid(unsigned char tx, unsigned char ty)
 void set_map_tile_on_character(WalkingCharacter* chara, unsigned char tile)
 {
     unsigned short ntrAdr = 0;
-    if(currentEnvironment == E_ISLAND)
+    if(currentEnvironment != E_DESERT)
     {
         return;
     }

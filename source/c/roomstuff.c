@@ -73,6 +73,8 @@ void load_environment(enum Environment env)
 
     if(env == E_DESERT)
     {
+        mmc1_set_chr_bank_0(0);
+        mmc1_set_chr_bank_1(0 + 1);
         playerHp = 16;
         playerExp = 0;
         playerLevel = 0;
@@ -84,6 +86,8 @@ void load_environment(enum Environment env)
     }
     else if(env == E_ISLAND)
     {
+        mmc1_set_chr_bank_0(2);
+        mmc1_set_chr_bank_1(2 + 1);
         currentRoom = 3;
         monsterAggression = 0; // Monsters start docile in the island too, but get angry faster.
         playerLevel = 0;
@@ -94,9 +98,35 @@ void load_environment(enum Environment env)
     }
     else if(env == E_ICEPALACE)
     {
+       mmc1_set_chr_bank_0(2);
+       mmc1_set_chr_bank_1(2 + 1);
        currentRoom = 0;
        monsterAggression = 1;
        playerLevel = 2;
+       playerHp = 16;
+       playerExp = 0;
+       kris.xpos = 128;
+       kris.ypos = 128;
+    }
+    else if(env == E_CITY)
+    {
+       mmc1_set_chr_bank_0(4);
+       mmc1_set_chr_bank_1(4 + 1);
+       currentRoom = 0;
+       monsterAggression = 0;
+       playerLevel = 0;
+       playerHp = 16;
+       playerExp = 0;
+       kris.xpos = 128;
+       kris.ypos = 128;
+    }
+    else if(env == E_SHELTERFOREST)
+    {
+       mmc1_set_chr_bank_0(4);
+       mmc1_set_chr_bank_1(4 + 1);
+       currentRoom = 0;
+       monsterAggression = 0;
+       playerLevel = 0;
        playerHp = 16;
        playerExp = 0;
        kris.xpos = 128;
@@ -106,18 +136,6 @@ void load_environment(enum Environment env)
     kris.direction = 0;
     kris.animframe = 0;
     kris.substate = S_NORMAL;
-
-    if(env == E_ICEPALACE)
-    {
-      // force E_ISLAND loading for E_ICEPALACE chr banks, since we reuse some tiles
-      mmc1_set_chr_bank_0(E_ISLAND * 2);
-      mmc1_set_chr_bank_1((E_ISLAND * 2) + 1);
-    }
-    else
-    {
-      mmc1_set_chr_bank_0(env * 2);
-      mmc1_set_chr_bank_1((env * 2) + 1);
-    }
 
     spawnedRafts = 0; // only reset raft spawns when starting an environment over
 
@@ -489,6 +507,22 @@ void skip_to_ice_palace()
 {
     ppu_off();
     load_environment(E_ICEPALACE);
+    load_room();
+    ppu_on_all();
+}
+
+void skip_to_city()
+{
+    ppu_off();
+    load_environment(E_CITY);
+    load_room();
+    ppu_on_all();
+}
+
+void skip_to_forest()
+{
+    ppu_off();
+    load_environment(E_SHELTERFOREST);
     load_room();
     ppu_on_all();
 }

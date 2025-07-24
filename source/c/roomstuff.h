@@ -12,6 +12,8 @@ extern void switch_to_room();
 extern void tele_to_room();
 extern void skip_to_island();
 extern void skip_to_ice_palace();
+extern void skip_to_city();
+extern void skip_to_forest();
 extern void reload_area();
 
 #endif

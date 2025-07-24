@@ -123,12 +123,64 @@ enum Environment
 #define TILE_IP_PUZDOOR_R 20
 #define TILE_IP_BLACK 21
 
+#define TILE_CITY_FLOOR 0
+#define TILE_CITY_FLOOR_DETAIL 1
+#define TILE_CITY_FLOOR_SHADOW 2
+#define TILE_CITY_WALL_DETAIL 3
+#define TILE_CITY_WALL_SCREEN 4
+#define TILE_CITY_WALL_ANGLEDETAIL_L 5
+#define TILE_CITY_WALL_ANGLEDETAIL_R 6
+#define TILE_CITY_WALL_ANGLEWINDOW_L 7
+#define TILE_CITY_WALL_ANGLEWINDOW_R 8
+#define TILE_CITY_WALL_ANGLEFLOOR_L 9
+#define TILE_CITY_WALL_ANGLEFLOOR_R 10
+#define TILE_CITY_UMBRA 11
+#define TILE_CITY_BOLLARD 12
+#define TILE_CITY_BOLLARD_V 13
+#define TILE_CITY_BOLLARD_CORNER 14
+#define TILE_CITY_WALL_WINDOW 15
+#define TILE_CITY_MANHOLE 16
+#define TILE_CITY_STAIRS 17
+#define TILE_CITY_WALLDARK 18
+#define TILE_CITY_WALLLIGHT 19
+#define TILE_CITY_BLACK 20
+
+#define TILE_DUNGEON_FLOOR 0
+// TODO: the rest of these
+
+#define TILE_FOREST_FLOOR 0
+#define TILE_FOREST_TREES_E 1
+#define TILE_FOREST_TREES_CORN_E 2
+#define TILE_FOREST_TREES_N 3
+#define TILE_FOREST_TREES_S 4
+#define TILE_FOREST_TREES_N2 5
+#define TILE_FOREST_TREES_CORN_W 6
+#define TILE_FOREST_TREES_W 7
+#define TILE_FOREST_SHELTER0 8
+#define TILE_FOREST_SHELTER1 9
+#define TILE_FOREST_SHELTER2 10
+#define TILE_FOREST_SHELTER3 11
+#define TILE_FOREST_SHELTER4 12
+#define TILE_FOREST_SHELTER5 13
+#define TILE_FOREST_SHELTER6 14
+#define TILE_FOREST_SHELTER7 15
+#define TILE_FOREST_SHELTER8 16
+#define TILE_FOREST_SHELTER9 17
+#define TILE_FOREST_SHELTER10 18
+#define TILE_FOREST_SHELTER11 19
+#define TILE_FOREST_GRASS 20
+#define TILE_FOREST_BLACK 21
+
+#define TILE_SHELTER_FLOOR 0
+//TODO: the rest of these
 
 extern const unsigned char* const environment_metatiles[];
 
 extern const unsigned char desert_metatiles[];
 extern const unsigned char island_metatiles[];
 extern const unsigned char icepalace_metatiles[];
+extern const unsigned char city_metatiles[];
+extern const unsigned char forest_metatiles[];
 
 extern const unsigned char* const* environment_rooms[];
 
