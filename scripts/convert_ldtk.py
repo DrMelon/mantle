@@ -36,10 +36,10 @@ with open(ldtk_file_name) as ldtk_file:
         # Get neighbours.
         # Any non-existent neighbour is set to a special index.
         # This is used by the game to move the player to the "tree room".
-        s_neighbour = 26
-        e_neighbour = 26
-        n_neighbour = 26
-        w_neighbour = 26
+        s_neighbour = 255
+        e_neighbour = 255
+        n_neighbour = 255
+        w_neighbour = 255
 
         # Extract neighbour indices.
         for neighbour_data in ldtk_data.levels[i].neighbours:
@@ -56,13 +56,31 @@ with open(ldtk_file_name) as ldtk_file:
         c_string_for_level += str(s_neighbour) + ", " + str(e_neighbour) + ", " + str(n_neighbour) + ", " + str(w_neighbour) + ",\n"
 
         # Then write tile info
-        x_num = 0
+        #x_num = 0
+        #for tile in ldtk_data.levels[i].layer_instances[1].grid_tiles:
+        #    c_string_for_level += str(tile.t) + ", "
+        #    x_num += 1
+        #    if(x_num == 12):
+        #        c_string_for_level += "\n"
+        #        x_num = 0
+
+        # Write tile info with RLE!
+        last_tile = 255
+        tile_count = 0
+        tile_num = 0
         for tile in ldtk_data.levels[i].layer_instances[1].grid_tiles:
-            c_string_for_level += str(tile.t) + ", "
-            x_num += 1
-            if(x_num == 12):
-                c_string_for_level += "\n"
-                x_num = 0
+            tile_id = tile.t
+            if(tile_id != last_tile):
+                # new tile entry
+                if(tile_num > 0): #write previous entry count
+                    c_string_for_level += str(tile_count) + ", "
+                tile_count = 1
+                c_string_for_level += str(tile_id) + ", "
+                last_tile = tile_id
+            else:
+                tile_count += 1
+            tile_num += 1
+        c_string_for_level += str(tile_count) + ", \n"
 
         # Then write entity info
         for entity in ldtk_data.levels[i].layer_instances[0].entity_instances:

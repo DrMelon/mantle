@@ -6,7 +6,9 @@
 #include "island_maps.h"
 #include "icepalace_maps.h"
 #include "city_maps.h"
+#include "dungeon_maps.h"
 #include "forest_maps.h"
+#include "shelter_maps.h"
 #include "bank_helpers.h"
 
 // Format: 4 8x8 tiles that make up this metatile, and palette mask for attrib (actual mask differs based on tile pos)
@@ -142,6 +144,10 @@ const unsigned char city_metatiles[]={
     0x10, 0x10, 0x10, 0x10, 0b00000000, 0, // TILE_CITY_BLACK 20
 };
 
+const unsigned char dungeon_metatiles[]={
+
+};
+
 const unsigned char forest_metatiles[]={
     0x00, 0x00, 0x00, 0x00, 0b01010101, 0,    //TILE_FOREST_FLOOR 0
     0x62, 0x63, 0x72, 0x73, 0b01010101, 1,    //TILE_FOREST_TREES_E 1
@@ -167,6 +173,10 @@ const unsigned char forest_metatiles[]={
     0x10, 0x10, 0x10, 0x10, 0b01010101, 0,    //TILE_FOREST_BLACK 21
 };
 
+const unsigned char shelter_metatiles[]={
+
+};
+
 // Format: S, E, N, W exits, then the map tile layout (12x8 metatiles),
 // then a running list of entities for the room:
 // first, an ID that says what kind of thing it is: 0 = monster, 1 = entrance/exit (like stairs), 2 = sword pickup, 3 = chest
@@ -179,9 +189,9 @@ const unsigned char* const environment_metatiles[]={
   island_metatiles,
   icepalace_metatiles,
   city_metatiles,
-  city_metatiles, // TODO: dungeon_metatiles
+  dungeon_metatiles,
   forest_metatiles,
-  // TODO: shelter_metatiles
+  shelter_metatiles
 };
 
 const unsigned char* const* environment_rooms[]={
@@ -189,9 +199,9 @@ const unsigned char* const* environment_rooms[]={
   island_rooms,
   palace_rooms,
   city_rooms,
-  city_rooms, //TODO: dungeon_rooms
+  dungeon_rooms,
   shelterforest_rooms,
-  //shelter_rooms,
+  shelterrooms,
 };
 
 unsigned char solidity_check(unsigned char px, unsigned char py)
@@ -315,8 +325,8 @@ unsigned char tile_at(unsigned char tx, unsigned char ty)
     y = ty - 3;
     if(x < 0 || x >= 12) return 255;
     if(y < 0 || y >= 8) return 255;
-    i = (x + (y*12));
-    return currentRoomColl[i];
+    i = (x + (y*12)) + 4;
+    return unpackedRoom[i];
 }
 
 unsigned char tilemap_swimmable(unsigned char tx, unsigned char ty)
@@ -325,8 +335,8 @@ unsigned char tilemap_swimmable(unsigned char tx, unsigned char ty)
     y = ty - 3;
     if(x < 0 || x >= 12) return 1;
     if(y < 0 || y >= 8) return 1;
-    i = (x + (y*12));
-    i = currentRoomColl[i];
+    i = (x + (y*12)) + 4;
+    i = unpackedRoom[i];
     if(currentEnvironment == E_DESERT)
         return i < 15 || i > 23;
     if(currentEnvironment == E_ISLAND)
@@ -340,8 +350,8 @@ unsigned char tilemap_ouchie(unsigned char tx, unsigned char ty)
     y = ty - 3;
     if(x < 0 || x >= 12) return 1;
     if(y < 0 || y >= 8) return 1;
-    i = (x + (y*12));
-    return metatilesPtr[currentRoomColl[i]*6 + 5] == 2;
+    i = (x + (y*12)) + 4;
+    return metatilesPtr[unpackedRoom[i]*6 + 5] == 2;
 }
 
 unsigned char tilemap_solid_nocactus(unsigned char tx, unsigned char ty)
@@ -350,8 +360,8 @@ unsigned char tilemap_solid_nocactus(unsigned char tx, unsigned char ty)
     y = ty - 3;
     if(x < 0 || x >= 12) return 1;
     if(y < 0 || y >= 8) return 1;
-    i = (x + (y*12));
-    return metatilesPtr[currentRoomColl[i]*6 + 5] == 1;
+    i = (x + (y*12)) + 4;
+    return metatilesPtr[unpackedRoom[i]*6 + 5] == 1;
 }
 
 unsigned char tilemap_solid(unsigned char tx, unsigned char ty)
@@ -360,8 +370,8 @@ unsigned char tilemap_solid(unsigned char tx, unsigned char ty)
     y = ty - 3;
     if(x < 0 || x >= 12) return 1;
     if(y < 0 || y >= 8) return 1;
-    i = (x + (y*12));
-    return metatilesPtr[currentRoomColl[i]*6 + 5];
+    i = (x + (y*12)) + 4;
+    return metatilesPtr[unpackedRoom[i]*6 + 5];
 }
 
 void set_map_tile_on_character(WalkingCharacter* chara, unsigned char tile)
@@ -373,13 +383,13 @@ void set_map_tile_on_character(WalkingCharacter* chara, unsigned char tile)
     }
     x = (chara->xpos + 7 >> 4) - 2;
     y = (chara->ypos + 7 >> 4) - 3;
-    i = x + (y*12);
+    i = x + (y*12) + 4;
     // Only update tile collisions if the tile to replace was a tree or fern
     if(currentEnvironment == E_DESERT)
     {
-        if(currentRoomColl[i] != TILE_D_TREE && currentRoomColl[i] != TILE_D_FERN && currentRoomColl[i] != TILE_D_CACTUS) return;
+        if(unpackedRoom[i] != TILE_D_TREE && unpackedRoom[i] != TILE_D_FERN && unpackedRoom[i] != TILE_D_CACTUS) return;
     }
-    currentRoomColl[i] = tile; // UPDATE TILE COLLISIONS
+    unpackedRoom[i] = tile; // UPDATE TILE COLLISIONS
     ntrAdr = NTADR_A((x+2)*2,(y+3)*2);
     palmTreeBuffer[0] = MSB(ntrAdr);
     palmTreeBuffer[1] = LSB(ntrAdr);
@@ -403,7 +413,7 @@ void set_map_tile_on_character(WalkingCharacter* chara, unsigned char tile)
 void set_map_tile_in_room(unsigned char tx, unsigned char ty, unsigned char tile)
 {
     unsigned short ntrAdr = 0;
-    currentRoomColl[tx + (ty*12)] = tile; // UPDATE TILE COLLISIONS
+    unpackedRoom[tx + (ty*12) + 4] = tile; // UPDATE TILE COLLISIONS
     ntrAdr = NTADR_A((tx+2)*2,(ty+3)*2);
     palmTreeBuffer[0] = MSB(ntrAdr);
     palmTreeBuffer[1] = LSB(ntrAdr);

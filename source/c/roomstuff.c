@@ -144,6 +144,50 @@ void load_environment(enum Environment env)
 
 }
 
+void unpack_room()
+{
+   // Unpacks currentRoom into memory via RLE
+
+   roomPtr = environment_rooms[currentEnvironment][currentRoom];
+
+   // first four bytes are directional data
+   unpackedRoom[0] = roomPtr[0];
+   unpackedRoom[1] = roomPtr[1];
+   unpackedRoom[2] = roomPtr[2];
+   unpackedRoom[3] = roomPtr[3];
+
+   // Begin RLE unpack.
+   i = 4; // current seek index
+   i2 = 0; // number of tiles unpacked so far
+   while(i2 < 12*8) // unpack all level tiles
+   {
+     x = roomPtr[i]; // get tile id
+     x2 = roomPtr[i+1]; // get tile rle count
+     y = 0;
+     while(y < x2) // go through this rle count
+     {
+       unpackedRoom[4+i2] = x; // unpack tile
+       i2++;
+       y++;
+     }
+     i+=2; // skip to next tile rle entry
+   }
+
+   // Finish by unpacking game object data
+   while(1)
+   {
+     unpackedRoom[4+i2] = roomPtr[i];
+     if(unpackedRoom[4+i2] == 128)
+       break;
+     i++;
+     i2++;
+   }
+
+
+   // Now set roomPtr to unpackedRoom, so that game functions can read that room data.
+   roomPtr = unpackedRoom;
+}
+
 void load_room_intro()
 {
    unsigned char currentTileID = 0;
@@ -159,7 +203,7 @@ void load_room_intro()
    spawnedMonsters = 0;
    spawnedTeles = 0;
    spawnedProjectiles = 0;
-   roomPtr = environment_rooms[currentEnvironment][currentRoom];
+   unpack_room();
    metatilesPtr = environment_metatiles[currentEnvironment];
 
    // load heart and draw it
@@ -276,9 +320,8 @@ void load_room_intro()
         for(x = 0; x < 12; x++)
         {
             i = (x + (y*12)) + 4; // add 4 to skip entrances/exits of room
-            i2 = (x + (y*12));
             currentTileID = roomPtr[i];
-            currentRoomColl[i2] = currentTileID; // set collision
+            //unpackedRoom[i] = currentTileID; // set collision
 
             // queue up a line update
             palmTreeBuffer[(x*2)+3] = metatilesPtr[(currentTileID*6)+2];
@@ -322,7 +365,7 @@ void load_room()
 {
    unsigned char currentTileID = 0;
 
-   roomPtr = (unsigned char*)environment_rooms[currentEnvironment][currentRoom];
+   unpack_room();
    metatilesPtr = (unsigned char*)environment_metatiles[currentEnvironment];
    // Load tiles into BG
    for(x = 0; x < 12; x++)
@@ -330,7 +373,6 @@ void load_room()
        for(y = 0; y < 8; y++)
        {
            i = (x + (y*12)) + 4; // add 4 to skip entrances/exits of room
-           i2 = (x + (y*12));
            currentTileID = roomPtr[i];
            if(x == 4 && y == 4)
            {
@@ -344,7 +386,7 @@ void load_room()
                         {
                              treeRoomVisits = 4;
                              // Spawn the chest instead of the usual tile
-                             currentTileID = TILE_D_CHEST_CLOSED;
+                             unpackedRoom[i] = TILE_D_CHEST_CLOSED;
                         }
                 }
            }
@@ -355,11 +397,11 @@ void load_room()
                 if(currentEnvironment == E_ISLAND && currentRoom == 15 && prevRoom == 6) // in island bridge room, take away bridge if on raft
                 {
                    currentTileID = TILE_I_WATER;
+                   unpackedRoom[i] = currentTileID;
                 }
              }
            }
 
-           currentRoomColl[i2] = currentTileID;
            vram_adr(NTADR_A((x+2)*2,(y+3)*2));
            vram_put(metatilesPtr[(currentTileID*6)]);
            vram_put(metatilesPtr[(currentTileID*6)+1]);
@@ -466,6 +508,14 @@ void switch_to_room()
 {
     unsigned char room = roomPtr[roomSwitchDir];
     currentState = GS_SCREENTRANS;
+
+    if(room == 255) // invalid room transition? must be a special room.
+    {
+        if(currentEnvironment == E_DESERT)
+        {
+            room = 26; // use the "tree room" in the desert.
+        }
+    }
 
     // Load next room
     prevRoom = currentRoom;

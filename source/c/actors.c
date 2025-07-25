@@ -318,8 +318,8 @@ void update_character(WalkingCharacter* chara)
                 // Tile check (adjust pos)
                 x -= 2;
                 y -= 3;
-                i = (y*12)+x;
-                i2 = currentRoomColl[i];
+                i = (y*12)+x+4;
+                i2 = unpackedRoom[i];
 
                 if(currentEnvironment == E_DESERT)
                 {

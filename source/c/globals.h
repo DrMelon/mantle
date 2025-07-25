@@ -104,7 +104,8 @@ ZEROPAGE_EXTERN(unsigned char, theatricTimer);
 // Fast-access room pointers
 extern const unsigned char* roomPtr;
 extern const unsigned char* metatilesPtr;
-extern unsigned char currentRoomColl[];
+// Buffer for unpacking room data after loading with RLE
+extern unsigned char unpackedRoom[];
 
 // Buffers for actors
 #define MAX_ITEMS 8
@@ -127,6 +128,7 @@ extern Projectile projList[];
 
 #define MAX_RAFTS 2
 extern Raft raftList[];
+
 
 // Tile update buffer for killing trees (and more)
 extern unsigned char palmTreeBuffer[];

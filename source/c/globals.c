@@ -49,7 +49,7 @@ ZEROPAGE_DEF(unsigned char, theatricTimer);
 
 const unsigned char* roomPtr = 0;
 const unsigned char* metatilesPtr = 0;
-unsigned char currentRoomColl[96];
+unsigned char unpackedRoom[128];
 
 Item itemList[MAX_ITEMS];
 Monster monsterList[MAX_MONSTERS];
