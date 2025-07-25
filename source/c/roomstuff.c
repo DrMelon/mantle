@@ -386,6 +386,7 @@ void load_room()
                         {
                              treeRoomVisits = 4;
                              // Spawn the chest instead of the usual tile
+                             currentTileID = TILE_D_CHEST_CLOSED;
                              unpackedRoom[i] = TILE_D_CHEST_CLOSED;
                         }
                 }
