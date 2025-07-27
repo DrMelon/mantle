@@ -45,10 +45,24 @@ enum Theatric
 #define MUSIC_BANK 5
 #define UI_BANK 0
 
+// Music Tracks
 #define MUSIC_INTRO 0
 #define MUSIC_SWORD 1
 #define MUSIC_SWORD_SLOW 2
 #define MUSIC_NORTHERNLIGHT 3
+
+// SFX
+#define SFX_SWORD_SWING 0
+#define SFX_SWORD_DINK 1
+#define SFX_KILL 2
+#define SFX_COLLECT_ITEM 3
+#define SFX_LEVELUP 4
+#define SFX_ENTER_DUNGEON 5
+
+// Narrative flags
+#define NARFLAG_MET_TWISTED_EARLY 0b00000001
+#define NARFLAG_KILLED_SONGCAT 0b00000010
+#define NARFLAG_FOUGHT_TWISTED_ONCE 0b00000100
 
 //
 // Global Variables (zeropage)
@@ -95,6 +109,7 @@ ZEROPAGE_EXTERN(unsigned char, theatricActive);
 ZEROPAGE_EXTERN(unsigned char, theatricIndex);
 ZEROPAGE_EXTERN(unsigned char, theatricStage);
 ZEROPAGE_EXTERN(unsigned char, theatricTimer);
+ZEROPAGE_EXTERN(unsigned char, narrativeFlags);
 
 #pragma bss-name(push, "ZEROPAGE")
     extern WalkingCharacter kris;

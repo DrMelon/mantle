@@ -40,9 +40,51 @@ const unsigned char arrowDownSprite[]={
     128
 };
 
+const unsigned char burstSprite0[]={
+    0, 0, 0x51, 2,
+    6, 6, 0x51, 2 | OAM_FLIP_H | OAM_FLIP_V,
+    128
+};
+
+const unsigned char burstSprite1[]={
+    0, 0, 0x52, 2,
+    6, 0, 0x52, 2 | OAM_FLIP_H,
+    6, 6, 0x52, 2 | OAM_FLIP_H | OAM_FLIP_V,
+    0, 6, 0x52, 2 | OAM_FLIP_V,
+    128
+};
+
+const unsigned char burstSprite2[]={
+    0, 0, 0x53, 2,
+    6, 0, 0x53, 2 | OAM_FLIP_H,
+    6, 6, 0x53, 2 | OAM_FLIP_H | OAM_FLIP_V,
+    0, 6, 0x53, 2 | OAM_FLIP_V,
+    128
+};
+
+const unsigned char* const burstSprites[]={
+    burstSprite0,
+    burstSprite1,
+    burstSprite2
+};
+
+
 void update_projectile(Projectile* proj)
 {
     // Type-specific logic goes here
+    if(proj->projtype == P_BURST)
+    {
+        if(framecount%4 == 0)
+            proj->xvel++;
+        if(proj->xvel > 2)
+        {
+            projList[i] = projList[spawnedProjectiles-1];
+            spawnedProjectiles--;
+            oam_clear();
+        }
+
+        return;
+    }
 
     // Subpixel movement: up to 16 glorious subpixels of precision!
     proj->subx += proj->xvel;
@@ -124,6 +166,10 @@ void draw_projectile(Projectile* proj)
                 spr = oam_meta_spr(proj->xpos, proj->ypos, spr, arrowDownSprite);
             }
         }
+    }
+    else if(proj->projtype == P_BURST)
+    {
+        spr = oam_meta_spr(proj->xpos, proj->ypos, spr, burstSprites[proj->xvel]);
     }
 }
 

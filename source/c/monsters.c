@@ -763,10 +763,16 @@ void draw_bird(Monster* bird)
 
 void delete_monster(unsigned char idx)
 {
+    // create a burst effect
+    spawn_projectile(monsterList[idx].xpos, monsterList[idx].ypos, P_BURST, 0, 0);
+
     // use a classic remove and swap back to remove a monster from the update list
     spawn_candy(monsterList[idx].xpos, monsterList[idx].ypos);
     monsterList[idx] = monsterList[spawnedMonsters-1];
     spawnedMonsters--;
+
+
+
     oam_clear();
 }
 CODE_BANK_POP();

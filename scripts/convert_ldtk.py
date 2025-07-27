@@ -131,6 +131,13 @@ with open(ldtk_file_name) as ldtk_file:
                 c_string_for_level += "5, "
                 c_string_for_level += "0, "
                 c_string_for_level += str(environment_ent_counter) + ", \n"
+            if(entity.identifier == "Cat"):
+                c_string_for_level += "0, "
+                c_string_for_level += str(entity.grid[0]) + ", "
+                c_string_for_level += str(entity.grid[1]) + ", "
+                c_string_for_level += "5, "
+                c_string_for_level += str(entity.field_instances[0].value) + ", "
+                c_string_for_level += str(environment_ent_counter) + ", \n"
             if(entity.identifier == "Sword"):
                 c_string_for_level += "2, "
                 c_string_for_level += str(entity.grid[0]) + ", "

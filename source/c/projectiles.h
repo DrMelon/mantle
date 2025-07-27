@@ -6,8 +6,7 @@ enum ProjectileType
     P_ARROW,
     P_FRIENDLINESS_PELLET,
     P_ICEMAGIC,
-    P_BOMB,
-    P_BOMBWAVE
+    P_BURST
 };
 
 typedef struct

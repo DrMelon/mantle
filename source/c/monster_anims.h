@@ -10,5 +10,7 @@ extern const unsigned char* const lizardPrepareAnims[];
 extern const unsigned char* const lizardJumpAnims[];
 extern const unsigned char* const lizardHurtAnims[];
 extern const unsigned char* const birdAnims[];
+extern const unsigned char* const catAnims[];
+
 extern const unsigned char birdShadow[];
 #endif

@@ -332,6 +332,55 @@ const unsigned char birdShadow[]={
     128
 };
 
+const unsigned char catSleep[]={
+    0, 0, 0x62, 1,
+    0, 8, 0x72, 1,
+    8, 0, 0x62, 1 | OAM_FLIP_H,
+    8, 8, 0x72, 1 | OAM_FLIP_H,
+    128
+};
+
+const unsigned char catAnger[]={
+    0, 0, 0x63, 1,
+    0, 8, 0x73, 1,
+    8, 0, 0x63, 1 | OAM_FLIP_H,
+    8, 8, 0x73, 1 | OAM_FLIP_H,
+    128
+};
+
+const unsigned char catSinger0[]={
+    0, 0, 0x62, 2,
+    0, 8, 0x72, 2,
+    8, 0, 0x62, 2 | OAM_FLIP_H,
+    8, 8, 0x72, 2 | OAM_FLIP_H,
+    128
+};
+
+const unsigned char catSinger1[]={
+    0, 0, 0x61, 2,
+    0, 8, 0x71, 2,
+    8, 0, 0x61, 2 | OAM_FLIP_H,
+    8, 8, 0x71, 2 | OAM_FLIP_H,
+    128
+};
+
+const unsigned char catHurt0[]={
+    0, 0, 0x61, 1,
+    0, 8, 0x71, 1,
+    8, 0, 0x61, 1 | OAM_FLIP_H,
+    8, 8, 0x71, 1 | OAM_FLIP_H,
+    128
+};
+
+const unsigned char catHurt1[]={
+    0, 0, 0x61, 2,
+    0, 8, 0x71, 2,
+    8, 0, 0x61, 2 | OAM_FLIP_H,
+    8, 8, 0x71, 2 | OAM_FLIP_H,
+    128
+};
+
+
 const unsigned char* const monWalkerAnims[]={
     walkerWalk0,
     walkerWalk1,
@@ -402,6 +451,15 @@ const unsigned char* const birdAnims[]={
     birdFly,
     birdIdle,
     birdHurt
+};
+
+const unsigned char* const catAnims[]={
+    catSleep,
+    catAnger,
+    catSinger0,
+    catSinger1,
+    catHurt0,
+    catHurt1
 };
 
 CODE_BANK_POP();

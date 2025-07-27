@@ -33,6 +33,7 @@ void main(void) {
     bank_pop();
 
     // Set up game state
+    narrativeFlags = 0; // ensure narrative flags are blank
     queueTele = 255;
     currentState = GS_NOTHING; // transition to GS_GAMEPLAY after...
     playerLevel = 0;

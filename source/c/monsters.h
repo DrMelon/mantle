@@ -13,7 +13,6 @@ enum MonsterType
   MON_FLOWER,
   MON_BIRD,
   MON_SINGCAT,
-  MON_MIRROR,
   MON_ICEBLOCK
   // there is no MON_MANTLE. It isn't here, after all.
 };
