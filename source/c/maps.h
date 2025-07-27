@@ -121,7 +121,8 @@ enum Environment
 #define TILE_IP_BUTTON_DOWN 18
 #define TILE_IP_PUZDOOR_L 19
 #define TILE_IP_PUZDOOR_R 20
-#define TILE_IP_BLACK 21
+#define TILE_IP_TREE 21
+#define TILE_IP_BLACK 22
 
 #define TILE_CITY_FLOOR 0
 #define TILE_CITY_FLOOR_DETAIL 1
@@ -146,7 +147,19 @@ enum Environment
 #define TILE_CITY_BLACK 20
 
 #define TILE_DUNGEON_FLOOR 0
-// TODO: the rest of these
+#define TILE_DUNGEON_WALL_L 1
+#define TILE_DUNGEON_WALL_R 2
+#define TILE_DUNGEON_WALL_D 3
+#define TILE_DUNGEON_WALL_U 4
+#define TILE_DUNGEON_CORN_TL 5
+#define TILE_DUNGEON_CORN_TR 6
+#define TILE_DUNGEON_CORN_BL 7
+#define TILE_DUNGEON_CORN_BR 8
+#define TILE_DUNGEON_PALE 9
+#define TILE_DUNGEON_EMPTY 10
+#define TILE_DUNGEON_SOLID 11
+#define TILE_DUNGEON_TREE 12
+#define TILE_DUNGEON_BLACK 13
 
 #define TILE_FOREST_FLOOR 0
 #define TILE_FOREST_TREES_E 1
@@ -172,7 +185,11 @@ enum Environment
 #define TILE_FOREST_BLACK 21
 
 #define TILE_SHELTER_FLOOR 0
-//TODO: the rest of these
+#define TILE_SHELTER_WALL 1
+#define TILE_SHELTER_SPIKES 2
+#define TILE_SHELTER_EMPTY 3
+#define TILE_SHELTER_SOLID 4
+#define TILE_SHELTER_BLACK 5
 
 extern const unsigned char* const environment_metatiles[];
 
@@ -181,6 +198,8 @@ extern const unsigned char island_metatiles[];
 extern const unsigned char icepalace_metatiles[];
 extern const unsigned char city_metatiles[];
 extern const unsigned char forest_metatiles[];
+extern const unsigned char dungeon_metatiles[];
+extern const unsigned char shelter_metatiles[];
 
 extern const unsigned char* const* environment_rooms[];
 

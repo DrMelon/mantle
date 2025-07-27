@@ -578,4 +578,21 @@ void skip_to_forest()
     ppu_on_all();
 }
 
+void skip_to_dungeon()
+{
+    ppu_off();
+    load_environment(E_DUNGEON);
+    load_room();
+    ppu_on_all();
+}
+
+void skip_to_shelter()
+{
+    ppu_off();
+    load_environment(E_SHELTER);
+    load_room();
+    ppu_on_all();
+}
+
+
 CODE_BANK_POP();

@@ -15,7 +15,9 @@ const unsigned char refillHpCheat[] = { PAD_B, PAD_UP, PAD_B, PAD_DOWN, PAD_B, P
 const unsigned char skipToIslandCheat[] = { PAD_B, PAD_UP, PAD_UP, PAD_UP, PAD_B, PAD_DOWN, PAD_DOWN, PAD_DOWN };
 const unsigned char skipToPalaceCheat[] = { PAD_B, PAD_UP, PAD_UP, PAD_UP, PAD_B, PAD_LEFT, PAD_LEFT, PAD_LEFT };
 const unsigned char skipToCityCheat[] = { PAD_B, PAD_UP, PAD_UP, PAD_UP, PAD_B, PAD_RIGHT, PAD_RIGHT, PAD_RIGHT };
+const unsigned char skipToDungeonCheat[] = { PAD_B, PAD_UP, PAD_UP, PAD_UP, PAD_B, PAD_RIGHT, PAD_LEFT, PAD_RIGHT };
 const unsigned char skipToForestCheat[] = { PAD_B, PAD_UP, PAD_UP, PAD_UP, PAD_B, PAD_UP, PAD_UP, PAD_UP };
+const unsigned char skipToShelterCheat[] = { PAD_B, PAD_UP, PAD_UP, PAD_UP, PAD_B, PAD_UP, PAD_DOWN, PAD_UP };
 const unsigned char secretMessage[] = { PAD_UP, PAD_UP, PAD_DOWN, PAD_DOWN, PAD_LEFT, PAD_RIGHT, PAD_LEFT, PAD_RIGHT };
 const unsigned char secretMessage2[] = { PAD_LEFT, PAD_RIGHT, PAD_LEFT, PAD_RIGHT, PAD_B, PAD_A, PAD_SELECT, PAD_START};
 
@@ -117,6 +119,16 @@ void update_cheats()
     else if(cheat_check(skipToForestCheat))
     {
       banked_call(ROOM_LOGIC_BANK, skip_to_forest);
+      return;
+    }
+    else if(cheat_check(skipToDungeonCheat))
+    {
+      banked_call(ROOM_LOGIC_BANK, skip_to_dungeon);
+      return;
+    }
+    else if(cheat_check(skipToShelterCheat))
+    {
+      banked_call(ROOM_LOGIC_BANK, skip_to_shelter);
       return;
     }
    }

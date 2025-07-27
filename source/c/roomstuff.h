@@ -14,6 +14,8 @@ extern void skip_to_island();
 extern void skip_to_ice_palace();
 extern void skip_to_city();
 extern void skip_to_forest();
+extern void skip_to_dungeon();
+extern void skip_to_shelter();
 extern void reload_area();
 extern void unpack_room();
 

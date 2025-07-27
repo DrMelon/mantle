@@ -66,6 +66,7 @@ with open(ldtk_file_name) as ldtk_file:
 
         # Write tile info with RLE!
         last_tile = 255
+        bytes_written = 0
         tile_count = 0
         tile_num = 0
         for tile in ldtk_data.levels[i].layer_instances[1].grid_tiles:
@@ -77,10 +78,14 @@ with open(ldtk_file_name) as ldtk_file:
                 tile_count = 1
                 c_string_for_level += str(tile_id) + ", "
                 last_tile = tile_id
+                bytes_written += 2
             else:
                 tile_count += 1
             tile_num += 1
         c_string_for_level += str(tile_count) + ", \n"
+        if(bytes_written > 12*8):
+            print("RLE bytes over 96 for level " + str(i) + ": " + str(bytes_written))
+
 
         # Then write entity info
         for entity in ldtk_data.levels[i].layer_instances[0].entity_instances:
