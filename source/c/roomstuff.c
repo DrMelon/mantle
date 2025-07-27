@@ -464,6 +464,11 @@ void load_room()
                monsterList[spawnedMonsters].health = 3;
                monsterList[spawnedMonsters].arcid = 255;
            }
+           if(monsterList[spawnedMonsters].montype == MON_BIRD)
+           {
+               monsterList[spawnedMonsters].health = 3;
+               monsterList[spawnedMonsters].level = 4; // birds are stronk
+           }
            monsterList[spawnedMonsters].direction = rand8();
            monsterList[spawnedMonsters].direction = monsterList[spawnedMonsters].direction >> 6;
            monsterList[spawnedMonsters].uniqueid = roomPtr[i+5];

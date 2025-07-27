@@ -300,6 +300,38 @@ const unsigned char lizardHurtRight[]={
     128
 };
 
+const unsigned char birdIdle[]={
+    0, 0, 0x45, 1,
+    8, 0, 0x46, 1,
+    0, 8, 0x55, 1,
+    8, 8, 0x56, 1,
+    128
+};
+
+const unsigned char birdFly[]={
+    0, 0, 0x65, 1,
+    8, 0, 0x66, 1,
+    0, 8, 0x75, 1,
+    8, 8, 0x76, 1,
+    -8, 0, 0x64, 1,
+    16, 0, 0x67, 1,
+    128
+};
+
+const unsigned char birdHurt[]={
+    0, 0, 0x45, 2,
+    8, 0, 0x46, 2,
+    0, 8, 0x55, 2,
+    8, 8, 0x56, 2,
+    128
+};
+
+const unsigned char birdShadow[]={
+    0, 0, 0x47, 1,
+    8, 0, 0x47, 1 | OAM_FLIP_H,
+    128
+};
+
 const unsigned char* const monWalkerAnims[]={
     walkerWalk0,
     walkerWalk1,
@@ -364,6 +396,12 @@ const unsigned char* const lizardHurtAnims[]={
     lizardHurtLeft,
     lizardJumpRight,
     lizardHurtRight
+};
+const unsigned char* const birdAnims[]={
+    birdIdle,
+    birdFly,
+    birdIdle,
+    birdHurt
 };
 
 CODE_BANK_POP();

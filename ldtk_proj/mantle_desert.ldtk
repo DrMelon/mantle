@@ -435,7 +435,7 @@
 			"fieldDefs": []
 		},
 		{
-			"identifier": "BirdA",
+			"identifier": "Bird",
 			"uid": 50,
 			"tags": [],
 			"exportToToc": false,
@@ -6221,7 +6221,7 @@
 					"gridTiles": [],
 					"entityInstances": [
 						{
-							"__identifier": "BirdA",
+							"__identifier": "Bird",
 							"__grid": [10,5],
 							"__pivot": [0,0],
 							"__tags": [],

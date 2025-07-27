@@ -38,6 +38,7 @@ extern void update_mon_shooter(Monster* shooter);
 extern void update_mon_fish(Monster* fish);
 extern void update_mon_flower(Monster* flower);
 extern void update_mon_lizard(Monster* lizard);
+extern void update_mon_bird(Monster* bird);
 
 extern void draw_monster(Monster* monster);
 extern void draw_walker(Monster* walker);
@@ -45,6 +46,7 @@ extern void draw_shooter(Monster* shooter);
 extern void draw_fish(Monster* fish);
 extern void draw_flower(Monster* flower);
 extern void draw_lizard(Monster* lizard);
+extern void draw_bird(Monster* bird);
 
 extern void delete_monster(unsigned char idx);
 

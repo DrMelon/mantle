@@ -32,6 +32,10 @@ void update_monster(Monster* monster)
     {
         update_mon_lizard(monster);
     }
+    else if(monster->montype == MON_BIRD)
+    {
+        update_mon_bird(monster);
+    }
 }
 
 void update_mon_walker(Monster* walker)
@@ -480,6 +484,138 @@ void update_mon_lizard(Monster* lizard)
     }
 }
 
+void update_mon_bird(Monster* bird)
+{
+    // bird has very simple behaviour in the ice palace and just obstructs kris
+    if(currentEnvironment == E_ICEPALACE)
+    {
+        bird->level = 5; // bird cannot be killed unless turned to ice here
+        bird->health = 2;
+        if(framecount % 2 == 0)
+        {
+            bird->substate = S_NORMAL;
+            bird->xpos = 160;
+            bird->ypos = kris.ypos;
+        }
+    }
+    else // if its in the desert, it alternates between idling and flying
+    {
+        if(bird->substate == S_NORMAL)
+        {
+            if(framecount % 2 == 0)
+                bird->animframe++;
+
+            if(bird->animframe > 40 && rand8()%2 == 0)
+            {
+                bird->animframe = 0; // using animframe for current flight stage; 0-15 = takeoff, then 18-33 for landing. mid stage for flight is 16-17, which loops until target reached
+                bird->substate = S_FLY; // bird chooses a direction to fly in and flies off
+
+                // get random coords
+                x2 = rand8() >> 4;
+                y2 = rand8() >> 4;
+                // bound within room
+                if(x2 > 10)
+                {
+                    x2 = x2 % 10;
+                }
+                if(y2 > 6)
+                {
+                    y2 = y2 % 6;
+                }
+                if(x2 < 1)
+                {
+                    x2 = 1;
+                }
+                if(y2 < 1)
+                {
+                        y2 = 1;
+                }
+                // offset from tilespace
+                x2 += 2;
+                y2 += 3;
+
+                bird->direction = x2 << 4; // using direction for target x coord
+                bird->arcid = y2 << 4; //using arcid for target y coord
+            }
+        }
+        else if(bird->substate == S_FLY)
+        {
+            // first, do "takeoff" animation (mostly done in draw)
+            if(bird->animframe < 16)
+            {
+                if(framecount % 2 == 0)
+                    bird->animframe++;
+            }
+            else if(bird->animframe < 18)
+            {
+                if(framecount % 4 == 0)
+                {
+                    unsigned char birdmoved = 0;
+                    bird->animframe++;
+                    if(bird->xpos < bird->direction)
+                    {
+                        bird->xpos+=2;
+                        birdmoved = 1;
+                    }
+                    else if(bird->xpos > bird->direction)
+                    {
+                        bird->xpos-=2;
+                        birdmoved = 1;
+                    }
+                    if(bird->ypos < bird->arcid)
+                    {
+                        bird->ypos+=2;
+                        birdmoved = 1;
+                    }
+                    else if(bird->ypos > bird->arcid)
+                    {
+                        bird->ypos-=2;
+                        birdmoved = 1;
+                    }
+                    if(birdmoved == 1)
+                    {
+                        if(bird->animframe > 17)
+                            bird->animframe = 16; // loop anim until reached target
+                    }
+                }
+            }
+            else if(bird->animframe < 33)
+            {
+                // perform landing
+                if(framecount % 2 == 0)
+                    bird->animframe++;
+            }
+            else
+            {
+                // finish flight
+                oam_clear(); // clear OAM because bird sprite count changes
+                bird->substate = S_NORMAL;
+                bird->animframe = 0;
+            }
+        }
+        else if(bird->substate == S_HURT)
+        {
+            if(framecount % 2 == 0)
+            {
+                bird->animframe++;
+                if(bird->animframe > 12)
+                {
+                    if(bird->health < 1)
+                    {
+                        earn_exp();
+                        delete_monster(i2);
+                        deadList[bird->uniqueid] = 1;
+                    }
+                    else
+                    {
+                        bird->substate = S_NORMAL;
+                    }
+                }
+            }
+        }
+    }
+}
+
 // DRAWING ROUTINES
 void draw_monster(Monster* monster)
 {
@@ -502,6 +638,10 @@ void draw_monster(Monster* monster)
     else if(monster->montype == MON_LIZARD)
     {
         draw_lizard(monster);
+    }
+    else if(monster->montype == MON_BIRD)
+    {
+        draw_bird(monster);
     }
 }
 
@@ -584,6 +724,30 @@ void draw_lizard(Monster* lizard)
     else if(lizard->substate == S_HURT)
     {
         spr = oam_meta_spr(lizard->xpos, lizard->ypos, spr, lizardHurtAnims[(liz_face_right*2)+(framecount%2)]);
+    }
+}
+
+void draw_bird(Monster* bird)
+{
+    if(bird->substate == S_NORMAL)
+    {
+        spr = oam_meta_spr(bird->xpos, bird->ypos, spr, birdAnims[0]);
+    }
+    else if(bird->substate == S_FLY)
+    {
+        // display flappy, with an offset based on current takeoff/landing frame
+        if(bird->animframe < 16)
+            spr = oam_meta_spr(bird->xpos, bird->ypos - bird->animframe, spr, birdAnims[bird->animframe%2]);
+        else if(bird->animframe < 18)
+            spr = oam_meta_spr(bird->xpos, bird->ypos - 16, spr, birdAnims[bird->animframe%2]);
+        else if(bird->animframe < 33)
+            spr = oam_meta_spr(bird->xpos, bird->ypos - 16 + (bird->animframe-16), spr, birdAnims[bird->animframe%2]);
+        // show shadow
+        spr = oam_meta_spr(bird->xpos, bird->ypos + 10, spr, birdShadow);
+    }
+    else if(bird->substate == S_HURT)
+    {
+        spr = oam_meta_spr(bird->xpos, bird->ypos, spr, birdAnims[2 + (bird->animframe%2)]);
     }
 }
 
