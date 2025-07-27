@@ -496,6 +496,14 @@ void update_mon_bird(Monster* bird)
             bird->substate = S_NORMAL;
             bird->xpos = 160;
             bird->ypos = kris.ypos;
+            if(bird->ypos < 16)
+            {
+                bird->ypos = 16;
+            }
+            else if(bird->ypos > 13 << 4)
+            {
+                bird->ypos = 13 << 4;
+            }
         }
     }
     else // if its in the desert, it alternates between idling and flying
