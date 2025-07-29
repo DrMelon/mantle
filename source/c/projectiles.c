@@ -62,6 +62,11 @@ const unsigned char burstSprite2[]={
     128
 };
 
+const unsigned char noteSprite[]={
+    0, 0, 0xA9, 1,
+    128
+};
+
 const unsigned char* const burstSprites[]={
     burstSprite0,
     burstSprite1,
@@ -170,6 +175,10 @@ void draw_projectile(Projectile* proj)
     else if(proj->projtype == P_BURST)
     {
         spr = oam_meta_spr(proj->xpos, proj->ypos, spr, burstSprites[proj->xvel]);
+    }
+    else if(proj->projtype == P_NOTE)
+    {
+        spr = oam_meta_spr(proj->xpos, proj->ypos, spr, noteSprite);
     }
 }
 

@@ -6,6 +6,7 @@ enum ProjectileType
     P_ARROW,
     P_FRIENDLINESS_PELLET,
     P_ICEMAGIC,
+    P_NOTE,
     P_BURST
 };
 

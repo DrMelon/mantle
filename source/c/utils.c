@@ -38,3 +38,18 @@ void music_stop()
     famistudio_music_stop();
     bank_pop();
 }
+
+unsigned char narrative_flag_get(unsigned char narrativeFlag)
+{
+    return (narrativeFlags & narrativeFlag);
+}
+
+void narrative_flag_set(unsigned char narrativeFlag)
+{
+    narrativeFlags |= narrativeFlag;
+}
+
+void narrative_flag_clr(unsigned char narrativeFlag)
+{
+    narrativeFlags &= ~narrativeFlag;
+}

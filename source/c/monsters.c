@@ -36,6 +36,10 @@ void update_monster(Monster* monster)
     {
         update_mon_bird(monster);
     }
+    else if(monster->montype == MON_SINGCAT)
+    {
+        update_mon_cat(monster);
+    }
 }
 
 void update_mon_walker(Monster* walker)
@@ -451,8 +455,8 @@ void update_mon_lizard(Monster* lizard)
                 if(lizard->health < 1)
                 {
                     earn_exp();
-                    delete_monster(i2);
                     deadList[lizard->uniqueid] = 1; // update deadlist
+                    delete_monster(i2);
                 }
                 else
                 {
@@ -470,8 +474,8 @@ void update_mon_lizard(Monster* lizard)
                     if(lizard->health < 1)
                     {
                         earn_exp();
-                        delete_monster(i2);
                         deadList[lizard->uniqueid] = 1;
+                        delete_monster(i2);
                     }
                     else
                     {
@@ -613,8 +617,8 @@ void update_mon_bird(Monster* bird)
                     if(bird->health < 1)
                     {
                         earn_exp();
-                        delete_monster(i2);
                         deadList[bird->uniqueid] = 1;
+                        delete_monster(i2);
                     }
                     else
                     {
@@ -623,6 +627,108 @@ void update_mon_bird(Monster* bird)
                 }
             }
         }
+    }
+}
+
+void update_mon_cat(Monster* cat)
+{
+    int dx;
+    int dy;
+    if(cat->substate == S_NORMAL)
+    {
+        if(cat->arcid == 0) // nonsinging cat
+        {
+            // do nothing if the singing cat is alive
+            if(narrative_flag_get(NARFLAG_KILLED_SONGCAT) == 0)
+                return;
+
+            // we should stop the other cats from updating while this one is moving,
+            // since they attack the player one at a time. this is pretty easy to do just by blasting the iterator lol
+            // (but it also means my swapback deletion gets wonky if i don't take special care of it)
+            i2 = spawnedMonsters;
+
+            // also wait for a 1-sec alignment (so that they wait for a bit before attacking)
+            if(cat->animframe == 0 && framecount%60 != 0)
+                return;
+
+            // otherwise, move towards the player!
+            if(kris.substate != S_HURT && framecount % 4 == 0)
+            {
+                cat->animframe = 1; // catAnger sprite
+
+                dx = sign(kris.xpos - cat->xpos);
+                dy = sign(kris.ypos - cat->ypos);
+
+                cat->xpos += (dx << 1);
+                cat->ypos += (dy << 1);
+            }
+            return;
+        }
+        else
+        {
+            // singing cat behaviour has been simplified quite a bit for this.
+            // move around a little bit randomly.
+            dx = rand8();
+            dy = rand8();
+            dx -= 127;
+            dy -= 127;
+
+            if(solidity_check(cat->xpos + dx, cat->ypos + dy))
+            {
+                cat->xpos += sign(dx) << 1;
+                cat->ypos += sign(dy) << 1;
+            }
+
+            // shoot song note projectiles in random directions every so often
+            if((cat->animframe == 0) && (framecount % 30 == 0))
+            {
+                cat->animframe = 1;
+                spawn_projectile(cat->xpos+7, cat->ypos+7, P_NOTE, dx>>1, dy>>1);
+                // TODO: play a random "sing" sound..?
+            }
+
+            // simple frame toggle
+            if(cat->animframe == 1 && framecount % 35 == 0)
+            {
+                cat->animframe = 0;
+            }
+        }
+    }
+    else
+    {
+        if(framecount % 2 == 0)
+        {
+            cat->animframe++;
+            if(cat->animframe > 12)
+            {
+                if(cat->health < 1)
+                {
+                    earn_exp();
+                    if(currentEnvironment == E_DUNGEON && currentRoom == 5)
+                    {
+                        // killing the song cat in room 5 sets the narrative flag
+                        narrative_flag_set(NARFLAG_KILLED_SONGCAT);
+                    }
+                    if(cat->arcid == 0) //nonsinging cat, which means the iterator might go wonky so we should stop this func short after deletion
+                    {
+                        deadList[cat->uniqueid] = 1;
+                        delete_monster(i2);
+                        return;
+                    }
+                    else
+                    {
+                        deadList[cat->uniqueid] = 1;
+                        delete_monster(i2);
+                    }
+                }
+                else
+                {
+                    cat->substate = S_NORMAL;
+                }
+            }
+        }
+        if(cat->arcid == 0) // do our update one-at-a-time thing
+            i2 = spawnedMonsters;
     }
 }
 
@@ -652,6 +758,10 @@ void draw_monster(Monster* monster)
     else if(monster->montype == MON_BIRD)
     {
         draw_bird(monster);
+    }
+    else if(monster->montype == MON_SINGCAT)
+    {
+        draw_cat(monster);
     }
 }
 
@@ -758,6 +868,25 @@ void draw_bird(Monster* bird)
     else if(bird->substate == S_HURT)
     {
         spr = oam_meta_spr(bird->xpos, bird->ypos, spr, birdAnims[2 + (bird->animframe%2)]);
+    }
+}
+
+void draw_cat(Monster* cat)
+{
+    if(cat->substate != S_HURT)
+    {
+        if(cat->arcid == 0) // nonsinging cat
+        {
+            spr = oam_meta_spr(cat->xpos, cat->ypos, spr, catAnims[cat->animframe]);
+        }
+        else if(cat->arcid == 1) // singing cat
+        {
+            spr = oam_meta_spr(cat->xpos, cat->ypos, spr, catAnims[2+(cat->animframe%2)]);
+        }
+    }
+    else
+    {
+        spr = oam_meta_spr(cat->xpos, cat->ypos, spr, catAnims[4+(cat->animframe%2)]);
     }
 }
 

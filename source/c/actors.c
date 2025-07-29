@@ -53,7 +53,7 @@ void update_character(WalkingCharacter* chara)
                     }
                     for(i = 0; i < spawnedProjectiles; i++)
                     {
-                        if(projList[i].projtype != P_ICEMAGIC)
+                        if(projList[i].projtype != P_ICEMAGIC && projList[i].projtype != P_BURST)
                         {
                             if(point_in_rect(projList[i].xpos + 4, projList[i].ypos + 4, chara->xpos+4, chara->ypos+4, chara->xpos+12, chara->ypos+12))
                             {

@@ -448,6 +448,8 @@ void load_room()
            monsterList[spawnedMonsters].xpos = ((roomPtr[i+1]+2) << 4);
            monsterList[spawnedMonsters].ypos = ((roomPtr[i+2]+3) << 4);
            monsterList[spawnedMonsters].health = 1;
+           monsterList[spawnedMonsters].arcid = 0;
+           monsterList[spawnedMonsters].animframe = 0;
            monsterList[spawnedMonsters].level = 1;
            monsterList[spawnedMonsters].substate = S_NORMAL;
            if(monsterList[spawnedMonsters].montype == MON_SHOOTER)
@@ -468,6 +470,10 @@ void load_room()
            {
                monsterList[spawnedMonsters].health = 3;
                monsterList[spawnedMonsters].level = 4; // birds are stronk
+           }
+           if(monsterList[spawnedMonsters].montype == MON_SINGCAT)
+           {
+               monsterList[spawnedMonsters].arcid = roomPtr[i+4]; // set singing/waiting type
            }
            monsterList[spawnedMonsters].direction = rand8();
            monsterList[spawnedMonsters].direction = monsterList[spawnedMonsters].direction >> 6;
