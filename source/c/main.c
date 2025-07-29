@@ -14,6 +14,7 @@
 #include "cheats.h"
 #include "intro.h"
 #include "utils.h"
+#include "twisted.h"
 
 //
 // Main entrypoint
@@ -67,6 +68,8 @@ void main(void) {
     bank_push(INTRO_BANK);
     load_and_show_intro();
     bank_pop();
+
+    banked_call(TWISTED_BANK, init_twisted);
 
     music_play(MUSIC_INTRO);
 
@@ -147,8 +150,11 @@ void main(void) {
         // Main state machine selection
         if(currentState == GS_GAMEPLAY)
         {
-          // Wipe oams (perf?)
           spr = 0;
+
+          // blergle glergle
+          banked_call(TWISTED_BANK, update_twisted);
+          banked_call(TWISTED_BANK, draw_twisted);
 
           if(queueTele != 255)
           {

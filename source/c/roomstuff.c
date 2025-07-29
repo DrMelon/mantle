@@ -6,6 +6,7 @@
 #include "mapper.h"
 #include "ui.h"
 #include "rafts.h"
+#include "utils.h"
 
 // ROOM & ENVIRONMENT HANDLING FUNCTIONS in ROM_00
 CODE_BANK(ROOM_LOGIC_BANK);
@@ -120,6 +121,20 @@ void load_environment(enum Environment env)
        kris.xpos = 128;
        kris.ypos = 128;
     }
+    else if(env == E_DUNGEON)
+    {
+       mmc1_set_chr_bank_0(2);
+       mmc1_set_chr_bank_1(2 + 1);
+       currentRoom = 0;
+       monsterAggression = 1;
+       playerLevel = 4;
+       playerHp = 16;
+       playerExp = 0;
+       kris.xpos = 128;
+       kris.ypos = 128;
+
+       narrative_flag_clr(NARFLAG_KILLED_SONGCAT);
+    }
     else if(env == E_SHELTERFOREST)
     {
        mmc1_set_chr_bank_0(4);
@@ -141,6 +156,8 @@ void load_environment(enum Environment env)
 
     pal_bg(envPalettes[currentEnvironment]);
     pal_spr(envSprPalettes[currentEnvironment]);
+
+    hudDirty = 1;
 
 }
 

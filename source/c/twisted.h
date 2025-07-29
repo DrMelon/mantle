@@ -36,13 +36,14 @@ typedef struct
 
 typedef struct
 {
-  unsigned char xpos;
-  unsigned char ypos;
+  unsigned int xpos;
+  unsigned int ypos;
   TwistedComponent leftEye;
   TwistedComponent rightEye;
   TwistedComponent mouth;
   enum TwistedEmotionState emotionState;
   enum TwistedActionState state;
+  unsigned char mouthAnimFrame;
 } Twisted;
 
 void init_twisted();

@@ -41,6 +41,7 @@ enum Theatric
 #define JUMP_LUT_BANK 2
 #define KRIS_ANIMS_BANK 2
 #define CHEAT_CODES_BANK 6
+#define TWISTED_BANK 6
 #define INTRO_BANK 3
 #define MUSIC_BANK 5
 #define UI_BANK 0
