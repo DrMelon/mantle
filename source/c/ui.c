@@ -172,6 +172,12 @@ void refresh_hud_bars(char hp, char lvl, char exp)
       // Draw exp bar (up to 24 exp)
       for(i = 0; i < 6; i++)
       {
+       if(playerLevel == 4) // max lv full bar
+       {
+          hudUpdateBuffer[i+i2] = barBlocks[4];
+          continue;
+       }
+
        // if exp = 0, empty bar.
        if(exp == 0)
        {

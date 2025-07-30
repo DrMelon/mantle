@@ -140,8 +140,20 @@ void load_environment(enum Environment env)
        mmc1_set_chr_bank_0(4);
        mmc1_set_chr_bank_1(4 + 1);
        currentRoom = 0;
-       monsterAggression = 0;
-       playerLevel = 0;
+       monsterAggression = 1;
+       playerLevel = 4;
+       playerHp = 16;
+       playerExp = 0;
+       kris.xpos = 128;
+       kris.ypos = 128;
+    }
+    else if(env == E_SHELTER)
+    {
+       mmc1_set_chr_bank_0(4);
+       mmc1_set_chr_bank_1(4 + 1);
+       currentRoom = 0;
+       monsterAggression = 1;
+       playerLevel = 4;
        playerHp = 16;
        playerExp = 0;
        kris.xpos = 128;
