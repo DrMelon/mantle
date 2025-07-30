@@ -43,6 +43,8 @@ ZEROPAGE_DEF(unsigned char, theatricStage);
 ZEROPAGE_DEF(unsigned char, theatricTimer);
 ZEROPAGE_DEF(unsigned char, narrativeFlags);
 ZEROPAGE_DEF(unsigned char, roomLocked);
+ZEROPAGE_DEF(unsigned char, buttonsInRoom);
+ZEROPAGE_DEF(unsigned char, buttonsPressed);
 
 #pragma bss-name(push, "ZEROPAGE")
     WalkingCharacter kris;

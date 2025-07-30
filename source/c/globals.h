@@ -112,6 +112,8 @@ ZEROPAGE_EXTERN(unsigned char, theatricStage);
 ZEROPAGE_EXTERN(unsigned char, theatricTimer);
 ZEROPAGE_EXTERN(unsigned char, narrativeFlags);
 ZEROPAGE_EXTERN(unsigned char, roomLocked);
+ZEROPAGE_EXTERN(unsigned char, buttonsInRoom);
+ZEROPAGE_EXTERN(unsigned char, buttonsPressed);
 
 #pragma bss-name(push, "ZEROPAGE")
     extern WalkingCharacter kris;

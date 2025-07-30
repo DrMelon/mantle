@@ -446,7 +446,8 @@ void load_room()
    spawnedMonsters = 0;
    spawnedTeles = 0;
    spawnedProjectiles = 0;
-
+   buttonsInRoom = 0; // reset button state for locking door dungeons
+   buttonsPressed = 0;
    // Load entity spawns
    for(i = (12*8) + 4; roomPtr[i] != 128; i+=6)
    {
@@ -515,6 +516,10 @@ void load_room()
             raftList[spawnedRafts].currentRoom = currentRoom;
             spawnedRafts++;
             deadList[roomPtr[i+5]] = 1; // do *not* respawn rafts conventionally.
+       }
+       else if(roomPtr[i] == 4) // spawn a button (ice palace, dungeon)
+       {
+
        }
    }
 }
