@@ -51,7 +51,7 @@ ZEROPAGE_DEF(unsigned char, roomLocked);
 
 const unsigned char* roomPtr = 0;
 const unsigned char* metatilesPtr = 0;
-unsigned char unpackedRoom[128];
+unsigned char unpackedRoom[135];
 
 Item itemList[MAX_ITEMS];
 Monster monsterList[MAX_MONSTERS];
