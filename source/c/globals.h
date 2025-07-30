@@ -111,6 +111,7 @@ ZEROPAGE_EXTERN(unsigned char, theatricIndex);
 ZEROPAGE_EXTERN(unsigned char, theatricStage);
 ZEROPAGE_EXTERN(unsigned char, theatricTimer);
 ZEROPAGE_EXTERN(unsigned char, narrativeFlags);
+ZEROPAGE_EXTERN(unsigned char, roomLocked);
 
 #pragma bss-name(push, "ZEROPAGE")
     extern WalkingCharacter kris;
@@ -127,7 +128,7 @@ extern unsigned char unpackedRoom[];
 #define MAX_ITEMS 8
 extern Item itemList[];
 
-#define MAX_MONSTERS 16
+#define MAX_MONSTERS 8
 extern Monster monsterList[];
 
 #define MAX_JUMP_ARCS 4
@@ -148,6 +149,7 @@ extern Raft raftList[];
 
 // Tile update buffer for killing trees (and more)
 extern unsigned char palmTreeBuffer[];
+extern unsigned char doorLockMemory[]; // 8 tiles must be stored for locking doors in ice palace
 
 // Narrative/theatrics
 extern unsigned char treeRoomVisits; // Number of times visited the Tree Room

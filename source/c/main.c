@@ -153,8 +153,8 @@ void main(void) {
           spr = 0;
 
           // blergle glergle
-          banked_call(TWISTED_BANK, update_twisted);
-          banked_call(TWISTED_BANK, draw_twisted);
+          //banked_call(TWISTED_BANK, update_twisted);
+          //banked_call(TWISTED_BANK, draw_twisted);
 
           if(queueTele != 255)
           {
@@ -306,7 +306,6 @@ void main(void) {
                   pal_col(0, 0x0F);
                 }
             }
-
             // Check screen transition direction and move Kris in that direction until threshold is reached
             if(roomSwitchDir == 0)
             {
@@ -318,6 +317,7 @@ void main(void) {
                     ppu_on_all();
                     currentState = GS_GAMEPLAY;
                     set_map_tile_on_character(&kris, 0);
+                    lock_room_doors();
                 }
             }
             if(roomSwitchDir == 1)
@@ -329,6 +329,7 @@ void main(void) {
                     ppu_on_all();
                     currentState = GS_GAMEPLAY;
                     set_map_tile_on_character(&kris, 0);
+                    lock_room_doors();
                 }
             }
             if(roomSwitchDir == 2)
@@ -340,6 +341,7 @@ void main(void) {
                     ppu_on_all();
                     currentState = GS_GAMEPLAY;
                     set_map_tile_on_character(&kris, 0);
+                    lock_room_doors();
                 }
             }
             if(roomSwitchDir == 3)
@@ -351,6 +353,7 @@ void main(void) {
                     ppu_on_all();
                     currentState = GS_GAMEPLAY;
                     set_map_tile_on_character(&kris, 0);
+                    lock_room_doors();
                 }
             }
             // Render kris

@@ -217,6 +217,8 @@ extern unsigned char tilemap_swimmable(unsigned char tx, unsigned char ty);
 extern void set_map_tile_in_room(unsigned char tx, unsigned char ty, unsigned char tile);
 extern void set_map_tile_on_character(WalkingCharacter* chara, unsigned char tile);
 extern void draw_black_tile_in_room(unsigned char tx, unsigned char ty);
+extern void lock_room_doors();
+extern void unlock_room_doors();
 
 
 #endif

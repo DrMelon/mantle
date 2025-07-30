@@ -42,6 +42,7 @@ ZEROPAGE_DEF(unsigned char, theatricIndex);
 ZEROPAGE_DEF(unsigned char, theatricStage);
 ZEROPAGE_DEF(unsigned char, theatricTimer);
 ZEROPAGE_DEF(unsigned char, narrativeFlags);
+ZEROPAGE_DEF(unsigned char, roomLocked);
 
 #pragma bss-name(push, "ZEROPAGE")
     WalkingCharacter kris;
@@ -61,5 +62,6 @@ JumpArcState jumpArcList[MAX_JUMP_ARCS];
 Raft raftList[MAX_RAFTS];
 
 unsigned char palmTreeBuffer[64];
+unsigned char doorLockMemory[8]; // 8 tiles must be stored for locking doors in ice palace
 
 unsigned char treeRoomVisits = 0;

@@ -478,6 +478,249 @@ void draw_black_tile_in_room(unsigned char tx, unsigned char ty)
     palmTreeBuffer[13] = LSB(attrib_addr);
     palmTreeBuffer[14] = 0b00000000;
     palmTreeBuffer[15] = NT_UPD_EOF;
-
+    set_vram_update(palmTreeBuffer);
 }
 
+// Ice palace room locking and unlocking;
+// simply replace the entrances with appropriate door tiles.
+void lock_room_doors()
+{
+    // Some rooms in the ice palace lock their doors until the player completes a puzzle or kill all monsters
+    unsigned short ntrAdr = 0;
+    unsigned char shouldLock = 0;
+    if(currentEnvironment == E_ICEPALACE)
+    {
+        if(currentRoom == 1 && spawnedMonsters > 0)
+        {
+            shouldLock = 1;
+        }
+    }
+
+    if(shouldLock == 0) return;
+
+
+    // first store the tiles before we replace them
+    doorLockMemory[0] = tile_at(0+2, 3+3);
+    doorLockMemory[1] = tile_at(0+2, 4+3);
+    doorLockMemory[2] = tile_at(5+2, 0+3);
+    doorLockMemory[3] = tile_at(6+2, 0+3);
+    doorLockMemory[4] = tile_at(5+2, 7+3);
+    doorLockMemory[5] = tile_at(6+2, 7+3);
+    doorLockMemory[6] = tile_at(11+2, 3+3);
+    doorLockMemory[7] = tile_at(11+2, 4+3);
+
+    // Left side (right-facing doors, vert)
+    ntrAdr = NTADR_A((0+2)*2, (3+3)*2);
+    palmTreeBuffer[0] = MSB(ntrAdr) | NT_UPD_VERT;
+    palmTreeBuffer[1] = LSB(ntrAdr);
+    palmTreeBuffer[2] = 4;
+    palmTreeBuffer[3] = metatilesPtr[TILE_IP_PUZDOOR_L*6];
+    palmTreeBuffer[4] = metatilesPtr[TILE_IP_PUZDOOR_L*6+2];
+    palmTreeBuffer[5] = metatilesPtr[TILE_IP_PUZDOOR_L*6];
+    palmTreeBuffer[6] = metatilesPtr[TILE_IP_PUZDOOR_L*6+2];
+    ntrAdr = NTADR_A((0+2)*2 + 1, ((3+3)*2));
+    palmTreeBuffer[7] = MSB(ntrAdr) | NT_UPD_VERT;
+    palmTreeBuffer[8] = LSB(ntrAdr);
+    palmTreeBuffer[9] = 4;
+    palmTreeBuffer[10] = metatilesPtr[TILE_IP_PUZDOOR_L*6+1];
+    palmTreeBuffer[11] = metatilesPtr[TILE_IP_PUZDOOR_L*6+3];
+    palmTreeBuffer[12] = metatilesPtr[TILE_IP_PUZDOOR_L*6+1];
+    palmTreeBuffer[13] = metatilesPtr[TILE_IP_PUZDOOR_L*6+3];
+    palmTreeBuffer[14] = NT_UPD_EOF;
+
+    set_vram_update(palmTreeBuffer);
+    ppu_wait_nmi(); // wait a frame, then do the next bit
+
+
+    // Top Side (door pair, horz)
+    ntrAdr = NTADR_A((5+2)*2, (0+3)*2);
+    palmTreeBuffer[0] = MSB(ntrAdr) | NT_UPD_HORZ;
+    palmTreeBuffer[1] = LSB(ntrAdr);
+    palmTreeBuffer[2] = 4;
+    palmTreeBuffer[3] = metatilesPtr[TILE_IP_PUZDOOR_L*6];
+    palmTreeBuffer[4] = metatilesPtr[TILE_IP_PUZDOOR_L*6+1];
+    palmTreeBuffer[5] = metatilesPtr[TILE_IP_PUZDOOR_R*6];
+    palmTreeBuffer[6] = metatilesPtr[TILE_IP_PUZDOOR_R*6+1];
+    ntrAdr = NTADR_A(((5+2)*2), (0+3)*2 + 1);
+    palmTreeBuffer[7] = MSB(ntrAdr) | NT_UPD_HORZ;
+    palmTreeBuffer[8] = LSB(ntrAdr);
+    palmTreeBuffer[9] = 4;
+    palmTreeBuffer[10] = metatilesPtr[TILE_IP_PUZDOOR_L*6+2];
+    palmTreeBuffer[11] = metatilesPtr[TILE_IP_PUZDOOR_L*6+3];
+    palmTreeBuffer[12] = metatilesPtr[TILE_IP_PUZDOOR_R*6+2];
+    palmTreeBuffer[13] = metatilesPtr[TILE_IP_PUZDOOR_R*6+3];
+    palmTreeBuffer[14] = NT_UPD_EOF;
+
+    set_vram_update(palmTreeBuffer);
+    ppu_wait_nmi(); // wait a frame, then do the next bit
+
+    // Bottom Side (door pair, horz)
+    ntrAdr = NTADR_A((5+2)*2, (7+3)*2);
+    palmTreeBuffer[0] = MSB(ntrAdr) | NT_UPD_HORZ;
+    palmTreeBuffer[1] = LSB(ntrAdr);
+    palmTreeBuffer[2] = 4;
+    palmTreeBuffer[3] = metatilesPtr[TILE_IP_PUZDOOR_L*6];
+    palmTreeBuffer[4] = metatilesPtr[TILE_IP_PUZDOOR_L*6+1];
+    palmTreeBuffer[5] = metatilesPtr[TILE_IP_PUZDOOR_R*6];
+    palmTreeBuffer[6] = metatilesPtr[TILE_IP_PUZDOOR_R*6+1];
+    ntrAdr = NTADR_A(((5+2)*2), (7+3)*2 + 1);
+    palmTreeBuffer[7] = MSB(ntrAdr) | NT_UPD_HORZ;
+    palmTreeBuffer[8] = LSB(ntrAdr);
+    palmTreeBuffer[9] = 4;
+    palmTreeBuffer[10] = metatilesPtr[TILE_IP_PUZDOOR_L*6+2];
+    palmTreeBuffer[11] = metatilesPtr[TILE_IP_PUZDOOR_L*6+3];
+    palmTreeBuffer[12] = metatilesPtr[TILE_IP_PUZDOOR_R*6+2];
+    palmTreeBuffer[13] = metatilesPtr[TILE_IP_PUZDOOR_R*6+3];
+    palmTreeBuffer[14] = NT_UPD_EOF;
+
+    set_vram_update(palmTreeBuffer);
+    ppu_wait_nmi(); // wait a frame, then do the next bit
+
+    // Right side (left-facing doors, vert)
+    ntrAdr = NTADR_A((11+2)*2, (3+3)*2);
+    palmTreeBuffer[0] = MSB(ntrAdr) | NT_UPD_VERT;
+    palmTreeBuffer[1] = LSB(ntrAdr);
+    palmTreeBuffer[2] = 4;
+    palmTreeBuffer[3] = metatilesPtr[TILE_IP_PUZDOOR_R*6];
+    palmTreeBuffer[4] = metatilesPtr[TILE_IP_PUZDOOR_R*6+2];
+    palmTreeBuffer[5] = metatilesPtr[TILE_IP_PUZDOOR_R*6];
+    palmTreeBuffer[6] = metatilesPtr[TILE_IP_PUZDOOR_R*6+2];
+    ntrAdr = NTADR_A((11+2)*2 + 1, ((3+3)*2));
+    palmTreeBuffer[7] = MSB(ntrAdr) | NT_UPD_VERT;
+    palmTreeBuffer[8] = LSB(ntrAdr);
+    palmTreeBuffer[9] = 4;
+    palmTreeBuffer[10] = metatilesPtr[TILE_IP_PUZDOOR_R*6+1];
+    palmTreeBuffer[11] = metatilesPtr[TILE_IP_PUZDOOR_R*6+3];
+    palmTreeBuffer[12] = metatilesPtr[TILE_IP_PUZDOOR_R*6+1];
+    palmTreeBuffer[13] = metatilesPtr[TILE_IP_PUZDOOR_R*6+3];
+    palmTreeBuffer[14] = NT_UPD_EOF;
+
+    set_vram_update(palmTreeBuffer);
+    ppu_wait_nmi();
+    set_vram_update(NULL);
+
+    roomLocked = 1; // set lock flag so that buttons/monster deaths can open it
+
+    // set collisions
+    unpackedRoom[0 + (3*12) + 4] = TILE_IP_PUZDOOR_L;
+    unpackedRoom[0 + (4*12) + 4] = TILE_IP_PUZDOOR_L;
+    unpackedRoom[5 + (0*12) + 4] = TILE_IP_PUZDOOR_L;
+    unpackedRoom[6 + (0*12) + 4] = TILE_IP_PUZDOOR_R;
+    unpackedRoom[5 + (7*12) + 4] = TILE_IP_PUZDOOR_L;
+    unpackedRoom[6 + (7*12) + 4] = TILE_IP_PUZDOOR_R;
+    unpackedRoom[11 + (3*12) + 4] = TILE_IP_PUZDOOR_R;
+    unpackedRoom[11 + (4*12) + 4] = TILE_IP_PUZDOOR_R;
+
+    // move kris so they won't get trapped in the doors
+    if(roomSwitchDir == 0) kris.ypos += 16;
+    else if(roomSwitchDir == 1) kris.xpos += 16;
+    else if(roomSwitchDir == 2) kris.ypos -= 16;
+    else if(roomSwitchDir == 3) kris.xpos -= 16;
+}
+
+void unlock_room_doors()
+{
+    unsigned short ntrAdr = 0;
+    // Switch the doors back to what they are supposed to be, using doorLockMemory
+    unpackedRoom[0 + (3*12) + 4] = doorLockMemory[0];
+    unpackedRoom[0 + (4*12) + 4] = doorLockMemory[1];
+    unpackedRoom[5 + (0*12) + 4] = doorLockMemory[2];
+    unpackedRoom[6 + (0*12) + 4] = doorLockMemory[3];
+    unpackedRoom[5 + (7*12) + 4] = doorLockMemory[4];
+    unpackedRoom[6 + (7*12) + 4] = doorLockMemory[5];
+    unpackedRoom[11 + (3*12) + 4] = doorLockMemory[6];
+    unpackedRoom[11 + (4*12) + 4] = doorLockMemory[7];
+
+
+   // Left side (right-facing doors, vert)
+    ntrAdr = NTADR_A((0+2)*2, (3+3)*2);
+    palmTreeBuffer[0] = MSB(ntrAdr) | NT_UPD_VERT;
+    palmTreeBuffer[1] = LSB(ntrAdr);
+    palmTreeBuffer[2] = 4;
+    palmTreeBuffer[3] = metatilesPtr[doorLockMemory[0]*6];
+    palmTreeBuffer[4] = metatilesPtr[doorLockMemory[0]*6+2];
+    palmTreeBuffer[5] = metatilesPtr[doorLockMemory[1]*6];
+    palmTreeBuffer[6] = metatilesPtr[doorLockMemory[1]*6+2];
+    ntrAdr = NTADR_A((0+2)*2 + 1, ((3+3)*2));
+    palmTreeBuffer[7] = MSB(ntrAdr) | NT_UPD_VERT;
+    palmTreeBuffer[8] = LSB(ntrAdr);
+    palmTreeBuffer[9] = 4;
+    palmTreeBuffer[10] = metatilesPtr[doorLockMemory[0]*6+1];
+    palmTreeBuffer[11] = metatilesPtr[doorLockMemory[0]*6+3];
+    palmTreeBuffer[12] = metatilesPtr[doorLockMemory[1]*6+1];
+    palmTreeBuffer[13] = metatilesPtr[doorLockMemory[1]*6+3];
+    palmTreeBuffer[14] = NT_UPD_EOF;
+
+    set_vram_update(palmTreeBuffer);
+    ppu_wait_nmi(); // wait a frame, then do the next bit
+
+
+    // Top Side (door pair, horz)
+    ntrAdr = NTADR_A((5+2)*2, (0+3)*2);
+    palmTreeBuffer[0] = MSB(ntrAdr) | NT_UPD_HORZ;
+    palmTreeBuffer[1] = LSB(ntrAdr);
+    palmTreeBuffer[2] = 4;
+    palmTreeBuffer[3] = metatilesPtr[doorLockMemory[2]*6];
+    palmTreeBuffer[4] = metatilesPtr[doorLockMemory[2]*6+1];
+    palmTreeBuffer[5] = metatilesPtr[doorLockMemory[3]*6];
+    palmTreeBuffer[6] = metatilesPtr[doorLockMemory[3]*6+1];
+    ntrAdr = NTADR_A(((5+2)*2), (0+3)*2 + 1);
+    palmTreeBuffer[7] = MSB(ntrAdr) | NT_UPD_HORZ;
+    palmTreeBuffer[8] = LSB(ntrAdr);
+    palmTreeBuffer[9] = 4;
+    palmTreeBuffer[10] = metatilesPtr[doorLockMemory[2]*6+2];
+    palmTreeBuffer[11] = metatilesPtr[doorLockMemory[2]*6+3];
+    palmTreeBuffer[12] = metatilesPtr[doorLockMemory[3]*6+2];
+    palmTreeBuffer[13] = metatilesPtr[doorLockMemory[3]*6+3];
+    palmTreeBuffer[14] = NT_UPD_EOF;
+
+    set_vram_update(palmTreeBuffer);
+    ppu_wait_nmi(); // wait a frame, then do the next bit
+
+    // Bottom Side (door pair, horz)
+    ntrAdr = NTADR_A((5+2)*2, (7+3)*2);
+    palmTreeBuffer[0] = MSB(ntrAdr) | NT_UPD_HORZ;
+    palmTreeBuffer[1] = LSB(ntrAdr);
+    palmTreeBuffer[2] = 4;
+    palmTreeBuffer[3] = metatilesPtr[doorLockMemory[4]*6];
+    palmTreeBuffer[4] = metatilesPtr[doorLockMemory[4]*6+1];
+    palmTreeBuffer[5] = metatilesPtr[doorLockMemory[5]*6];
+    palmTreeBuffer[6] = metatilesPtr[doorLockMemory[5]*6+1];
+    ntrAdr = NTADR_A(((5+2)*2), (7+3)*2 + 1);
+    palmTreeBuffer[7] = MSB(ntrAdr) | NT_UPD_HORZ;
+    palmTreeBuffer[8] = LSB(ntrAdr);
+    palmTreeBuffer[9] = 4;
+    palmTreeBuffer[10] = metatilesPtr[doorLockMemory[4]*6+2];
+    palmTreeBuffer[11] = metatilesPtr[doorLockMemory[4]*6+3];
+    palmTreeBuffer[12] = metatilesPtr[doorLockMemory[5]*6+2];
+    palmTreeBuffer[13] = metatilesPtr[doorLockMemory[5]*6+3];
+    palmTreeBuffer[14] = NT_UPD_EOF;
+
+    set_vram_update(palmTreeBuffer);
+    ppu_wait_nmi(); // wait a frame, then do the next bit
+
+    // Right side (left-facing doors, vert)
+    ntrAdr = NTADR_A((11+2)*2, (3+3)*2);
+    palmTreeBuffer[0] = MSB(ntrAdr) | NT_UPD_VERT;
+    palmTreeBuffer[1] = LSB(ntrAdr);
+    palmTreeBuffer[2] = 4;
+    palmTreeBuffer[3] = metatilesPtr[doorLockMemory[6]*6];
+    palmTreeBuffer[4] = metatilesPtr[doorLockMemory[6]*6+2];
+    palmTreeBuffer[5] = metatilesPtr[doorLockMemory[7]*6];
+    palmTreeBuffer[6] = metatilesPtr[doorLockMemory[7]*6+2];
+    ntrAdr = NTADR_A((11+2)*2 + 1, ((3+3)*2));
+    palmTreeBuffer[7] = MSB(ntrAdr) | NT_UPD_VERT;
+    palmTreeBuffer[8] = LSB(ntrAdr);
+    palmTreeBuffer[9] = 4;
+    palmTreeBuffer[10] = metatilesPtr[doorLockMemory[6]*6+1];
+    palmTreeBuffer[11] = metatilesPtr[doorLockMemory[6]*6+3];
+    palmTreeBuffer[12] = metatilesPtr[doorLockMemory[7]*6+1];
+    palmTreeBuffer[13] = metatilesPtr[doorLockMemory[7]*6+3];
+    palmTreeBuffer[14] = NT_UPD_EOF;
+
+    set_vram_update(palmTreeBuffer);
+    ppu_wait_nmi();
+    set_vram_update(NULL);
+
+    roomLocked = 0;
+}

@@ -265,6 +265,10 @@ void earn_exp()
         if(playerExp == 20)
             playerExp += 4; // last one counts extra
     }
+    if(roomLocked && spawnedMonsters <= 1) // last monster? unlock doors
+    {
+        unlock_room_doors();
+    }
     hudDirty = 1;
 }
 
