@@ -127,7 +127,7 @@ void load_environment(enum Environment env)
        mmc1_set_chr_bank_1(2 + 1);
        currentRoom = 0;
        monsterAggression = 1;
-       playerLevel = 4;
+       playerLevel = 3;
        playerHp = 16;
        playerExp = 0;
        kris.xpos = 128;
@@ -176,7 +176,6 @@ void load_environment(enum Environment env)
 void unpack_room()
 {
    // Unpacks currentRoom into memory via RLE
-
    roomPtr = environment_rooms[currentEnvironment][currentRoom];
 
    // first four bytes are directional data
@@ -211,7 +210,6 @@ void unpack_room()
      i++;
      i2++;
    }
-
 
    // Now set roomPtr to unpackedRoom, so that game functions can read that room data.
    roomPtr = unpackedRoom;

@@ -55,7 +55,7 @@ void update_character(WalkingCharacter* chara)
                     {
                         if(projList[i].projtype != P_ICEMAGIC && projList[i].projtype != P_BURST)
                         {
-                            if(point_in_rect(projList[i].xpos + 4, projList[i].ypos + 4, chara->xpos+4, chara->ypos+4, chara->xpos+12, chara->ypos+12))
+                            if(point_in_rect(FP_WHOLE(projList[i].xpos) + 4, FP_WHOLE(projList[i].ypos) + 4, chara->xpos+4, chara->ypos+4, chara->xpos+12, chara->ypos+12))
                             {
                                 get_hurt(chara);
                                 break;

@@ -166,7 +166,7 @@ void update_mon_shooter(Monster* shooter)
                 player_offsetx = 0;
             }
 
-            spawn_projectile(shooter->xpos+4, shooter->ypos+4, P_ARROW, player_offsetx<<5, player_offsety<<5);
+            spawn_projectile(shooter->xpos+4, shooter->ypos+4, P_ARROW, (player_offsetx<<9), (player_offsety<<9));
         }
         if(shooter->animframe >= 16)
         {
@@ -316,7 +316,7 @@ void update_mon_flower(Monster* flower)
               player_offsety = player_offsety >> 1;
             }
 
-            spawn_projectile(flower->xpos+4, flower->ypos+4, P_FRIENDLINESS_PELLET, player_offsetx, player_offsety);
+            spawn_projectile(flower->xpos+4, flower->ypos+4, P_FRIENDLINESS_PELLET, player_offsetx << 4, player_offsety << 4);
         }
         else if(flower->animframe == 24)
         {
@@ -687,7 +687,7 @@ void update_mon_cat(Monster* cat)
             if((cat->animframe == 0) && (framecount % 30 == 0))
             {
                 cat->animframe = 1;
-                spawn_projectile(cat->xpos+7, cat->ypos+7, P_NOTE, dx>>1, dy>>1);
+                spawn_projectile(cat->xpos+7, cat->ypos+7, P_NOTE, (dx<<3), (dy<<3));
                 // TODO: play a random "sing" sound..?
             }
 

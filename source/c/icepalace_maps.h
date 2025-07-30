@@ -25,4 +25,5 @@ extern const unsigned char palace_room_19[];
 extern const unsigned char palace_room_20[];
 extern const unsigned char palace_room_21[];
 extern const unsigned char palace_room_22[];
+extern const unsigned char palace_room_23[];
 #endif

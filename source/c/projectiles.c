@@ -91,32 +91,12 @@ void update_projectile(Projectile* proj)
         return;
     }
 
-    // Subpixel movement: up to 16 glorious subpixels of precision!
-    proj->subx += proj->xvel;
-    while(proj->subx > 16)
-    {
-        proj->subx -= 16;
-        proj->xpos++;
-    }
-    while(proj->subx < 0)
-    {
-        proj->subx += 16;
-        proj->xpos--;
-    }
-    proj->suby += proj->yvel;
-    while(proj->suby > 16)
-    {
-        proj->suby -= 16;
-        proj->ypos++;
-    }
-    while(proj->suby < 0)
-    {
-        proj->suby += 16;
-        proj->ypos--;
-    }
+    // Subpixel movement: up to 256 glorious subpixels of precision!
+    proj->xpos += proj->xvel;
+    proj->ypos += proj->yvel;
 
     // Projectiles despawn when they leave the "screen"
-    if(proj->xpos < 32 || proj->ypos < 48 || proj->xpos > 208 || proj->ypos > 160)
+    if(FP_WHOLE(proj->xpos) < 32 || FP_WHOLE(proj->ypos) < 48 || FP_WHOLE(proj->xpos) > 208 || FP_WHOLE(proj->ypos) > 160)
     {
         projList[i] = projList[spawnedProjectiles-1];
         spawnedProjectiles--;
@@ -130,11 +110,9 @@ void spawn_projectile(unsigned char sx, unsigned char sy, enum ProjectileType ty
 {
     if(spawnedProjectiles < MAX_PROJECTILES)
     {
-        projList[spawnedProjectiles].xpos = sx;
-        projList[spawnedProjectiles].ypos = sy;
+        projList[spawnedProjectiles].xpos = sx << FP;
+        projList[spawnedProjectiles].ypos = sy << FP;
         projList[spawnedProjectiles].projtype = type;
-        projList[spawnedProjectiles].subx = 0;
-        projList[spawnedProjectiles].suby = 0;
         projList[spawnedProjectiles].xvel = xvel;
         projList[spawnedProjectiles].yvel = yvel;
         spawnedProjectiles++;
@@ -145,7 +123,7 @@ void draw_projectile(Projectile* proj)
 {
     if(proj->projtype == P_FRIENDLINESS_PELLET)
     {
-        spr = oam_meta_spr(proj->xpos, proj->ypos, spr, pelletSprites[framecount%2]);
+        spr = oam_meta_spr(FP_WHOLE(proj->xpos), FP_WHOLE(proj->ypos), spr, pelletSprites[framecount%2]);
     }
     else if(proj->projtype == P_ARROW)
     {
@@ -153,32 +131,32 @@ void draw_projectile(Projectile* proj)
         {
             if(proj->xvel < 0)
             {
-                spr = oam_meta_spr(proj->xpos, proj->ypos, spr, arrowLeftSprite);
+                spr = oam_meta_spr(FP_WHOLE(proj->xpos), FP_WHOLE(proj->ypos), spr, arrowLeftSprite);
             }
             else
             {
-                spr = oam_meta_spr(proj->xpos, proj->ypos, spr, arrowRightSprite);
+                spr = oam_meta_spr(FP_WHOLE(proj->xpos), FP_WHOLE(proj->ypos), spr, arrowRightSprite);
             }
         }
         else
         {
             if(proj->yvel < 0)
             {
-                spr = oam_meta_spr(proj->xpos, proj->ypos, spr, arrowUpSprite);
+                spr = oam_meta_spr(FP_WHOLE(proj->xpos), FP_WHOLE(proj->ypos), spr, arrowUpSprite);
             }
             else
             {
-                spr = oam_meta_spr(proj->xpos, proj->ypos, spr, arrowDownSprite);
+                spr = oam_meta_spr(FP_WHOLE(proj->xpos), FP_WHOLE(proj->ypos), spr, arrowDownSprite);
             }
         }
     }
     else if(proj->projtype == P_BURST)
     {
-        spr = oam_meta_spr(proj->xpos, proj->ypos, spr, burstSprites[proj->xvel]);
+        spr = oam_meta_spr(FP_WHOLE(proj->xpos), FP_WHOLE(proj->ypos), spr, burstSprites[proj->xvel]);
     }
     else if(proj->projtype == P_NOTE)
     {
-        spr = oam_meta_spr(proj->xpos, proj->ypos, spr, noteSprite);
+        spr = oam_meta_spr(FP_WHOLE(proj->xpos), FP_WHOLE(proj->ypos), spr, noteSprite);
     }
 }
 

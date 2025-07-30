@@ -12,10 +12,8 @@ enum ProjectileType
 
 typedef struct
 {
-  unsigned char xpos;
-  unsigned char ypos;
-  int subx;
-  int suby;
+  unsigned int xpos;
+  unsigned int ypos;
   int xvel;
   int yvel;
   enum ProjectileType projtype;
