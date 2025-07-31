@@ -53,3 +53,17 @@ void narrative_flag_clr(unsigned char narrativeFlag)
 {
     narrativeFlags &= ~narrativeFlag;
 }
+
+unsigned char is_dead(unsigned char monsterid)
+{
+    unsigned char bitidx = monsterid % 8;
+    unsigned char mainidx = monsterid >> 3;
+    return deadList[mainidx] & (1 << bitidx);
+}
+
+void mark_dead(unsigned char monsterid)
+{
+    unsigned char bitidx = monsterid % 8;
+    unsigned char mainidx = monsterid >> 3;
+    deadList[mainidx] |= (1 << bitidx);
+}

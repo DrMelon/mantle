@@ -67,7 +67,7 @@ void load_environment(enum Environment env)
     currentEnvironment = env;
 
     // Set dead list empty (as it is a per-environment tracker)
-    for(i = 0; i < TOTAL_SPAWNABLES; i++)
+    for(i = 0; i < DEAD_LIST_LEN; i++)
     {
       deadList[i] = 0;
     }
@@ -461,7 +461,7 @@ void load_room()
            spawnedTeles++;
            continue;
        }
-       if(deadList[roomPtr[i+5]]) continue;
+       if(is_dead(roomPtr[i+5])) continue; // don't respawn killed things
        if(roomPtr[i] == 2) // Spawn a sword
        {
            itemList[spawnedItems].itemtype = ITEM_SWORD;
@@ -520,7 +520,7 @@ void load_room()
             raftList[spawnedRafts].assignedchar = NULL;
             raftList[spawnedRafts].currentRoom = currentRoom;
             spawnedRafts++;
-            deadList[roomPtr[i+5]] = 1; // do *not* respawn rafts conventionally.
+            mark_dead(roomPtr[i+5]); // do *not* respawn rafts conventionally.
        }
        else if(roomPtr[i] == 4) // spawn a button (ice palace, dungeon)
        {

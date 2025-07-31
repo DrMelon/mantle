@@ -38,7 +38,7 @@ void update_item(Item* item, WalkingCharacter* chara)
                 theatricTimer = 0;
             }
             // Destroy self
-            deadList[item->uniqueid] = 1;
+            mark_dead(item->uniqueid);
 
             delete_item(i);
         }

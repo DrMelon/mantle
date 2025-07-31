@@ -140,6 +140,7 @@ extern JumpArcState jumpArcList[];
 extern Teleporter teleList[];
 
 #define TOTAL_SPAWNABLES 255
+#define DEAD_LIST_LEN 32
 extern unsigned char deadList[];
 
 #define MAX_PROJECTILES 8

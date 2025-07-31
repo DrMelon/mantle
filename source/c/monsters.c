@@ -87,7 +87,7 @@ void update_mon_walker(Monster* walker)
            if(walker->health == 0)
            {
                earn_exp();
-               deadList[walker->uniqueid] = 1; // update deadlist
+               mark_dead(walker->uniqueid);
 
                // delete monster
                // USING i2 HERE BECAUSE i IS STOMPED BY COLLISION CHECKS
@@ -234,7 +234,7 @@ void update_mon_fish(Monster* fish)
                 {
                     // fish dies..!
                     earn_exp();
-                    deadList[fish->uniqueid] = 1; // update deadlist
+                    mark_dead(fish->uniqueid);
                     delete_monster(i2);
                 }
                 else
@@ -340,7 +340,7 @@ void update_mon_flower(Monster* flower)
             if(flower->health < 1)
             {
                 earn_exp();
-                deadList[flower->uniqueid] = 1;
+                mark_dead(flower->uniqueid);
                 delete_monster(i2);
             }
         }
@@ -466,7 +466,7 @@ void update_mon_lizard(Monster* lizard)
                 if(lizard->health < 1)
                 {
                     earn_exp();
-                    deadList[lizard->uniqueid] = 1; // update deadlist
+                    mark_dead(lizard->uniqueid);
                     delete_monster(i2);
                 }
                 else
@@ -485,7 +485,7 @@ void update_mon_lizard(Monster* lizard)
                     if(lizard->health < 1)
                     {
                         earn_exp();
-                        deadList[lizard->uniqueid] = 1;
+                        mark_dead(lizard->uniqueid);
                         delete_monster(i2);
                     }
                     else
@@ -628,7 +628,7 @@ void update_mon_bird(Monster* bird)
                     if(bird->health < 1)
                     {
                         earn_exp();
-                        deadList[bird->uniqueid] = 1;
+                        mark_dead(bird->uniqueid);
                         delete_monster(i2);
                     }
                     else
@@ -722,13 +722,13 @@ void update_mon_cat(Monster* cat)
                     }
                     if(cat->arcid == 0) //nonsinging cat, which means the iterator might go wonky so we should stop this func short after deletion
                     {
-                        deadList[cat->uniqueid] = 1;
+                        mark_dead(cat->uniqueid);
                         delete_monster(i2);
                         return;
                     }
                     else
                     {
-                        deadList[cat->uniqueid] = 1;
+                        mark_dead(cat->uniqueid);
                         delete_monster(i2);
                     }
                 }

@@ -1,5 +1,6 @@
 #include "bank_helpers.h"
 #include "globals.h"
+#include "utils.h"
 
 ZEROPAGE_DEF(enum GameState, currentState);
 ZEROPAGE_DEF(unsigned char, i);
@@ -59,7 +60,7 @@ Item itemList[MAX_ITEMS];
 Monster monsterList[MAX_MONSTERS];
 Teleporter teleList[MAX_TELEPORTERS];
 Projectile projList[MAX_PROJECTILES];
-unsigned char deadList[TOTAL_SPAWNABLES];
+unsigned char deadList[DEAD_LIST_LEN];
 JumpArcState jumpArcList[MAX_JUMP_ARCS];
 Raft raftList[MAX_RAFTS];
 

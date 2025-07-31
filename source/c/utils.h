@@ -15,4 +15,8 @@ extern void narrative_flag_clr(unsigned char narrativeFlag);
 #define FP_WHOLE(x) (x >> FP)
 #define FP_FRACT(x) (x & 0x00FF)
 
+// packed boolean array utils for deadlist
+extern unsigned char is_dead(unsigned char monsterid);
+extern void mark_dead(unsigned char monsterid);
+
 #endif
