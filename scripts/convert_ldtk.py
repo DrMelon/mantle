@@ -176,6 +176,8 @@ with open(ldtk_file_name) as ldtk_file:
         h_string_for_ldtk_files += h_string_for_level
         c_string_for_ldtk_files += c_string_for_level + "\n"
 
+    print("Entities in environment: " + str(environment_ent_counter) + "/256")
+
     # Now it's time to write the C/H files.
     h_string_for_ldtk_files += "#endif"
 
