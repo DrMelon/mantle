@@ -480,6 +480,11 @@ void load_room()
            monsterList[spawnedMonsters].animframe = 0;
            monsterList[spawnedMonsters].level = 1;
            monsterList[spawnedMonsters].substate = S_NORMAL;
+           if(monsterList[spawnedMonsters].montype == MON_WALKER)
+           {
+               if(roomPtr[i+4] == 1)
+                 monsterList[spawnedMonsters].level = 5; // BEEFY!!!
+           }
            if(monsterList[spawnedMonsters].montype == MON_SHOOTER)
            {
                monsterList[spawnedMonsters].health = 2;

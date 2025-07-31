@@ -257,7 +257,7 @@ void earn_exp()
         else if(playerLevel < 4)
             playerExp += 2; // become stronger. 12 enemies to hit lvmax.
     }
-    if(currentEnvironment == E_ISLAND)
+    else if(currentEnvironment == E_ISLAND)
     {
         monsterAggression = 1; // monsters become aggressive on the Island as soon as one dies.
         if(playerLevel < 2)
@@ -265,7 +265,14 @@ void earn_exp()
         if(playerExp == 20)
             playerExp += 4; // last one counts extra
     }
-    if(roomLocked && spawnedMonsters <= 1) // last monster? unlock doors
+    else if(currentEnvironment == E_ICEPALACE)
+    {
+        if(playerLevel < 3)
+            playerExp += 8; // 3 enemies to reach lv3
+        else if(playerLevel < 4)
+            playerExp += 2; // 12 enemies to hit lvmax
+    }
+    if(roomLocked && spawnedMonsters <= 1) // last monster in room? unlock doors
     {
         unlock_room_doors();
     }
