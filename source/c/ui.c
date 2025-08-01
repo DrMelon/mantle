@@ -20,6 +20,7 @@ const unsigned char cave_dialog_4[] = "After all, not even Kris is here!";
 const unsigned char cave_dialog_5[] = "It's just me.\nAnd YOU.";
 
 const unsigned char icekey_found_0[] = "YOU GOT THE ICE KEY";
+const unsigned char icekey_use_0[] = "UNLOCKED WITH\n ICE KEY";
 
 const unsigned char northernlight_0[] = "GO TO\nNORTHERN LIGHT";
 
@@ -226,6 +227,10 @@ void queue_text_banked()
     else if(x2 == 1)
     {
         queue_text(secret_message_0, 1);
+    }
+    else if(x2 == 2)
+    {
+        queue_text(icekey_use_0, 1);
     }
 }
 

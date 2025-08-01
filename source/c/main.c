@@ -134,15 +134,23 @@ void main(void) {
               theatricTimer++;
               if(theatricTimer > 240)
               {
-                theatricTimer = 0;
-                theatricIndex = 0;
-                theatricActive = 0;
+                end_theatric();
                 // clear text
                 textQueued = 3;
-                // go to ice palace
+                // go to island
                 bank_push(ROOM_LOGIC_BANK);
                 skip_to_island();
                 bank_pop();
+              }
+            }
+            else if(theatricIndex == TH_USEICEKEY)
+            {
+              theatricTimer++;
+              if(theatricTimer > 240)
+              {
+                end_theatric();
+                textQueued = 3;
+                banked_call(ROOM_LOGIC_BANK, skip_to_ice_palace);
               }
             }
         }

@@ -120,6 +120,16 @@ void load_environment(enum Environment env)
        playerExp = 0;
        kris.xpos = 128;
        kris.ypos = 128;
+
+       followerA.xpos = 130;
+       followerA.ypos = 130;
+       followerA.chartype = CH_SUSIE;
+       followerA.direction = 0;
+       followerB.xpos = 140;
+       followerB.ypos = 140;
+       followerB.chartype = CH_RALSEI;
+       followerB.direction = 3;
+
     }
     else if(env == E_DUNGEON)
     {

@@ -13,15 +13,15 @@
 #include "monster_anims.h"
 
 const unsigned char* const * const characterWalkAnims[]={
-    krisWalkAnims
+    krisWalkAnims,
 };
 
 const unsigned char* const * const characterStrikeAnims[]={
-    krisStrikeAnims
+    krisStrikeAnims,
 };
 
 const unsigned char* const * const characterHurtAnims[]={
-    krisHurtAnims
+    krisHurtAnims,
 };
 
 CODE_BANK(ACTOR_LOGIC_BANK);
@@ -177,7 +177,6 @@ void update_character(WalkingCharacter* chara)
                         }
                     }
                 }
-
             }
             if(did_walk && framecount%16 == 0)
             {
@@ -343,18 +342,12 @@ void update_character(WalkingCharacter* chara)
                         music_stop();
 
                         // Summon the ice key text crawl and set text delay high
-                        //queue_text(icekey_found_0, 1);
                         x2 = 0;
                         banked_call(UI_BANK, queue_text_banked);
                         textDelay = 6;
                         // Set the tile to the Open Chest tile
                         set_map_tile_in_room(x, y, TILE_D_CHEST_OPEN);
-
-                        // TODO: Set the appropriate Theatrics flag & timer so that we can transition to the 2nd stage at the right time.
-                        theatricActive = 1;
-                        theatricIndex = TH_GETICEKEY;
-                        theatricStage = 0;
-                        theatricTimer = 0;
+                        start_theatric(TH_GETICEKEY);
                     }
                     else
                     {
@@ -379,8 +372,9 @@ void update_character(WalkingCharacter* chara)
                     else if(i2 == TILE_I_DELTDOOR_BL || i2 == TILE_I_DELTDOOR_BR)
                     {
                         // Made it to the ice key door.
-                        // TODO: Do the "UNLOCKED WITH ICE KEY" text, wait for a sec, then transport to ice palace interior
-                        skip_to_ice_palace();
+                        x2 = 2;
+                        banked_call(UI_BANK, queue_text_banked);
+                        start_theatric(TH_USEICEKEY);
                     }
                 }
 
@@ -607,7 +601,5 @@ void draw_character(WalkingCharacter* chara)
             spr = oam_meta_spr(chara->xpos, chara->ypos, spr, characterWalkAnims[chara->chartype][0 + (chara->direction*2)]);
         }
     }
-
-
 }
 CODE_BANK_POP();

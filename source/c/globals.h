@@ -120,6 +120,10 @@ ZEROPAGE_EXTERN(unsigned char, buttonsPressed);
     extern Twisted twisted;
 #pragma bss-name(pop)
 
+// For city & ice palace
+extern WalkingCharacter followerA;
+extern WalkingCharacter followerB;
+
 // Fast-access room pointers
 extern const unsigned char* roomPtr;
 extern const unsigned char* metatilesPtr;

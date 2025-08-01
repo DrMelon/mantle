@@ -67,3 +67,19 @@ void mark_dead(unsigned char monsterid)
     unsigned char mainidx = monsterid >> 3;
     deadList[mainidx] |= (1 << bitidx);
 }
+
+void start_theatric(unsigned char theatricId)
+{
+    theatricIndex = theatricId;
+    theatricTimer = 0;
+    theatricStage = 0;
+    theatricActive = 1;
+}
+
+void end_theatric()
+{
+    theatricTimer = 0;
+    theatricIndex = 0;
+    theatricStage = 0;
+    theatricActive = 0;
+}

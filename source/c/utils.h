@@ -19,4 +19,8 @@ extern void narrative_flag_clr(unsigned char narrativeFlag);
 extern unsigned char is_dead(unsigned char monsterid);
 extern void mark_dead(unsigned char monsterid);
 
+// theatrics
+extern void start_theatric(unsigned char theatricId);
+extern void end_theatric();
+
 #endif
