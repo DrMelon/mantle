@@ -10,10 +10,13 @@
 #include "jump_arc.h"
 #include "jump_luts.h"
 #include "kris_anims.h"
+#include "noelle_anims.h"
 #include "monster_anims.h"
 
 const unsigned char* const * const characterWalkAnims[]={
-    krisWalkAnims,
+    noelleWalkAnims
+   // krisWalkAnims,
+   // noelleWalkAnims,
 };
 
 const unsigned char* const * const characterStrikeAnims[]={
@@ -22,6 +25,7 @@ const unsigned char* const * const characterStrikeAnims[]={
 
 const unsigned char* const * const characterHurtAnims[]={
     krisHurtAnims,
+    noelleHurtAnims
 };
 
 CODE_BANK(ACTOR_LOGIC_BANK);

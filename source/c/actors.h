@@ -16,12 +16,12 @@ enum Substate
   S_DIE
 };
 
-enum CharacterType
+enum CharacterType // in order of appearance...
 {
   CH_KRIS,
+  CH_NOELLE,
   CH_SUSIE,
   CH_RALSEI,
-  CH_NOELLE
 };
 
 
