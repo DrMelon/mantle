@@ -314,6 +314,15 @@ void main(void) {
                   pal_col(0, 0x0F);
                 }
             }
+            else if(currentEnvironment == E_ICEPALACE)
+            {
+              // if noelle isn't spawned yet...
+              // in room 16 of the ice palace, spawn noelle and then adjust the exits of the room so that the "back side" of the palace is the next part to traverse
+              // in room xyz, make sure to connect to the looping maze
+              // if we entered the looping maze, we need to track the directions the player took (noelle code needed for this too in actors.c)
+              // check for looping maze exit and connect to exit in final stage, or begin loop again
+
+            }
             // Check screen transition direction and move Kris in that direction until threshold is reached
             if(roomSwitchDir == 0)
             {

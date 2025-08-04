@@ -11,12 +11,13 @@
 #include "jump_luts.h"
 #include "kris_anims.h"
 #include "noelle_anims.h"
+#include "susie_anims.h"
 #include "monster_anims.h"
 
 const unsigned char* const * const characterWalkAnims[]={
-    noelleWalkAnims
-   // krisWalkAnims,
-   // noelleWalkAnims,
+   susieWalkAnims,
+   krisWalkAnims,
+   noelleWalkAnims,
 };
 
 const unsigned char* const * const characterStrikeAnims[]={
