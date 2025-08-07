@@ -108,6 +108,7 @@ void load_environment(enum Environment env)
        playerExp = 0;
        kris.xpos = 128;
        kris.ypos = 128;
+       narrative_flag_clr(NARFLAG_FOUND_NOELLE);
     }
     else if(env == E_CITY)
     {

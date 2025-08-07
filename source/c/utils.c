@@ -83,3 +83,12 @@ void end_theatric()
     theatricStage = 0;
     theatricActive = 0;
 }
+
+void reset_follow_pos()
+{
+    for(i2 = 0; i2 < 64; i2+=2)
+    {
+        followPositions[i2] = kris.xpos;
+        followPositions[i2+1] = kris.ypos;
+    }
+}

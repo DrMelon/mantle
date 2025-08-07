@@ -23,4 +23,7 @@ extern void mark_dead(unsigned char monsterid);
 extern void start_theatric(unsigned char theatricId);
 extern void end_theatric();
 
+// follower logic
+extern void reset_follow_pos();
+
 #endif

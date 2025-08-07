@@ -32,177 +32,195 @@ const unsigned char* const * const characterHurtAnims[]={
 };
 
 CODE_BANK(ACTOR_LOGIC_BANK);
-void update_character(WalkingCharacter* chara)
+void update_kris()
 {
     JumpArcState* jump_arc;
     unsigned char control_override = 0;
-    switch (chara->substate)
+    unsigned char did_move = 0;
+    switch (kris.substate)
     {
         case S_NORMAL:
         {
-            int did_walk = 0;
+            unsigned char did_walk = 0;
 
-            if(chara->chartype == CH_KRIS)
+            // Do projectile and monster damage checks
+            if(monsterAggression > 0 && framecount % 2 == 0)
             {
-                // Do projectile and monster damage checks
-                if(monsterAggression > 0 && framecount % 2 == 0)
+                for(i = 0; i < spawnedMonsters; i++)
                 {
-                    for(i = 0; i < spawnedMonsters; i++)
+                    if(monsterList[i].substate == S_NORMAL || monsterList[i].substate == S_JUMPING)
                     {
-                        if(monsterList[i].substate == S_NORMAL || monsterList[i].substate == S_JUMPING)
+                        if(point_in_rect(monsterList[i].xpos + 8, monsterList[i].ypos + 8, kris.xpos+2, kris.ypos+2, kris.xpos+14, kris.ypos+14))
                         {
-                            if(point_in_rect(monsterList[i].xpos + 8, monsterList[i].ypos + 8, chara->xpos+2, chara->ypos+2, chara->xpos+14, chara->ypos+14))
-                            {
-                                get_hurt(chara);
-                                break;
-                            }
-                        }
-                    }
-                    for(i = 0; i < spawnedProjectiles; i++)
-                    {
-                        if(projList[i].projtype != P_ICEMAGIC && projList[i].projtype != P_BURST)
-                        {
-                            if(point_in_rect(FP_WHOLE(projList[i].xpos) + 4, FP_WHOLE(projList[i].ypos) + 4, chara->xpos+4, chara->ypos+4, chara->xpos+12, chara->ypos+12))
-                            {
-                                get_hurt(chara);
-                                break;
-                            }
+                            get_hurt();
+                            break;
                         }
                     }
                 }
-
-                if(theatricActive == 1) // if certain theatrics are on, don't take input.
+                for(i = 0; i < spawnedProjectiles; i++)
                 {
-                    if(theatricIndex == TH_GETSWORD || theatricIndex == TH_GETICEKEY)
+                    if(projList[i].projtype != P_ICEMAGIC && projList[i].projtype != P_BURST)
                     {
-                        control_override = 1;
+                        if(point_in_rect(FP_WHOLE(projList[i].xpos) + 4, FP_WHOLE(projList[i].ypos) + 4, kris.xpos+4, kris.ypos+4, kris.xpos+12, kris.ypos+12))
+                        {
+                            get_hurt();
+                            break;
+                        }
                     }
                 }
-                if(control_override == 0)
+            }
+
+            if(theatricActive == 1) // if certain theatrics are on, don't take input.
+            {
+                if(theatricIndex == TH_GETSWORD || theatricIndex == TH_GETICEKEY)
                 {
-                    if(pad_trig&PAD_A)
+                    control_override = 1;
+                }
+            }
+            if(control_override == 0)
+            {
+                if(pad_trig&PAD_A)
+                {
+                    if(playerLevel > 0)
                     {
-                        if(playerLevel > 0)
+                        kris.substate = S_ATTACK;
+                        kris.animframe = 0;
+                    }
+
+                    break;
+                }
+                if(pad&PAD_DOWN)
+                {
+                    kris.direction = 0;
+                    if(kris.raft == NULL)
+                    {
+                        if(solidity_check_nocactus(kris.xpos, kris.ypos + 1))
                         {
-                            chara->substate = S_ATTACK;
-                            chara->animframe = 0;
+                            kris.ypos++;
+                            did_move = 1;
                         }
 
-                        break;
-                    }
-                    if(pad&PAD_DOWN)
-                    {
-                        chara->direction = 0;
-                        if(chara->raft == NULL)
+                        if(!cactus_check(kris.xpos, kris.ypos))
                         {
-                            if(solidity_check_nocactus(chara->xpos, chara->ypos + 1)) chara->ypos++;
-
-                            if(!cactus_check(chara->xpos, chara->ypos))
-                            {
-                                get_hurt(chara);
-                                chara->ypos -= 4;
-                            }
-                        }
-                        else // rafting!
-                        {
-                            if(swim_check(chara->xpos, chara->ypos + 1)) chara->ypos++;
-                        }
-                        did_walk = 1;
-                        if(chara->ypos > 160)
-                        {
-                            roomSwitchDir = 0;
-                            banked_call(ROOM_LOGIC_BANK, switch_to_room);
+                            get_hurt();
+                            kris.ypos -= 4;
                         }
                     }
-                    if(pad&PAD_RIGHT)
+                    else // rafting!
                     {
-                        chara->direction = 1;
-                        if(chara->raft == NULL)
+                        if(swim_check(kris.xpos, kris.ypos + 1)) kris.ypos++;
+                    }
+                    did_walk = 1;
+                    if(kris.ypos > 160)
+                    {
+                        roomSwitchDir = 0;
+                        banked_call(ROOM_LOGIC_BANK, switch_to_room);
+                    }
+                }
+                if(pad&PAD_RIGHT)
+                {
+                    kris.direction = 1;
+                    if(kris.raft == NULL)
+                    {
+                        if(solidity_check_nocactus(kris.xpos + 1, kris.ypos))
                         {
-                            if(solidity_check_nocactus(chara->xpos + 1, chara->ypos)) chara->xpos++;
-                            if(!cactus_check(chara->xpos, chara->ypos))
-                            {
-                                get_hurt(chara);
-                                chara->xpos -= 4;
-                            }
+                            kris.xpos++;
+                            did_move = 1;
                         }
-                        else
+                        if(!cactus_check(kris.xpos, kris.ypos))
                         {
-                            if(swim_check(chara->xpos + 1, chara->ypos)) chara->xpos++;
-                        }
-                        did_walk = 1;
-                        if(chara->xpos > 208)
-                        {
-                            roomSwitchDir = 1;
-                            banked_call(ROOM_LOGIC_BANK, switch_to_room);
+                            get_hurt();
+                            kris.xpos -= 4;
                         }
                     }
-                    if(pad&PAD_UP)
+                    else
                     {
-                        chara->direction = 2;
-                        if(chara->raft == NULL)
+                        if(swim_check(kris.xpos + 1, kris.ypos)) kris.xpos++;
+                    }
+                    did_walk = 1;
+                    if(kris.xpos > 208)
+                    {
+                        roomSwitchDir = 1;
+                        banked_call(ROOM_LOGIC_BANK, switch_to_room);
+                    }
+                }
+                if(pad&PAD_UP)
+                {
+                    kris.direction = 2;
+                    if(kris.raft == NULL)
+                    {
+                        if(solidity_check_nocactus(kris.xpos, kris.ypos - 1))
                         {
-                            if(solidity_check_nocactus(chara->xpos, chara->ypos - 1)) chara->ypos--;
-                            if(!cactus_check(chara->xpos, chara->ypos))
-                            {
-                                get_hurt(chara);
-                                chara->ypos += 4;
-                            }
+                            kris.ypos--;
+                            did_move = 1;
                         }
-                        else
+                        if(!cactus_check(kris.xpos, kris.ypos))
                         {
-                            if(swim_check(chara->xpos, chara->ypos - 1)) chara->ypos--;
-                        }
-                        did_walk = 1;
-                        if(chara->ypos < 48)
-                        {
-                            roomSwitchDir = 2;
-                            banked_call(ROOM_LOGIC_BANK, switch_to_room);
+                            get_hurt();
+                            kris.ypos += 4;
                         }
                     }
-                    if(pad&PAD_LEFT)
+                    else
                     {
-                        chara->direction = 3;
-                        if(chara->raft == NULL)
+                        if(swim_check(kris.xpos, kris.ypos - 1))
                         {
-                            if(solidity_check_nocactus(chara->xpos - 1, chara->ypos)) chara->xpos--;
-                            if(!cactus_check(chara->xpos, chara->ypos))
-                            {
-                                get_hurt(chara);
-                                chara->xpos += 4;
-                            }
+                            kris.ypos--;
+                            did_move = 1;
                         }
-                        else
+                    }
+                    did_walk = 1;
+                    if(kris.ypos < 48)
+                    {
+                        roomSwitchDir = 2;
+                        banked_call(ROOM_LOGIC_BANK, switch_to_room);
+                    }
+                }
+                if(pad&PAD_LEFT)
+                {
+                    kris.direction = 3;
+                    if(kris.raft == NULL)
+                    {
+                        if(solidity_check_nocactus(kris.xpos - 1, kris.ypos))
                         {
-                        if(swim_check(chara->xpos - 1, chara->ypos)) chara->xpos--;
+                            kris.xpos--;
+                            did_move = 1;
                         }
-                        did_walk = 1;
-                        if(chara->xpos < 32)
+                        if(!cactus_check(kris.xpos, kris.ypos))
                         {
-                            roomSwitchDir = 3;
-                            banked_call(ROOM_LOGIC_BANK, switch_to_room);
+                            get_hurt();
+                            kris.xpos += 4;
                         }
+                    }
+                    else
+                    {
+                    if(swim_check(kris.xpos - 1, kris.ypos)) kris.xpos--;
+                    }
+                    did_walk = 1;
+                    if(kris.xpos < 32)
+                    {
+                        roomSwitchDir = 3;
+                        banked_call(ROOM_LOGIC_BANK, switch_to_room);
                     }
                 }
             }
             if(did_walk && framecount%16 == 0)
             {
-                if(chara->raft == NULL)
+                if(kris.raft == NULL)
                 {
-                    chara->animframe++;
+                    kris.animframe++;
                 }
             }
             if(did_walk && spawnedTeles != 0)
             {
                 for(i2 = 0; i2 < spawnedTeles; i2++)
                 {
-                    if(chara->xpos+7 >> 4 == teleList[i2].tx+2 && chara->ypos+7 >> 4 == teleList[i2].ty+3)
+                    if(kris.xpos+7 >> 4 == teleList[i2].tx+2 && kris.ypos+7 >> 4 == teleList[i2].ty+3)
                     {
                         // Remove raft, if any
-                        if(chara->raft != NULL)
+                        if(kris.raft != NULL)
                         {
-                            chara->raft->assignedchar = NULL;
-                            chara->raft = NULL;
+                            kris.raft->assignedchar = NULL;
+                            kris.raft = NULL;
                         }
 
                         // Do teleport
@@ -218,41 +236,41 @@ void update_character(WalkingCharacter* chara)
             if(did_walk && spawnedRafts != 0)
             {
                 // TODO: attempt to board a raft if we're not on one and one is nearby
-                if(chara->raft == NULL)
+                if(kris.raft == NULL)
                 {
                     for(i2 = 0; i2 < spawnedRafts; i2++)
                     {
                         if(raftList[i2].currentRoom != currentRoom) continue; // don't hop on rafts that aren't in the same room, dummy
-                        if(chara->direction == 0)
+                        if(kris.direction == 0)
                         {
-                            if(point_in_rect(chara->xpos+7, chara->ypos+18, raftList[i2].xpos, raftList[i2].ypos, raftList[i2].xpos+16, raftList[i2].ypos+16))
+                            if(point_in_rect(kris.xpos+7, kris.ypos+18, raftList[i2].xpos, raftList[i2].ypos, raftList[i2].xpos+16, raftList[i2].ypos+16))
                             {
                                 // attempt to board this raft
-                                board_raft(chara, &raftList[i2]);
+                                board_raft(&kris, &raftList[i2]);
                             }
                         }
-                        else if(chara->direction == 1)
+                        else if(kris.direction == 1)
                         {
-                            if(point_in_rect(chara->xpos+18, chara->ypos+7, raftList[i2].xpos, raftList[i2].ypos, raftList[i2].xpos+16, raftList[i2].ypos+16))
+                            if(point_in_rect(kris.xpos+18, kris.ypos+7, raftList[i2].xpos, raftList[i2].ypos, raftList[i2].xpos+16, raftList[i2].ypos+16))
                             {
                                 // attempt to board this raft
-                                board_raft(chara, &raftList[i2]);
+                                board_raft(&kris, &raftList[i2]);
                             }
                         }
-                        else if(chara->direction == 2)
+                        else if(kris.direction == 2)
                         {
-                            if(point_in_rect(chara->xpos+7, chara->ypos-2, raftList[i2].xpos, raftList[i2].ypos, raftList[i2].xpos+16, raftList[i2].ypos+16))
+                            if(point_in_rect(kris.xpos+7, kris.ypos-2, raftList[i2].xpos, raftList[i2].ypos, raftList[i2].xpos+16, raftList[i2].ypos+16))
                             {
                                 // attempt to board this raft
-                                board_raft(chara, &raftList[i2]);
+                                board_raft(&kris, &raftList[i2]);
                             }
                         }
-                        else if(chara->direction == 3)
+                        else if(kris.direction == 3)
                         {
-                            if(point_in_rect(chara->xpos-2, chara->ypos+7, raftList[i2].xpos, raftList[i2].ypos, raftList[i2].xpos+16, raftList[i2].ypos+16))
+                            if(point_in_rect(kris.xpos-2, kris.ypos+7, raftList[i2].xpos, raftList[i2].ypos, raftList[i2].xpos+16, raftList[i2].ypos+16))
                             {
                                 // attempt to board this raft
-                                board_raft(chara, &raftList[i2]);
+                                board_raft(&kris, &raftList[i2]);
                             }
                         }
                     }
@@ -261,40 +279,40 @@ void update_character(WalkingCharacter* chara)
                 // TODO: attempt to leave a raft if we *are* on one and the tile one over from us is a dock
                 else
                 {
-                    if(chara->direction == 0)
+                    if(kris.direction == 0)
                     {
-                        if(bridge_check(chara->xpos+7, chara->ypos+18))
+                        if(bridge_check(kris.xpos+7, kris.ypos+18))
                         {
-                            chara->xpos = ((chara->xpos+7) >> 4) << 4;
-                            chara->ypos = ((chara->ypos+7) >> 4) << 4;
-                            leave_raft(chara, chara->raft, (chara->xpos) >> 4, ((chara->ypos) >> 4) + 1);
+                            kris.xpos = ((kris.xpos+7) >> 4) << 4;
+                            kris.ypos = ((kris.ypos+7) >> 4) << 4;
+                            leave_raft(&kris, kris.raft, (kris.xpos) >> 4, ((kris.ypos) >> 4) + 1);
                         }
                     }
-                    else if(chara->direction == 1)
+                    else if(kris.direction == 1)
                     {
-                        if(bridge_check(chara->xpos+18, chara->ypos+7))
+                        if(bridge_check(kris.xpos+18, kris.ypos+7))
                         {
-                            chara->xpos = ((chara->xpos+7) >> 4) << 4;
-                            chara->ypos = ((chara->ypos+7) >> 4) << 4;
-                            leave_raft(chara, chara->raft, ((chara->xpos) >> 4)+1, (chara->ypos) >> 4);
+                            kris.xpos = ((kris.xpos+7) >> 4) << 4;
+                            kris.ypos = ((kris.ypos+7) >> 4) << 4;
+                            leave_raft(&kris, kris.raft, ((kris.xpos) >> 4)+1, (kris.ypos) >> 4);
                         }
                     }
-                    else if(chara->direction == 2)
+                    else if(kris.direction == 2)
                     {
-                        if(bridge_check(chara->xpos+7, chara->ypos-2))
+                        if(bridge_check(kris.xpos+7, kris.ypos-2))
                         {
-                            chara->xpos = ((chara->xpos+7) >> 4) << 4;
-                            chara->ypos = ((chara->ypos+7) >> 4) << 4;
-                            leave_raft(chara, chara->raft, (chara->xpos) >> 4, ((chara->ypos) >> 4) - 1);
+                            kris.xpos = ((kris.xpos+7) >> 4) << 4;
+                            kris.ypos = ((kris.ypos+7) >> 4) << 4;
+                            leave_raft(&kris, kris.raft, (kris.xpos) >> 4, ((kris.ypos) >> 4) - 1);
                         }
                     }
-                    else if(chara->direction == 3)
+                    else if(kris.direction == 3)
                     {
-                        if(bridge_check(chara->xpos-2, chara->ypos+7))
+                        if(bridge_check(kris.xpos-2, kris.ypos+7))
                         {
-                            chara->xpos = ((chara->xpos+7) >> 4) << 4;
-                            chara->ypos = ((chara->ypos+7) >> 4) << 4;
-                            leave_raft(chara, chara->raft, ((chara->xpos) >> 4)-1, (chara->ypos) >> 4);
+                            kris.xpos = ((kris.xpos+7) >> 4) << 4;
+                            kris.ypos = ((kris.ypos+7) >> 4) << 4;
+                            leave_raft(&kris, kris.raft, ((kris.xpos) >> 4)-1, (kris.ypos) >> 4);
                         }
                     }
                 }
@@ -305,21 +323,21 @@ void update_character(WalkingCharacter* chara)
         {
             if(framecount%6 == 0)
             {
-                chara->animframe++;
+                kris.animframe++;
                 oam_clear();
             }
-            if(chara->animframe == 1 && framecount%6 == 0)
+            if(kris.animframe == 1 && framecount%6 == 0)
             {
                 // Attack frame - do checks against monsters, smashable tiles, etc
 
                 // Check for smashable tiles (palm trees, ferns, cacti) and monsters at sword's location
                 // (just check up, down, left, right tile of kris current center location?)
-                x = (chara->xpos + 7) >> 4;
-                y = (chara->ypos + 7) >> 4;
-                if(chara->direction == 0) y++;
-                else if(chara->direction == 1) x++;
-                else if(chara->direction == 2) y--;
-                else if(chara->direction == 3) x--;
+                x = (kris.xpos + 7) >> 4;
+                y = (kris.ypos + 7) >> 4;
+                if(kris.direction == 0) y++;
+                else if(kris.direction == 1) x++;
+                else if(kris.direction == 2) y--;
+                else if(kris.direction == 3) x--;
 
                 // Tile check (adjust pos)
                 x -= 2;
@@ -384,17 +402,24 @@ void update_character(WalkingCharacter* chara)
                         start_theatric(TH_USEICEKEY);
                     }
                 }
+                else if(currentEnvironment == E_ICEPALACE)
+                {
+                    if(i2 == TILE_IP_TREE && playerLevel >= 4)
+                    {
+                        set_map_tile_in_room(x, y, TILE_IP_FLOOR);
+                    }
+                }
 
                 // Better sword check for monsters!
-                sword_check(chara);
+                sword_check();
 
                 // TODO: Sword swing SFX, should play on button press
                 //sfx_play(1, 0);
             }
-            if(chara->animframe > 2)
+            if(kris.animframe > 2)
             {
-                chara->animframe = 0;
-                chara->substate = S_NORMAL;
+                kris.animframe = 0;
+                kris.substate = S_NORMAL;
             }
             break;
         }
@@ -404,61 +429,62 @@ void update_character(WalkingCharacter* chara)
             // 2. Knockback movement needs to check tile solidity
             if(framecount % 3 == 0)
             {
-                chara->animframe++;
+                kris.animframe++;
 
-                if(chara->chartype == CH_KRIS)
+                if(kris.direction == 2)
                 {
-                    if(chara->direction == 2)
+                    if(solidity_check(kris.xpos, kris.ypos + 2))
                     {
-                        if(solidity_check(chara->xpos, chara->ypos + 2)) chara->ypos+=2;
+                        kris.ypos+=2;
+                        did_move = 1;
                     }
-                    if(chara->direction == 3)
+                }
+                if(kris.direction == 3)
+                {
+                    if(solidity_check(kris.xpos + 2, kris.ypos))
                     {
-                        if(solidity_check(chara->xpos + 2, chara->ypos)) chara->xpos+=2;
+                        kris.xpos+=2;
+                        did_move = 1;
                     }
-                    if(chara->direction == 0)
+                }
+                if(kris.direction == 0)
+                {
+                    if(solidity_check(kris.xpos, kris.ypos - 2))
                     {
-                        if(solidity_check(chara->xpos, chara->ypos - 2)) chara->ypos-=2;
+                        kris.ypos-=2;
+                        did_move = 1;
                     }
-                    if(chara->direction == 1)
+                }
+                if(kris.direction == 1)
+                {
+                    if(solidity_check(kris.xpos - 2, kris.ypos))
                     {
-                        if(solidity_check(chara->xpos - 2, chara->ypos)) chara->xpos-=2;
+                        kris.xpos-=2;
+                        did_move = 1;
                     }
                 }
             }
 
             // After anim over, check death status.
-            if(chara->animframe >= 6)
+            if(kris.animframe >= 6)
             {
                 // It's die time!
-                if(chara->chartype == CH_KRIS)
+                if(playerHp < 1)
                 {
-                    // TODO: Game death sequence, then restart from last environment/flag point.
-                    if(playerHp < 1)
-                    {
-                        // play a death sound
-                        oam_clear();
-                        chara->animframe = 0;
-                        chara->substate = S_DIE;
-                        currentState = GS_DEATH;
-                        pal_col(0, 0x0F); // black BG
-                        ppu_off();
-                        ppu_on_spr(); // sprites only
-                        music_stop();
-                        framecount = 0;
-                    }
-                    else
-                    {
-                        chara->substate = S_NORMAL;
-                    }
+                    // play a death sound
+                    oam_clear();
+                    kris.animframe = 0;
+                    kris.substate = S_DIE;
+                    currentState = GS_DEATH;
+                    pal_col(0, 0x0F); // black BG
+                    ppu_off();
+                    ppu_on_spr(); // sprites only
+                    music_stop();
+                    framecount = 0;
                 }
                 else
                 {
-                    // Susie/Ralsei must shrimply disappear... and award a lot of exp.
-                    if(playerLevel < 3)
-                        playerLevel++;
-                    // Play level up jingle
-                    // TODO: Disappear susie/ralsei
+                    kris.substate = S_NORMAL;
                 }
             }
             break;
@@ -466,58 +492,66 @@ void update_character(WalkingCharacter* chara)
         case S_JUMPING:
         {
             // follow jump arc
-            jump_arc = &jumpArcList[chara->arcid];
+            jump_arc = &jumpArcList[kris.arcid];
             // Evaluate the jump arc for the current anim frame.
             // get jump x coords and jump y coords for current frame
-            if(chara->animframe < 30)
+            if(kris.animframe < 30)
             {
                 // need to access bank 2
-                x = chara->animframe;
+                x = kris.animframe;
                 y = jump_arc->jump_arc_type;
                 banked_call(JUMP_LUT_BANK, jumpLutXLookup);
-                chara->xpos = x + jump_arc->start_x - 127;
-                x = chara->animframe;
+                kris.xpos = x + jump_arc->start_x - 127;
+                x = kris.animframe;
                 banked_call(JUMP_LUT_BANK, jumpLutYLookup);
-                chara->ypos = x + jump_arc->start_y - 127;
-                chara->animframe++;
+                kris.ypos = x + jump_arc->start_y - 127;
+                kris.animframe++;
             }
             else
             {
-                jumpArcList[chara->arcid] = jumpArcList[jumpArcs];
-                chara->arcid = 255;
+                jumpArcList[kris.arcid] = jumpArcList[jumpArcs];
+                kris.arcid = 255;
                 jumpArcs--;
-                chara->substate = S_NORMAL;
-                chara->xpos = ((chara->xpos+7) >> 4) << 4;
-                chara->ypos = ((chara->ypos+7) >> 4) << 4;
+                kris.substate = S_NORMAL;
+                kris.xpos = ((kris.xpos+7) >> 4) << 4;
+                kris.ypos = ((kris.ypos+7) >> 4) << 4;
 
             }
 
             break;
         }
     }
+    // If any move was made this frame, put it in the position buffer. Followers use this buffer to move themselves around.
+    if(did_move)
+    {
+        // store last move pos in ring buffer
+        followPositions[lastFollowPosIdx] = kris.xpos;
+        followPositions[lastFollowPosIdx+1] = kris.ypos;
+        lastFollowPosIdx = (lastFollowPosIdx + 2) % 64;
+    }
 }
 
-void sword_check(WalkingCharacter* chara)
+void sword_check()
 {
     char offsetx = 0;
     char offsety = 0;
     // Check for monsters along the sword's length, based on its direction.
-    if(chara->direction == 0)
+    if(kris.direction == 0)
     {
         offsetx = 4;
         offsety = 24;
     }
-    else if(chara->direction == 1)
+    else if(kris.direction == 1)
     {
         offsetx = 24;
         offsety = 12;
     }
-    else if(chara->direction == 2)
+    else if(kris.direction == 2)
     {
         offsetx = 12;
         offsety = -12;
     }
-    else if(chara->direction == 3)
+    else if(kris.direction == 3)
     {
         offsetx = -12;
         offsety = 12;
@@ -526,7 +560,7 @@ void sword_check(WalkingCharacter* chara)
     {
          x = monsterList[i].xpos;
          y = monsterList[i].ypos;
-         if(point_in_rect(chara->xpos + offsetx, chara->ypos + offsety, x, y, x+16, y+16))
+         if(point_in_rect(kris.xpos + offsetx, kris.ypos + offsety, x, y, x+16, y+16))
          {
              // TODO: Split this level check and substate check so that we can play a *dink* sound on strong monsters
              if(monsterList[i].level <= playerLevel && (monsterList[i].substate == S_NORMAL || monsterList[i].substate == S_WINDUP || monsterList[i].substate == S_JUMPING))
@@ -548,23 +582,63 @@ void sword_check(WalkingCharacter* chara)
     }
 }
 
-void get_hurt(WalkingCharacter *chara)
+void get_hurt()
 {
-    if(chara->substate == S_NORMAL)
+    if(kris.substate == S_NORMAL)
     {
-        chara->substate = S_HURT;
-        if(chara->chartype == CH_KRIS)
-            playerHp--;
-        chara->animframe = 0;
+        kris.substate = S_HURT;
+        playerHp--;
+        kris.animframe = 0;
         hudDirty = 1;
+    }
+}
+
+void update_followers()
+{
+    if(currentEnvironment == E_ICEPALACE && narrative_flag_get(NARFLAG_FOUND_NOELLE))
+    {
+        if(followerA.substate == S_NORMAL)
+        {
+            if(currentRoom != 7) // Noelle is in a "dormant" state in her starting room. She can be attacked, but will not move on her own.
+            {
+                int dx;
+                int dy;
+                // Noelle follows to the one-tile-away distance
+                dx = (int)followPositions[(lastFollowPosIdx+16)%64] - (int)followerA.xpos;
+                dy = (int)followPositions[(lastFollowPosIdx+17)%64] - (int)followerA.ypos;
+
+                if(abs(dx) > 0 || abs(dy) > 0)
+                {
+                    if(framecount % 4 == 0) followerA.animframe++;
+
+                    followerA.xpos += dx;
+                    followerA.ypos += dy;
+                    if(dy > 0)
+                    {
+                        followerA.direction = 0;
+                    }
+                    else if(dy < 0)
+                    {
+                        followerA.direction = 2;
+                    }
+                    if(dx > 0)
+                    {
+                        followerA.direction = 1;
+                    }
+                    else if(dx < 0)
+                    {
+                        followerA.direction = 3;
+                    }
+                }
+            }
+        }
     }
 }
 
 CODE_BANK_POP();
 
 CODE_BANK(KRIS_ANIMS_BANK);
-
-void draw_character(WalkingCharacter* chara)
+void draw_kris()
 {
     unsigned char sprite_override = 0;
     if(theatricActive == 1)
@@ -572,12 +646,12 @@ void draw_character(WalkingCharacter* chara)
         // theatric is on, we might want to override the sprite
         if(theatricIndex == TH_GETSWORD)
         {
-            spr = oam_meta_spr(chara->xpos, chara->ypos, spr, krisHold);
+            spr = oam_meta_spr(kris.xpos, kris.ypos, spr, krisHold);
             sprite_override = 1;
         }
         else if(theatricIndex == TH_GETICEKEY)
         {
-            spr = oam_meta_spr(chara->xpos, chara->ypos, spr, krisHoldIceKey);
+            spr = oam_meta_spr(kris.xpos, kris.ypos, spr, krisHoldIceKey);
             sprite_override = 1;
         }
     }
@@ -585,28 +659,40 @@ void draw_character(WalkingCharacter* chara)
     if(sprite_override == 0)
     {
         // Character is walking, play walk anim for facing dir
-        if(chara->substate == S_NORMAL)
+        if(kris.substate == S_NORMAL)
         {
-            spr = oam_meta_spr(chara->xpos, chara->ypos, spr, characterWalkAnims[chara->chartype][chara->animframe%2 + (chara->direction*2)]);
+            spr = oam_meta_spr(kris.xpos, kris.ypos, spr, characterWalkAnims[CH_KRIS][kris.animframe%2 + (kris.direction*2)]);
         }
         // Character is attacking, play attack anim for facing dir (Kris, Noelle only)
-        else if(chara->substate == S_ATTACK)
+        else if(kris.substate == S_ATTACK)
         {
-            spr = oam_meta_spr(chara->xpos, chara->ypos, spr, characterStrikeAnims[chara->chartype][chara->animframe + (chara->direction*3)]);
+            spr = oam_meta_spr(kris.xpos, kris.ypos, spr, characterStrikeAnims[CH_KRIS][kris.animframe + (kris.direction*3)]);
         }
         // Character is hurt, play hurt anim for facing dir
-        else if(chara->substate == S_HURT)
+        else if(kris.substate == S_HURT)
         {
-            spr = oam_meta_spr(chara->xpos, chara->ypos, spr, characterHurtAnims[chara->chartype][(chara->animframe%2) + (chara->direction*2)]);
+            spr = oam_meta_spr(kris.xpos, kris.ypos, spr, characterHurtAnims[CH_KRIS][(kris.animframe%2) + (kris.direction*2)]);
         }
-        else if(chara->substate == S_DIE)
+        else if(kris.substate == S_DIE)
         {
-            spr = oam_meta_spr(chara->xpos, chara->ypos, spr, krisDieAnims[(chara->animframe%2)]);
+            spr = oam_meta_spr(kris.xpos, kris.ypos, spr, krisDieAnims[(kris.animframe%2)]);
         }
-        else if(chara->substate == S_JUMPING)
+        else if(kris.substate == S_JUMPING)
         {
-            spr = oam_meta_spr(chara->xpos, chara->ypos, spr, characterWalkAnims[chara->chartype][0 + (chara->direction*2)]);
+            spr = oam_meta_spr(kris.xpos, kris.ypos, spr, characterWalkAnims[CH_KRIS][0 + (kris.direction*2)]);
         }
     }
 }
+
+void draw_followers()
+{
+    if(currentEnvironment == E_ICEPALACE && narrative_flag_get(NARFLAG_FOUND_NOELLE))
+    {
+        if(followerA.substate == S_NORMAL)
+        {
+            spr = oam_meta_spr(followerA.xpos, followerA.ypos, spr, characterWalkAnims[CH_NOELLE][followerA.animframe%2 + (followerA.direction*2)]);
+        }
+    }
+}
+
 CODE_BANK_POP();

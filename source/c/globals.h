@@ -61,9 +61,12 @@ enum Theatric
 #define SFX_ENTER_DUNGEON 5
 
 // Narrative flags
-#define NARFLAG_MET_TWISTED_EARLY 0b00000001
-#define NARFLAG_KILLED_SONGCAT 0b00000010
-#define NARFLAG_FOUGHT_TWISTED_ONCE 0b00000100
+#define NARFLAG_MET_TWISTED_EARLY      0b00000001
+#define NARFLAG_KILLED_SONGCAT         0b00000010
+#define NARFLAG_FOUGHT_TWISTED_ONCE    0b00000100
+#define NARFLAG_FOUND_NOELLE           0b00001000
+#define NARFLAG_KILLED_SUSIE           0b00010000
+#define NARFLAG_KILLED_RALSEI          0b00100000
 
 //
 // Global Variables (zeropage)
@@ -121,8 +124,10 @@ ZEROPAGE_EXTERN(unsigned char, buttonsPressed);
 #pragma bss-name(pop)
 
 // For city & ice palace
-extern WalkingCharacter followerA;
-extern WalkingCharacter followerB;
+extern Follower followerA;
+extern Follower followerB;
+extern unsigned char followPositions[];
+extern unsigned char lastFollowPosIdx;
 
 // Fast-access room pointers
 extern const unsigned char* roomPtr;

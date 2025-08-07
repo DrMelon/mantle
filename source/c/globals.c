@@ -52,8 +52,10 @@ ZEROPAGE_DEF(unsigned char, buttonsPressed);
     Twisted twisted;
 #pragma bss-name(pop)
 
-WalkingCharacter followerA;
-WalkingCharacter followerB;
+Follower followerA;
+Follower followerB;
+unsigned char followPositions[64];
+unsigned char lastFollowPosIdx = 0;
 
 const unsigned char* roomPtr = 0;
 const unsigned char* metatilesPtr = 0;

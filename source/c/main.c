@@ -44,11 +44,9 @@ void main(void) {
     soundTestNum = 0;
     hudDirty = 1;
 
-
     // Init Kris
     kris.xpos = 128;
     kris.ypos = 128;
-    kris.chartype = CH_KRIS;
     kris.substate = S_NORMAL;
     kris.direction = 0;
     kris.animframe = 0;
@@ -194,7 +192,8 @@ void main(void) {
 
           // Update characters
           bank_push(ACTOR_LOGIC_BANK);
-          update_character(&kris);
+          update_kris();
+          update_followers();
           for(i = 0; i < spawnedRafts; i++)
           {
             update_raft(&raftList[i]);
@@ -236,7 +235,8 @@ void main(void) {
 
           // Draw characters
           bank_push(KRIS_ANIMS_BANK);
-          draw_character(&kris);
+          draw_kris();
+          draw_followers();
           bank_pop();
 
           bank_push(ACTOR_LOGIC_BANK);
@@ -317,7 +317,22 @@ void main(void) {
             else if(currentEnvironment == E_ICEPALACE)
             {
               // if noelle isn't spawned yet...
-              // in room 16 of the ice palace, spawn noelle and then adjust the exits of the room so that the "back side" of the palace is the next part to traverse
+              if(currentRoom == 7 && narrative_flag_get(NARFLAG_FOUND_NOELLE) == 0)
+              {
+                // ... spawn her and adjust room exit to travel to the "back side" of the palace
+                narrative_flag_set(NARFLAG_FOUND_NOELLE);
+                followerA.chartype = CH_NOELLE;
+                followerA.direction = 0; //facing down
+                followerA.substate = S_NORMAL;
+                followerA.animframe = 0;
+                // spawns at right side
+                followerA.xpos = 120+64;
+                followerA.ypos = 120;
+
+                unpackedRoom[3] = 13; // switch travel direction
+
+              }
+
               // in room xyz, make sure to connect to the looping maze
               // if we entered the looping maze, we need to track the directions the player took (noelle code needed for this too in actors.c)
               // check for looping maze exit and connect to exit in final stage, or begin loop again
@@ -335,6 +350,7 @@ void main(void) {
                     currentState = GS_GAMEPLAY;
                     set_map_tile_on_character(&kris, 0);
                     lock_room_doors();
+                    reset_follow_pos();
                 }
             }
             if(roomSwitchDir == 1)
@@ -347,6 +363,7 @@ void main(void) {
                     currentState = GS_GAMEPLAY;
                     set_map_tile_on_character(&kris, 0);
                     lock_room_doors();
+                    reset_follow_pos();
                 }
             }
             if(roomSwitchDir == 2)
@@ -359,6 +376,7 @@ void main(void) {
                     currentState = GS_GAMEPLAY;
                     set_map_tile_on_character(&kris, 0);
                     lock_room_doors();
+                    reset_follow_pos();
                 }
             }
             if(roomSwitchDir == 3)
@@ -371,11 +389,12 @@ void main(void) {
                     currentState = GS_GAMEPLAY;
                     set_map_tile_on_character(&kris, 0);
                     lock_room_doors();
+                    reset_follow_pos();
                 }
             }
             // Render kris
             bank_push(KRIS_ANIMS_BANK);
-            draw_character(&kris);
+            draw_kris();
             bank_pop();
         }
         else if(currentState == GS_SCREENTRANS_TELE)
@@ -435,9 +454,6 @@ void main(void) {
           }
 
           set_vram_update(NULL);
-
-
-
           pal_col(0, 0x0F); // Black BG
           ppu_wait_nmi(); // wait till end of frame
 
@@ -461,7 +477,6 @@ void main(void) {
             }
           }
 
-
           // Load room
           bank_push(ROOM_LOGIC_BANK);
           load_room();
@@ -471,6 +486,7 @@ void main(void) {
 
           pal_col(0, envPalettes[currentEnvironment][0]);
           currentState = GS_GAMEPLAY;
+          reset_follow_pos();
 
           //entering/leaving the shop room in the desert?
           if(currentEnvironment == E_DESERT)
@@ -533,10 +549,11 @@ void main(void) {
               reload_area();
               bank_pop();
               currentState = GS_GAMEPLAY;
+              reset_follow_pos();
             }
 
             bank_push(KRIS_ANIMS_BANK);
-            draw_character(&kris);
+            draw_kris();
             bank_pop();
 
         }

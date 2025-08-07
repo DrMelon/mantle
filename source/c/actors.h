@@ -2,6 +2,7 @@
 #define __ACTORS_H
 
 typedef struct WalkingCharacter WalkingCharacter;
+typedef struct Follower Follower;
 
 #include "rafts.h"
 
@@ -34,6 +35,15 @@ struct WalkingCharacter
   unsigned char arcid; // for jump arcs getting onto/off rafts
   Raft* raft; // for raft handling
   enum Substate substate;
+};
+
+struct Follower
+{
+  unsigned char xpos;
+  unsigned char ypos;
+  unsigned char direction;
+  unsigned char animframe;
+  enum Substate substate;
   enum CharacterType chartype;
 };
 
@@ -45,10 +55,12 @@ extern void switch_to_room();
 extern void tele_to_room();
 
 extern void earn_exp();
-extern void update_character(WalkingCharacter* chara);
-extern void draw_character(WalkingCharacter* chara);
-extern void sword_check(WalkingCharacter* chara);
-extern void get_hurt(WalkingCharacter* chara);
+extern void update_kris();
+extern void draw_kris();
+extern void sword_check();
+extern void get_hurt();
+extern void update_followers();
+extern void draw_followers();
 
 
 #endif
