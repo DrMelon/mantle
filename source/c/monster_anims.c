@@ -380,6 +380,13 @@ const unsigned char catHurt1[]={
     128
 };
 
+const unsigned char iceBlockSprite[]={
+    0, 0, 0x8C, 1,
+    8, 0, 0x8D, 1,
+    0, 8, 0x9C, 1,
+    8, 8, 0x9D, 1,
+    128
+};
 
 const unsigned char* const monWalkerAnims[]={
     walkerWalk0,
@@ -461,5 +468,7 @@ const unsigned char* const catAnims[]={
     catHurt0,
     catHurt1
 };
+
+
 
 CODE_BANK_POP();

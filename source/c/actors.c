@@ -48,7 +48,54 @@ void update_kris()
             {
                 for(i = 0; i < spawnedMonsters; i++)
                 {
-                    if(monsterList[i].substate == S_NORMAL || monsterList[i].substate == S_JUMPING)
+                    // Check for ice blocks to push
+                    if(monsterList[i].montype == MON_ICEBLOCK)
+                    {
+                        if(point_in_rect(monsterList[i].xpos + 8, monsterList[i].ypos + 8, kris.xpos+2, kris.ypos+2, kris.xpos+14, kris.ypos+14))
+                        {
+                            if(monsterList[i].substate == S_NORMAL) //pushable
+                            {
+                                int dx;
+                                int dy;
+                                monsterList[i].substate = S_FLY; //tell this block to "fly"
+                                // figure out direction
+
+                                dx = (int)(monsterList[i].xpos+8) - (int)(kris.xpos+8);
+                                dy = (int)(monsterList[i].ypos+8) - (int)(kris.ypos+8);
+
+                                if(abs(dx) > abs(dy))
+                                {
+                                    if(dx < 0)
+                                    {
+                                        monsterList[i].direction = 3;
+                                        kris.xpos += 2;
+                                    }
+                                    else
+                                    {
+                                        monsterList[i].direction = 1;
+                                        kris.xpos += 2;
+                                    }
+                                }
+                                else
+                                {
+                                    if(dy < 0)
+                                    {
+                                        monsterList[i].direction = 2;
+                                        kris.ypos += 2;
+                                    }
+                                    else
+                                    {
+                                        monsterList[i].direction = 0;
+                                        kris.ypos -= 2;
+                                    }
+                                }
+                            }
+
+                            return; // can't walk past an iceblock
+                        }
+
+                    }
+                    else if(monsterList[i].substate == S_NORMAL || monsterList[i].substate == S_JUMPING)
                     {
                         if(point_in_rect(monsterList[i].xpos + 8, monsterList[i].ypos + 8, kris.xpos+2, kris.ypos+2, kris.xpos+14, kris.ypos+14))
                         {
@@ -597,7 +644,7 @@ void update_followers()
 {
     if(currentEnvironment == E_ICEPALACE && narrative_flag_get(NARFLAG_FOUND_NOELLE))
     {
-        if(followerA.substate == S_NORMAL)
+        if(followerA.substate == S_NORMAL || followerA.substate == S_ATTACK) // noelle walks even when "attacking" - the attack is really just a cooldown
         {
             if(currentRoom != 7) // Noelle is in a "dormant" state in her starting room. She can be attacked, but will not move on her own.
             {
@@ -629,6 +676,19 @@ void update_followers()
                     {
                         followerA.direction = 3;
                     }
+                }
+
+                if(pad_trig & PAD_A && followerA.substate != S_ATTACK) // noelle attack!
+                {
+                    follower_shoot_check();
+                    // set her state to attack so she can't refire right away
+                    followerA.substate = S_ATTACK;
+
+                }
+                else if(followerA.substate == S_ATTACK)
+                {
+                    // if noelle fired recently, wait until 1.5 sec frame count alignment to reset cooldown. jank but fast
+                    if(framecount % 90 == 0) followerA.substate = S_NORMAL;
                 }
             }
         }

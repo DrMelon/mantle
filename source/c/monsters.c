@@ -40,6 +40,10 @@ void update_monster(Monster* monster)
     {
         update_mon_cat(monster);
     }
+    else if(monster->montype == MON_ICEBLOCK)
+    {
+        update_mon_iceblock(monster);
+    }
 }
 
 void update_mon_walker(Monster* walker)
@@ -743,6 +747,64 @@ void update_mon_cat(Monster* cat)
     }
 }
 
+void update_mon_iceblock(Monster* iceblock)
+{
+    if(iceblock->substate == S_FLY)
+    {
+        iceblock->animframe++;
+        // move in direction until ya can't!
+        if(iceblock->direction == 0)
+        {
+            if(solidity_check(iceblock->xpos, iceblock->ypos + 2))
+            {
+                iceblock->ypos+=2;
+            }
+            else
+            {
+                iceblock->substate = S_NORMAL;
+            }
+        }
+        else if(iceblock->direction == 1)
+        {
+            if(solidity_check(iceblock->xpos + 2, iceblock->ypos))
+            {
+                iceblock->xpos+=2;
+            }
+            else
+            {
+                iceblock->substate = S_NORMAL;
+            }
+        }
+        else if(iceblock->direction == 2)
+        {
+            if(solidity_check(iceblock->xpos, iceblock->ypos - 2))
+            {
+                iceblock->ypos-=2;
+            }
+            else
+            {
+                iceblock->substate = S_NORMAL;
+            }
+        }
+        else if(iceblock->direction == 3)
+        {
+            if(solidity_check(iceblock->xpos - 2, iceblock->ypos))
+            {
+                iceblock->xpos-=2;
+            }
+            else
+            {
+                iceblock->substate = S_NORMAL;
+            }
+        }
+        if(iceblock->animframe == 8)
+        {
+            iceblock->substate = S_NORMAL;
+            iceblock->animframe = 0;
+        }
+    }
+}
+
 // DRAWING ROUTINES
 void draw_monster(Monster* monster)
 {
@@ -773,6 +835,10 @@ void draw_monster(Monster* monster)
     else if(monster->montype == MON_SINGCAT)
     {
         draw_cat(monster);
+    }
+    else if(monster->montype == MON_ICEBLOCK)
+    {
+        draw_iceblock(monster);
     }
 }
 
@@ -899,6 +965,11 @@ void draw_cat(Monster* cat)
     {
         spr = oam_meta_spr(cat->xpos, cat->ypos, spr, catAnims[4+(cat->animframe%2)]);
     }
+}
+
+void draw_iceblock(Monster* iceblock)
+{
+    spr = oam_meta_spr(iceblock->xpos, iceblock->ypos, spr, iceBlockSprite);
 }
 
 void delete_monster(unsigned char idx)

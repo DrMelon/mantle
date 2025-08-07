@@ -25,5 +25,6 @@ extern void end_theatric();
 
 // follower logic
 extern void reset_follow_pos();
+extern void follower_shoot_check();
 
 #endif

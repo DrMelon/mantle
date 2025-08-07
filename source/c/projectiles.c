@@ -73,6 +73,23 @@ const unsigned char* const burstSprites[]={
     burstSprite2
 };
 
+const unsigned char iceMagic0[]={
+    0, 0, 0xA5, 1,
+    128
+};
+const unsigned char iceMagic1[]={
+    0, 0, 0xA6, 1,
+    128
+};
+const unsigned char iceMagic2[]={
+    0, 0, 0xA7, 1,
+    128
+};
+const unsigned char* const iceMagicSprites[]={
+   iceMagic0,
+   iceMagic1,
+   iceMagic2
+};
 
 void update_projectile(Projectile* proj)
 {
@@ -89,6 +106,28 @@ void update_projectile(Projectile* proj)
         }
 
         return;
+    }
+
+    // Ice magic freezes monsters
+    else if(proj->projtype == P_ICEMAGIC)
+    {
+        // check monsters
+        for(i2 = 0; i2 < spawnedMonsters; i2++)
+        {
+            if(monsterList[i2].montype == MON_ICEBLOCK) continue;
+
+            x2 = FP_WHOLE(proj->xpos);
+            y2 = FP_WHOLE(proj->ypos);
+            if(point_in_rect(x2 + 4, y2 + 4, monsterList[i2].xpos+2, monsterList[i2].ypos+2, monsterList[i2].xpos+14, monsterList[i2].ypos+14))
+            {
+                monsterList[i2].montype = MON_ICEBLOCK; //doink!
+                                                        // snap to tile
+                monsterList[i2].animframe = 0;
+                monsterList[i2].xpos = ((monsterList[i2].xpos+7) >> 4) << 4;
+                monsterList[i2].ypos = ((monsterList[i2].ypos+7) >> 4) << 4;
+                mark_dead(monsterList[i2].uniqueid); // they ain't comin' back.
+            }
+        }
     }
 
     // Subpixel movement: up to 256 glorious subpixels of precision!
@@ -157,6 +196,10 @@ void draw_projectile(Projectile* proj)
     else if(proj->projtype == P_NOTE)
     {
         spr = oam_meta_spr(FP_WHOLE(proj->xpos), FP_WHOLE(proj->ypos), spr, noteSprite);
+    }
+    else if(proj->projtype == P_ICEMAGIC)
+    {
+        spr = oam_meta_spr(FP_WHOLE(proj->xpos), FP_WHOLE(proj->ypos), spr, iceMagicSprites[framecount%3]);
     }
 }
 

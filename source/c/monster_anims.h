@@ -13,4 +13,5 @@ extern const unsigned char* const birdAnims[];
 extern const unsigned char* const catAnims[];
 
 extern const unsigned char birdShadow[];
+extern const unsigned char iceBlockSprite[];
 #endif

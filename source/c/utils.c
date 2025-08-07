@@ -92,3 +92,26 @@ void reset_follow_pos()
         followPositions[i2+1] = kris.ypos;
     }
 }
+
+void follower_shoot_check()
+{
+    // spawn an ice blast particle in noelle's facing direction and fire it off.
+    bank_push(MONSTER_PROJECTILES_BANK);
+    if(followerA.direction == 0)
+    {
+        spawn_projectile(followerA.xpos+4, followerA.ypos+4, P_ICEMAGIC, 0, 512);
+    }
+    else if(followerA.direction == 1)
+    {
+        spawn_projectile(followerA.xpos+4, followerA.ypos+4, P_ICEMAGIC, 512, 0);
+    }
+    else if(followerA.direction == 2)
+    {
+        spawn_projectile(followerA.xpos+4, followerA.ypos+4, P_ICEMAGIC, 0, -512);
+    }
+    else if(followerA.direction == 3)
+    {
+        spawn_projectile(followerA.xpos+4, followerA.ypos+4, P_ICEMAGIC, -512, 0);
+    }
+    bank_pop();
+}
