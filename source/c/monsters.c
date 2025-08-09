@@ -753,6 +753,8 @@ void update_mon_iceblock(Monster* iceblock)
     {
         iceblock->animframe++;
         // move in direction until ya can't!
+        // also check other iceblocks when moving, so we don't collide into them.
+        // if we are collided with another iceblock, we should try to separate the two.
         if(iceblock->direction == 0)
         {
             if(solidity_check(iceblock->xpos, iceblock->ypos + 2))

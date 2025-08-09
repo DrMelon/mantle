@@ -51,7 +51,9 @@ void update_kris()
                     // Check for ice blocks to push
                     if(monsterList[i].montype == MON_ICEBLOCK)
                     {
-                        if(point_in_rect(monsterList[i].xpos + 8, monsterList[i].ypos + 8, kris.xpos+2, kris.ypos+2, kris.xpos+14, kris.ypos+14))
+                        // TODO using only one point in rect sucks for this, do a better edge check for ice blocks
+                        // that'll automatically give us the direction too, since the edge check that fires first will be the direction?
+                        if(point_in_rect(monsterList[i].xpos + 7, monsterList[i].ypos + 7, kris.xpos+2, kris.ypos+2, kris.xpos+14, kris.ypos+14))
                         {
                             if(monsterList[i].substate == S_NORMAL) //pushable
                             {
