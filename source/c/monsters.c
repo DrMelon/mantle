@@ -225,6 +225,38 @@ void update_mon_fish(Monster* fish)
                 }
             }
         }
+        else if(framecount % 4 == 0)
+        {
+            // In the other environments, they swim on regular tiles.if(fish->direction == 0)
+            if(fish->direction == 0)
+            {
+                if(solidity_check(fish->xpos, fish->ypos + 1))
+                        fish->ypos++;
+                else
+                    fish->direction++;
+            }
+            else if(fish->direction == 1)
+            {
+                if(solidity_check(fish->xpos + 1, fish->ypos))
+                    fish->xpos++;
+                else
+                    fish->direction++;
+            }
+            else if(fish->direction == 2)
+            {
+                if(solidity_check(fish->xpos, fish->ypos - 1))
+                    fish->ypos--;
+                else
+                    fish->direction++;
+            }
+            else if(fish->direction == 3)
+            {
+                if(solidity_check(fish->xpos - 1, fish->ypos))
+                    fish->xpos--;
+                else
+                    fish->direction = 0;
+            }
+        }
     }
     else if(fish->substate == S_HURT)
     {
@@ -754,7 +786,7 @@ void update_mon_iceblock(Monster* iceblock)
         iceblock->animframe++;
         // move in direction until ya can't!
         // also check other iceblocks when moving, so we don't collide into them.
-        // if we are collided with another iceblock, we should try to separate the two.
+        // also we should perform these checks upon push too.
         if(iceblock->direction == 0)
         {
             if(solidity_check(iceblock->xpos, iceblock->ypos + 2))

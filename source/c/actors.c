@@ -55,7 +55,7 @@ void update_kris()
                         // that'll automatically give us the direction too, since the edge check that fires first will be the direction?
                         if(point_in_rect(monsterList[i].xpos + 7, monsterList[i].ypos + 7, kris.xpos+2, kris.ypos+2, kris.xpos+14, kris.ypos+14))
                         {
-                            if(monsterList[i].substate == S_NORMAL) //pushable
+                            if(monsterList[i].substate == S_NORMAL) //pushable, try a push -- TODO: this should check behind the iceblock for other blocks or solidity.
                             {
                                 int dx;
                                 int dy;
