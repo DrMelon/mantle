@@ -42,6 +42,7 @@ void update_kris()
         case S_NORMAL:
         {
             unsigned char did_walk = 0;
+            Monster* mon;
 
             // Do projectile and monster damage checks
             if(monsterAggression > 0 && framecount % 2 == 0)
@@ -49,45 +50,63 @@ void update_kris()
                 for(i = 0; i < spawnedMonsters; i++)
                 {
                     // Check for ice blocks to push
-                    if(monsterList[i].montype == MON_ICEBLOCK)
+                    mon = &monsterList[i];
+                    if(mon->montype == MON_ICEBLOCK)
                     {
                         // TODO using only one point in rect sucks for this, do a better edge check for ice blocks
-                        // that'll automatically give us the direction too, since the edge check that fires first will be the direction?
-                        if(point_in_rect(monsterList[i].xpos + 7, monsterList[i].ypos + 7, kris.xpos+2, kris.ypos+2, kris.xpos+14, kris.ypos+14))
+                        x2 = 0; // store ice collision in x2
+                        if(kris.direction == 0)
                         {
-                            if(monsterList[i].substate == S_NORMAL) //pushable, try a push -- TODO: this should check behind the iceblock for other blocks or solidity.
+                            x2 = point_in_rect(kris.xpos+7, kris.ypos+14, mon->xpos, mon->ypos, mon->xpos+16, mon->ypos+16);
+                        }
+                        else if(kris.direction == 1)
+                        {
+                            x2 = point_in_rect(kris.xpos+14, kris.ypos+7, mon->xpos, mon->ypos, mon->xpos+16, mon->ypos+16);
+                        }
+                        else if(kris.direction == 2)
+                        {
+                            x2 = point_in_rect(kris.xpos+7, kris.ypos+2, mon->xpos, mon->ypos, mon->xpos+16, mon->ypos+16);
+                        }
+                        else if(kris.direction == 3)
+                        {
+                            x2 = point_in_rect(kris.xpos+2, kris.ypos+7, mon->xpos, mon->ypos, mon->xpos+16, mon->ypos+16);
+                        }
+
+                        if(x2 == 1)
+                        {
+                            if(mon->substate == S_NORMAL) //pushable, try a push
                             {
                                 int dx;
                                 int dy;
-                                monsterList[i].substate = S_FLY; //tell this block to "fly"
+                                mon->substate = S_FLY; //tell this block to "fly"
                                 // figure out direction
 
-                                dx = (int)(monsterList[i].xpos+8) - (int)(kris.xpos+8);
-                                dy = (int)(monsterList[i].ypos+8) - (int)(kris.ypos+8);
+                                dx = (int)(mon->xpos+8) - (int)(kris.xpos+8);
+                                dy = (int)(mon->ypos+8) - (int)(kris.ypos+8);
 
                                 if(abs(dx) > abs(dy))
                                 {
                                     if(dx < 0)
                                     {
-                                        monsterList[i].direction = 3;
+                                        mon->direction = 3;
                                         kris.xpos += 2;
                                     }
                                     else
                                     {
-                                        monsterList[i].direction = 1;
-                                        kris.xpos += 2;
+                                        mon->direction = 1;
+                                        kris.xpos -= 2;
                                     }
                                 }
                                 else
                                 {
                                     if(dy < 0)
                                     {
-                                        monsterList[i].direction = 2;
+                                        mon->direction = 2;
                                         kris.ypos += 2;
                                     }
                                     else
                                     {
-                                        monsterList[i].direction = 0;
+                                        mon->direction = 0;
                                         kris.ypos -= 2;
                                     }
                                 }
@@ -97,9 +116,9 @@ void update_kris()
                         }
 
                     }
-                    else if(monsterList[i].substate == S_NORMAL || monsterList[i].substate == S_JUMPING)
+                    else if(mon->substate == S_NORMAL || mon->substate == S_JUMPING)
                     {
-                        if(point_in_rect(monsterList[i].xpos + 8, monsterList[i].ypos + 8, kris.xpos+2, kris.ypos+2, kris.xpos+14, kris.ypos+14))
+                        if(point_in_rect(mon->xpos + 8, mon->ypos + 8, kris.xpos+2, kris.ypos+2, kris.xpos+14, kris.ypos+14))
                         {
                             get_hurt();
                             break;
@@ -652,13 +671,13 @@ void update_followers()
             {
                 int dx;
                 int dy;
-                // Noelle follows to the one-tile-away distance
-                dx = (int)followPositions[(lastFollowPosIdx+16)%64] - (int)followerA.xpos;
-                dy = (int)followPositions[(lastFollowPosIdx+17)%64] - (int)followerA.ypos;
+                // Noelle follows slightly closer than a one-tile-away distance
+                dx = (int)followPositions[(lastFollowPosIdx+12)%64] - (int)followerA.xpos;
+                dy = (int)followPositions[(lastFollowPosIdx+13)%64] - (int)followerA.ypos;
 
                 if(abs(dx) > 0 || abs(dy) > 0)
                 {
-                    if(framecount % 4 == 0) followerA.animframe++;
+                    if(framecount % 8 == 0) followerA.animframe++;
 
                     followerA.xpos += dx;
                     followerA.ypos += dy;

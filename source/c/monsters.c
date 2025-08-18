@@ -779,6 +779,27 @@ void update_mon_cat(Monster* cat)
     }
 }
 
+unsigned char iceblock_check(Monster* iceblock, unsigned char xpos, unsigned char ypos)
+{
+    unsigned char iceblockidx = 0;
+    Monster* otherblock;
+    while(iceblockidx < spawnedMonsters)
+    {
+        otherblock = &monsterList[iceblockidx];
+        iceblockidx++;
+        if(otherblock->montype != MON_ICEBLOCK)
+            continue;
+        if(otherblock->uniqueid == iceblock->uniqueid)
+            continue;
+
+        if(point_in_rect(xpos+7, ypos+7, otherblock->xpos, otherblock->ypos, otherblock->xpos+16, otherblock->ypos+16))
+        {
+            return 0;
+        }
+    }
+    return 1;
+}
+
 void update_mon_iceblock(Monster* iceblock)
 {
     if(iceblock->substate == S_FLY)
@@ -786,10 +807,9 @@ void update_mon_iceblock(Monster* iceblock)
         iceblock->animframe++;
         // move in direction until ya can't!
         // also check other iceblocks when moving, so we don't collide into them.
-        // also we should perform these checks upon push too.
         if(iceblock->direction == 0)
         {
-            if(solidity_check(iceblock->xpos, iceblock->ypos + 2))
+            if(solidity_check(iceblock->xpos, iceblock->ypos + 2) && iceblock_check(iceblock, iceblock->xpos+7, iceblock->ypos+18))
             {
                 iceblock->ypos+=2;
             }
@@ -800,7 +820,7 @@ void update_mon_iceblock(Monster* iceblock)
         }
         else if(iceblock->direction == 1)
         {
-            if(solidity_check(iceblock->xpos + 2, iceblock->ypos))
+            if(solidity_check(iceblock->xpos + 2, iceblock->ypos) && iceblock_check(iceblock, iceblock->xpos+18, iceblock->ypos+7))
             {
                 iceblock->xpos+=2;
             }
@@ -811,7 +831,7 @@ void update_mon_iceblock(Monster* iceblock)
         }
         else if(iceblock->direction == 2)
         {
-            if(solidity_check(iceblock->xpos, iceblock->ypos - 2))
+            if(solidity_check(iceblock->xpos, iceblock->ypos - 2) && iceblock_check(iceblock, iceblock->xpos+7, iceblock->ypos-2))
             {
                 iceblock->ypos-=2;
             }
@@ -822,7 +842,7 @@ void update_mon_iceblock(Monster* iceblock)
         }
         else if(iceblock->direction == 3)
         {
-            if(solidity_check(iceblock->xpos - 2, iceblock->ypos))
+            if(solidity_check(iceblock->xpos - 2, iceblock->ypos) && iceblock_check(iceblock, iceblock->xpos-2, iceblock->ypos+7))
             {
                 iceblock->xpos-=2;
             }

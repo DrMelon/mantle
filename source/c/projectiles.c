@@ -111,21 +111,38 @@ void update_projectile(Projectile* proj)
     // Ice magic freezes monsters
     else if(proj->projtype == P_ICEMAGIC)
     {
+        Monster* mon;
         // check monsters
         for(i2 = 0; i2 < spawnedMonsters; i2++)
         {
-            if(monsterList[i2].montype == MON_ICEBLOCK) continue;
-
-            x2 = FP_WHOLE(proj->xpos);
-            y2 = FP_WHOLE(proj->ypos);
-            if(point_in_rect(x2 + 4, y2 + 4, monsterList[i2].xpos+2, monsterList[i2].ypos+2, monsterList[i2].xpos+14, monsterList[i2].ypos+14))
+            mon = &monsterList[i2];
+            if(mon->montype == MON_ICEBLOCK) continue;
+            if(mon->montype == MON_WALKER || mon->montype == MON_BIRD)
             {
-                monsterList[i2].montype = MON_ICEBLOCK; //doink!
-                                                        // snap to tile
-                monsterList[i2].animframe = 0;
-                monsterList[i2].xpos = ((monsterList[i2].xpos+7) >> 4) << 4;
-                monsterList[i2].ypos = ((monsterList[i2].ypos+7) >> 4) << 4;
-                mark_dead(monsterList[i2].uniqueid); // they ain't comin' back.
+                x2 = FP_WHOLE(proj->xpos);
+                y2 = FP_WHOLE(proj->ypos);
+                if(point_in_rect(x2 + 4, y2 + 4, mon->xpos, mon->ypos, mon->xpos+16, mon->ypos+16))
+                {
+                    mon->montype = MON_ICEBLOCK; //doink!
+                    // snap to tile
+                    mon->animframe = 0;
+                    mon->xpos = ((mon->xpos+7) >> 4) << 4;
+                    mon->ypos = ((mon->ypos+7) >> 4) << 4;
+                    mark_dead(mon->uniqueid); // they ain't comin' back.
+                }
+            }
+            else // non-walkers and non-birds just get kerbloded instantly
+            {
+                x2 = FP_WHOLE(proj->xpos);
+                y2 = FP_WHOLE(proj->ypos);
+                if(point_in_rect(x2 + 4, y2 + 4, mon->xpos, mon->ypos, mon->xpos+16, mon->ypos+16))
+                {
+                    // create burst here
+                    spawn_projectile(x2, y2, P_BURST, 0, 0);
+                    mark_dead(monsterList[i2].uniqueid);
+                    monsterList[i2] = monsterList[spawnedMonsters-1]; // zerp
+                    spawnedMonsters--;
+                }
             }
         }
     }
