@@ -109,6 +109,8 @@ void load_environment(enum Environment env)
        kris.xpos = 128;
        kris.ypos = 128;
        narrative_flag_clr(NARFLAG_FOUND_NOELLE);
+       // Glaceir.
+       music_play(MUSIC_GLACEIR);
     }
     else if(env == E_CITY)
     {
@@ -385,11 +387,11 @@ void load_room_intro()
    {
        if(roomPtr[i] == 1) // Entrance/exit/teleporter
        {
-           teleList[spawnedTeles].tx = roomPtr[i+1];
-           teleList[spawnedTeles].ty = roomPtr[i+2];
-           teleList[spawnedTeles].targetroom = roomPtr[i+3];
-           teleList[spawnedTeles].targetx = roomPtr[i+4];
-           teleList[spawnedTeles].targety = roomPtr[i+5];
+           teleList[spawnedTeles].tele.tx = roomPtr[i+1];
+           teleList[spawnedTeles].tele.ty = roomPtr[i+2];
+           teleList[spawnedTeles].tele.targetroom = roomPtr[i+3];
+           teleList[spawnedTeles].tele.targetx = roomPtr[i+4];
+           teleList[spawnedTeles].tele.targety = roomPtr[i+5];
            spawnedTeles++;
            continue;
        }
@@ -457,18 +459,17 @@ void load_room()
    spawnedMonsters = 0;
    spawnedTeles = 0;
    spawnedProjectiles = 0;
-   buttonsInRoom = 0; // reset button state for locking door dungeons
-   buttonsPressed = 0;
+   spawnedButtons = 0;
    // Load entity spawns
    for(i = (12*8) + 4; roomPtr[i] != 128; i+=6)
    {
        if(roomPtr[i] == 1) // Entrance/exit/teleporter
        {
-           teleList[spawnedTeles].tx = roomPtr[i+1];
-           teleList[spawnedTeles].ty = roomPtr[i+2];
-           teleList[spawnedTeles].targetroom = roomPtr[i+3];
-           teleList[spawnedTeles].targetx = roomPtr[i+4];
-           teleList[spawnedTeles].targety = roomPtr[i+5];
+           teleList[spawnedTeles].tele.tx = roomPtr[i+1];
+           teleList[spawnedTeles].tele.ty = roomPtr[i+2];
+           teleList[spawnedTeles].tele.targetroom = roomPtr[i+3];
+           teleList[spawnedTeles].tele.targetx = roomPtr[i+4];
+           teleList[spawnedTeles].tele.targety = roomPtr[i+5];
            spawnedTeles++;
            continue;
        }
@@ -535,7 +536,10 @@ void load_room()
        }
        else if(roomPtr[i] == 4) // spawn a button (ice palace, dungeon)
        {
-
+            teleList[spawnedButtons].btn.xpos = ((roomPtr[i+1]+2)) << 4;
+            teleList[spawnedButtons].btn.ypos = ((roomPtr[i+2]+3)) << 4;
+            teleList[spawnedButtons].btn.pressed = 0;
+            spawnedButtons++;
        }
    }
 }

@@ -10,6 +10,19 @@ typedef struct
   unsigned char targety;
 } Teleporter;
 
+typedef struct
+{
+  unsigned char xpos;
+  unsigned char ypos;
+  unsigned char pressed;
+} Button;
 
+typedef union
+{
+  Teleporter tele;
+  Button btn;
+} Telebutton;
+
+extern void update_buttons();
 
 #endif

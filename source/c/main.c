@@ -15,6 +15,7 @@
 #include "intro.h"
 #include "utils.h"
 #include "twisted.h"
+#include "teleport.h"
 
 //
 // Main entrypoint
@@ -233,6 +234,9 @@ void main(void) {
           }
           bank_pop();
 
+          // Update buttons
+          update_buttons();
+
           // Draw characters
           bank_push(KRIS_ANIMS_BANK);
           draw_kris();
@@ -326,10 +330,10 @@ void main(void) {
                 followerA.substate = S_NORMAL;
                 followerA.animframe = 0;
                 // spawns at right side
-                followerA.xpos = 120+64;
-                followerA.ypos = 120;
+                followerA.xpos = 120+32;
+                followerA.ypos = 104;
 
-                unpackedRoom[3] = 13; // switch travel direction
+                unpackedRoom[3] = 13; // switch travel destination
 
               }
 

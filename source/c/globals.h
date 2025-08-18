@@ -51,6 +51,7 @@ enum Theatric
 #define MUSIC_SWORD 1
 #define MUSIC_SWORD_SLOW 2
 #define MUSIC_NORTHERNLIGHT 3
+#define MUSIC_GLACEIR 5
 
 // SFX
 #define SFX_SWORD_SWING 0
@@ -96,6 +97,7 @@ ZEROPAGE_EXTERN(unsigned char, spawnedMonsters);
 ZEROPAGE_EXTERN(unsigned char, spawnedTeles);
 ZEROPAGE_EXTERN(unsigned char, spawnedProjectiles);
 ZEROPAGE_EXTERN(unsigned char, spawnedRafts);
+ZEROPAGE_EXTERN(unsigned char, spawnedButtons);
 ZEROPAGE_EXTERN(unsigned char, soundTestNum);
 ZEROPAGE_EXTERN(unsigned char, roomSwitchDir);
 ZEROPAGE_EXTERN(unsigned char, writingVram);
@@ -115,8 +117,6 @@ ZEROPAGE_EXTERN(unsigned char, theatricStage);
 ZEROPAGE_EXTERN(unsigned char, theatricTimer);
 ZEROPAGE_EXTERN(unsigned char, narrativeFlags);
 ZEROPAGE_EXTERN(unsigned char, roomLocked);
-ZEROPAGE_EXTERN(unsigned char, buttonsInRoom);
-ZEROPAGE_EXTERN(unsigned char, buttonsPressed);
 
 #pragma bss-name(push, "ZEROPAGE")
     extern WalkingCharacter kris;
@@ -145,8 +145,8 @@ extern Monster monsterList[];
 #define MAX_JUMP_ARCS 4
 extern JumpArcState jumpArcList[];
 
-#define MAX_TELEPORTERS 2
-extern Teleporter teleList[];
+#define MAX_TELEPORTERS 4
+extern Telebutton teleList[];
 
 #define TOTAL_SPAWNABLES 255
 #define DEAD_LIST_LEN 32

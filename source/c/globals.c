@@ -25,6 +25,7 @@ ZEROPAGE_DEF(unsigned char, spawnedMonsters);
 ZEROPAGE_DEF(unsigned char, spawnedTeles);
 ZEROPAGE_DEF(unsigned char, spawnedProjectiles);
 ZEROPAGE_DEF(unsigned char, spawnedRafts);
+ZEROPAGE_DEF(unsigned char, spawnedButtons);
 ZEROPAGE_DEF(unsigned char, soundTestNum);
 ZEROPAGE_DEF(unsigned char, roomSwitchDir);
 ZEROPAGE_DEF(unsigned char, writingVram);
@@ -44,8 +45,6 @@ ZEROPAGE_DEF(unsigned char, theatricStage);
 ZEROPAGE_DEF(unsigned char, theatricTimer);
 ZEROPAGE_DEF(unsigned char, narrativeFlags);
 ZEROPAGE_DEF(unsigned char, roomLocked);
-ZEROPAGE_DEF(unsigned char, buttonsInRoom);
-ZEROPAGE_DEF(unsigned char, buttonsPressed);
 
 #pragma bss-name(push, "ZEROPAGE")
     WalkingCharacter kris;
@@ -63,7 +62,7 @@ unsigned char unpackedRoom[135];
 
 Item itemList[MAX_ITEMS];
 Monster monsterList[MAX_MONSTERS];
-Teleporter teleList[MAX_TELEPORTERS];
+Telebutton teleList[MAX_TELEPORTERS];
 Projectile projList[MAX_PROJECTILES];
 unsigned char deadList[DEAD_LIST_LEN];
 JumpArcState jumpArcList[MAX_JUMP_ARCS];

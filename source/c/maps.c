@@ -494,6 +494,10 @@ void lock_room_doors()
         {
             shouldLock = 1;
         }
+        if(spawnedButtons > 0 && spawnedMonsters > 0)
+        {
+            shouldLock = 1;
+        }
     }
 
     if(shouldLock == 0) return;

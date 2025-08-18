@@ -280,9 +280,11 @@ void update_kris()
             }
             if(did_walk && spawnedTeles != 0)
             {
+                Teleporter* tele;
                 for(i2 = 0; i2 < spawnedTeles; i2++)
                 {
-                    if(kris.xpos+7 >> 4 == teleList[i2].tx+2 && kris.ypos+7 >> 4 == teleList[i2].ty+3)
+                    tele = &teleList[i2].tele;
+                    if(kris.xpos+7 >> 4 == tele->tx+2 && kris.ypos+7 >> 4 == tele->ty+3)
                     {
                         // Remove raft, if any
                         if(kris.raft != NULL)
@@ -292,9 +294,9 @@ void update_kris()
                         }
 
                         // Do teleport
-                        x = teleList[i2].targetroom;
-                        x2 = teleList[i2].targetx+2;
-                        y2 = teleList[i2].targety+3;
+                        x = tele->targetroom;
+                        x2 = tele->targetx+2;
+                        y2 = tele->targety+3;
 
                         banked_call(ROOM_LOGIC_BANK, tele_to_room);
                         i2 = spawnedTeles;
@@ -603,6 +605,7 @@ void sword_check()
 {
     char offsetx = 0;
     char offsety = 0;
+    Monster* mon;
     // Check for monsters along the sword's length, based on its direction.
     if(kris.direction == 0)
     {
@@ -626,24 +629,34 @@ void sword_check()
     }
     for(i = 0; i < spawnedMonsters; i++)
     {
-         x = monsterList[i].xpos;
-         y = monsterList[i].ypos;
+         mon = &monsterList[i];
+         x = mon->xpos;
+         y = mon->ypos;
          if(point_in_rect(kris.xpos + offsetx, kris.ypos + offsety, x, y, x+16, y+16))
          {
-             // TODO: Split this level check and substate check so that we can play a *dink* sound on strong monsters
-             if(monsterList[i].level <= playerLevel && (monsterList[i].substate == S_NORMAL || monsterList[i].substate == S_WINDUP || monsterList[i].substate == S_JUMPING))
+             // Swap position with iceblock if you hit it. Stops softlocks...
+             if(mon->montype == MON_ICEBLOCK && mon->substate == S_NORMAL)
              {
-                 if(monsterList[i].health > 0)
-                     monsterList[i].health--;
-                 monsterList[i].substate = S_HURT;
-                 if(monsterList[i].montype != MON_LIZARD)
+                 mon->xpos = ((kris.xpos+7) >> 4) << 4;
+                 mon->ypos = ((kris.ypos+7) >> 4) << 4;
+                 kris.xpos = ((x+7) >> 4) << 4;
+                 kris.ypos = ((y+7) >> 4) << 4;
+                 break;
+             }
+             // TODO: Split this level check and substate check so that we can play a *dink* sound on strong monsters
+             if(mon->level <= playerLevel && (mon->substate == S_NORMAL || mon->substate == S_WINDUP || mon->substate == S_JUMPING))
+             {
+                 if(mon->health > 0)
+                     mon->health--;
+                 mon->substate = S_HURT;
+                 if(mon->montype != MON_LIZARD)
                  {
-                     monsterList[i].animframe = 0;
+                     mon->animframe = 0;
                  }
-                 else if(monsterList[i].arcid == 255)
+                 else if(mon->arcid == 255)
                  {
                      // Lizard is not jumping, do regular hurt logic
-                     monsterList[i].animframe = 0;
+                     mon->animframe = 0;
                  }
              }
          }
@@ -769,7 +782,7 @@ void draw_followers()
 {
     if(currentEnvironment == E_ICEPALACE && narrative_flag_get(NARFLAG_FOUND_NOELLE))
     {
-        if(followerA.substate == S_NORMAL)
+        if(followerA.substate == S_NORMAL || followerA.substate == S_ATTACK)
         {
             spr = oam_meta_spr(followerA.xpos, followerA.ypos, spr, characterWalkAnims[CH_NOELLE][followerA.animframe%2 + (followerA.direction*2)]);
         }
