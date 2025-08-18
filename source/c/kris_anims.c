@@ -271,6 +271,7 @@ const unsigned char krisHold[]={
     0, 8, 0xD1, 0,
     8, 8, 0xD2, 0,
 
+    6, 9, 0x0D, 3, // scarf
     128
 };
 
@@ -281,6 +282,7 @@ const unsigned char krisHoldIceKey[]={
     0, 8, 0xD1, 0,
     8, 8, 0xD2, 0,
 
+    6, 9, 0x0D, 3, // scarf
     128
 };
 
