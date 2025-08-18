@@ -28,6 +28,7 @@ const unsigned char heartSpr2[]={
    8, 0, 0x02, 0,
    0, 8, 0x03, 0,
    8, 8, 0x04, 0,
+   5, 9, 0x0D, 2, // scarf
    128
 };
 

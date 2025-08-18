@@ -9,7 +9,7 @@ const unsigned char krisWalkDown0[]={
     8, 0, 0x02, 4,
     0, 8, 0x03, 4,
     8, 8, 0x04, 4,
- //   5, 9, 0x0D, 2, // scarf
+    5, 9, 0x0D, 3, // scarf
     128
 };
 const unsigned char krisWalkDown1[]={
@@ -17,7 +17,7 @@ const unsigned char krisWalkDown1[]={
     8, 0, 0x02, 4,
     0, 8, 0x05, 4,
     8, 8, 0x06, 4,
-//    5, 9, 0x0D, 2, // scarf
+    5, 9, 0x0D, 3, // scarf
     128
 };
 const unsigned char krisWalkRight0[]={
@@ -25,7 +25,7 @@ const unsigned char krisWalkRight0[]={
     8, 0, 0x08, 4,
     0, 8, 0x09, 4,
     8, 8, 0x0A, 4,
-  //  8, 9, 0x0F, 2, // scarf
+    8, 9, 0x0F, 3, // scarf
     128
 };
 const unsigned char krisWalkRight1[]={
@@ -33,7 +33,7 @@ const unsigned char krisWalkRight1[]={
     8, 1, 0x08, 4,
     1, 9, 0x0B, 4,
     9, 9, 0x0C, 4,
- //   8, 10, 0x0F, 2, // scarf
+    8, 10, 0x0F, 3, // scarf
     128
 };
 const unsigned char krisWalkUp0[]={
@@ -41,6 +41,7 @@ const unsigned char krisWalkUp0[]={
     8, 0, 0x12, 4,
     0, 8, 0x13, 4,
     8, 8, 0x14, 4,
+    5, 9, 0x0E, 3, //scarf
     128
 };
 const unsigned char krisWalkUp1[]={
@@ -48,6 +49,7 @@ const unsigned char krisWalkUp1[]={
     8, 0, 0x12, 4,
     0, 8, 0x15, 4,
     8, 8, 0x16, 4,
+    5, 9, 0x0E, 3, //scarf
     128
 };
 const unsigned char krisWalkLeft0[]={
@@ -55,6 +57,7 @@ const unsigned char krisWalkLeft0[]={
     8, 0, 0x18, 4,
     -1, 8, 0x19, 4,
     7, 8, 0x1A, 4,
+    5, 9, 0x0E, 3, //scarf
     128
 };
 const unsigned char krisWalkLeft1[]={
@@ -62,6 +65,7 @@ const unsigned char krisWalkLeft1[]={
     8, 1, 0x18, 4,
     0, 9, 0x1B, 4,
     8, 9, 0x1C, 4,
+    5, 10, 0x0E, 3, //scarf
     128
 };
 
@@ -82,6 +86,7 @@ const unsigned char krisStrikeDown0[]={
    8, 1, 0x02, 4,
    0, 9, 0x21, 4,
    8, 9, 0x22, 4,
+   5, 10, 0x0D, 3, // scarf
    128
 };
 
@@ -92,6 +97,7 @@ const unsigned char krisStrikeDown1[]={
    8, 9, 0x22, 4,
    0, 17, 0x33, 4,
    0, 25, 0x43, 4,
+   5, 10, 0x0D, 3, // scarf
    128
 };
 
@@ -101,6 +107,7 @@ const unsigned char krisStrikeDown2[]={
    0, 9, 0x24, 4,
    8, 9, 0x22, 4,
    0, 17, 0x43, 4,
+   5, 10, 0x0D, 3, // scarf
    128
 };
 
