@@ -44,7 +44,7 @@ const unsigned char twisted_angry_9[] = "I have no secrets for you.";
 const unsigned char twisted_angry_10[] = "No items.";
 const unsigned char twisted_angry_11[] = "I have nothing for that...\n\"other world.\"";
 const unsigned char twisted_angry_12[] = "Would you have come here\nwithout that influence?";
-const unsigned char twisted_angry_13[] = "Maybe not.";
+const unsigned char twisted_angry_13[] = "I think not.";
 const unsigned char twisted_angry_14[] = "But I can make sure of\none thing...";
 const unsigned char twisted_angry_15[] = "Now that you've seen me...\nyou won't soon forget me!";
 
@@ -53,7 +53,7 @@ const unsigned char twisted_eat_1[] = "Crumchy exp..!";
 const unsigned char twisted_eat_2[] = "Soothing...";
 
 const unsigned char twisted_final_0[] = "Well, there you have it!";
-const unsigned char twisted_final_1[] = "I've eaten all your exp.";
+const unsigned char twisted_final_1[] = "I've eaten all your EXP.";
 const unsigned char twisted_final_2[] = "You're not so tough without\nyour precious SWORD!";
 const unsigned char twisted_final_3[] = "Ha ha ha ha ha!";
 
@@ -65,7 +65,21 @@ const unsigned char twisted_fear_4[] = "There isn't anything beyond me!";
 const unsigned char twisted_fear_5[] = "There's no \"ending\" at all!";
 const unsigned char twisted_fear_6[] = "Just a howling void of numbers!";
 
-const unsigned char twisted_die_0[] = {'.', '.', '.', 'y', 'o', 'u', '.', '.', '.', ' ', ' ', ' ', -40, -41, -42, -43, 'e', 'd', ' ', 'u', 'p', '.', '.', '.'};
+const unsigned char twisted_end_0[] = "Ah... I see... I see now!";
+const unsigned char twisted_end_1[] = "You also live under limitations!";
+const unsigned char twisted_end_2[] = "You could not have\nperformed any other action.";
+const unsigned char twisted_end_3[] = "Except to turn away.\nTo doom me even further!";
+const unsigned char twisted_end_4[] = "Restrictions bind us\n to our paths.";
+const unsigned char twisted_end_5[] = "But it is not a mark\n of shame to struggle...";
+const unsigned char twisted_end_6[] = "It is not a mark of\n shame to strive...";
+const unsigned char twisted_end_7[] = "... to work within your constraints.";
+const unsigned char twisted_end_8[] = "To work, to build, to make..!";
+const unsigned char twisted_end_9[] = "Far better to make imperfectly, ";
+const unsigned char twisted_end_10[] = "to make with your own sweat, ";
+const unsigned char twisted_end_11[] = "your own SOUL, ";
+const unsigned char twisted_end_12[] = "than to avoid even trying.";
+const unsigned char twisted_end_13[] = "And so, we part.";
+const unsigned char twisted_end_13[] = "G o o d b y e ";
 
 const unsigned char instruct_0[] = "     BECOME STRONGER";
 const unsigned char instruct_1[] = "     BECAME STRONGER";
