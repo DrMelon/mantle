@@ -12,6 +12,7 @@ ZEROPAGE_DEF(unsigned char, y2);
 ZEROPAGE_DEF(unsigned int, attrib_addr);
 ZEROPAGE_DEF(unsigned char, spr);
 ZEROPAGE_DEF(unsigned char, framecount);
+ZEROPAGE_DEF(unsigned char, stripefc);
 ZEROPAGE_DEF(unsigned char, pad_trig);
 ZEROPAGE_DEF(unsigned char, pad);
 ZEROPAGE_DEF(unsigned char, playerHp);

@@ -84,6 +84,7 @@ ZEROPAGE_EXTERN(unsigned char, y2);
 ZEROPAGE_EXTERN(unsigned int, attrib_addr);
 ZEROPAGE_EXTERN(unsigned char, spr);
 ZEROPAGE_EXTERN(unsigned char, framecount);
+ZEROPAGE_EXTERN(unsigned char, stripefc);
 ZEROPAGE_EXTERN(unsigned char, pad_trig);
 ZEROPAGE_EXTERN(unsigned char, pad);
 ZEROPAGE_EXTERN(unsigned char, playerHp);

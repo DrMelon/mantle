@@ -51,15 +51,15 @@ void update_mon_walker(Monster* walker)
     // Walker: walks around in a random pattern.
     if(walker->substate == S_NORMAL)
     {
-        if(framecount%10 == 0)
+        if(stripefc%10 == 0)
         {
             walker->animframe++;
         }
-        if(framecount%60 == 0 && rand8() > 127) // every second a 1/4 chance to try and change direction
+        if(stripefc%60 == 0 && rand8() > 127) // every second a 1/4 chance to try and change direction
         {
             walker->direction = (walker->direction + 1) % 4;
         }
-        if(framecount%4 == 0)
+        if(stripefc%4 == 0)
         {
             // try to walk in given direction
             if(walker->direction == 0)
@@ -82,7 +82,7 @@ void update_mon_walker(Monster* walker)
     }
     else if(walker->substate == S_HURT)
     {
-       if(framecount % 3 == 0)
+       if(stripefc % 3 == 0)
        {
            walker->animframe++;
        }
@@ -113,7 +113,7 @@ void update_mon_shooter(Monster* shooter)
     if(shooter->substate == S_NORMAL || shooter->substate == S_HURT)
     {
         update_mon_walker(shooter); // Behaves like a Walker until it wants to fire spears.
-        if(framecount % 64 == 0 && monsterAggression > 0)
+        if(stripefc % 64 == 0 && monsterAggression > 0)
         {
             // Every 64 frames, roll the dice and decide whether to shoot or not.
             if(rand8() < 127)
@@ -131,7 +131,7 @@ void update_mon_shooter(Monster* shooter)
     {
         // Winding up to shoot the player.
         // Toggle the flash anim frame.
-        if(framecount % 2 == 0)
+        if(stripefc % 2 == 0)
         {
             shooter->animframe++;
         }
@@ -144,7 +144,7 @@ void update_mon_shooter(Monster* shooter)
     }
     else if(shooter->substate == S_ATTACK)
     {
-        if(framecount % 2 == 0)
+        if(stripefc % 2 == 0)
         {
             shooter->animframe++;
         }
@@ -192,7 +192,7 @@ void update_mon_fish(Monster* fish)
         {
            // 1. make the fish move in its current direction
            // 2. if it hits something solid, make it turn left
-            if(framecount % 4 == 0)
+            if(stripefc % 4 == 0)
             {
                 // try to walk in given direction, turn if we can't.
                 if(fish->direction == 0)
@@ -225,7 +225,7 @@ void update_mon_fish(Monster* fish)
                 }
             }
         }
-        else if(framecount % 4 == 0)
+        else if(stripefc % 4 == 0)
         {
             // In the other environments, they swim on regular tiles.if(fish->direction == 0)
             if(fish->direction == 0)
@@ -260,7 +260,7 @@ void update_mon_fish(Monster* fish)
     }
     else if(fish->substate == S_HURT)
     {
-        if(framecount % 3 == 0)
+        if(stripefc % 3 == 0)
         {
             fish->animframe++;
             if(fish->animframe > 12)
@@ -331,7 +331,7 @@ void update_mon_flower(Monster* flower)
     }
     else if(flower->substate == S_WINDUP)
     {
-       if(framecount%2 == 0)
+       if(stripefc%2 == 0)
        {
            flower->animframe++;
            if(flower->animframe == 12)
@@ -368,7 +368,7 @@ void update_mon_flower(Monster* flower)
     }
     else if(flower->substate == S_HURT)
     {
-      if(framecount%3 == 0)
+      if(stripefc%3 == 0)
       {
         flower->animframe++;
         if(flower->animframe >= 12)
@@ -397,7 +397,7 @@ void update_mon_lizard(Monster* lizard)
         update_mon_walker(lizard);
 
         // Randomly choose when to jump.
-        if(framecount % 64 == 0)
+        if(stripefc % 64 == 0)
         {
             // Every 64 frames, roll the dice and decide whether to shoot or not.
             if(rand8() < 127)
@@ -409,7 +409,7 @@ void update_mon_lizard(Monster* lizard)
     }
     else if(lizard->substate == S_WINDUP)
     {
-        if(framecount % 2 == 0)
+        if(stripefc % 2 == 0)
         {
             lizard->animframe++;
 
@@ -469,7 +469,7 @@ void update_mon_lizard(Monster* lizard)
         // Evaluate the jump arc for the current anim frame.
         // Jump arcs universally take 2 seconds.
         // We update at half-rate, so it's about 30 frames.
-        if(framecount % 2 == 0)
+        if(stripefc % 2 == 0)
         {
             // get jump x coords and jump y coords for current frame
             if(lizard->animframe < 30)
@@ -497,7 +497,7 @@ void update_mon_lizard(Monster* lizard)
     {
         if(lizard->arcid != 255) // lizard is jumping, do special hurt logic
         {
-            if(framecount % 64 == 0)
+            if(stripefc % 64 == 0)
             {
                 if(lizard->health < 1)
                 {
@@ -513,7 +513,7 @@ void update_mon_lizard(Monster* lizard)
         }
         else
         {
-            if(framecount % 2 == 0)
+            if(stripefc % 2 == 0)
             {
                 lizard->animframe++;
                 if(lizard->animframe > 12)
@@ -542,7 +542,7 @@ void update_mon_bird(Monster* bird)
     {
         bird->level = 5; // bird cannot be killed unless turned to ice here
         bird->health = 2;
-        if(framecount % 2 == 0)
+        if(stripefc % 2 == 0)
         {
             bird->substate = S_NORMAL;
             bird->xpos = 160;
@@ -563,7 +563,7 @@ void update_mon_bird(Monster* bird)
     {
         if(bird->substate == S_NORMAL)
         {
-            if(framecount % 2 == 0)
+            if(stripefc % 2 == 0)
                 bird->animframe++;
 
             if(bird->animframe > 40 && rand8()%2 == 0)
@@ -604,12 +604,12 @@ void update_mon_bird(Monster* bird)
             // first, do "takeoff" animation (mostly done in draw)
             if(bird->animframe < 16)
             {
-                if(framecount % 2 == 0)
+                if(stripefc % 2 == 0)
                     bird->animframe++;
             }
             else if(bird->animframe < 18)
             {
-                if(framecount % 4 == 0)
+                if(stripefc % 4 == 0)
                 {
                     unsigned char birdmoved = 0;
                     bird->animframe++;
@@ -643,7 +643,7 @@ void update_mon_bird(Monster* bird)
             else if(bird->animframe < 33)
             {
                 // perform landing
-                if(framecount % 2 == 0)
+                if(stripefc % 2 == 0)
                     bird->animframe++;
             }
             else
@@ -656,7 +656,7 @@ void update_mon_bird(Monster* bird)
         }
         else if(bird->substate == S_HURT)
         {
-            if(framecount % 2 == 0)
+            if(stripefc % 2 == 0)
             {
                 bird->animframe++;
                 if(bird->animframe > 12)
@@ -695,11 +695,11 @@ void update_mon_cat(Monster* cat)
             i2 = spawnedMonsters;
 
             // also wait for a 1-sec alignment (so that they wait for a bit before attacking)
-            if(cat->animframe == 0 && framecount%60 != 0)
+            if(cat->animframe == 0 && stripefc%60 != 0)
                 return;
 
             // otherwise, move towards the player!
-            if(kris.substate != S_HURT && framecount % 4 == 0)
+            if(kris.substate != S_HURT && stripefc % 4 == 0)
             {
                 cat->animframe = 1; // catAnger sprite
 
@@ -727,7 +727,7 @@ void update_mon_cat(Monster* cat)
             }
 
             // shoot song note projectiles in random directions every so often
-            if((cat->animframe == 0) && (framecount % 30 == 0))
+            if((cat->animframe == 0) && (stripefc % 30 == 0))
             {
                 cat->animframe = 1;
                 spawn_projectile(cat->xpos+7, cat->ypos+7, P_NOTE, (dx<<3), (dy<<3));
@@ -735,7 +735,7 @@ void update_mon_cat(Monster* cat)
             }
 
             // simple frame toggle
-            if(cat->animframe == 1 && framecount % 35 == 0)
+            if(cat->animframe == 1 && stripefc % 35 == 0)
             {
                 cat->animframe = 0;
             }
@@ -743,7 +743,7 @@ void update_mon_cat(Monster* cat)
     }
     else
     {
-        if(framecount % 2 == 0)
+        if(stripefc % 2 == 0)
         {
             cat->animframe++;
             if(cat->animframe > 12)
@@ -974,7 +974,7 @@ void draw_lizard(Monster* lizard)
     }
     else if(lizard->substate == S_HURT)
     {
-        spr = oam_meta_spr(lizard->xpos, lizard->ypos, spr, lizardHurtAnims[(liz_face_right*2)+(framecount%2)]);
+        spr = oam_meta_spr(lizard->xpos, lizard->ypos, spr, lizardHurtAnims[(liz_face_right*2)+(stripefc%2)]);
     }
 }
 

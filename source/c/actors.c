@@ -43,6 +43,7 @@ void update_kris()
         {
             unsigned char did_walk = 0;
             Monster* mon;
+            Projectile* proj;
 
             // Do projectile and monster damage checks
             if(monsterAggression > 0 && framecount % 2 == 0)
@@ -127,9 +128,10 @@ void update_kris()
                 }
                 for(i = 0; i < spawnedProjectiles; i++)
                 {
-                    if(projList[i].projtype != P_ICEMAGIC && projList[i].projtype != P_BURST)
+                    proj = &projList[i];
+                    if(proj->projtype != P_ICEMAGIC && proj->projtype != P_BURST)
                     {
-                        if(point_in_rect(FP_WHOLE(projList[i].xpos) + 4, FP_WHOLE(projList[i].ypos) + 4, kris.xpos+4, kris.ypos+4, kris.xpos+12, kris.ypos+12))
+                        if(point_in_rect(FP_WHOLE(proj->xpos) + 4, FP_WHOLE(proj->ypos) + 4, kris.xpos+4, kris.ypos+4, kris.xpos+12, kris.ypos+12))
                         {
                             get_hurt();
                             break;
@@ -167,7 +169,6 @@ void update_kris()
                             kris.ypos++;
                             did_move = 1;
                         }
-
                         if(!cactus_check(kris.xpos, kris.ypos))
                         {
                             get_hurt();

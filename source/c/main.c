@@ -226,6 +226,7 @@ void main(void) {
           bank_push(MONSTER_PROJECTILES_BANK);
           for(i2 = 0; i2 < spawnedMonsters; i2++)
           {
+            stripefc = framecount+i2; // use "striped" framecount for monsters, so they don't always update all on the same frame.
             update_monster(&monsterList[i2]);
           }
           for(i = 0; i < spawnedProjectiles; i++)

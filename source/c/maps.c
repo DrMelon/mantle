@@ -314,8 +314,8 @@ unsigned char cactus_check(unsigned char px, unsigned char py)
     if(tilemap_ouchie(x, y)) return 0;
 
     // BottomRight
-    x = (px+12) >> 4;
-    y = (py+12) >> 4;
+    x = (px+14) >> 4;
+    y = (py+14) >> 4;
     if(tilemap_ouchie(x, y)) return 0;
 
     return 1;
