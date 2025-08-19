@@ -23,5 +23,6 @@ typedef struct
 extern void update_projectile(Projectile* proj);
 extern void draw_projectile(Projectile* proj);
 extern void spawn_projectile(unsigned char sx, unsigned char sy, enum ProjectileType type, int xvel, int yvel);
+extern void quickspawn_burst();
 
 #endif

@@ -5,6 +5,7 @@
 #include "maps.h"
 #include "utils.h"
 #include "projectiles.h"
+#include "monsters.h"
 #include "ui.h"
 #include "roomstuff.h"
 #include "jump_arc.h"
@@ -480,6 +481,13 @@ void update_kris()
                         set_map_tile_in_room(x, y, TILE_IP_FLOOR);
                     }
                 }
+                else if(currentEnvironment == E_CITY)
+                {
+                    if(i2 == TILE_CITY_BOLLARD || i2 == TILE_CITY_BOLLARD_V || i2 == TILE_CITY_BOLLARD_CORNER && playerLevel >= 3)
+                    {
+                        set_map_tile_in_room(x, y, TILE_CITY_FLOOR);
+                    }
+                }
 
                 // Better sword check for monsters!
                 sword_check();
@@ -661,6 +669,34 @@ void sword_check()
                  }
              }
          }
+    }
+    // Susie & Ralsei check...
+    if(currentEnvironment == E_CITY)
+    {
+        if(!narrative_flag_get(NARFLAG_KILLED_SUSIE))
+        {
+            if(point_in_rect(kris.xpos + offsetx, kris.ypos + offsety, followerA.xpos+2, followerA.ypos+2, followerA.xpos+14, followerA.ypos+14))
+            {
+                narrative_flag_set(NARFLAG_KILLED_SUSIE);
+                banked_call(MONSTER_PROJECTILES_BANK, earn_exp);
+                x2 = followerA.xpos;
+                y2 = followerA.ypos;
+                banked_call(MONSTER_PROJECTILES_BANK, quickspawn_burst);
+                return;
+            }
+        }
+        if(!narrative_flag_get(NARFLAG_KILLED_RALSEI))
+        {
+            if(point_in_rect(kris.xpos + offsetx, kris.ypos + offsety, followerB.xpos+2, followerB.ypos+2, followerB.xpos+14, followerB.ypos+14))
+            {
+                narrative_flag_set(NARFLAG_KILLED_RALSEI);
+                banked_call(MONSTER_PROJECTILES_BANK, earn_exp);
+                x2 = followerB.xpos;
+                y2 = followerB.ypos;
+                banked_call(MONSTER_PROJECTILES_BANK, quickspawn_burst);
+                return;
+            }
+        }
     }
 }
 

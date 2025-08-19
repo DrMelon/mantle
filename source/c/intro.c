@@ -10,6 +10,8 @@
 
 CODE_BANK(INTRO_BANK);
 
+const unsigned char intro_0[] = "| NO CONTROLLER |";
+
 const unsigned char intro_tile_layout[]={
   0,  1,  2,  3,  0,  0,  0,  0,  0,  0,  0,  0,  0,  4,  5,  6,  7,  8,  9,
  10, 11, 12, 13, 14,  3, 15, 16, 17, 11, 18, 18, 19, 11, 20, 21, 18, 18, 22,

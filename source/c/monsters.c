@@ -308,6 +308,13 @@ void earn_exp()
         else if(playerLevel < 4)
             playerExp += 2; // 12 enemies to hit lvmax
     }
+    else if(currentEnvironment == E_CITY)
+    {
+        if(playerLevel < 2)
+            playerExp += 24; // instant level up from Susie...
+        else if(playerLevel < 3)
+            playerExp += 24; // instant level up from Ralsei...
+    }
     if(roomLocked && spawnedMonsters <= 1) // last monster in room? unlock doors
     {
         unlock_room_doors();

@@ -162,6 +162,11 @@ void update_projectile(Projectile* proj)
 
 }
 
+void quickspawn_burst()
+{
+   spawn_projectile(x2, y2, P_BURST, 0, 0);
+}
+
 void spawn_projectile(unsigned char sx, unsigned char sy, enum ProjectileType type, int xvel, int yvel)
 {
     if(spawnedProjectiles < MAX_PROJECTILES)

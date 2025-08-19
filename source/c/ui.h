@@ -21,8 +21,6 @@ extern const unsigned char icekey_use_0[];
 extern const unsigned char northernlight_0[];
 extern const unsigned char secret_message_0[];
 
-extern const unsigned char intro_0[];
-
 extern const unsigned char instruct_0[];
 extern const unsigned char instruct_1[];
 
