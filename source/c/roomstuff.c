@@ -134,6 +134,9 @@ void load_environment(enum Environment env)
        followerB.chartype = CH_RALSEI;
        followerB.direction = 3;
 
+       narrative_flag_clr(NARFLAG_KILLED_SUSIE);
+       narrative_flag_clr(NARFLAG_KILLED_RALSEI);
+
     }
     else if(env == E_DUNGEON)
     {

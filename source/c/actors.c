@@ -728,6 +728,74 @@ void update_followers()
             }
         }
     }
+    else if(currentEnvironment == E_CITY)
+    {
+       // Susie
+       if(!narrative_flag_get(NARFLAG_KILLED_SUSIE))
+       {
+            int dx;
+            int dy;
+            dx = (int)followPositions[(lastFollowPosIdx+34)%64] - (int)followerA.xpos;
+            dy = (int)followPositions[(lastFollowPosIdx+35)%64] - (int)followerA.ypos;
+
+            if(abs(dx) > 0 || abs(dy) > 0)
+            {
+                if(framecount % 8 == 0) followerA.animframe++;
+
+                followerA.xpos += dx;
+                followerA.ypos += dy;
+                if(dy > 0)
+                {
+                    followerA.direction = 0;
+                }
+                else if(dy < 0)
+                {
+                    followerA.direction = 2;
+                }
+                if(dx > 0)
+                {
+                    followerA.direction = 1;
+                }
+                else if(dx < 0)
+                {
+                    followerA.direction = 3;
+                }
+            }
+       }
+       // Ralsei
+       if(!narrative_flag_get(NARFLAG_KILLED_RALSEI))
+       {
+            int dx;
+            int dy;
+            dx = (int)followPositions[(lastFollowPosIdx+2)%64] - (int)followerB.xpos;
+            dy = (int)followPositions[(lastFollowPosIdx+3)%64] - (int)followerB.ypos;
+
+            if(abs(dx) > 0 || abs(dy) > 0)
+            {
+                if(framecount % 8 == 0) followerB.animframe++;
+
+                followerB.xpos += dx;
+                followerB.ypos += dy;
+                if(dy > 0)
+                {
+                    followerB.direction = 0;
+                }
+                else if(dy < 0)
+                {
+                    followerB.direction = 2;
+                }
+                if(dx > 0)
+                {
+                    followerB.direction = 1;
+                }
+                else if(dx < 0)
+                {
+                    followerB.direction = 3;
+                }
+            }
+       }
+    }
+
 }
 
 CODE_BANK_POP();
@@ -786,6 +854,17 @@ void draw_followers()
         if(followerA.substate == S_NORMAL || followerA.substate == S_ATTACK)
         {
             spr = oam_meta_spr(followerA.xpos, followerA.ypos, spr, characterWalkAnims[CH_NOELLE][followerA.animframe%2 + (followerA.direction*2)]);
+        }
+    }
+    else if(currentEnvironment == E_CITY)
+    {
+        if(!narrative_flag_get(NARFLAG_KILLED_SUSIE))
+        {
+            spr = oam_meta_spr(followerA.xpos, followerA.ypos, spr, characterWalkAnims[CH_SUSIE][followerA.animframe%2 + (followerA.direction*2)]);
+        }
+        if(!narrative_flag_get(NARFLAG_KILLED_RALSEI))
+        {
+            spr = oam_meta_spr(followerB.xpos, followerB.ypos, spr, characterWalkAnims[CH_RALSEI][followerB.animframe%2 + (followerB.direction*2)]);
         }
     }
 }

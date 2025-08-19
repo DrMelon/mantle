@@ -3,6 +3,7 @@
 #include "bank_helpers.h"
 #include "globals.h"
 
+CODE_BANK(UI_BANK);
 const unsigned char hpText[] = "HP ";
 const unsigned char lv1Text[] = "LV1 ";
 const unsigned char lv2Text[] = "LV2 ";
@@ -79,7 +80,7 @@ const unsigned char twisted_end_10[] = "to make with your own sweat, ";
 const unsigned char twisted_end_11[] = "your own SOUL, ";
 const unsigned char twisted_end_12[] = "than to avoid even trying.";
 const unsigned char twisted_end_13[] = "And so, we part.";
-const unsigned char twisted_end_13[] = "G o o d b y e ";
+const unsigned char twisted_end_14[] = "G o o d b y e ";
 
 const unsigned char instruct_0[] = "     BECOME STRONGER";
 const unsigned char instruct_1[] = "     BECAME STRONGER";
@@ -94,7 +95,6 @@ unsigned char hudUpdateBuffer[24];
 unsigned char textBuffer[TEXT_LINE_MAX_LEN*TEXT_MAX_LINES];
 unsigned char textVRAMBuffer[(TEXT_LINE_MAX_LEN*TEXT_MAX_LINES)+28];
 
-CODE_BANK(UI_BANK);
 void draw_ui_borders()
 {
     // Draw the HUD borders
