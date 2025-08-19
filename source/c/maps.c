@@ -473,6 +473,10 @@ void draw_black_tile_in_room(unsigned char tx, unsigned char ty)
     {
         set_map_tile_in_room(tx-2, ty-3, TILE_I_BLACK);
     }
+    else if(currentEnvironment == E_CITY)
+    {
+        set_map_tile_in_room(tx-2, ty-3, TILE_CITY_BLACK);
+    }
     attrib_addr = 0x23C0 + ((ty)/2) * 8 + ((tx)/2);
     palmTreeBuffer[12] = MSB(attrib_addr);
     palmTreeBuffer[13] = LSB(attrib_addr);
