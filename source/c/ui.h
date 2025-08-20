@@ -11,10 +11,7 @@ extern const unsigned char lvMaxText[];
 
 extern const unsigned char barBlocks[];
 
-extern const unsigned char dialog_0[];
-extern const unsigned char dialog_1[];
-extern const unsigned char dialog_2[];
-extern const unsigned char dialog_3[];
+extern const unsigned char* const cave_dialogs[];
 
 extern const unsigned char icekey_found_0[];
 extern const unsigned char icekey_use_0[];
@@ -31,6 +28,7 @@ extern void queue_text_banked();
 extern void queue_text(const unsigned char* textLine, unsigned char mode);
 extern void update_text();
 extern void clear_text();
+extern void start_dialog(const unsigned char* const* dialog, unsigned char length);
 
 // RAM
 extern unsigned char hudUpdateBuffer[];

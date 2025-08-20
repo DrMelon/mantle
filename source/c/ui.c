@@ -2,6 +2,7 @@
 #include "neslib.h"
 #include "bank_helpers.h"
 #include "globals.h"
+#include "utils.h"
 
 CODE_BANK(UI_BANK);
 const unsigned char hpText[] = "HP ";
@@ -15,10 +16,20 @@ const unsigned char lvZeroText[] = "LV0 ";
 #define TEXT_MAX_LINES 2
 const unsigned char cave_dialog_0[] = "Looking for someone..?";
 const unsigned char cave_dialog_1[] = "Or perhaps, for someTHING?";
-const unsigned char cave_dialog_2[] = "Neither will be found here.";
+const unsigned char cave_dialog_2[] = "Neither can be found here.";
 const unsigned char cave_dialog_3[] = "But you knew that already, didn't you..?";
-const unsigned char cave_dialog_4[] = "After all, not even Kris is here!";
-const unsigned char cave_dialog_5[] = "It's just me.\nAnd YOU.";
+const unsigned char cave_dialog_4[] = "After all, not even Kris\n is here!";
+const unsigned char cave_dialog_5[] = "It's just me.               And YOU.";
+
+const unsigned char* const cave_dialogs[] =
+{
+  cave_dialog_0,
+  cave_dialog_1,
+  cave_dialog_2,
+  cave_dialog_3,
+  cave_dialog_4,
+  cave_dialog_5
+};
 
 const unsigned char icekey_found_0[] = "YOU GOT THE ICE KEY";
 const unsigned char icekey_use_0[] = "UNLOCKED WITH\n ICE KEY";
@@ -273,9 +284,8 @@ void update_text()
 
   // Text update modes:
   // 0 = Nothing
-  // 1 = Character-by-character
-  // 2 = All at once
-  // 3 = Clear text
+  // 1 = Single Text Entry
+  // 2 = Clear text
   if(textQueued == 1)
   {
     if(framecount % textDelay != 0) return; // delay appropriately
@@ -313,9 +323,11 @@ void update_text()
     else
     {
       textQueued = 0;
+      if(textEntriesLeft > 0)
+        textEntriesLeft--;
     }
   }
-  else if(textQueued == 3)
+  else if(textQueued == 2)
   {
     for(y = 0; y < TEXT_MAX_LINES; y++)
     {
@@ -339,9 +351,18 @@ void update_text()
 
 void clear_text_int()
 {
-  textQueued = 3;
+  textQueued = 2;
   textColOffset = 0;
   textLineOffset = 0;
+}
+
+void start_dialog_int(const unsigned char* const* dialog, unsigned char length)
+{
+   currentDialogPtr = dialog;
+   queue_text_int(dialog[0], 1);
+   textEntriesLeft = length;
+
+   start_theatric(TH_TEXT_GENERIC);
 }
 
 CODE_BANK_POP();
@@ -358,4 +379,11 @@ void clear_text()
    bank_push(UI_BANK);
    clear_text_int();
    bank_pop();
+}
+
+void start_dialog(const unsigned char* const* dialog, unsigned char length)
+{
+  bank_push(UI_BANK);
+  start_dialog_int(dialog, length);
+  bank_pop();
 }

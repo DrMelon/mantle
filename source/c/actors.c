@@ -143,7 +143,7 @@ void update_kris()
 
             if(theatricActive == 1) // if certain theatrics are on, don't take input.
             {
-                if(theatricIndex == TH_GETSWORD || theatricIndex == TH_GETICEKEY)
+                if(theatricIndex == TH_GETSWORD || theatricIndex == TH_GETICEKEY || theatricIndex == TH_TEXT_GENERIC)
                 {
                     control_override = 1;
                 }

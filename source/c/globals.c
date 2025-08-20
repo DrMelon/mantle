@@ -38,6 +38,7 @@ ZEROPAGE_DEF(unsigned char, textSeekChar);
 ZEROPAGE_DEF(unsigned char, textColOffset);
 ZEROPAGE_DEF(unsigned char, textLineOffset);
 ZEROPAGE_DEF(unsigned char, textDelay);
+ZEROPAGE_DEF(unsigned char, textEntriesLeft);
 ZEROPAGE_DEF(unsigned char, monsterAggression);
 ZEROPAGE_DEF(unsigned char, jumpArcs);
 ZEROPAGE_DEF(unsigned char, theatricActive);
@@ -73,3 +74,4 @@ unsigned char palmTreeBuffer[64];
 unsigned char doorLockMemory[8]; // 8 tiles must be stored for locking doors in ice palace
 
 unsigned char treeRoomVisits = 0;
+const unsigned char* const* currentDialogPtr = 0;

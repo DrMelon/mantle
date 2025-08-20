@@ -31,6 +31,7 @@ enum Theatric
     TH_USED_UP,
     TH_TWISTEDSPAWN,
     TH_TWISTEDSPAWNFAST,
+    TH_TEXT_GENERIC,
     TH_OUTRO
 };
 
@@ -110,6 +111,7 @@ ZEROPAGE_EXTERN(unsigned char, textColOffset);
 ZEROPAGE_EXTERN(unsigned char, textLineOffset);
 ZEROPAGE_EXTERN(unsigned char, textSeekChar);
 ZEROPAGE_EXTERN(unsigned char, textDelay);
+ZEROPAGE_EXTERN(unsigned char, textEntriesLeft);
 ZEROPAGE_EXTERN(unsigned char, monsterAggression);
 ZEROPAGE_EXTERN(unsigned char, jumpArcs);
 ZEROPAGE_EXTERN(unsigned char, theatricActive);
@@ -159,7 +161,6 @@ extern Projectile projList[];
 #define MAX_RAFTS 2
 extern Raft raftList[];
 
-
 // Tile update buffer for killing trees (and more)
 extern unsigned char palmTreeBuffer[];
 extern unsigned char doorLockMemory[]; // 8 tiles must be stored for locking doors in ice palace
@@ -169,5 +170,7 @@ extern unsigned char treeRoomVisits; // Number of times visited the Tree Room
 
 // Music/sound data
 extern unsigned char music_data_mantle[];
+
+extern const unsigned char* const* currentDialogPtr;
 
 #endif

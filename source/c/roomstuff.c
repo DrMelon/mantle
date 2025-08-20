@@ -694,6 +694,16 @@ void on_enter_special_room()
         {
             clear_text();
         }
+
+        if(currentRoom == 20 || currentRoom == 21 || currentRoom == 22)
+        {
+            if(!narrative_flag_get(NARFLAG_MET_TWISTED_EARLY))
+            {
+                // do dialog theatric and meet twisted
+                start_dialog(cave_dialogs, 6);
+                narrative_flag_set(NARFLAG_MET_TWISTED_EARLY);
+            }
+        }
     }
     else if(currentEnvironment == E_ISLAND)
     {

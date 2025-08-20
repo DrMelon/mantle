@@ -152,6 +152,31 @@ void main(void) {
                 banked_call(ROOM_LOGIC_BANK, skip_to_ice_palace);
               }
             }
+            else if(theatricIndex == TH_TEXT_GENERIC)
+            {
+              // Reusable theatric that queues text to some parameter.
+              if(textEntriesLeft > 0 && textQueued == 0) // waiting for player input
+              {
+                 if(pad_trig & PAD_A)
+                 {
+                     theatricStage++;
+                     bank_push(UI_BANK);
+                     clear_text();
+                     update_text();
+                     ppu_wait_nmi();
+                     queue_text(currentDialogPtr[theatricStage], 1);
+                     bank_pop();
+                 }
+              }
+              else if(textEntriesLeft == 0 && textQueued == 0)
+              {
+                if(pad_trig & PAD_A)
+                {
+                    end_theatric();
+                    clear_text();
+                }
+              }
+            }
         }
 
         // Main state machine selection
