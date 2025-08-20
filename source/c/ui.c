@@ -247,7 +247,7 @@ void queue_text_banked()
     }
 }
 
-void queue_text(const unsigned char* textLine, unsigned char mode)
+void queue_text_int(const unsigned char* textLine, unsigned char mode)
 {
    // Process text line and load into buffer
    i = 0;
@@ -337,7 +337,7 @@ void update_text()
   }
 }
 
-void clear_text()
+void clear_text_int()
 {
   textQueued = 3;
   textColOffset = 0;
@@ -345,3 +345,17 @@ void clear_text()
 }
 
 CODE_BANK_POP();
+
+void queue_text(const unsigned char* textLine, unsigned char mode)
+{
+   bank_push(UI_BANK);
+   queue_text_int(textLine, mode);
+   bank_pop();
+}
+
+void clear_text()
+{
+   bank_push(UI_BANK);
+   clear_text_int();
+   bank_pop();
+}

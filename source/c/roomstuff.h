@@ -18,5 +18,6 @@ extern void skip_to_dungeon();
 extern void skip_to_shelter();
 extern void reload_area();
 extern void unpack_room();
+extern void on_enter_special_room();
 
 #endif

@@ -661,5 +661,87 @@ void skip_to_shelter()
     ppu_on_all();
 }
 
+void on_enter_special_room()
+{
+   // For all the special logic upon entering a room; text displays, narrative bits, etc.
+    if(currentEnvironment == E_DESERT)
+    {
+        if(currentRoom == 27) // Desert/Cold Desert pallete switcher
+        {
+            envPalettes[E_DESERT] = paletteDesertIce;
+            pal_bg(envPalettes[E_DESERT]);
+            pal_col(0, 0x0F);
+        }
+        else if(currentRoom == 25)
+        {
+            envPalettes[E_DESERT] = paletteDesert;
+            pal_bg(envPalettes[E_DESERT]);
+            pal_col(0, 0x0F);
+        }
+
+        if(currentRoom == 19) // Shop text
+        {
+            if(playerLevel < 3)
+            {
+                queue_text(instruct_0, 1);
+            }
+            else if(playerLevel < 4)
+            {
+                queue_text(instruct_1, 1);
+            }
+        }
+        else if(prevRoom == 19) // Clear text
+        {
+            clear_text();
+        }
+    }
+    else if(currentEnvironment == E_ISLAND)
+    {
+        // Northern Lights isle palette swap
+        if(currentRoom == 44 || currentRoom == 43 || currentRoom == 42)
+        {
+            envPalettes[E_ISLAND] = paletteIslandIce;
+            pal_bg(envPalettes[E_ISLAND]);
+            pal_col(0, 0x0F);
+        }
+        else if(currentRoom == 34 || currentRoom == 35 || currentRoom == 36)
+        {
+            envPalettes[E_ISLAND] = paletteIsland;
+            pal_bg(envPalettes[E_ISLAND]);
+            pal_col(0, 0x0F);
+        }
+
+        // Entering a "Go To Northern Light" room
+        if(currentRoom == 28 || currentRoom == 29)
+        {
+            queue_text(northernlight_0, 1);
+            music_play(MUSIC_NORTHERNLIGHT);
+        }
+        else if(prevRoom == 28 || prevRoom == 29) // Clear text
+        {
+            clear_text();
+            music_play(MUSIC_SWORD_SLOW);
+        }
+    }
+    else if(currentEnvironment == E_ICEPALACE)
+    {
+        // If noelle not yet spawned...
+        if(currentRoom == 7 && narrative_flag_get(NARFLAG_FOUND_NOELLE) == 0)
+        {
+            // ... spawn her and adjust room exit to travel to the "back side" of the palace
+            narrative_flag_set(NARFLAG_FOUND_NOELLE);
+            followerA.chartype = CH_NOELLE;
+            followerA.direction = 0; //facing down
+            followerA.substate = S_NORMAL;
+            followerA.animframe = 0;
+            // spawns at right side
+            followerA.xpos = 120+32;
+            followerA.ypos = 104;
+
+            unpackedRoom[3] = 13; // switch travel destination
+        }
+    }
+}
+
 
 CODE_BANK_POP();

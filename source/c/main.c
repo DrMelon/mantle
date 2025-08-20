@@ -283,66 +283,8 @@ void main(void) {
         }
         else if(currentState == GS_SCREENTRANS)
         {
-
             oam_clear();
             spr = 0;
-            // If the room we're switching to is a special room in the desert...
-            if(currentEnvironment == E_DESERT)
-            {
-                //... we switch the palette to the desert-ice palette or the normal desert.
-                if(currentRoom == 27)
-                {
-                    envPalettes[E_DESERT] = paletteDesertIce;
-                    pal_bg(envPalettes[E_DESERT]);
-                    pal_col(0, 0x0F);
-                }
-                else if(currentRoom == 25)
-                {
-                    envPalettes[E_DESERT] = paletteDesert;
-                    pal_bg(envPalettes[E_DESERT]);
-                    pal_col(0, 0x0F);
-                }
-            }
-            // If the room we're switching to is on the northern side of the ocean...
-            else if(currentEnvironment == E_ISLAND)
-            {
-                if(currentRoom == 44 || currentRoom == 43 || currentRoom == 42)
-                {
-                  envPalettes[E_ISLAND] = paletteIslandIce;
-                  pal_bg(envPalettes[E_ISLAND]);
-                  pal_col(0, 0x0F);
-                }
-                else if(currentRoom == 34 || currentRoom == 35 || currentRoom == 36)
-                {
-                  envPalettes[E_ISLAND] = paletteIsland;
-                  pal_bg(envPalettes[E_ISLAND]);
-                  pal_col(0, 0x0F);
-                }
-            }
-            else if(currentEnvironment == E_ICEPALACE)
-            {
-              // if noelle isn't spawned yet...
-              if(currentRoom == 7 && narrative_flag_get(NARFLAG_FOUND_NOELLE) == 0)
-              {
-                // ... spawn her and adjust room exit to travel to the "back side" of the palace
-                narrative_flag_set(NARFLAG_FOUND_NOELLE);
-                followerA.chartype = CH_NOELLE;
-                followerA.direction = 0; //facing down
-                followerA.substate = S_NORMAL;
-                followerA.animframe = 0;
-                // spawns at right side
-                followerA.xpos = 120+32;
-                followerA.ypos = 104;
-
-                unpackedRoom[3] = 13; // switch travel destination
-
-              }
-
-              // in room xyz, make sure to connect to the looping maze
-              // if we entered the looping maze, we need to track the directions the player took (noelle code needed for this too in actors.c)
-              // check for looping maze exit and connect to exit in final stage, or begin loop again
-
-            }
             // Check screen transition direction and move Kris in that direction until threshold is reached
             if(roomSwitchDir == 0)
             {
@@ -356,6 +298,7 @@ void main(void) {
                     set_map_tile_on_character(&kris, 0);
                     lock_room_doors();
                     reset_follow_pos();
+                    banked_call(ROOM_LOGIC_BANK, on_enter_special_room);
                 }
             }
             if(roomSwitchDir == 1)
@@ -369,6 +312,7 @@ void main(void) {
                     set_map_tile_on_character(&kris, 0);
                     lock_room_doors();
                     reset_follow_pos();
+                    banked_call(ROOM_LOGIC_BANK, on_enter_special_room);
                 }
             }
             if(roomSwitchDir == 2)
@@ -382,6 +326,7 @@ void main(void) {
                     set_map_tile_on_character(&kris, 0);
                     lock_room_doors();
                     reset_follow_pos();
+                    banked_call(ROOM_LOGIC_BANK, on_enter_special_room);
                 }
             }
             if(roomSwitchDir == 3)
@@ -395,6 +340,7 @@ void main(void) {
                     set_map_tile_on_character(&kris, 0);
                     lock_room_doors();
                     reset_follow_pos();
+                    banked_call(ROOM_LOGIC_BANK, on_enter_special_room);
                 }
             }
             // Render kris
@@ -493,47 +439,8 @@ void main(void) {
           currentState = GS_GAMEPLAY;
           reset_follow_pos();
 
-          //entering/leaving the shop room in the desert?
-          if(currentEnvironment == E_DESERT)
-          {
-                if(currentRoom == 19)
-                {
-                    bank_push(UI_BANK);
-                    if(playerLevel < 3)
-                    {
-                      queue_text(instruct_0, 1);
-                    }
-                    else if(playerLevel < 4)
-                    {
-                      queue_text(instruct_1, 1);
-                    }
-                    bank_pop();
-                }
-                else if(prevRoom == 19)
-                {
-                    bank_push(UI_BANK);
-                    clear_text();
-                    bank_pop();
-                }
-          }
-          else if(currentEnvironment == E_ISLAND)
-          {
-            // Entering a Northern Light room
-            if(currentRoom == 28 || currentRoom == 29)
-            {
-                bank_push(UI_BANK);
-                queue_text(northernlight_0, 1);
-                bank_pop();
-                music_play(MUSIC_NORTHERNLIGHT);
-            }
-            else if(prevRoom == 28 || prevRoom == 29)
-            {
-                bank_push(UI_BANK);
-                clear_text();
-                bank_pop();
-                music_play(MUSIC_SWORD_SLOW);
-            }
-          }
+          banked_call(ROOM_LOGIC_BANK, on_enter_special_room);
+
         }
         else if(currentState == GS_DEATH)
         {
