@@ -750,6 +750,44 @@ void on_enter_special_room()
 
             unpackedRoom[3] = 13; // switch travel destination
         }
+        else if(currentRoom == 8)
+        {
+          queue_text(icepalace_text_0, 1);
+        }
+        else if(currentRoom == 9)
+        {
+          queue_text(icepalace_text_1, 1);
+        }
+        else if(currentRoom == 17)
+        {
+           // connect to looping maze
+           unpackedRoom[1] = 18;
+           treeRoomVisits = 0;
+           queue_text(remember_path_0, 1);
+        }
+        else if(currentRoom == 18) // player is in the looping maze. it works a little differently here...
+        {
+          clear_text();
+          if(treeRoomVisits < 6)
+          {
+            treeRoomVisits++;
+            unpackedRoom[0] = 18;
+            unpackedRoom[1] = 18;
+            unpackedRoom[2] = 18;
+            unpackedRoom[3] = 18;
+          }
+          else
+          {
+            unpackedRoom[0] = 18;
+            unpackedRoom[1] = 19;
+            unpackedRoom[2] = 18;
+            unpackedRoom[3] = 18;
+          }
+        }
+        if(prevRoom == 8 || prevRoom == 9)
+        {
+          clear_text();
+        }
     }
 }
 
