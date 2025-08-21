@@ -152,6 +152,16 @@ void main(void) {
                 banked_call(ROOM_LOGIC_BANK, skip_to_ice_palace);
               }
             }
+            else if(theatricIndex == TH_USED_UP)
+            {
+              theatricTimer++;
+              if(theatricTimer > 250)
+              {
+                end_theatric();
+                textQueued = 3;
+                banked_call(ROOM_LOGIC_BANK, skip_to_city);
+              }
+            }
             else if(theatricIndex == TH_TEXT_GENERIC)
             {
               // Reusable theatric that queues text to some parameter.

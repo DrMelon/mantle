@@ -143,7 +143,7 @@ void update_kris()
 
             if(theatricActive == 1) // if certain theatrics are on, don't take input.
             {
-                if(theatricIndex == TH_GETSWORD || theatricIndex == TH_GETICEKEY || theatricIndex == TH_TEXT_GENERIC)
+                if(theatricIndex == TH_GETSWORD || theatricIndex == TH_GETICEKEY || theatricIndex == TH_TEXT_GENERIC || theatricIndex == TH_USED_UP)
                 {
                     control_override = 1;
                 }
@@ -479,6 +479,12 @@ void update_kris()
                     if(i2 == TILE_IP_TREE && playerLevel >= 4)
                     {
                         set_map_tile_in_room(x, y, TILE_IP_FLOOR);
+                    }
+                    else if(i2 == TILE_IP_DELTDOOR_BL || i2 == TILE_IP_DELTDOOR_BR)
+                    {
+                        // Made it to the Big Door.
+                        queue_text(icepalace_text_2, 1);
+                        start_theatric(TH_USED_UP);
                     }
                 }
                 else if(currentEnvironment == E_CITY)

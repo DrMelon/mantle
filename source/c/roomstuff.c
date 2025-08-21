@@ -789,6 +789,13 @@ void on_enter_special_room()
           clear_text();
         }
     }
+    else if(currentEnvironment == E_CITY)
+    {
+        if(currentRoom == 0)
+        {
+          clear_text();
+        }
+    }
 }
 
 
