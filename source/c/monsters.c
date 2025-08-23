@@ -661,7 +661,7 @@ void update_mon_bird(Monster* bird)
             else
             {
                 // finish flight
-                oam_clear(); // clear OAM because bird sprite count changes
+                oam_dirty = 1; // clear OAM because bird sprite count changes
                 bird->substate = S_NORMAL;
                 bird->animframe = 0;
             }

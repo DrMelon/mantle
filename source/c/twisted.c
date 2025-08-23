@@ -4,6 +4,7 @@
 #include "bank_helpers.h"
 #include "globals.h"
 #include "utils.h"
+#include "ui.h"
 
 CODE_BANK(TWISTED_BANK);
 
@@ -34,8 +35,11 @@ const int smoothPingPongOffset[]={
 
 void init_twisted()
 {
+  twisted.init = 1;
+  twisted.state = TA_APPEAR;
+  twisted.emot = TE_NEUTRAL;
   twisted.xpos = 120 << FP;
-  twisted.ypos = 120 << FP;
+  twisted.ypos = 0 << FP;
   twisted.mouth.xoffset = 0;
   twisted.mouth.yoffset = 8;
   twisted.leftEye.xoffset = -10;
@@ -44,20 +48,55 @@ void init_twisted()
   twisted.rightEye.yoffset = -8;
 }
 
+void twisted_theatrics()
+{
+
+}
+
 void update_twisted()
 {
-  if(framecount % 6 == 0)
+  // Twisted's first appearance.
+  if(twisted.state == TA_APPEAR)
   {
-    twisted.mouthAnimFrame++;
+    // Move in!
+    twisted.ypos += fastlerp(twisted.ypos>>FP, 120, 8);
+
+    // Once moved in, we can switch to TA_IDLE
+    if(FP_WHOLE(twisted.ypos) == 120)
+    {
+      twisted.state = TA_IDLE;
+      // Kick off initial text theatric.
+      start_dialog(twisted_intro_dialogs, 7);
+    }
+  }
+  // Idling/Talking
+  else if(twisted.state == TA_IDLE)
+  {
+    if(textQueued == 0)
+    {
+      twisted.mouthAnimFrame = 0;
+    }
+    else
+    {
+      // Twisted's mouth anim updates when text is happening.
+      if(framecount % 6 == 0)
+      {
+        twisted.mouthAnimFrame++;
+      }
+    }
   }
 
-  twisted.rightEye.yoffset = -8 + linearPingPongOffset[(twisted.mouthAnimFrame + 3) % PINGPONG_LEN];
-  twisted.leftEye.yoffset = -5 + ((linearPingPongOffset[(twisted.mouthAnimFrame + 12) % PINGPONG_LEN]) >> 1);
+  if(framecount % 5 == 0)
+    twisted.floatFrame++;
 
-  twisted.mouth.xoffset = smoothPingPongOffset[(twisted.mouthAnimFrame)%SMOOTH_PINGPONG_LEN];
-  twisted.mouth.yoffset = 8 + smoothPingPongOffset[((twisted.mouthAnimFrame) + 6)%SMOOTH_PINGPONG_LEN];
+  // Twisted floaty movement on components. Does this in most states.
+  twisted.rightEye.yoffset = -8 + linearPingPongOffset[(twisted.floatFrame + 3) % PINGPONG_LEN];
+  twisted.leftEye.yoffset = -5 + ((linearPingPongOffset[(twisted.floatFrame + 12) % PINGPONG_LEN]) >> 1);
 
-  twisted.xpos += 64; //1/4 px a frame
+  twisted.mouth.xoffset = smoothPingPongOffset[(twisted.floatFrame)%SMOOTH_PINGPONG_LEN];
+  twisted.mouth.yoffset = 8 + smoothPingPongOffset[((twisted.floatFrame) + 6)%SMOOTH_PINGPONG_LEN];
+
+  //twisted.xpos += 64; //1/4 px a frame
 }
 
 void draw_twisted()

@@ -26,6 +26,8 @@ extern const unsigned char icepalace_text_2[];
 extern const unsigned char instruct_0[];
 extern const unsigned char instruct_1[];
 
+extern const unsigned char* const twisted_intro_dialogs[];
+
 extern void draw_ui_borders();
 extern void init_hud_refresh_banked();
 extern void refresh_hud_bars(char hp, char lvl, char exp);

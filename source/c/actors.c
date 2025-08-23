@@ -396,7 +396,7 @@ void update_kris()
             if(framecount%6 == 0)
             {
                 kris.animframe++;
-                oam_clear();
+                oam_dirty = 1;
             }
             if(kris.animframe == 1 && framecount%6 == 0)
             {

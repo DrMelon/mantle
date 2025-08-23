@@ -27,4 +27,7 @@ extern void end_theatric();
 extern void reset_follow_pos();
 extern void follower_shoot_check();
 
+// twisted
+extern int fastlerp(int a, int b, int t);
+
 #endif

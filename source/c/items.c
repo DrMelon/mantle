@@ -74,7 +74,7 @@ void delete_item(unsigned char idx)
     // remove-at-swapback
     itemList[idx] = itemList[spawnedItems-1];
     spawnedItems--;
-    oam_clear();
+    oam_dirty = 1;
 }
 
 CODE_BANK(1);

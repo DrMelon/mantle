@@ -68,8 +68,6 @@ void main(void) {
     load_and_show_intro();
     bank_pop();
 
-    banked_call(TWISTED_BANK, init_twisted);
-
     music_play(MUSIC_INTRO);
 
     // Infinite loop to end things
@@ -95,6 +93,10 @@ void main(void) {
         // this lets us do theatrics *during* gameplay etc
         if(theatricActive == 1)
         {
+            if(twisted.init)
+            {
+               //banked_call(TWISTED_BANK, twisted_theatrics);
+            }
             if(theatricIndex == TH_INTRO)
             {
                 bank_push(INTRO_BANK);
@@ -194,9 +196,13 @@ void main(void) {
         {
           spr = 0;
 
-          // blergle glergle
-          //banked_call(TWISTED_BANK, update_twisted);
-          //banked_call(TWISTED_BANK, draw_twisted);
+          if(twisted.init)
+          {
+            bank_push(TWISTED_BANK);
+            update_twisted();
+            draw_twisted();
+            bank_pop();
+          }
 
           if(queueTele != 255)
           {
@@ -318,7 +324,7 @@ void main(void) {
         }
         else if(currentState == GS_SCREENTRANS)
         {
-            oam_clear();
+            oam_dirty = 1;
             spr = 0;
             // Check screen transition direction and move Kris in that direction until threshold is reached
             if(roomSwitchDir == 0)
@@ -484,7 +490,7 @@ void main(void) {
             if(framecount == 120 && kris.animframe == 0)
             {
               framecount = 0;
-              oam_clear();
+              oam_dirty = 1;
               kris.animframe = 1;
               pal_col(0, 0x0D); // "darker than dark"
             }
@@ -511,6 +517,11 @@ void main(void) {
         bank_pop();
 
         // Don't run until a frame has run.
+        if(oam_dirty)
+        {
+          oam_hide_rest(spr);
+          oam_dirty = 0;
+        }
         ppu_wait_nmi();
     }
 }

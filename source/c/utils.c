@@ -115,3 +115,11 @@ void follower_shoot_check()
     }
     bank_pop();
 }
+
+// FP 8.8 fast/inaccurate lerp.
+// Input FP_WHOLE current pos, FP_WHOLE target pos, and then the t value as a value 0-255.
+// Add result to original fp number for correct result
+int fastlerp(int a, int b, int t)
+{
+    return ((b - a) * t);
+}

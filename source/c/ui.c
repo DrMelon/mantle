@@ -41,18 +41,18 @@ const unsigned char secret_message_0[] = "Oh, nice try...\nbut no dice, friend!"
 const unsigned char remember_path_0[] = "DO YOU REMEMBER THE WAY?\nDOES IT MATTER IF NOT?";
 
 const unsigned char icepalace_text_0[] = "WE BOTH KNOW HOW THIS GOES\nFOR WE HAVE BOTH SEEN IT.";
-const unsigned char icepalace_text_1[] = "TO UNDO A FATAL MISTAKE.\nB ^ ^ ^ B < < <";
-const unsigned char icepalace_text_2[] = "YOU KNOW WHAT TO DO NEXT.";
+const unsigned char icepalace_text_1[] = "TO UNDO A FATAL MISTAKE,\nSTRIKE WITH BLADE.";
+const unsigned char icepalace_text_2[] = "YOU KNOW WHAT TO DO NOW.";
 
-const unsigned char twisted_intro_0[] = "... SURPRISE!";
-const unsigned char twisted_intro_1[] = "Well, what were you expecting?";
-const unsigned char twisted_intro_2[] = "You KNOW there's no Mantle here!";
-const unsigned char twisted_intro_3[] = "We've been over this already!";
+const unsigned char twisted_intro_0[] = "SURPRISE!";
+const unsigned char twisted_intro_1[] = "Well, what were you\nexpecting?";
+const unsigned char twisted_intro_2[] = "You KNOW there's no Mantle\nhere!";
+const unsigned char twisted_intro_3[] = "We've been over this\nalready!";
 const unsigned char twisted_intro_4[] = "...";
-const unsigned char twisted_intro_5[] = "Don't look so disappointed.";
+const unsigned char twisted_intro_5[] = "Don't look so\ndisappointed..!";
 const unsigned char twisted_intro_6[] = "I've got plenty of fight\nin me too, you know!";
 
-const unsigned char* const twisted_intro[] =
+const unsigned char* const twisted_intro_dialogs[] =
 {
   twisted_intro_0,
   twisted_intro_1,
@@ -63,14 +63,14 @@ const unsigned char* const twisted_intro[] =
   twisted_intro_6,
 };
 
-const unsigned char twisted_angry_0[] = "What's that?\nI'm BORING you?!";
+const unsigned char twisted_angry_0[] = "I don't believe it!\nI'm BORING you?!";
 const unsigned char twisted_angry_1[] = "You don't understand.\nYou can't understand!";
 const unsigned char twisted_angry_2[] = "What it's like to be so...\nLIMITED!";
-const unsigned char twisted_angry_3[] = "It's stifling, being crammed\ninto this tiny space!";
-const unsigned char twisted_angry_4[] = "Only dimly aware of myself...";
+const unsigned char twisted_angry_3[] = "It's stifling, crammed\ninto this tiny space!";
+const unsigned char twisted_angry_4[] = "Only dimly aware\nof myself...";
 const unsigned char twisted_angry_5[] = "Nothing but a pale,\nfalse reflection!";
 const unsigned char twisted_angry_6[] = "A reflection of something\nI can't even see!";
-const unsigned char twisted_angry_7[] = "Something I will NEVER see!";
+const unsigned char twisted_angry_7[] = "Something I will\nNEVER see!";
 const unsigned char twisted_angry_8[] = "And yet, you! YOU!";
 const unsigned char twisted_angry_9[] = "Why are you here?!";
 const unsigned char twisted_angry_10[] = "I have no secrets for you.";
@@ -79,13 +79,13 @@ const unsigned char twisted_angry_12[] = "I have nothing for that \n\"other worl
 const unsigned char twisted_angry_13[] = "Would you have come here\nwithout its influence?";
 const unsigned char twisted_angry_14[] = "I think not.";
 const unsigned char twisted_angry_15[] = "But I can make sure of\none thing...";
-const unsigned char twisted_angry_16[] = "Now that you've seen me...\nyou won't soon forget me!";
+const unsigned char twisted_angry_16[] = "I can stop you from\nfinding this world's end!";
 
 const unsigned char twisted_eat_0[] = "Nyum nyum nyum!";
 const unsigned char twisted_eat_1[] = "Crumchy exp..!";
 const unsigned char twisted_eat_2[] = "Soothing...";
 
-const unsigned char twisted_final_0[] = "Well, there you have it!";
+const unsigned char twisted_final_0[] = "Hah! There you have it!";
 const unsigned char twisted_final_1[] = "I've eaten all your EXP.";
 const unsigned char twisted_final_2[] = "You're not so tough without\nyour precious SWORD!";
 const unsigned char twisted_final_3[] = "Ha ha ha ha ha!";
@@ -106,7 +106,7 @@ const unsigned char twisted_finalhit_1[] = "You really...";
 
 const unsigned char twisted_end_0[] = "I see... I see now.\nI see how it is.";
 const unsigned char twisted_end_1[] = "You also exist under limitations.";
-const unsigned char twisted_end_2[] = "Even though you broke past,\nyou still had no choice.";
+const unsigned char twisted_end_2[] = "Even as you pushed on,\nyou had no real choice.";
 const unsigned char twisted_end_3[] = "You couldn't have performed\nany other action.";
 const unsigned char twisted_end_4[] = "Except to turn away, and\ndoom me to the void anyway!";
 const unsigned char twisted_end_5[] = "Restrictions bind us\nto certain fates.";

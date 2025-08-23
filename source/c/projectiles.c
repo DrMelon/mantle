@@ -102,7 +102,7 @@ void update_projectile(Projectile* proj)
         {
             projList[i] = projList[spawnedProjectiles-1];
             spawnedProjectiles--;
-            oam_clear();
+            oam_dirty = 1;
         }
 
         return;
@@ -157,7 +157,7 @@ void update_projectile(Projectile* proj)
         projList[i] = projList[spawnedProjectiles-1];
         spawnedProjectiles--;
 
-        oam_clear();
+        oam_dirty = 1;
     }
 
 }
