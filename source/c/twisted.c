@@ -66,7 +66,7 @@ void update_twisted()
     {
       twisted.state = TA_IDLE;
       // Kick off initial text theatric.
-      start_dialog(twisted_intro_dialogs, 7);
+      start_dialog(twisted_intro_dialogs, 8);
     }
   }
   // Idling/Talking

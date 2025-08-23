@@ -45,12 +45,13 @@ const unsigned char icepalace_text_1[] = "TO UNDO A FATAL MISTAKE,\nSTRIKE WITH 
 const unsigned char icepalace_text_2[] = "YOU KNOW WHAT TO DO NOW.";
 
 const unsigned char twisted_intro_0[] = "SURPRISE!";
-const unsigned char twisted_intro_1[] = "Well, what were you\nexpecting?";
-const unsigned char twisted_intro_2[] = "You KNOW there's no Mantle\nhere!";
+const unsigned char twisted_intro_1[] = "Well, who were you\nexpecting?";
+const unsigned char twisted_intro_2[] = "You KNOW there's\nno Mantle in here!";
 const unsigned char twisted_intro_3[] = "We've been over this\nalready!";
 const unsigned char twisted_intro_4[] = "...";
 const unsigned char twisted_intro_5[] = "Don't look so\ndisappointed..!";
 const unsigned char twisted_intro_6[] = "I've got plenty of fight\nin me too, you know!";
+const unsigned char twisted_intro_7[] = "Let's dance the\ntwisted dance of fate!";
 
 const unsigned char* const twisted_intro_dialogs[] =
 {
@@ -61,6 +62,7 @@ const unsigned char* const twisted_intro_dialogs[] =
   twisted_intro_4,
   twisted_intro_5,
   twisted_intro_6,
+  twisted_intro_7,
 };
 
 const unsigned char twisted_angry_0[] = "I don't believe it!\nI'm BORING you?!";
