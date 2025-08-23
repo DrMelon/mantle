@@ -315,6 +315,11 @@ void earn_exp()
         else if(playerLevel < 3)
             playerExp += 24; // instant level up from Ralsei...
     }
+    else if(currentEnvironment == E_DUNGEON)
+    {
+        if(playerLevel < 4)
+            playerExp += 1; // 24 monsters...
+    }
     if(roomLocked && spawnedMonsters <= 1) // last monster in room? unlock doors
     {
         unlock_room_doors();
