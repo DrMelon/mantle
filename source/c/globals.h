@@ -29,7 +29,7 @@ enum Theatric
     TH_USEICEKEY,
     TH_GETSHELTERKEY,
     TH_USED_UP,
-    TH_TWISTEDSPAWN,
+    TH_TWISTED_INTRO,
     TH_TWISTEDSPAWNFAST,
     TH_TEXT_GENERIC,
     TH_OUTRO
@@ -41,8 +41,8 @@ enum Theatric
 #define ACTOR_LOGIC_BANK 3
 #define JUMP_LUT_BANK 2
 #define KRIS_ANIMS_BANK 2
-#define CHEAT_CODES_BANK 6
-#define TWISTED_BANK 6
+#define CHEAT_CODES_BANK 2
+#define TWISTED_BANK 2
 #define INTRO_BANK 3
 #define MUSIC_BANK 5
 #define UI_BANK 0
@@ -53,6 +53,9 @@ enum Theatric
 #define MUSIC_SWORD_SLOW 2
 #define MUSIC_NORTHERNLIGHT 3
 #define MUSIC_GLACEIR 5
+#define MUSIC_BIT_ROOTS 6
+#define MUSIC_ERAM 7
+#define MUSIC_BURNING_EYES 8
 
 // SFX
 #define SFX_SWORD_SWING 0
@@ -117,6 +120,7 @@ ZEROPAGE_EXTERN(unsigned char, monsterAggression);
 ZEROPAGE_EXTERN(unsigned char, jumpArcs);
 ZEROPAGE_EXTERN(unsigned char, theatricActive);
 ZEROPAGE_EXTERN(unsigned char, theatricIndex);
+ZEROPAGE_EXTERN(unsigned char, theatricPrev);
 ZEROPAGE_EXTERN(unsigned char, theatricStage);
 ZEROPAGE_EXTERN(unsigned char, theatricTimer);
 ZEROPAGE_EXTERN(unsigned char, narrativeFlags);

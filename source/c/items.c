@@ -77,7 +77,7 @@ void delete_item(unsigned char idx)
     oam_dirty = 1;
 }
 
-CODE_BANK(1);
+CODE_BANK(MONSTER_PROJECTILES_BANK);
 void spawn_candy(unsigned char px, unsigned char py)
 {
     // Increasing chance to spawn candy as hp gets low

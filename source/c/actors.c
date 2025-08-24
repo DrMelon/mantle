@@ -143,7 +143,7 @@ void update_kris()
 
             if(theatricActive == 1) // if certain theatrics are on, don't take input.
             {
-                if(theatricIndex == TH_GETSWORD || theatricIndex == TH_GETICEKEY || theatricIndex == TH_TEXT_GENERIC || theatricIndex == TH_USED_UP)
+                if(theatricIndex == TH_GETSWORD || theatricIndex == TH_GETICEKEY || theatricIndex == TH_TEXT_GENERIC || theatricIndex == TH_USED_UP || theatricIndex == TH_TWISTED_INTRO)
                 {
                     control_override = 1;
                 }
@@ -701,6 +701,22 @@ void sword_check()
                 y2 = followerB.ypos;
                 banked_call(MONSTER_PROJECTILES_BANK, quickspawn_burst);
                 return;
+            }
+        }
+    }
+    // Twisted check
+    else if(currentEnvironment == E_SHELTER)
+    {
+        // twisted phase 1
+        if(twisted.init == 1 && twisted.emot != TE_HURT && (twisted.state == TA_IDLE || twisted.state == TA_MOVE_TO_POINT_WORLD))
+        {
+            x2 = FP_WHOLE(twisted.xpos);
+            y2 = FP_WHOLE(twisted.ypos);
+            if(point_in_rect(kris.xpos + offsetx, kris.ypos + offsety, x2 - 12, y2 - 12, x2 + 12, y2 + 12))
+            {
+                twisted.emot = TE_HURT;
+                twisted.state = TA_IDLE;
+                twisted.stateTimer = 45;
             }
         }
     }

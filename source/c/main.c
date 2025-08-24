@@ -95,7 +95,7 @@ void main(void) {
         {
             if(twisted.init)
             {
-               //banked_call(TWISTED_BANK, twisted_theatrics);
+               banked_call(TWISTED_BANK, twisted_theatrics);
             }
             if(theatricIndex == TH_INTRO)
             {

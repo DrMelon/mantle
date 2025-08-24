@@ -150,6 +150,7 @@ void load_environment(enum Environment env)
        kris.xpos = 128;
        kris.ypos = 128;
 
+       music_play(MUSIC_BIT_ROOTS);
        narrative_flag_clr(NARFLAG_KILLED_SONGCAT);
     }
     else if(env == E_SHELTERFOREST)
@@ -173,6 +174,7 @@ void load_environment(enum Environment env)
        playerLevel = 4;
        playerHp = 16;
        playerExp = 0;
+       music_play(MUSIC_ERAM);
        kris.xpos = 128;
        kris.ypos = 128;
     }

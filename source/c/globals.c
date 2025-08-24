@@ -45,6 +45,7 @@ ZEROPAGE_DEF(unsigned char, jumpArcs);
 ZEROPAGE_DEF(unsigned char, theatricActive);
 ZEROPAGE_DEF(unsigned char, theatricIndex);
 ZEROPAGE_DEF(unsigned char, theatricStage);
+ZEROPAGE_DEF(unsigned char, theatricPrev);
 ZEROPAGE_DEF(unsigned char, theatricTimer);
 ZEROPAGE_DEF(unsigned char, narrativeFlags);
 ZEROPAGE_DEF(unsigned char, roomLocked);

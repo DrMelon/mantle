@@ -78,6 +78,7 @@ void start_theatric(unsigned char theatricId)
 
 void end_theatric()
 {
+    theatricPrev = theatricIndex;
     theatricTimer = 0;
     theatricIndex = 0;
     theatricStage = 0;

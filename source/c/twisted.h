@@ -46,6 +46,7 @@ typedef struct
   enum TwistedActionState state;
   unsigned char mouthAnimFrame;
   unsigned char floatFrame;
+  unsigned char stateTimer;
 } Twisted;
 
 extern void init_twisted();
