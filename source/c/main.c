@@ -127,6 +127,12 @@ void main(void) {
                     x = 2;
                     y = 3;
                 }
+                else if(currentEnvironment == E_CITY)
+                {
+                    queueTele = 8;
+                    x = 6;
+                    y = 3;
+                }
               }
             }
             else if(theatricIndex == TH_GETICEKEY)
@@ -162,6 +168,16 @@ void main(void) {
                 end_theatric();
                 textQueued = 3;
                 banked_call(ROOM_LOGIC_BANK, skip_to_city);
+              }
+            }
+            else if(theatricIndex == TH_ENTER_SHELTER)
+            {
+              theatricTimer++;
+              if(theatricTimer > 250)
+              {
+                end_theatric();
+                textQueued = 3;
+                banked_call(ROOM_LOGIC_BANK, skip_to_shelter);
               }
             }
             else if(theatricIndex == TH_TEXT_GENERIC)

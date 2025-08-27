@@ -44,6 +44,8 @@ const unsigned char icepalace_text_0[] = "WE BOTH KNOW HOW THIS GOES\nFOR WE HAV
 const unsigned char icepalace_text_1[] = "TO UNDO A FATAL MISTAKE,\nSTRIKE WITH BLADE.";
 const unsigned char icepalace_text_2[] = "YOU KNOW WHAT TO DO NOW.";
 
+const unsigned char shelter_text_0[] = "YOU HAVE NO KEY.\nBUT IT OPENS FOR YOU.";
+
 const unsigned char twisted_intro_0[] = "SURPRISE!";
 const unsigned char twisted_intro_1[] = "Well, who were you\nexpecting?";
 const unsigned char twisted_intro_2[] = "You KNOW there's\nno Mantle in here!";

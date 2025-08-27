@@ -22,6 +22,7 @@ extern const unsigned char remember_path_0[];
 extern const unsigned char icepalace_text_0[];
 extern const unsigned char icepalace_text_1[];
 extern const unsigned char icepalace_text_2[];
+extern const unsigned char shelter_text_0[];
 
 extern const unsigned char instruct_0[];
 extern const unsigned char instruct_1[];

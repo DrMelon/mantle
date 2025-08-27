@@ -276,7 +276,7 @@ const unsigned char krisHold[]={
 };
 
 const unsigned char krisHoldIceKey[]={
-    // add ice key
+    4, -16, 0xAA, 0,
     0, 0, 0xC1, 0,
     8, 0, 0xC2, 0,
     0, 8, 0xD1, 0,

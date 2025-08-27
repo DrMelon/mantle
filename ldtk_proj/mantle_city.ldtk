@@ -2338,7 +2338,28 @@
 					"seed": 6852193,
 					"overrideTilesetUid": null,
 					"gridTiles": [],
-					"entityInstances": []
+					"entityInstances": [
+						{
+							"__identifier": "Teleporter",
+							"__grid": [8,4],
+							"__pivot": [0,0],
+							"__tags": [],
+							"__tile": null,
+							"__smartColor": "#6EFF00",
+							"iid": "9c3cf320-5e50-11f0-a73f-3f23601d0ebc",
+							"width": 16,
+							"height": 16,
+							"defUid": 42,
+							"px": [128,64],
+							"fieldInstances": [
+								{ "__identifier": "roomid", "__type": "Int", "__value": 66, "__tile": null, "defUid": 43, "realEditorValues": [{ "id": "V_Int", "params": [66] }] },
+								{ "__identifier": "targetx", "__type": "Int", "__value": 0, "__tile": null, "defUid": 44, "realEditorValues": [{ "id": "V_Int", "params": [0] }] },
+								{ "__identifier": "targety", "__type": "Int", "__value": 0, "__tile": null, "defUid": 45, "realEditorValues": [{ "id": "V_Int", "params": [0] }] }
+							],
+							"__worldX": 1088,
+							"__worldY": -192
+						}
+					]
 				},
 				{
 					"__identifier": "CityTiles",
@@ -2539,9 +2560,9 @@
 							"defUid": 42,
 							"px": [80,112],
 							"fieldInstances": [
-								{ "__identifier": "roomid", "__type": "Int", "__value": 8, "__tile": null, "defUid": 43, "realEditorValues": [{ "id": "V_Int", "params": [8] }] },
-								{ "__identifier": "targetx", "__type": "Int", "__value": 6, "__tile": null, "defUid": 44, "realEditorValues": [{ "id": "V_Int", "params": [6] }] },
-								{ "__identifier": "targety", "__type": "Int", "__value": 3, "__tile": null, "defUid": 45, "realEditorValues": [{ "id": "V_Int", "params": [3] }] }
+								{ "__identifier": "roomid", "__type": "Int", "__value": 5, "__tile": null, "defUid": 43, "realEditorValues": [{ "id": "V_Int", "params": [5] }] },
+								{ "__identifier": "targetx", "__type": "Int", "__value": 8, "__tile": null, "defUid": 44, "realEditorValues": [{ "id": "V_Int", "params": [8] }] },
+								{ "__identifier": "targety", "__type": "Int", "__value": 5, "__tile": null, "defUid": 45, "realEditorValues": [{ "id": "V_Int", "params": [5] }] }
 							],
 							"__worldX": 848,
 							"__worldY": 240
@@ -2559,9 +2580,9 @@
 							"defUid": 42,
 							"px": [96,112],
 							"fieldInstances": [
-								{ "__identifier": "roomid", "__type": "Int", "__value": 8, "__tile": null, "defUid": 43, "realEditorValues": [{ "id": "V_Int", "params": [8] }] },
-								{ "__identifier": "targetx", "__type": "Int", "__value": 6, "__tile": null, "defUid": 44, "realEditorValues": [{ "id": "V_Int", "params": [6] }] },
-								{ "__identifier": "targety", "__type": "Int", "__value": 3, "__tile": null, "defUid": 45, "realEditorValues": [{ "id": "V_Int", "params": [3] }] }
+								{ "__identifier": "roomid", "__type": "Int", "__value": 5, "__tile": null, "defUid": 43, "realEditorValues": [{ "id": "V_Int", "params": [5] }] },
+								{ "__identifier": "targetx", "__type": "Int", "__value": 8, "__tile": null, "defUid": 44, "realEditorValues": [{ "id": "V_Int", "params": [8] }] },
+								{ "__identifier": "targety", "__type": "Int", "__value": 5, "__tile": null, "defUid": 45, "realEditorValues": [{ "id": "V_Int", "params": [5] }] }
 							],
 							"__worldX": 864,
 							"__worldY": 240

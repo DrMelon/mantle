@@ -143,7 +143,7 @@ void update_kris()
 
             if(theatricActive == 1) // if certain theatrics are on, don't take input.
             {
-                if(theatricIndex == TH_GETSWORD || theatricIndex == TH_GETICEKEY || theatricIndex == TH_TEXT_GENERIC || theatricIndex == TH_USED_UP || theatricIndex == TH_TWISTED_INTRO)
+                if(theatricIndex == TH_GETSWORD || theatricIndex == TH_GETICEKEY || theatricIndex == TH_TEXT_GENERIC || theatricIndex == TH_USED_UP || theatricIndex == TH_TWISTED_INTRO || theatricIndex == TH_ENTER_SHELTER)
                 {
                     control_override = 1;
                 }
@@ -286,6 +286,7 @@ void update_kris()
                 for(i2 = 0; i2 < spawnedTeles; i2++)
                 {
                     tele = &teleList[i2].tele;
+
                     if(kris.xpos+7 >> 4 == tele->tx+2 && kris.ypos+7 >> 4 == tele->ty+3)
                     {
                         // Remove raft, if any
@@ -294,13 +295,20 @@ void update_kris()
                             kris.raft->assignedchar = NULL;
                             kris.raft = NULL;
                         }
+                        if(currentEnvironment == E_CITY && tele->targetroom == 66)
+                        {
+                            // Dungeon time
+                            banked_call(ROOM_LOGIC_BANK, skip_to_dungeon);
+                        }
+                        else
+                        {
+                            // Do teleport
+                            x = tele->targetroom;
+                            x2 = tele->targetx+2;
+                            y2 = tele->targety+3;
 
-                        // Do teleport
-                        x = tele->targetroom;
-                        x2 = tele->targetx+2;
-                        y2 = tele->targety+3;
-
-                        banked_call(ROOM_LOGIC_BANK, tele_to_room);
+                            banked_call(ROOM_LOGIC_BANK, tele_to_room);
+                        }
                         i2 = spawnedTeles;
                     }
                 }
@@ -492,6 +500,22 @@ void update_kris()
                     if(i2 == TILE_CITY_BOLLARD || i2 == TILE_CITY_BOLLARD_V || i2 == TILE_CITY_BOLLARD_CORNER && playerLevel >= 3)
                     {
                         set_map_tile_in_room(x, y, TILE_CITY_FLOOR);
+                    }
+                }
+                else if(currentEnvironment == E_DUNGEON)
+                {
+                    if(i2 == TILE_DUNGEON_TREE && playerLevel >= 4)
+                    {
+                        set_map_tile_in_room(x, y, TILE_DUNGEON_FLOOR);
+                    }
+                }
+                else if(currentEnvironment == E_SHELTERFOREST)
+                {
+                    if(i2 == TILE_FOREST_SHELTER9 || i2 == TILE_FOREST_SHELTER10 || i2 == TILE_FOREST_SHELTER5 || i2 == TILE_FOREST_SHELTER6)
+                    {
+                        // Do shelter entry theatric
+                        queue_text(shelter_text_0, 1);
+                        start_theatric(TH_ENTER_SHELTER);
                     }
                 }
 
