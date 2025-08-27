@@ -14,6 +14,36 @@ const unsigned char twistedEyeCenter[]={
   0, 0, 0x69, 1,
   128
 };
+const unsigned char twistedEyeDown[]={
+  0, 0, 0x6D, 1,
+  128
+};
+const unsigned char twistedEyeRight[]={
+  0, 0, 0x6C, 1,
+  128
+};
+const unsigned char twistedEyeUp[]={
+  0, 0, 0x6A, 1,
+  128
+};
+const unsigned char twistedEyeLeft[]={
+  0, 0, 0x6B, 1,
+  128
+};
+
+const unsigned char twistedEyeShootArrowL[]={
+  0, 0, 0x1D, 1 | OAM_FLIP_H,
+  128
+};
+const unsigned char twistedEyeShootArrowR[]={
+  0, 0, 0x1D, 1,
+  128
+};
+
+const unsigned char twistedMouthShootArrow[]={
+  0, 0, 0x4E, 1,
+  128
+};
 
 const unsigned char twistedEyeHurt[]={
   0, 0, 0x7B, 1,
@@ -63,8 +93,15 @@ void init_twisted()
   twisted.leftEye.yoffset = -5;
   twisted.rightEye.xoffset = 10;
   twisted.rightEye.yoffset = -8;
-  theatricActive = 1;
-  theatricIndex = TH_TWISTED_INTRO;
+  if(narrative_flag_get(NARFLAG_FOUGHT_TWISTED_ONCE))
+  {
+
+  }
+  else
+  {
+    theatricActive = 1;
+    theatricIndex = TH_TWISTED_INTRO;
+  }
 }
 
 void twisted_theatrics()
@@ -117,6 +154,7 @@ void update_twisted()
          ppu_off();
          banked_call(ROOM_LOGIC_BANK, load_room);
          ppu_on_all();
+         twisted.stateTimer = rand8();
          return;
       }
     }
@@ -139,15 +177,42 @@ void update_twisted()
       twisted.stateTimer--;
       if(twisted.stateTimer == 0)
       {
-        twisted.emot = TE_NEUTRAL; // or angry in phase 2
-        twisted.stateTimer = rand8();
+        twisted.emot = TE_NEUTRAL; // be angry when in phase 2
+        twisted.stateTimer = 5; // act quick after harm
       }
     }
     else
     {
-      // phase 1 fight? pick a direction to move and use TA_MOVE_TO_POINT_WORLD at random intervals.
-      // upon arriving at a target point, shoot an arrow.
-      //
+      if(twisted.init == 1 && theatricActive == 0)
+      {
+          // phase 1 fight? pick a direction to move and use TA_MOVE_TO_POINT_WORLD at random intervals.
+          twisted.stateTimer--;
+          if(twisted.stateTimer == 0)
+          {
+            twisted.state = TA_MOVE_TO_POINT_WORLD;
+            if(FP_WHOLE(twisted.ypos) > 64 && FP_WHOLE(twisted.xpos) == 196) // move up
+            {
+               twisted.stateDataX = 196;
+               twisted.stateDataY = 64;
+            }
+            else if(FP_WHOLE(twisted.xpos) > 52 && FP_WHOLE(twisted.ypos) == 64) // move left
+            {
+               twisted.stateDataX = 52;
+               twisted.stateDataY = 64;
+            }
+            else if(FP_WHOLE(twisted.ypos) < 144 && FP_WHOLE(twisted.xpos) == 52) // move down
+            {
+              twisted.stateDataX = 52;
+              twisted.stateDataY = 144;
+            }
+            else if(FP_WHOLE(twisted.xpos) < 196 && FP_WHOLE(twisted.ypos) == 144) // move right
+            {
+              twisted.stateDataX = 196;
+              twisted.stateDataY = 144;
+            }
+          }
+      }
+
       // phase 2 fight is different:
       // 1. move out of screen bounds and shoot arrows
       // 1.5 move back into screen bounds
@@ -157,11 +222,81 @@ void update_twisted()
       // (until lv 0 scene, where final arena is chosen and twisted moves behind spikes)
     }
   }
+  else if(twisted.state == TA_MOVE_TO_POINT_WORLD)
+  {
+      int dx = 0;
+      int dy = 0;
+
+      dx = ((int)(twisted.stateDataX));
+      dx -= ((int)(twisted.xpos>>FP));
+      dy = ((int)(twisted.stateDataY));
+      dy -= ((int)(twisted.ypos>>FP));
+
+      if(dy > 0)
+      {
+          twisted.lookDir = 0;
+          twisted.ypos += 1<<FP;
+      }
+      else if(dx > 0)
+      {
+          twisted.lookDir = 1;
+          twisted.xpos += 1<<FP;
+      }
+      else if(dy < 0)
+      {
+          twisted.lookDir = 2;
+          twisted.ypos -= 1<<FP;
+      }
+      else if(dx < 0)
+      {
+          twisted.lookDir = 3;
+          twisted.xpos -= 1<<FP;
+      }
+      else if(dx == 0 && dy == 0) // arrived. shoot at player
+      {
+         twisted.state = TA_WINDUP;
+         twisted.stateTimer = 30;
+      }
+  }
+  else if(twisted.state == TA_WINDUP)
+  {
+     twisted.stateTimer--;
+     if(twisted.stateTimer == 0)
+     {
+         // randomly shoot an arrow or a pellet
+         if(rand8() < 127)
+         {
+           twisted.state = TA_SHOOT_ARROW;
+           twisted.stateTimer = 45;
+         }
+         else
+         {
+           twisted.state = TA_SHOOT_ARROW;
+           twisted.stateTimer = 45;
+         }
+     }
+  }
+  else if(twisted.state = TA_SHOOT_ARROW)
+  {
+    if(twisted.stateTimer == 45)
+    {
+      // shoot at player
+      twisted_shoot_arrow();
+    }
+    twisted.stateTimer--;
+    if(twisted.stateTimer == 0)
+    {
+      twisted.state = TA_IDLE;
+      twisted.stateTimer = rand8()>>2;
+    }
+  }
 
   if(framecount % 5 == 0)
     twisted.floatFrame++;
 
   // Twisted floaty movement on components. Does this in most states.
+  if(twisted.floatFrame == 48)
+    twisted.floatFrame = 0;
   twisted.rightEye.yoffset = -8 + linearPingPongOffset[(twisted.floatFrame + 3) % PINGPONG_LEN];
   twisted.leftEye.yoffset = -5 + ((linearPingPongOffset[(twisted.floatFrame + 12) % PINGPONG_LEN]) >> 1);
 
@@ -172,16 +307,62 @@ void update_twisted()
 
 void draw_twisted()
 {
-  // Depending on emotional state, draw eyes and mouth at their locations.
+  // Depending on emotional & action state, draw eyes and mouth at their locations.
+  const unsigned char* eyeSpr = twistedEyeCenter;
+  const unsigned char* mouthSpr = twistedMouthClosedL;
+
+  // Attack states
+  if(twisted.state == TA_WINDUP)
+  {
+     // scramble the sprites
+     if(framecount % 4 == 0)
+     {
+      scramble_spr_0[2] = rand8();
+      scramble_spr_1[2] = rand8();
+     }
+     if(framecount % 7 == 0)
+     {
+      scramble_spr_0[3] = rand8();
+      scramble_spr_1[3] = rand8();
+     }
+
+     // Eye 1
+     spr = oam_meta_spr(FP_WHOLE(twisted.xpos) + twisted.leftEye.xoffset, FP_WHOLE(twisted.ypos) + twisted.leftEye.yoffset, spr, scramble_spr_0);
+     // Eye 2
+     spr = oam_meta_spr(FP_WHOLE(twisted.xpos) + twisted.rightEye.xoffset, FP_WHOLE(twisted.ypos) + twisted.rightEye.yoffset, spr, scramble_spr_0);
+     // Mouth
+     spr = oam_meta_spr(FP_WHOLE(twisted.xpos) + twisted.mouth.xoffset, FP_WHOLE(twisted.ypos) + twisted.mouth.yoffset, spr, scramble_spr_1);
+
+     return;
+  }
+  else if(twisted.state == TA_SHOOT_ARROW)
+  {
+     // Eye 1
+     spr = oam_meta_spr(FP_WHOLE(twisted.xpos) + twisted.leftEye.xoffset, FP_WHOLE(twisted.ypos) + twisted.leftEye.yoffset, spr, twistedEyeShootArrowR);
+     // Eye 2
+     spr = oam_meta_spr(FP_WHOLE(twisted.xpos) + twisted.rightEye.xoffset, FP_WHOLE(twisted.ypos) + twisted.rightEye.yoffset, spr, twistedEyeShootArrowL);
+     // Mouth
+     spr = oam_meta_spr(FP_WHOLE(twisted.xpos) + twisted.mouth.xoffset, FP_WHOLE(twisted.ypos) + twisted.mouth.yoffset, spr, twistedMouthShootArrow);
+
+    return;
+  }
+
+  if(twisted.state == TA_MOVE_TO_POINT_WORLD)
+  {
+    if(twisted.lookDir == 0) eyeSpr = twistedEyeDown;
+    else if(twisted.lookDir == 1) eyeSpr = twistedEyeRight;
+    else if(twisted.lookDir == 2) eyeSpr = twistedEyeUp;
+    else if(twisted.lookDir == 3) eyeSpr = twistedEyeLeft;
+  }
 
   if(twisted.emot == TE_NEUTRAL)
   {
-    // Eye 1
-    spr = oam_meta_spr(FP_WHOLE(twisted.xpos) + twisted.leftEye.xoffset, FP_WHOLE(twisted.ypos) + twisted.leftEye.yoffset, spr, twistedEyeCenter);
-    // Eye 2
-    spr = oam_meta_spr(FP_WHOLE(twisted.xpos) + twisted.rightEye.xoffset, FP_WHOLE(twisted.ypos) + twisted.rightEye.yoffset, spr, twistedEyeCenter);
-    // Mouth
-    spr = oam_meta_spr(FP_WHOLE(twisted.xpos) + twisted.mouth.xoffset, FP_WHOLE(twisted.ypos) + twisted.mouth.yoffset, spr, twisted.mouthAnimFrame%2 == 0 ? twistedMouthClosedL : twistedMouthOpenL);
+      // Eye 1
+      spr = oam_meta_spr(FP_WHOLE(twisted.xpos) + twisted.leftEye.xoffset, FP_WHOLE(twisted.ypos) + twisted.leftEye.yoffset, spr, eyeSpr);
+      // Eye 2
+      spr = oam_meta_spr(FP_WHOLE(twisted.xpos) + twisted.rightEye.xoffset, FP_WHOLE(twisted.ypos) + twisted.rightEye.yoffset, spr, eyeSpr);
+      // Mouth
+      spr = oam_meta_spr(FP_WHOLE(twisted.xpos) + twisted.mouth.xoffset, FP_WHOLE(twisted.ypos) + twisted.mouth.yoffset, spr, twisted.mouthAnimFrame%2 == 0 ? twistedMouthClosedL : twistedMouthOpenL);
   }
   else if(twisted.emot == TE_HURT) // hurt: flash between hurt eye frames, wiggle faster, open mouth
   {
@@ -197,3 +378,29 @@ void draw_twisted()
 }
 
 CODE_BANK_POP();
+
+void twisted_shoot_arrow()
+{
+  int dx;
+  int dy;
+  dx = (int)kris.xpos;
+  dx -= FP_WHOLE(twisted.xpos);
+  dy = (int)kris.ypos;
+  dy -= FP_WHOLE(twisted.ypos);
+
+  // Select x or y major
+  if(abs(dx) > abs(dy))
+  {
+      dx = sign(dx);
+      dy = 0;
+  }
+  else
+  {
+      dy = sign(dy);
+      dx = 0;
+  }
+
+  bank_push(MONSTER_PROJECTILES_BANK);
+  spawn_projectile(FP_WHOLE(twisted.xpos)+twisted.mouth.xoffset, FP_WHOLE(twisted.ypos)+twisted.mouth.yoffset, P_ARROW, (dx<<9), (dy<<9));
+  bank_pop();
+}

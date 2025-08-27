@@ -66,6 +66,7 @@ void load_env_target_banked()
 void load_environment(enum Environment env)
 {
     currentEnvironment = env;
+    clear_text();
 
     // Set dead list empty (as it is a per-environment tracker)
     for(i = 0; i < DEAD_LIST_LEN; i++)
@@ -162,8 +163,8 @@ void load_environment(enum Environment env)
        playerLevel = 4;
        playerHp = 16;
        playerExp = 0;
-       kris.xpos = 128;
-       kris.ypos = 128;
+       kris.xpos = 120;
+       kris.ypos = 65;
     }
     else if(env == E_SHELTER)
     {
@@ -672,13 +673,11 @@ void on_enter_special_room()
         {
             envPalettes[E_DESERT] = paletteDesertIce;
             pal_bg(envPalettes[E_DESERT]);
-            pal_col(0, 0x0F);
         }
         else if(currentRoom == 25)
         {
             envPalettes[E_DESERT] = paletteDesert;
             pal_bg(envPalettes[E_DESERT]);
-            pal_col(0, 0x0F);
         }
 
         if(currentRoom == 19) // Shop text
@@ -796,6 +795,13 @@ void on_enter_special_room()
         if(currentRoom == 0)
         {
           clear_text();
+        }
+    }
+    else if(currentEnvironment == E_DUNGEON)
+    {
+        if(prevRoom == 16)
+        {
+          skip_to_forest();
         }
     }
     else if(currentEnvironment == E_SHELTER)

@@ -124,8 +124,14 @@ const unsigned char dungeon_room_15[] = {
 };
 
 const unsigned char dungeon_room_16[] = {
-255, 255, 255, 15,
+17, 255, 255, 15,
 11, 48, 9, 7, 11, 10, 9, 2, 11, 10, 9, 2, 11, 10, 9, 2, 11, 5, 
+128
+};
+
+const unsigned char dungeon_room_17[] = {
+255, 255, 16, 255,
+10, 96, 
 128
 };
 
@@ -147,5 +153,6 @@ dungeon_room_13,
 dungeon_room_14, 
 dungeon_room_15, 
 dungeon_room_16, 
+dungeon_room_17, 
 };
 CODE_BANK_POP();

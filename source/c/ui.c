@@ -40,7 +40,7 @@ const unsigned char secret_message_0[] = "Oh, nice try...\nbut no dice, friend!"
 
 const unsigned char remember_path_0[] = "DO YOU REMEMBER THE WAY?\nDOES IT MATTER IF NOT?";
 
-const unsigned char icepalace_text_0[] = "WE BOTH KNOW HOW THIS GOES\nFOR WE HAVE BOTH SEEN IT.";
+const unsigned char icepalace_text_0[] = "YOU KNOW THIS STORY.\nYOU KNOW THE WORDS.";
 const unsigned char icepalace_text_1[] = "TO UNDO A FATAL MISTAKE,\nSTRIKE WITH BLADE.";
 const unsigned char icepalace_text_2[] = "YOU KNOW WHAT TO DO NOW.";
 

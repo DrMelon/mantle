@@ -77,3 +77,5 @@ unsigned char doorLockMemory[8]; // 8 tiles must be stored for locking doors in 
 
 unsigned char treeRoomVisits = 0;
 const unsigned char* const* currentDialogPtr = 0;
+unsigned char scramble_spr_0[5];
+unsigned char scramble_spr_1[5];

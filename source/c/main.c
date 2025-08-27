@@ -62,6 +62,13 @@ void main(void) {
     cheatInputIdx = 0;
     #endif
 
+    // VFX sprites
+    scramble_spr_0[0] = 0;
+    scramble_spr_0[1] = 0;
+    scramble_spr_0[4] = 128;
+    scramble_spr_1[0] = 0;
+    scramble_spr_1[1] = 0;
+    scramble_spr_1[4] = 128;
     // Initialise intro
 
     bank_push(INTRO_BANK);

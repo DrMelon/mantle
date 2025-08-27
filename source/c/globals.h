@@ -177,5 +177,7 @@ extern unsigned char treeRoomVisits; // Number of times visited the Tree Room
 extern unsigned char music_data_mantle[];
 
 extern const unsigned char* const* currentDialogPtr;
+extern unsigned char scramble_spr_0[];
+extern unsigned char scramble_spr_1[];
 
 #endif

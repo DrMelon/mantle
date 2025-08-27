@@ -19,4 +19,5 @@ extern const unsigned char dungeon_room_13[];
 extern const unsigned char dungeon_room_14[];
 extern const unsigned char dungeon_room_15[];
 extern const unsigned char dungeon_room_16[];
+extern const unsigned char dungeon_room_17[];
 #endif

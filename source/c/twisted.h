@@ -18,6 +18,7 @@ enum TwistedActionState
   TA_MOVE_TO_POINT_WORLD,
   TA_MOVE_TO_POINT_SCREEN,
   TA_SUMMON_SPIKES,
+  TA_WINDUP,
   TA_SHOOT_ARROW,
   TA_SHOOT_PELLET,
   TA_KNOCKBACK_HURT,
@@ -47,12 +48,17 @@ typedef struct
   unsigned char mouthAnimFrame;
   unsigned char floatFrame;
   unsigned char stateTimer;
+  unsigned char stateStage;
+  unsigned char stateDataX;
+  unsigned char stateDataY;
+  unsigned char lookDir;
 } Twisted;
 
 extern void init_twisted();
 extern void twisted_theatrics();
 extern void update_twisted();
 extern void draw_twisted();
-
+extern void twisted_shoot_arrow();
+extern void twisted_shoot_pellet();
 
 #endif

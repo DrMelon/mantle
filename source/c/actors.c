@@ -736,11 +736,12 @@ void sword_check()
         {
             x2 = FP_WHOLE(twisted.xpos);
             y2 = FP_WHOLE(twisted.ypos);
-            if(point_in_rect(kris.xpos + offsetx, kris.ypos + offsety, x2 - 12, y2 - 12, x2 + 12, y2 + 12))
+            if(point_in_rect(kris.xpos + offsetx, kris.ypos + offsety, x2-4, y2, x2 + 12, y2 + 16))
             {
                 twisted.emot = TE_HURT;
                 twisted.state = TA_IDLE;
                 twisted.stateTimer = 45;
+                twisted.stateStage++; // hp
             }
         }
     }
