@@ -6,6 +6,7 @@ enum TwistedEmotionState
 {
   TE_NEUTRAL,
   TE_SMUG,
+  TE_SAD,
   TE_ANGRY,
   TE_HURT,
   TE_TERROR,
@@ -48,10 +49,11 @@ typedef struct
   unsigned char mouthAnimFrame;
   unsigned char floatFrame;
   unsigned char stateTimer;
-  unsigned char stateStage;
   unsigned char stateDataX;
   unsigned char stateDataY;
   unsigned char lookDir;
+  unsigned char invuln;
+  unsigned char fightStage;
 } Twisted;
 
 extern void init_twisted();

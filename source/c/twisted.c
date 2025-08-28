@@ -31,6 +31,15 @@ const unsigned char twistedEyeLeft[]={
   128
 };
 
+const unsigned char twistedEyeAngryL[]={
+  0, 0, 0x7C, 1 | OAM_FLIP_H,
+  128
+};
+const unsigned char twistedEyeAngryR[]={
+  0, 0, 0x7C, 1,
+  128
+};
+
 const unsigned char twistedEyeShootArrowL[]={
   0, 0, 0x1D, 1 | OAM_FLIP_H,
   128
@@ -42,6 +51,20 @@ const unsigned char twistedEyeShootArrowR[]={
 
 const unsigned char twistedMouthShootArrow[]={
   0, 0, 0x4E, 1,
+  128
+};
+
+const unsigned char twistedEyeShootPelletL[]={
+  0, 0, 0x44, 1 | OAM_FLIP_H,
+  128
+};
+const unsigned char twistedEyeShootPelletR[]={
+  0, 0, 0x44, 1,
+  128
+};
+
+const unsigned char twistedMouthShootPellet[]={
+  0, 0, 0x31, 1,
   128
 };
 
@@ -130,11 +153,33 @@ void twisted_theatrics()
         twisted.ypos += fastlerp(twisted.ypos>>FP, 96, 32);
       }
     }
+    // phase2 dialog emotion changes & scene setting
+    else if(currentDialogPtr == twisted_phase2_dialogs)
+    {
+      if(theatricStage >= 0 && theatricStage <= 2)
+        {
+        twisted.xpos += fastlerp(twisted.xpos>>FP, 120, 64);
+        twisted.ypos += fastlerp(twisted.ypos>>FP, 64, 64);
+      }
+      else if(theatricStage == 3)
+      {
+        twisted.emot = TE_SAD;
+      }
+      else if(theatricStage == 8)
+      {
+        twisted.emot = TE_ANGRY;
+      }
+    }
   }
 }
 
 void update_twisted()
 {
+  if(twisted.invuln)
+  {
+    twisted.invuln--;
+  }
+
   // Idling/Talking
   if(twisted.state == TA_IDLE)
   {
@@ -156,6 +201,18 @@ void update_twisted()
          ppu_on_all();
          twisted.stateTimer = rand8();
          return;
+      }
+      else if(theatricActive == 0 && theatricPrev == TH_TEXT_GENERIC && currentDialogPtr == twisted_phase2_dialogs)
+      {
+         currentDialogPtr = NULL;
+         music_play(MUSIC_TWISTED);
+         currentRoom = 5;
+         kris.xpos = (5+2)<<4;
+         kris.ypos = (4+3)<<4;
+         ppu_off();
+         banked_call(ROOM_LOGIC_BANK, load_room);
+         ppu_on_all();
+         twisted.stateTimer = rand8();
       }
     }
     else
@@ -179,12 +236,26 @@ void update_twisted()
       {
         twisted.emot = TE_NEUTRAL; // be angry when in phase 2
         twisted.stateTimer = 5; // act quick after harm
+        twisted.invuln = 60; // no hitloops thx <3
+        x2 = kris.xpos;
+        y2 = kris.ypos;
+        banked_call(MONSTER_PROJECTILES_BANK, spawn_candy_bnk); // yum
       }
     }
     else
     {
       if(twisted.init == 1 && theatricActive == 0)
       {
+          // check if this fight phase is over
+          if(twisted.fightStage == 12) // 12 hits seems to feel pretty good at this stage.
+          {
+              // start the 2nd phase transition dialog
+              music_stop();
+              twisted.emot = TE_ANGRY;
+              start_dialog(twisted_phase2_dialogs, 17);
+              twisted.init = 2;
+          }
+
           // phase 1 fight? pick a direction to move and use TA_MOVE_TO_POINT_WORLD at random intervals.
           twisted.stateTimer--;
           if(twisted.stateTimer == 0)
@@ -212,14 +283,16 @@ void update_twisted()
             }
           }
       }
-
-      // phase 2 fight is different:
-      // 1. move out of screen bounds and shoot arrows
-      // 1.5 move back into screen bounds
-      // 2. swap screen sides quickly, charging at player with angry eyes. dmg them if contact is made during this movement
-      // 3. spawn spikes when none exist anymore (random arena selection)
-      // 4. every 3 hits, eat exp bar.
-      // (until lv 0 scene, where final arena is chosen and twisted moves behind spikes)
+      else if(twisted.init == 2 && theatricActive == 0)
+      {
+        // phase 2 fight is different:
+        // 1. move out of screen bounds and shoot arrows/pellets while flying up and down
+        // 1.5 move back into screen bounds
+        // 2. swap screen sides quickly, charging at player with angry eyes. dmg them if contact is made during this movement
+        // 3. spawn spikes when none exist anymore (random arena selection) and move player
+        // 4. every 4 hits, eat exp bar.
+        // (until lv 0 scene, where final arena is chosen and twisted moves behind spikes)
+      }
     }
   }
   else if(twisted.state == TA_MOVE_TO_POINT_WORLD)
@@ -271,17 +344,30 @@ void update_twisted()
          }
          else
          {
-           twisted.state = TA_SHOOT_ARROW;
+           twisted.state = TA_SHOOT_PELLET;
            twisted.stateTimer = 45;
          }
      }
   }
-  else if(twisted.state = TA_SHOOT_ARROW)
+  else if(twisted.state == TA_SHOOT_ARROW)
   {
     if(twisted.stateTimer == 45)
     {
       // shoot at player
       twisted_shoot_arrow();
+    }
+    twisted.stateTimer--;
+    if(twisted.stateTimer == 0)
+    {
+      twisted.state = TA_IDLE;
+      twisted.stateTimer = rand8()>>2;
+    }
+  }
+  else if(twisted.state == TA_SHOOT_PELLET)
+  {
+    if(twisted.stateTimer == 45)
+    {
+      twisted_shoot_pellet();
     }
     twisted.stateTimer--;
     if(twisted.stateTimer == 0)
@@ -310,6 +396,13 @@ void draw_twisted()
   // Depending on emotional & action state, draw eyes and mouth at their locations.
   const unsigned char* eyeSpr = twistedEyeCenter;
   const unsigned char* mouthSpr = twistedMouthClosedL;
+
+  // Invuln flicker
+  if(twisted.invuln && (framecount % 4 == 0))
+  {
+    oam_dirty = 1;
+    return;
+  }
 
   // Attack states
   if(twisted.state == TA_WINDUP)
@@ -346,6 +439,17 @@ void draw_twisted()
 
     return;
   }
+  else if(twisted.state == TA_SHOOT_PELLET)
+  {
+     // Eye 1
+     spr = oam_meta_spr(FP_WHOLE(twisted.xpos) + twisted.leftEye.xoffset, FP_WHOLE(twisted.ypos) + twisted.leftEye.yoffset, spr, twistedEyeShootPelletR);
+     // Eye 2
+     spr = oam_meta_spr(FP_WHOLE(twisted.xpos) + twisted.rightEye.xoffset, FP_WHOLE(twisted.ypos) + twisted.rightEye.yoffset, spr, twistedEyeShootPelletL);
+     // Mouth
+     spr = oam_meta_spr(FP_WHOLE(twisted.xpos) + twisted.mouth.xoffset, FP_WHOLE(twisted.ypos) + twisted.mouth.yoffset, spr, twistedMouthShootPellet);
+
+     return;
+  }
 
   if(twisted.state == TA_MOVE_TO_POINT_WORLD)
   {
@@ -372,6 +476,24 @@ void draw_twisted()
     spr = oam_meta_spr(FP_WHOLE(twisted.xpos) + twisted.rightEye.xoffset, FP_WHOLE(twisted.ypos) + twisted.rightEye.yoffset, spr, twisted.mouthAnimFrame%2 == 1 ? twistedEyeHurt : twistedEyeHurtF);
     // Mouth
     spr = oam_meta_spr(FP_WHOLE(twisted.xpos) + twisted.mouth.xoffset, FP_WHOLE(twisted.ypos) + twisted.mouth.yoffset, spr, twisted.mouthAnimFrame%2 == 0 ? twistedMouthOpenL : twistedMouthOpenR);
+  }
+  else if(twisted.emot == TE_ANGRY)
+  {
+    // Eye 1
+    spr = oam_meta_spr(FP_WHOLE(twisted.xpos) + twisted.leftEye.xoffset, FP_WHOLE(twisted.ypos) + twisted.leftEye.yoffset, spr, twistedEyeAngryL);
+    // Eye 2
+    spr = oam_meta_spr(FP_WHOLE(twisted.xpos) + twisted.rightEye.xoffset, FP_WHOLE(twisted.ypos) + twisted.rightEye.yoffset, spr, twistedEyeAngryR);
+    // Mouth
+    spr = oam_meta_spr(FP_WHOLE(twisted.xpos) + twisted.mouth.xoffset, FP_WHOLE(twisted.ypos) + twisted.mouth.yoffset, spr, twisted.mouthAnimFrame%2 == 0 ? twistedMouthOpenL : twistedMouthOpenR);
+  }
+  else if(twisted.emot == TE_SAD)
+  {
+       // Eye 1
+    spr = oam_meta_spr(FP_WHOLE(twisted.xpos) + twisted.leftEye.xoffset, FP_WHOLE(twisted.ypos) + twisted.leftEye.yoffset, spr, twistedEyeAngryR);
+    // Eye 2
+    spr = oam_meta_spr(FP_WHOLE(twisted.xpos) + twisted.rightEye.xoffset, FP_WHOLE(twisted.ypos) + twisted.rightEye.yoffset, spr, twistedEyeAngryL);
+    // Mouth
+    spr = oam_meta_spr(FP_WHOLE(twisted.xpos) + twisted.mouth.xoffset, FP_WHOLE(twisted.ypos) + twisted.mouth.yoffset, spr, twisted.mouthAnimFrame%2 == 0 ? twistedMouthOpenL : twistedMouthClosedL);
   }
 
 
@@ -402,5 +524,24 @@ void twisted_shoot_arrow()
 
   bank_push(MONSTER_PROJECTILES_BANK);
   spawn_projectile(FP_WHOLE(twisted.xpos)+twisted.mouth.xoffset, FP_WHOLE(twisted.ypos)+twisted.mouth.yoffset, P_ARROW, (dx<<9), (dy<<9));
+  bank_pop();
+}
+
+void twisted_shoot_pellet()
+{
+  int player_offsetx = (int)kris.xpos;
+  int player_offsety = (int)kris.ypos;
+  player_offsetx -= FP_WHOLE(twisted.xpos)+twisted.mouth.xoffset;
+  player_offsety -= FP_WHOLE(twisted.ypos)+twisted.mouth.yoffset;
+
+  // then we "normalize" this without actual division for now, just shift or something.
+  while(abs(player_offsetx) > 32 || abs(player_offsety) > 32)
+  {
+    player_offsetx = player_offsetx >> 1;
+    player_offsety = player_offsety >> 1;
+  }
+
+  bank_push(MONSTER_PROJECTILES_BANK);
+  spawn_projectile(FP_WHOLE(twisted.xpos)+twisted.mouth.xoffset, FP_WHOLE(twisted.ypos)+twisted.mouth.yoffset, P_FRIENDLINESS_PELLET, (player_offsetx<<4), (player_offsety<<4));
   bank_pop();
 }

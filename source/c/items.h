@@ -19,9 +19,9 @@ typedef struct
   unsigned char uniqueid;
 } Item;
 
-void update_item(Item* item, WalkingCharacter* chara);
-void draw_item(Item* item);
-void delete_item(unsigned char idx);
-void spawn_candy(unsigned char px, unsigned char py);
-
+extern void update_item(Item* item, WalkingCharacter* chara);
+extern void draw_item(Item* item);
+extern void delete_item(unsigned char idx);
+extern void spawn_candy(unsigned char px, unsigned char py);
+extern void spawn_candy_bnk();
 #endif

@@ -11,9 +11,9 @@ void update_buttons()
   Button* btn;
   Monster* mon;
   unsigned char should_be_pressed = 0;
-  x2 = 0; // current button pressed count
   // If the room is unlocked, buttons no longer do anything.
   if(roomLocked == 0) return;
+  x2 = 0; // current button pressed count
   for(i = 0; i < spawnedButtons; i++)
   {
     btn = &teleList[i].btn;

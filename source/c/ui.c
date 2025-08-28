@@ -69,7 +69,7 @@ const unsigned char* const twisted_intro_dialogs[] =
 
 const unsigned char twisted_angry_0[] = "I don't believe it!\nI'm BORING you?!";
 const unsigned char twisted_angry_1[] = "You don't understand.\nYou can't understand!";
-const unsigned char twisted_angry_2[] = "What it's like to be so...\nLIMITED!";
+const unsigned char twisted_angry_2[] = "What it's like to be...\nso LIMITED!";
 const unsigned char twisted_angry_3[] = "It's stifling, crammed\ninto this tiny space!";
 const unsigned char twisted_angry_4[] = "Only dimly aware\nof myself...";
 const unsigned char twisted_angry_5[] = "Nothing but a pale,\nfalse reflection!";
@@ -81,9 +81,30 @@ const unsigned char twisted_angry_10[] = "I have no secrets for you.";
 const unsigned char twisted_angry_11[] = "No key items.";
 const unsigned char twisted_angry_12[] = "I have nothing for that \n\"other world.\"";
 const unsigned char twisted_angry_13[] = "Would you have come here\nwithout its influence?";
-const unsigned char twisted_angry_14[] = "I think not.";
-const unsigned char twisted_angry_15[] = "But I can make sure of\none thing...";
-const unsigned char twisted_angry_16[] = "I can stop you from\nfinding this world's end!";
+const unsigned char twisted_angry_14[] = "No. I think not.";
+const unsigned char twisted_angry_15[] = "Well, you're here now,\naren't you? Well...";
+const unsigned char twisted_angry_16[] = "You won't see the ENDING\nso easily!";
+
+const unsigned char* const twisted_phase2_dialogs[] =
+{
+  twisted_angry_0,
+  twisted_angry_1,
+  twisted_angry_2,
+  twisted_angry_3,
+  twisted_angry_4,
+  twisted_angry_5,
+  twisted_angry_6,
+  twisted_angry_7,
+  twisted_angry_8,
+  twisted_angry_9,
+  twisted_angry_10,
+  twisted_angry_11,
+  twisted_angry_12,
+  twisted_angry_13,
+  twisted_angry_14,
+  twisted_angry_15,
+  twisted_angry_16
+};
 
 const unsigned char twisted_eat_0[] = "Nyum nyum nyum!";
 const unsigned char twisted_eat_1[] = "Crumchy exp..!";

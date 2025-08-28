@@ -56,6 +56,7 @@ enum Theatric
 #define MUSIC_BIT_ROOTS 6
 #define MUSIC_ERAM 7
 #define MUSIC_BURNING_EYES 8
+#define MUSIC_TWISTED 9
 
 // SFX
 #define SFX_SWORD_SWING 0

@@ -89,4 +89,9 @@ void spawn_candy(unsigned char px, unsigned char py)
         spawnedItems++;
     }
 }
+
+void spawn_candy_bnk()
+{
+   spawn_candy(x2, y2);
+}
 CODE_BANK_POP();

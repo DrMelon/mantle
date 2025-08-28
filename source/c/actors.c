@@ -732,7 +732,7 @@ void sword_check()
     else if(currentEnvironment == E_SHELTER)
     {
         // twisted phase 1
-        if(twisted.init == 1 && twisted.emot != TE_HURT && (twisted.state == TA_IDLE || twisted.state == TA_MOVE_TO_POINT_WORLD))
+        if(twisted.init == 1 && twisted.invuln == 0 && twisted.emot != TE_HURT && (twisted.state == TA_IDLE || twisted.state == TA_MOVE_TO_POINT_WORLD))
         {
             x2 = FP_WHOLE(twisted.xpos);
             y2 = FP_WHOLE(twisted.ypos);
@@ -741,7 +741,7 @@ void sword_check()
                 twisted.emot = TE_HURT;
                 twisted.state = TA_IDLE;
                 twisted.stateTimer = 45;
-                twisted.stateStage++; // hp
+                twisted.fightStage++; // count number of hits in phase 1
             }
         }
     }

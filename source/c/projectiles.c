@@ -5,12 +5,12 @@
 
 CODE_BANK(MONSTER_PROJECTILES_BANK);
 const unsigned char pelletSprite0[]={
-    0, 0, 0xB4, 6,
+    0, 0, 0xB4, 2,
     128
 };
 
 const unsigned char pelletSprite1[]={
-    0, 0, 0xA4, 6,
+    0, 0, 0xA4, 2,
     128
 };
 
