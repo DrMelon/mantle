@@ -307,6 +307,8 @@ void update_kris()
                         // Remove raft, if any
                         if(kris.raft != NULL)
                         {
+                            // the only teleports with a raft are the two waterfall entrance tiles, so we can play the jingle here
+                            sfx_play(SFX_EQUIP, FAMISTUDIO_SFX_CH0);
                             kris.raft->assignedchar = NULL;
                             kris.raft = NULL;
                         }
