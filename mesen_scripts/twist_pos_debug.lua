@@ -11,11 +11,15 @@
     fgColor = 0x30FF4040
   
  
-  kris_tx = (emu.readWord(emu.getLabelAddress("_twisted").address+1, emu.memType.nesMemory, false) >> 8)
-  kris_ty = (emu.readWord(emu.getLabelAddress("_twisted").address+3, emu.memType.nesMemory, false) >> 8)
+  twisted_x = (emu.readWord(emu.getLabelAddress("_twisted").address+1, emu.memType.nesMemory, false) >> 8)
+  twisted_y = (emu.readWord(emu.getLabelAddress("_twisted").address+3, emu.memType.nesMemory, false) >> 8)
 
-  emu.drawRectangle(kris_tx-4, kris_ty, 16, 16, fgColor, true, 1)
-  emu.displayMessage("Script", kris_ty)
+  emu.drawRectangle(twisted_x-4, twisted_y, 16, 16, fgColor, true, 1)
+
+  emu.drawString(12, 8, "Twisted State: " .. emu.readWord(emu.getLabelAddress("_twisted").address+19, emu.memType.nesMemory, false), 0xFFFFFF, 0xFF000000)
+  emu.drawString(12, 16, "Twisted StateTimer: " .. emu.read(emu.getLabelAddress("_twisted").address+23, emu.memType.nesMemory, false), 0xFFFFFF, 0xFF000000)
+  emu.drawString(12, 24, "Twisted LookDir: " .. emu.read(emu.getLabelAddress("_twisted").address+26, emu.memType.nesMemory, false), 0xFFFFFF, 0xFF000000)
+
 
 end
 

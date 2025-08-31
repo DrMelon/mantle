@@ -7,6 +7,7 @@
 #include "ui.h"
 #include "roomstuff.h"
 #include "palettes.h"
+#include "actors.h"
 
 CODE_BANK(TWISTED_BANK);
 
@@ -94,6 +95,54 @@ const unsigned char twistedMouthOpenR[]={
  128
 };
 
+// big mode sprites
+const unsigned char twistedBigModeEye[]={
+  0, 0, 0x89, 1,
+  8, 0, 0x89, 1 | OAM_FLIP_H,
+  0, 8, 0x89, 1 | OAM_FLIP_V,
+  8, 8, 0x89, 1 | OAM_FLIP_H | OAM_FLIP_V,
+  128
+};
+
+const unsigned char twistedBigModeEyeHurt[]={
+  0, 0, 0x99, 1,
+  8, 0, 0x99, 1 | OAM_FLIP_H,
+  0, 8, 0x99, 1 | OAM_FLIP_V,
+  8, 8, 0x99, 1 | OAM_FLIP_H | OAM_FLIP_V,
+  128
+};
+
+const unsigned char twistedBigModeMouth0[]=
+{
+  0, 0, 0x8A, 1,
+  6, 0, 0x8A, 1 | OAM_FLIP_H,
+  0, 8, 0x9A, 1,
+  6, 8, 0x8B, 1 | OAM_FLIP_H,
+  128
+};
+const unsigned char twistedBigModeMouth1[]=
+{
+  0, 0, 0x8A, 1,
+  6, 0, 0x8A, 1 | OAM_FLIP_H,
+  0, 7, 0x8B, 1,
+  7, 8, 0x8B, 1 | OAM_FLIP_H,
+  128
+};
+const unsigned char twistedBigModeMouth2[]=
+{
+  0, 0, 0x8A, 1,
+  7, 0, 0x8A, 1 | OAM_FLIP_H,
+  0, 8, 0x8B, 1,
+  6, 7, 0x9A, 1 | OAM_FLIP_H,
+  128
+};
+
+const unsigned char* const bigMouthSprites[]={
+  twistedBigModeMouth0,
+  twistedBigModeMouth1,
+  twistedBigModeMouth2
+};
+
 
 #define PINGPONG_LEN 16
 const int linearPingPongOffset[]={
@@ -124,6 +173,7 @@ void init_twisted()
   }
   else
   {
+    twisted.ypos = 120 << FP;
     start_dialog(twisted_refight_dialogs, 1);
   }
 }
@@ -158,7 +208,7 @@ void twisted_theatrics()
     else if(currentDialogPtr == twisted_phase2_dialogs)
     {
       if(theatricStage >= 0 && theatricStage <= 2)
-        {
+      {
         twisted.xpos += fastlerp(twisted.xpos>>FP, 120, 64);
         twisted.ypos += fastlerp(twisted.ypos>>FP, 64, 64);
       }
@@ -216,15 +266,11 @@ void update_twisted()
          currentRoom = 5;
          kris.xpos = (5+2)<<4;
          kris.ypos = (4+3)<<4;
-         // set palette line
-         pal_col(4, envPalettes[currentEnvironment][8]);
-         pal_col(4, envPalettes[currentEnvironment][9]);
-         pal_col(4, envPalettes[currentEnvironment][10]);
-         pal_col(4, envPalettes[currentEnvironment][11]);
          ppu_off();
          banked_call(ROOM_LOGIC_BANK, load_room);
          ppu_on_all();
-         twisted.stateTimer = rand8();
+         twisted.init = 2;
+         twisted.stateTimer = 30;
         }
       }
     }
@@ -299,12 +345,37 @@ void update_twisted()
       else if(twisted.init == 2 && theatricActive == 0)
       {
         // phase 2 fight is different:
-        // 1. move out of screen bounds and shoot arrows/pellets while flying along the side.
-        // 1.5 move back into screen bounds
-        // 2. swap screen sides quickly, charging at player with angry eyes. dmg them if contact is made during this movement
-        // 3. every 4 hits, eat exp bar.
+        // 1. move out of screen bounds and shoot arrows/pellets while flying along the chosen side
+        // 2. occasionally swap screen sides, charging at player. dmg them if contact is made during this movement, but this is when twisted is vulnerable to attacks which returns them to idle state
+        // 3. repeat 1-2, but every 4 hits, switch into "eat exp bar" phase/theatric.
         // 4. switch arenas to respawn spikes and move player after exp bar change
-        // (until lv 0 scene, where final arena is chosen and twisted moves behind spikes)
+        // 5. when exp bar hits lv2, do the 3rd palette swap
+        // 6. when exp bar is at lv1, do the lv0 scene, where final arena is chosen and twisted moves behind wall of spikes for the final confrontation.
+
+        twisted.stateTimer--;
+        if(twisted.stateTimer == 0)
+        {
+          // handle special states
+          if(twisted.fightStage == 4 || twisted.fightStage == 9 || twisted.fightStage == 14 || twisted.fightStage == 19) // 4 hits made! (with 1 extra inbetween... we don't want to retrigger eat after all)
+          {
+            // begin eat exp bar & queue the text too
+            twisted.state = TA_EAT_EXP;
+            twisted.stateTimer = 45;
+            playerLevel--;
+            playerExp = 24; // start with bar full so that twisted can munch
+
+            twisted.stateDataX = 0; // munch substate starts with flying up to the exp bar
+            queue_text(rand8() < 127 ? twisted_eat_0 : twisted_eat_1,1); // queue random dialog for munching
+          }
+          else
+          {
+            // re-use lookdir to randomly pick which side of the screen to leave towards
+            twisted.lookDir = rand8();
+            twisted.lookDir = twisted.lookDir >> 6;
+            twisted.state = TA_LEAVE_SCREEN;
+          }
+
+        }
       }
     }
   }
@@ -350,7 +421,7 @@ void update_twisted()
      if(twisted.stateTimer == 0)
      {
          // randomly shoot an arrow or a pellet
-         if(rand8() < 127)
+         if(rand8() < 127 && twisted.init != 2)
          {
            twisted.state = TA_SHOOT_ARROW;
            twisted.stateTimer = 45;
@@ -372,7 +443,7 @@ void update_twisted()
     twisted.stateTimer--;
     if(twisted.stateTimer == 0)
     {
-      twisted.state = TA_IDLE;
+      twisted.state = twisted.init == 2 ? TA_MOVE_TO_POINT_SCREEN : TA_IDLE;
       twisted.stateTimer = rand8()>>2;
     }
   }
@@ -385,10 +456,318 @@ void update_twisted()
     twisted.stateTimer--;
     if(twisted.stateTimer == 0)
     {
-      twisted.state = TA_IDLE;
+      twisted.state = twisted.init == 2 ? TA_MOVE_TO_POINT_SCREEN : TA_IDLE;
       twisted.stateTimer = rand8()>>2;
     }
   }
+  else if(twisted.state == TA_LEAVE_SCREEN) // re-use movement for charge state
+  {
+    // using lookDir, fly offscreen
+    if(twisted.lookDir == 0)
+    {
+        twisted.ypos += fastlerp(twisted.ypos>>FP, 200, 32);
+        if(twisted.ypos>>FP == 200)
+        {
+          // offscreen, so now switch to TA_MOVE_TO_POINT_SCREEN to slide along that axis.
+          twisted.state = TA_MOVE_TO_POINT_SCREEN;
+          twisted.lookDir = rand8()<127 ? 1 : 3; // randomly pick whether to slide left or right.
+          twisted.stateTimer = rand8()>>1;
+        }
+    }
+    else if(twisted.lookDir == 1)
+    {
+        twisted.xpos += fastlerp(twisted.xpos>>FP, 232, 32);
+        if(twisted.xpos>>FP == 232)
+        {
+          // offscreen, so now switch to TA_MOVE_TO_POINT_SCREEN to slide along that axis.
+          twisted.state = TA_MOVE_TO_POINT_SCREEN;
+          twisted.lookDir = rand8()<127 ? 0 : 2; // randomly pick whether to slide up or down.
+          twisted.stateTimer = rand8()>>1;
+        }
+    }
+    else if(twisted.lookDir == 2)
+    {
+        twisted.ypos += fastlerp(twisted.ypos>>FP, 32, 32);
+        if(twisted.ypos>>FP == 32)
+        {
+          // offscreen, so now switch to TA_MOVE_TO_POINT_SCREEN to slide along that axis.
+          twisted.state = TA_MOVE_TO_POINT_SCREEN;
+          twisted.lookDir = rand8()<127 ? 1 : 3; // randomly pick whether to slide left or right.
+          twisted.stateTimer = rand8()>>1;
+        }
+    }
+    else if(twisted.lookDir == 3)
+    {
+        twisted.xpos += fastlerp(twisted.xpos>>FP, 24, 32);
+        if(twisted.xpos>>FP == 24)
+        {
+          // offscreen, so now switch to TA_MOVE_TO_POINT_SCREEN to slide along that axis.
+          twisted.state = TA_MOVE_TO_POINT_SCREEN;
+          twisted.lookDir = rand8()<127 ? 0 : 2; // randomly pick whether to slide up or down.
+          twisted.stateTimer = rand8()>>1;
+        }
+    }
+  }
+  else if(twisted.state == TA_CHARGE_ACROSS_SCREEN)
+  {
+      if(twisted.stateTimer > 0)
+      {
+        twisted.stateTimer--;
+        twisted.floatFrame++;
+        if(playerLevel == 1) // in final arena, twisted can go BIG MODE
+        {
+            twisted.xpos += fastlerp(twisted.xpos>>FP, kris.xpos, 64);
+            twisted.ypos += fastlerp(twisted.ypos>>FP, 2, 64); // twisted goes to hide to transform
+                                                               //
+            if(twisted.ypos>>FP <= 4)
+            {
+                // go bigmode
+                twisted.emot = TE_BIG;
+                twisted.lookDir = 0;
+            }
+        }
+      }
+      else
+      {
+        // while charging, check for collisions with player
+        x2 = twisted.xpos>>FP;
+        y2 = twisted.ypos>>FP;
+        if(point_in_rect(kris.xpos+7, kris.ypos+7, x2-4, y2, x2+12, y2+16))
+        {
+          banked_call(ACTOR_LOGIC_BANK, get_hurt);
+        }
+
+        if(twisted.lookDir == 0)
+        {
+          twisted.ypos += (3 << FP);
+          if((twisted.ypos>>FP) > 198)
+          {
+            twisted.state = TA_MOVE_TO_POINT_SCREEN;
+            twisted.lookDir = rand8()<127 ? 1 : 3; // randomly pick whether to slide left or right
+            twisted.stateTimer = rand8()>>1;
+            twisted.emot = TE_ANGRY;
+          }
+        }
+        else if(twisted.lookDir == 1)
+        {
+          twisted.xpos += (3 << FP);
+          if((twisted.xpos>>FP) > 230)
+          {
+            twisted.state = TA_MOVE_TO_POINT_SCREEN;
+            twisted.lookDir = rand8()<127 ? 0 : 2;
+            twisted.stateTimer = rand8()>>1;
+            twisted.emot = TE_ANGRY;
+          }
+        }
+        else if(twisted.lookDir == 2)
+        {
+          twisted.ypos -= (3 << FP);
+          if((twisted.ypos>>FP) < 24)
+          {
+            twisted.state = TA_MOVE_TO_POINT_SCREEN;
+            twisted.lookDir = rand8()<127 ? 1 : 3; // randomly pick whether to slide left or right
+            twisted.stateTimer = rand8()>>1;
+            twisted.emot = TE_ANGRY;
+          }
+        }
+        else if(twisted.lookDir == 3)
+        {
+          twisted.xpos -= (3 << FP);
+          if((twisted.xpos>>FP) < 34)
+          {
+            twisted.state = TA_MOVE_TO_POINT_SCREEN;
+            twisted.lookDir = rand8()<127 ? 0 : 2;
+            twisted.stateTimer = rand8()>>1;
+            twisted.emot = TE_ANGRY;
+          }
+        }
+      }
+  }
+  else if(twisted.state == TA_MOVE_TO_POINT_SCREEN)
+  {
+    // twisted slides along an axis until they hit that axis' edge, where they turn around
+    if(twisted.lookDir == 0)
+    {
+      twisted.ypos += (2 << FP);
+      if((twisted.ypos>>FP) > 198)
+      {
+        twisted.lookDir = 2;
+        twisted.stateDataX = 0;
+      }
+    }
+    else if(twisted.lookDir == 2)
+    {
+      twisted.ypos -= (2 << FP);
+      if((twisted.ypos>>FP) < 34)
+      {
+        twisted.lookDir = 0;
+        twisted.stateDataX = 0;
+      }
+    }
+    else if(twisted.lookDir == 1)
+    {
+      twisted.xpos += (2 << FP);
+      if((twisted.xpos>>FP) > 230)
+      {
+        twisted.lookDir = 3;
+        twisted.stateDataX = 0;
+      }
+    }
+    else if(twisted.lookDir == 3)
+    {
+      twisted.xpos -= (2 << FP);
+      if((twisted.xpos>>FP) < 24)
+      {
+        twisted.lookDir = 1;
+        twisted.stateDataX = 0;
+      }
+    }
+    // when twisted's state timer runs dry, they shoot at the player.
+    // and the timer is reset after they come out of that respective state.
+    twisted.stateTimer--;
+    if(twisted.stateTimer == 0)
+    {
+        if(rand8() > 85)
+        {
+          twisted.state = TA_WINDUP;
+          twisted.stateTimer = 45;
+        }
+        else // 33% chance not to shoot and instead reset timer
+        {
+          twisted.stateTimer = rand8()>>1;
+        }
+    }
+    else     // if they aren't shooting, then with a high probability (~80%) they will charge the player when their x/y pos is in range
+    {
+      if(twisted.stateDataX == 0)
+      {
+        if(twisted.lookDir == 0 || twisted.lookDir == 2)
+        {
+            // check ypos
+            int ydiff = (twisted.ypos>>FP);
+            ydiff -= (kris.ypos);
+            if(abs(ydiff) < 16)
+            {
+              if(rand8() < 204)
+              {
+                twisted.state = TA_CHARGE_ACROSS_SCREEN;
+                twisted.lookDir = (twisted.xpos>>FP) < 100 ? 1 : 3; // pick right-left charge dir
+                twisted.stateTimer = 45;
+              }
+              else
+              {
+                twisted.stateDataX = 1; // don't dive until turned around at the screen edge
+              }
+            }
+        }
+        else
+        {
+            // check xpos
+            int xdiff = (twisted.xpos>>FP);
+            xdiff -= (kris.xpos-4);
+            if(abs(xdiff) < 16)
+            {
+              if(rand8() < 204)
+              {
+                twisted.state = TA_CHARGE_ACROSS_SCREEN;
+                twisted.lookDir = (twisted.ypos>>FP) < 100 ? 0 : 2; // pick down-up charge dir
+                twisted.stateTimer = 45;
+              }
+              else
+              {
+                twisted.stateDataX = 1;
+              }
+            }
+        }
+      }
+    }
+  }
+  else if(twisted.state == TA_EAT_EXP)
+  {
+    twisted.emot = TE_NEUTRAL;
+    if(twisted.stateDataX == 0) // flying up to eat the exp
+    {
+      twisted.xpos += fastlerp(twisted.xpos>>FP, 196, 16);
+      twisted.ypos += fastlerp(twisted.ypos>>FP, 32, 16);
+      if(twisted.xpos>>FP == 196 && twisted.ypos>>FP == 32)
+      {
+        // flew up, so now start chomping left.
+        twisted.stateDataX = 1;
+        twisted.stateDataY = 196 - 8;
+        twisted.stateTimer = 45;
+      }
+    }
+    else if(twisted.stateDataX == 1)
+    {
+      if(twisted.stateTimer > 0)
+      {
+        twisted.stateTimer--;
+        twisted.mouthAnimFrame = 0;
+      }
+      if(twisted.stateTimer == 0)
+      {
+        if(playerExp == 0)
+        {
+          // munching is done, we can leave this state now!
+          twisted.emot = TE_ANGRY;
+          twisted.state = TA_IDLE;
+          twisted.fightStage++;
+          twisted.stateTimer = 45;
+          clear_text();
+
+          // depending on playerlevel, switch arena
+          if(playerLevel == 2)
+          {
+              currentRoom = 7;
+              kris.xpos = (5+2)<<4;
+              kris.ypos = (6+3)<<4;
+              // set palette line
+              pal_col(4, envPalettes[currentEnvironment][8]);
+              pal_col(5, envPalettes[currentEnvironment][9]);
+              pal_col(6, envPalettes[currentEnvironment][10]);
+              pal_col(7, envPalettes[currentEnvironment][11]);
+              ppu_off();
+              banked_call(ROOM_LOGIC_BANK, load_room);
+              ppu_on_all();
+          }
+          else if(playerLevel == 1)
+          {
+              currentRoom = 6;
+              kris.xpos = (5+2)<<4;
+              kris.ypos = (4+3)<<4;
+              ppu_off();
+              banked_call(ROOM_LOGIC_BANK, load_room);
+              ppu_on_all();
+          }
+          else if(playerLevel == 0) // load final room and begin final confrontation!
+          {
+              music_stop();
+              currentRoom = 9; // final arena
+              kris.xpos = (2+2)<<4;
+              kris.ypos = (3+3)<<4;
+              ppu_off();
+              banked_call(ROOM_LOGIC_BANK, load_room);
+              ppu_on_all();
+              twisted.state = TA_FINAL;
+          }
+        }
+        else
+        {
+          // move to next chunk, update hud
+          twisted.mouthAnimFrame = 1;
+          twisted.xpos += fastlerp(twisted.xpos>>FP, twisted.stateDataY, 64);
+          if(twisted.xpos>>FP == twisted.stateDataY)
+          {
+            playerExp -= 4;
+            hudDirty = 1;
+            twisted.stateTimer = 45;
+            twisted.stateDataY -= 8;
+          }
+        }
+      }
+    }
+  }
+
 
   if(framecount % 5 == 0)
     twisted.floatFrame++;
@@ -484,6 +863,11 @@ void draw_twisted()
   }
   else if(twisted.emot == TE_HURT) // hurt: flash between hurt eye frames, wiggle faster, open mouth
   {
+    // big mode hack lol
+    if(playerLevel == 1)
+    {
+      goto twbigmode; // i will defend goto, my beloved, with my dying breath
+    }
      // Eye 1
     spr = oam_meta_spr(FP_WHOLE(twisted.xpos) + twisted.leftEye.xoffset, FP_WHOLE(twisted.ypos) + twisted.leftEye.yoffset, spr, twisted.mouthAnimFrame%2 == 0 ? twistedEyeHurt : twistedEyeHurtF);
     // Eye 2
@@ -508,6 +892,16 @@ void draw_twisted()
     spr = oam_meta_spr(FP_WHOLE(twisted.xpos) + twisted.rightEye.xoffset, FP_WHOLE(twisted.ypos) + twisted.rightEye.yoffset, spr, twistedEyeAngryL);
     // Mouth
     spr = oam_meta_spr(FP_WHOLE(twisted.xpos) + twisted.mouth.xoffset, FP_WHOLE(twisted.ypos) + twisted.mouth.yoffset, spr, twisted.mouthAnimFrame%2 == 0 ? twistedMouthOpenL : twistedMouthClosedL);
+  }
+  else if(twisted.emot == TE_BIG)
+  {
+    twbigmode:
+    // Eye 1
+    spr = oam_meta_spr(FP_WHOLE(twisted.xpos) + twisted.leftEye.xoffset-4, FP_WHOLE(twisted.ypos) + twisted.leftEye.yoffset, spr, twisted.emot == TE_HURT ? twistedBigModeEyeHurt : twistedBigModeEye);
+    // Eye 2
+    spr = oam_meta_spr(FP_WHOLE(twisted.xpos) + twisted.rightEye.xoffset+4, FP_WHOLE(twisted.ypos) + twisted.rightEye.yoffset, spr, twisted.emot == TE_HURT ? twistedBigModeEyeHurt : twistedBigModeEye);
+    // Mouth
+    spr = oam_meta_spr(FP_WHOLE(twisted.xpos) + twisted.mouth.xoffset, FP_WHOLE(twisted.ypos) + twisted.mouth.yoffset+4, spr, bigMouthSprites[twisted.mouthAnimFrame%3]);
   }
 }
 
@@ -541,8 +935,8 @@ void twisted_shoot_arrow()
 
 void twisted_shoot_pellet()
 {
-  int player_offsetx = (int)kris.xpos;
-  int player_offsety = (int)kris.ypos;
+  int player_offsetx = (int)kris.xpos+7;
+  int player_offsety = (int)kris.ypos+7;
   player_offsetx -= FP_WHOLE(twisted.xpos)+twisted.mouth.xoffset;
   player_offsety -= FP_WHOLE(twisted.ypos)+twisted.mouth.yoffset;
 

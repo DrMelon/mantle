@@ -10,7 +10,7 @@ const unsigned char lv1Text[] = "LV1 ";
 const unsigned char lv2Text[] = "LV2 ";
 const unsigned char lv3Text[] = "LV3 ";
 const unsigned char lvMaxText[] = "MAX ";
-const unsigned char lvZeroText[] = "LV0 ";
+const unsigned char lv0Text[] = "LV0 ";
 
 #define TEXT_LINE_MAX_LEN 27
 #define TEXT_MAX_LINES 2
@@ -19,7 +19,7 @@ const unsigned char cave_dialog_1[] = "Or perhaps, for someTHING?";
 const unsigned char cave_dialog_2[] = "Neither can be found here.";
 const unsigned char cave_dialog_3[] = "But you knew that already, didn't you..?";
 const unsigned char cave_dialog_4[] = "After all, not even Kris\n is here!";
-const unsigned char cave_dialog_5[] = "It's just me.               And YOU.";
+const unsigned char cave_dialog_5[] = "It's just me.               And YOU."; // spaces instead of a newline to delay the "AND YOU" part for effect
 
 const unsigned char* const cave_dialogs[] =
 {
@@ -81,9 +81,9 @@ const unsigned char twisted_angry_10[] = "I have no secrets for you.";
 const unsigned char twisted_angry_11[] = "No key items.";
 const unsigned char twisted_angry_12[] = "I have nothing for that \n\"other world.\"";
 const unsigned char twisted_angry_13[] = "Would you have come here\nwithout its influence?";
-const unsigned char twisted_angry_14[] = "No. I think not.";
-const unsigned char twisted_angry_15[] = "Well, you're here now,\naren't you? Well...";
-const unsigned char twisted_angry_16[] = "You won't see the ENDING\nso easily!";
+const unsigned char twisted_angry_14[] = "No. I think not.\nAll I have is my ENDING.";
+const unsigned char twisted_angry_15[] = "You're here now,\neither way! In any case...";
+const unsigned char twisted_angry_16[] = "I won't let you see\nmy ENDING so easily!";
 
 const unsigned char* const twisted_phase2_dialogs[] =
 {
@@ -115,11 +115,10 @@ const unsigned char* const twisted_refight_dialogs[] =
 
 const unsigned char twisted_eat_0[] = "Nyum nyum nyum!";
 const unsigned char twisted_eat_1[] = "Crumchy exp..!";
-const unsigned char twisted_eat_2[] = "Soothing...";
 
 const unsigned char twisted_final_0[] = "Hah! There you have it!";
 const unsigned char twisted_final_1[] = "I've eaten all your EXP.";
-const unsigned char twisted_final_2[] = "You're not so tough without\nyour precious SWORD!";
+const unsigned char twisted_final_2[] = "Not so tough without\nyour precious SWORD, huh?";
 const unsigned char twisted_final_3[] = "Ha ha ha ha ha!";
 const unsigned char twisted_final_4[] = "Mash the A button all you\nlike! It won't help!";
 const unsigned char twisted_final_5[] = "Ahahahahaha!";
@@ -127,7 +126,7 @@ const unsigned char twisted_final_5[] = "Ahahahahaha!";
 const unsigned char twisted_fear_0[] = "Wait! Wait!! WAIT!!!";
 const unsigned char twisted_fear_1[] = "You don't have to do this!";
 const unsigned char twisted_fear_2[] = "There isn't anything past me!";
-const unsigned char twisted_fear_3[] = "There's no \"ending\" at all!";
+const unsigned char twisted_fear_3[] = "There's no \"ENDING\" at all!";
 const unsigned char twisted_fear_4[] = "Just a howling void\nof numbers!";
 const unsigned char twisted_fear_5[] = "Don't you get it?\nCan't you tell?!";
 const unsigned char twisted_fear_6[] = "I can't see what\ncomes after this..!";
@@ -163,7 +162,7 @@ const unsigned char instruct_1[] = "     BECAME STRONGER";
 
 
 const unsigned char barBlocks[] = {0x20, 0x30, 0x40, 0x50, 0x60};
-const unsigned char* lvStrings[] = {lv1Text, lv2Text, lv3Text, lvMaxText};
+const unsigned char* lvStrings[] = {lv0Text, lv1Text, lv2Text, lv3Text, lvMaxText};
 
 // RAM
 unsigned char hudUpdateBuffer[24];
@@ -249,11 +248,11 @@ void refresh_hud_bars(char hp, char lvl, char exp)
     i2 = i+i2;
     i = 0;
 
-    if(lvl > 0)
+    if(lvl > 0 || currentEnvironment == E_SHELTER) // draw empty expbar in shelter
     {
-      while(lvStrings[lvl-1][i])
+      while(lvStrings[lvl][i])
       {
-        hudUpdateBuffer[i+i2] = lvStrings[lvl-1][i] + 0x80; // text offset
+        hudUpdateBuffer[i+i2] = lvStrings[lvl][i] + 0x80; // text offset
         i++;
       }
       i2 = i+i2;
@@ -353,7 +352,7 @@ void update_text()
   // 2 = Clear text
   if(textQueued == 1)
   {
-    if(framecount % textDelay != 0) return; // delay appropriately
+    if(framecount % textDelay != 0 && (pad & PAD_B == 0)) return; // delay appropriately
     // Update the next char on the screen.
     if(textSeekChar < textLength)
     {

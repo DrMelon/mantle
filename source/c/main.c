@@ -239,8 +239,8 @@ void main(void) {
             continue;
           }
 
-          // Update level logic
-          if(playerExp >= 24 && playerLevel < 4)
+          // Update player LV logic based on EXP. only runs when not in the shelter, since shelter does different things
+          if(playerExp >= 24 && playerLevel < 4 && currentEnvironment != E_SHELTER)
           {
             playerLevel++;
             playerExp = 0;

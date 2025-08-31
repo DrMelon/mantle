@@ -152,12 +152,27 @@ void update_projectile(Projectile* proj)
     proj->ypos += proj->yvel;
 
     // Projectiles despawn when they leave the "screen"
-    if(FP_WHOLE(proj->xpos) < 32 || FP_WHOLE(proj->ypos) < 48 || FP_WHOLE(proj->xpos) > 208 || FP_WHOLE(proj->ypos) > 160)
+    // But this logic works differently during Twisted fight
+    if(twisted.init != 2)
     {
-        projList[i] = projList[spawnedProjectiles-1];
-        spawnedProjectiles--;
+        if(FP_WHOLE(proj->xpos) < 32 || FP_WHOLE(proj->ypos) < 48 || FP_WHOLE(proj->xpos) > 208 || FP_WHOLE(proj->ypos) > 160)
+        {
+            projList[i] = projList[spawnedProjectiles-1];
+            spawnedProjectiles--;
 
-        oam_dirty = 1;
+            oam_dirty = 1;
+        }
+    }
+    else
+    {
+        // borders are broader in twisted fight phase 2
+        if(FP_WHOLE(proj->xpos) < 1 || FP_WHOLE(proj->ypos) < 1 || FP_WHOLE(proj->xpos) > 254 || FP_WHOLE(proj->ypos) > 254)
+        {
+            projList[i] = projList[spawnedProjectiles-1];
+            spawnedProjectiles--;
+
+            oam_dirty = 1;
+        }
     }
 
 }

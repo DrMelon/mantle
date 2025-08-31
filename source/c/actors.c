@@ -520,9 +520,9 @@ void update_kris()
                 }
                 else if(currentEnvironment == E_SHELTER)
                 {
-                    if(i2 == TILE_SHELTER_SPIKES && playerLevel >= 2)
+                    if(i2 == TILE_SHELTER_SPIKES && playerLevel >= 1)
                     {
-                        set_map_tile_in_room(x, y, TILE_SHELTER_FLOOR); // player can destroy spikes as long as they're a high enough level
+                        set_map_tile_in_room(x, y, TILE_SHELTER_FLOOR); // player can destroy spikes as long as they have a sword at all
                     }
                 }
 
@@ -754,7 +754,7 @@ void sword_check()
                 }
             }
             // twisted phase 2
-            else if(twisted.init == 2 && twisted.state == TA_MOVE_TO_POINT_SCREEN)
+            else if(twisted.init == 2 && twisted.state == TA_CHARGE_ACROSS_SCREEN)
             {
                 x2 = FP_WHOLE(twisted.xpos);
                 y2 = FP_WHOLE(twisted.ypos);

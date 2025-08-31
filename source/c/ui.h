@@ -31,6 +31,9 @@ extern const unsigned char* const twisted_intro_dialogs[];
 extern const unsigned char* const twisted_phase2_dialogs[];
 extern const unsigned char* const twisted_refight_dialogs[];
 
+extern const unsigned char twisted_eat_0[];
+extern const unsigned char twisted_eat_1[];
+
 extern void draw_ui_borders();
 extern void init_hud_refresh_banked();
 extern void refresh_hud_bars(char hp, char lvl, char exp);
