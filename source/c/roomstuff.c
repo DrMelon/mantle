@@ -215,6 +215,7 @@ void unpack_room()
      while(y < x2) // go through this rle count
      {
        unpackedRoom[4+i2] = x; // unpack tile
+       unpackedColl[i2] = metatilesPtr[x*6 + 5]; // unpack coll
        i2++;
        y++;
      }
@@ -250,8 +251,8 @@ void load_room_intro()
    spawnedMonsters = 0;
    spawnedTeles = 0;
    spawnedProjectiles = 0;
-   unpack_room();
    metatilesPtr = environment_metatiles[currentEnvironment];
+   unpack_room();
 
    // load heart and draw it
    spr = oam_meta_spr(kris.xpos, kris.ypos, spr, loadingHeartAnim[0]);

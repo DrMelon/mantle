@@ -63,6 +63,7 @@ unsigned char lastFollowPosIdx = 0;
 const unsigned char* roomPtr = 0;
 const unsigned char* metatilesPtr = 0;
 unsigned char unpackedRoom[135];
+unsigned char unpackedColl[96];
 
 Item itemList[MAX_ITEMS];
 Monster monsterList[MAX_MONSTERS];

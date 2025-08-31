@@ -1049,7 +1049,6 @@ void delete_monster(unsigned char idx)
     spawnedMonsters--;
 
 
-
     oam_clear();
 }
 CODE_BANK_POP();

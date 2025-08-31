@@ -143,6 +143,7 @@ extern const unsigned char* roomPtr;
 extern const unsigned char* metatilesPtr;
 // Buffer for unpacking room data after loading with RLE
 extern unsigned char unpackedRoom[];
+extern unsigned char unpackedColl[];
 
 // Buffers for actors
 #define MAX_ITEMS 8

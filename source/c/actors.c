@@ -158,6 +158,15 @@ void update_kris()
                         kris.animframe = 0;
                     }
 
+                    // twisted stuff
+                    else
+                    {
+                        if(twisted.init == 2 && twisted.state = TA_FINAL)
+                        {
+                            // do exp bar push stuff
+                        }
+                    }
+
                     break;
                 }
                 if(pad&PAD_DOWN)
@@ -263,7 +272,11 @@ void update_kris()
                     }
                     else
                     {
-                    if(swim_check(kris.xpos - 1, kris.ypos)) kris.xpos--;
+                        if(swim_check(kris.xpos - 1, kris.ypos))
+                        {
+                            kris.xpos--;
+                            did_move = 1;
+                        }
                     }
                     did_walk = 1;
                     if(kris.xpos < 32)

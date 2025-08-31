@@ -296,9 +296,12 @@ void update_twisted()
         twisted.emot = (twisted.init == 2 ? TE_ANGRY : TE_NEUTRAL); // be angry when in phase 2
         twisted.stateTimer = 5; // act quick after harm
         twisted.invuln = 60; // no hitloops thx <3
-        x2 = kris.xpos;
-        y2 = kris.ypos;
-        banked_call(MONSTER_PROJECTILES_BANK, spawn_candy_bnk); // yum
+        if(twisted.init == 2) // in 2nd phase, spawn candy after hurt
+        {
+          x2 = twisted.xpos>>FP;
+          y2 = twisted.ypos>>FP;
+          spawn_candy(x2, y2);
+        }
       }
     }
     else
@@ -356,7 +359,7 @@ void update_twisted()
         if(twisted.stateTimer == 0)
         {
           // handle special states
-          if(twisted.fightStage == 4 || twisted.fightStage == 9 || twisted.fightStage == 14 || twisted.fightStage == 19) // 4 hits made! (with 1 extra inbetween... we don't want to retrigger eat after all)
+          if(twisted.fightStage == 4 || twisted.fightStage == 9 || twisted.fightStage == 14 || twisted.fightStage == 23) // 4 hits made! (with 1 extra inbetween... we don't want to retrigger eat after all. and final stage is longer)
           {
             // begin eat exp bar & queue the text too
             twisted.state = TA_EAT_EXP;

@@ -373,22 +373,12 @@ unsigned char tilemap_swimmable(unsigned char tx, unsigned char ty)
 
 unsigned char tilemap_ouchie(unsigned char tx, unsigned char ty)
 {
-    x = tx - 2; // account for centering
-    y = ty - 3;
-    if(x < 0 || x >= 12) return 1;
-    if(y < 0 || y >= 8) return 1;
-    i = (x + (y*12)) + 4;
-    return metatilesPtr[unpackedRoom[i]*6 + 5] == 2;
+    return tilemap_solid(tx, ty) == 2;
 }
 
 unsigned char tilemap_solid_nocactus(unsigned char tx, unsigned char ty)
 {
-    x = tx - 2; // account for centering
-    y = ty - 3;
-    if(x < 0 || x >= 12) return 1;
-    if(y < 0 || y >= 8) return 1;
-    i = (x + (y*12)) + 4;
-    return metatilesPtr[unpackedRoom[i]*6 + 5] == 1;
+    return tilemap_solid(tx, ty) == 1;
 }
 
 unsigned char tilemap_solid(unsigned char tx, unsigned char ty)
@@ -397,8 +387,8 @@ unsigned char tilemap_solid(unsigned char tx, unsigned char ty)
     y = ty - 3;
     if(x < 0 || x >= 12) return 1;
     if(y < 0 || y >= 8) return 1;
-    i = (x + (y*12)) + 4;
-    return metatilesPtr[unpackedRoom[i]*6 + 5];
+    i = (x + (y*12));
+    return unpackedColl[i];
 }
 
 void set_map_tile_on_character(WalkingCharacter* chara, unsigned char tile)
@@ -417,6 +407,7 @@ void set_map_tile_on_character(WalkingCharacter* chara, unsigned char tile)
         if(unpackedRoom[i] != TILE_D_TREE && unpackedRoom[i] != TILE_D_FERN && unpackedRoom[i] != TILE_D_CACTUS) return;
     }
     unpackedRoom[i] = tile; // UPDATE TILE COLLISIONS
+    unpackedColl[i-4] = metatilesPtr[tile*6+5];
     ntrAdr = NTADR_A((x+2)*2,(y+3)*2);
     palmTreeBuffer[0] = MSB(ntrAdr);
     palmTreeBuffer[1] = LSB(ntrAdr);
@@ -440,7 +431,10 @@ void set_map_tile_on_character(WalkingCharacter* chara, unsigned char tile)
 void set_map_tile_in_room(unsigned char tx, unsigned char ty, unsigned char tile)
 {
     unsigned short ntrAdr = 0;
-    unpackedRoom[tx + (ty*12) + 4] = tile; // UPDATE TILE COLLISIONS
+    unsigned char tileidx = 0;
+    tileidx = tx + (ty*12) + 4;
+    unpackedRoom[tileidx] = tile; // UPDATE TILE COLLISIONS
+    unpackedColl[tileidx-4] = metatilesPtr[tile*6+5];
     ntrAdr = NTADR_A((tx+2)*2,(ty+3)*2);
     palmTreeBuffer[0] = MSB(ntrAdr);
     palmTreeBuffer[1] = LSB(ntrAdr);
@@ -462,22 +456,19 @@ void set_map_tile_in_room(unsigned char tx, unsigned char ty, unsigned char tile
 
 void draw_black_tile_in_room(unsigned char tx, unsigned char ty)
 {
-    tx += 2;
-    ty += 3;
-
     if(currentEnvironment == E_DESERT)
     {
-        set_map_tile_in_room(tx-2, ty-3, TILE_D_BLACK);
+        set_map_tile_in_room(tx, ty, TILE_D_BLACK);
     }
     else if(currentEnvironment == E_ISLAND)
     {
-        set_map_tile_in_room(tx-2, ty-3, TILE_I_BLACK);
+        set_map_tile_in_room(tx, ty, TILE_I_BLACK);
     }
     else if(currentEnvironment == E_CITY)
     {
-        set_map_tile_in_room(tx-2, ty-3, TILE_CITY_BLACK);
+        set_map_tile_in_room(tx, ty, TILE_CITY_BLACK);
     }
-    attrib_addr = 0x23C0 + ((ty)/2) * 8 + ((tx)/2);
+    attrib_addr = 0x23C0 + ((ty+3)/2) * 8 + ((tx+2)/2);
     palmTreeBuffer[12] = MSB(attrib_addr);
     palmTreeBuffer[13] = LSB(attrib_addr);
     palmTreeBuffer[14] = 0b00000000;
