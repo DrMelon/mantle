@@ -106,6 +106,13 @@ const unsigned char* const twisted_phase2_dialogs[] =
   twisted_angry_16
 };
 
+const unsigned char twisted_refight_0[] = "Let's pick up where we\nleft off, shall we...?";
+
+const unsigned char* const twisted_refight_dialogs[] =
+{
+  twisted_refight_0
+};
+
 const unsigned char twisted_eat_0[] = "Nyum nyum nyum!";
 const unsigned char twisted_eat_1[] = "Crumchy exp..!";
 const unsigned char twisted_eat_2[] = "Soothing...";

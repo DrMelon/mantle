@@ -518,6 +518,13 @@ void update_kris()
                         start_theatric(TH_ENTER_SHELTER);
                     }
                 }
+                else if(currentEnvironment == E_SHELTER)
+                {
+                    if(i2 == TILE_SHELTER_SPIKES && playerLevel >= 2)
+                    {
+                        set_map_tile_in_room(x, y, TILE_SHELTER_FLOOR); // player can destroy spikes as long as they're a high enough level
+                    }
+                }
 
                 // Better sword check for monsters!
                 sword_check();
@@ -731,19 +738,36 @@ void sword_check()
     // Twisted check
     else if(currentEnvironment == E_SHELTER)
     {
-        // twisted phase 1
-        if(twisted.init == 1 && twisted.invuln == 0 && twisted.emot != TE_HURT && (twisted.state == TA_IDLE || twisted.state == TA_MOVE_TO_POINT_WORLD))
+        if(twisted.invuln == 0 && twisted.emot != TE_HURT)
         {
-            x2 = FP_WHOLE(twisted.xpos);
-            y2 = FP_WHOLE(twisted.ypos);
-            if(point_in_rect(kris.xpos + offsetx, kris.ypos + offsety, x2-4, y2, x2 + 12, y2 + 16))
+            // twisted phase 1
+            if(twisted.init == 1 && (twisted.state == TA_IDLE || twisted.state == TA_MOVE_TO_POINT_WORLD))
             {
-                twisted.emot = TE_HURT;
-                twisted.state = TA_IDLE;
-                twisted.stateTimer = 45;
-                twisted.fightStage++; // count number of hits in phase 1
+                x2 = FP_WHOLE(twisted.xpos);
+                y2 = FP_WHOLE(twisted.ypos);
+                if(point_in_rect(kris.xpos + offsetx, kris.ypos + offsety, x2-4, y2, x2 + 12, y2 + 16))
+                {
+                    twisted.emot = TE_HURT;
+                    twisted.state = TA_IDLE;
+                    twisted.stateTimer = 45;
+                    twisted.fightStage++; // count number of hits in phase 1
+                }
+            }
+            // twisted phase 2
+            else if(twisted.init == 2 && twisted.state == TA_MOVE_TO_POINT_SCREEN)
+            {
+                x2 = FP_WHOLE(twisted.xpos);
+                y2 = FP_WHOLE(twisted.ypos);
+                if(point_in_rect(kris.xpos + offsetx, kris.ypos + offsety, x2-4, y2, x2 + 12, y2 + 16))
+                {
+                    twisted.emot = TE_HURT;
+                    twisted.state = TA_IDLE;
+                    twisted.stateTimer = 45;
+                    twisted.fightStage++; // count number of hits in phase 2
+                }
             }
         }
+
     }
 }
 

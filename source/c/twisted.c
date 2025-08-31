@@ -6,6 +6,7 @@
 #include "utils.h"
 #include "ui.h"
 #include "roomstuff.h"
+#include "palettes.h"
 
 CODE_BANK(TWISTED_BANK);
 
@@ -105,7 +106,7 @@ const int smoothPingPongOffset[]={
 
 void init_twisted()
 {
-  twisted.init = 1;
+  if(twisted.init == 0) twisted.init = 1;
   twisted.state = TA_IDLE;
   twisted.emot = TE_NEUTRAL;
   twisted.xpos = 120 << FP;
@@ -116,14 +117,14 @@ void init_twisted()
   twisted.leftEye.yoffset = -5;
   twisted.rightEye.xoffset = 10;
   twisted.rightEye.yoffset = -8;
-  if(narrative_flag_get(NARFLAG_FOUGHT_TWISTED_ONCE))
-  {
-
-  }
-  else
+  if(!narrative_flag_get(NARFLAG_FOUGHT_TWISTED_ONCE))
   {
     theatricActive = 1;
     theatricIndex = TH_TWISTED_INTRO;
+  }
+  else
+  {
+    start_dialog(twisted_refight_dialogs, 1);
   }
 }
 
@@ -175,6 +176,7 @@ void twisted_theatrics()
 
 void update_twisted()
 {
+  if(currentRoom < 3) return;
   if(twisted.invuln)
   {
     twisted.invuln--;
@@ -186,33 +188,44 @@ void update_twisted()
     if(textQueued == 0 && twisted.emot != TE_HURT)
     {
       twisted.mouthAnimFrame = 0;
-      // If twisted just finished talking in the intro...
-      if(theatricActive == 0 && theatricPrev == TH_TEXT_GENERIC && currentDialogPtr == twisted_intro_dialogs)
+      // If twisted just finished talking...
+      if(theatricActive == 0 && theatricPrev == TH_TEXT_GENERIC)
       {
-         // Tele player to room and begin fight Phase 1.
-         currentDialogPtr = NULL;
-         narrative_flag_set(NARFLAG_FOUGHT_TWISTED_ONCE);
-         currentRoom = 4;
-         kris.xpos = (5+2)<<4;
-         kris.ypos = (6+3)<<4;
-         music_play(MUSIC_BURNING_EYES);
-         ppu_off();
-         banked_call(ROOM_LOGIC_BANK, load_room);
-         ppu_on_all();
-         twisted.stateTimer = rand8();
-         return;
-      }
-      else if(theatricActive == 0 && theatricPrev == TH_TEXT_GENERIC && currentDialogPtr == twisted_phase2_dialogs)
-      {
+        if(currentDialogPtr == twisted_intro_dialogs || (currentDialogPtr == twisted_refight_dialogs && twisted.init == 1))
+        {
+          // Tele player to room and begin fight Phase 1.
+          currentDialogPtr = NULL;
+          twisted.fightStage = 0;
+          narrative_flag_set(NARFLAG_FOUGHT_TWISTED_ONCE);
+          currentRoom = 4;
+          kris.xpos = (5+2)<<4;
+          kris.ypos = (6+3)<<4;
+          music_play(MUSIC_BURNING_EYES);
+          ppu_off();
+          banked_call(ROOM_LOGIC_BANK, load_room);
+          ppu_on_all();
+          twisted.stateTimer = rand8();
+          return;
+        }
+        else if(currentDialogPtr == twisted_phase2_dialogs || (currentDialogPtr == twisted_refight_dialogs && twisted.init == 2))
+        {
+         // begin phase 2!
+         twisted.fightStage = 0;
          currentDialogPtr = NULL;
          music_play(MUSIC_TWISTED);
          currentRoom = 5;
          kris.xpos = (5+2)<<4;
          kris.ypos = (4+3)<<4;
+         // set palette line
+         pal_col(4, envPalettes[currentEnvironment][8]);
+         pal_col(4, envPalettes[currentEnvironment][9]);
+         pal_col(4, envPalettes[currentEnvironment][10]);
+         pal_col(4, envPalettes[currentEnvironment][11]);
          ppu_off();
          banked_call(ROOM_LOGIC_BANK, load_room);
          ppu_on_all();
          twisted.stateTimer = rand8();
+        }
       }
     }
     else
@@ -234,7 +247,7 @@ void update_twisted()
       twisted.stateTimer--;
       if(twisted.stateTimer == 0)
       {
-        twisted.emot = TE_NEUTRAL; // be angry when in phase 2
+        twisted.emot = (twisted.init == 2 ? TE_ANGRY : TE_NEUTRAL); // be angry when in phase 2
         twisted.stateTimer = 5; // act quick after harm
         twisted.invuln = 60; // no hitloops thx <3
         x2 = kris.xpos;
@@ -286,11 +299,11 @@ void update_twisted()
       else if(twisted.init == 2 && theatricActive == 0)
       {
         // phase 2 fight is different:
-        // 1. move out of screen bounds and shoot arrows/pellets while flying up and down
+        // 1. move out of screen bounds and shoot arrows/pellets while flying along the side.
         // 1.5 move back into screen bounds
         // 2. swap screen sides quickly, charging at player with angry eyes. dmg them if contact is made during this movement
-        // 3. spawn spikes when none exist anymore (random arena selection) and move player
-        // 4. every 4 hits, eat exp bar.
+        // 3. every 4 hits, eat exp bar.
+        // 4. switch arenas to respawn spikes and move player after exp bar change
         // (until lv 0 scene, where final arena is chosen and twisted moves behind spikes)
       }
     }
@@ -397,6 +410,7 @@ void draw_twisted()
   const unsigned char* eyeSpr = twistedEyeCenter;
   const unsigned char* mouthSpr = twistedMouthClosedL;
 
+  if(currentRoom < 3) return;
   // Invuln flicker
   if(twisted.invuln && (framecount % 4 == 0))
   {
@@ -495,8 +509,6 @@ void draw_twisted()
     // Mouth
     spr = oam_meta_spr(FP_WHOLE(twisted.xpos) + twisted.mouth.xoffset, FP_WHOLE(twisted.ypos) + twisted.mouth.yoffset, spr, twisted.mouthAnimFrame%2 == 0 ? twistedMouthOpenL : twistedMouthClosedL);
   }
-
-
 }
 
 CODE_BANK_POP();

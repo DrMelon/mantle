@@ -809,7 +809,6 @@ void on_enter_special_room()
         if(currentRoom == 3)
         {
           // Entering the dark room. Time to meet Twisted!
-          // todo; put this off until the player has walked a couple tiles in. then we can lock the door behind them and do a nice transition to the phase 1 room
           banked_call(TWISTED_BANK, init_twisted);
         }
     }
