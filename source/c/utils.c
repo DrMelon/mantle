@@ -39,6 +39,13 @@ void music_stop()
     bank_pop();
 }
 
+void sfx_play(unsigned char sfx, unsigned char chan)
+{
+    bank_push(MUSIC_BANK);
+    famistudio_sfx_play(sfx, chan);
+    bank_pop();
+}
+
 unsigned char narrative_flag_get(unsigned char narrativeFlag)
 {
     return (narrativeFlags & narrativeFlag);

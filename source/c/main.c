@@ -16,6 +16,7 @@
 #include "utils.h"
 #include "twisted.h"
 #include "teleport.h"
+#include "famistudio_cc65.h"
 
 //
 // Main entrypoint
@@ -32,6 +33,7 @@ void main(void) {
     // init sound driver
     bank_push(MUSIC_BANK);
     famistudio_init(FAMISTUDIO_PLATFORM_NTSC, music_data_mantle);
+    famistudio_sfx_init(sounds);
     bank_pop();
 
     // Set up game state

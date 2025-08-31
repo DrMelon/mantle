@@ -6,6 +6,7 @@ extern int sign(int value);
 extern int abs(int value);
 extern void music_play(unsigned char music);
 extern void music_stop();
+extern void sfx_play(unsigned char sfx, unsigned char chan);
 extern unsigned char narrative_flag_get(unsigned char narrativeFlag);
 extern void narrative_flag_set(unsigned char narrativeFlag);
 extern void narrative_flag_clr(unsigned char narrativeFlag);

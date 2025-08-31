@@ -262,8 +262,10 @@
 .include "./famistudio_ca65.s"
 
 .segment "DMC"
-    .incbin "../../sound/MANTLE_songs.dmc"
+    .incbin "../../sound/music.dmc"
 
 .segment "ROM_05"
 music_data:
-    .include "../../sound/MANTLE_songs.s"
+    .include "../../sound/music.s"
+sfx_data:
+    .include "../../sound/sfx.s"

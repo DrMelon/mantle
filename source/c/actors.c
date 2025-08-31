@@ -161,7 +161,7 @@ void update_kris()
                     // twisted stuff
                     else
                     {
-                        if(twisted.init == 2 && twisted.state = TA_FINAL)
+                        if(twisted.init == 2 && twisted.state == TA_FINAL)
                         {
                             // do exp bar push stuff
                         }
@@ -421,6 +421,7 @@ void update_kris()
             }
             if(kris.animframe == 1 && framecount%6 == 0)
             {
+                unsigned char dink = 0;
                 // Attack frame - do checks against monsters, smashable tiles, etc
 
                 // Check for smashable tiles (palm trees, ferns, cacti) and monsters at sword's location
@@ -467,10 +468,9 @@ void update_kris()
                         set_map_tile_in_room(x, y, TILE_D_CHEST_OPEN);
                         start_theatric(TH_GETICEKEY);
                     }
-                    else
+                    else if(i2 == TILE_D_FERN || i2 == TILE_D_CACTUS || i2 == TILE_D_TREE)
                     {
-                        // Play *dink* sound!
-                        // TODO: only play it if the struck tile *is* killable though.
+                        dink = 1;
                     }
                 }
                 else if(currentEnvironment == E_ISLAND)
@@ -494,6 +494,10 @@ void update_kris()
                         banked_call(UI_BANK, queue_text_banked);
                         start_theatric(TH_USEICEKEY);
                     }
+                    else if(i2 == TILE_I_FERN || i2 == TILE_I_WFERN)
+                    {
+                        dink = 1;
+                    }
                 }
                 else if(currentEnvironment == E_ICEPALACE)
                 {
@@ -507,12 +511,23 @@ void update_kris()
                         queue_text(icepalace_text_2, 1);
                         start_theatric(TH_USED_UP);
                     }
+                    else if(i2 == TILE_IP_TREE)
+                    {
+                        dink = 1;
+                    }
                 }
                 else if(currentEnvironment == E_CITY)
                 {
-                    if(i2 == TILE_CITY_BOLLARD || i2 == TILE_CITY_BOLLARD_V || i2 == TILE_CITY_BOLLARD_CORNER && playerLevel >= 3)
+                    if(i2 == TILE_CITY_BOLLARD || i2 == TILE_CITY_BOLLARD_V || i2 == TILE_CITY_BOLLARD_CORNER)
                     {
-                        set_map_tile_in_room(x, y, TILE_CITY_FLOOR);
+                        if(playerLevel >= 3)
+                        {
+                            set_map_tile_in_room(x, y, TILE_CITY_FLOOR);
+                        }
+                        else
+                        {
+                            dink = 1;
+                        }
                     }
                 }
                 else if(currentEnvironment == E_DUNGEON)
@@ -520,6 +535,10 @@ void update_kris()
                     if(i2 == TILE_DUNGEON_TREE && playerLevel >= 4)
                     {
                         set_map_tile_in_room(x, y, TILE_DUNGEON_FLOOR);
+                    }
+                    else if(i2 == TILE_DUNGEON_TREE)
+                    {
+                        dink = 1;
                     }
                 }
                 else if(currentEnvironment == E_SHELTERFOREST)
@@ -540,10 +559,15 @@ void update_kris()
                 }
 
                 // Better sword check for monsters!
-                sword_check();
+                dink |= sword_check();
 
-                // TODO: Sword swing SFX, should play on button press
-                //sfx_play(1, 0);
+                // Sword swing SFX, should play on button press
+                sfx_play(SFX_SWORD, FAMISTUDIO_SFX_CH0);
+
+                if(dink)
+                {
+                    sfx_play(SFX_DINK, FAMISTUDIO_SFX_CH1);
+                }
             }
             if(kris.animframe > 2)
             {
@@ -660,7 +684,7 @@ void update_kris()
     }
 }
 
-void sword_check()
+unsigned char sword_check()
 {
     char offsetx = 0;
     char offsety = 0;
@@ -702,9 +726,9 @@ void sword_check()
                  kris.ypos = ((y+7) >> 4) << 4;
                  break;
              }
-             // TODO: Split this level check and substate check so that we can play a *dink* sound on strong monsters
-             if(mon->level <= playerLevel && (mon->substate == S_NORMAL || mon->substate == S_WINDUP || mon->substate == S_JUMPING))
+             if((mon->substate == S_NORMAL || mon->substate == S_WINDUP || mon->substate == S_JUMPING))
              {
+                 if(mon->level > playerLevel) return 1; // dink sound
                  if(mon->health > 0)
                      mon->health--;
                  mon->substate = S_HURT;
@@ -732,7 +756,7 @@ void sword_check()
                 x2 = followerA.xpos;
                 y2 = followerA.ypos;
                 banked_call(MONSTER_PROJECTILES_BANK, quickspawn_burst);
-                return;
+                return 0;
             }
         }
         if(!narrative_flag_get(NARFLAG_KILLED_RALSEI))
@@ -744,7 +768,7 @@ void sword_check()
                 x2 = followerB.xpos;
                 y2 = followerB.ypos;
                 banked_call(MONSTER_PROJECTILES_BANK, quickspawn_burst);
-                return;
+                return 0;
             }
         }
     }
@@ -782,6 +806,8 @@ void sword_check()
         }
 
     }
+
+    return 0;
 }
 
 void get_hurt()

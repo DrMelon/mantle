@@ -87,7 +87,7 @@ void __fastcall__ famistudio_music_stop(void);
 
 void __fastcall__ famistudio_update(void);
 
-#ifdef FAMISTUDIO_CFG_SFX_SUPPORT
+//#ifdef FAMISTUDIO_CFG_SFX_SUPPORT
 
 /**
  * ======================================================================================================================
@@ -100,7 +100,7 @@ void __fastcall__ famistudio_update(void);
  */
 
 // call `famistudio_sfx_init` with the parameters listed below
-// void famistudio_sfx_init(unsigned char sfx_data[]);
+//void __fastcall__ famistudio_sfx_init(unsigned char sfx_data[]);
 #define famistudio_sfx_init(sfx_data)      \
     (__AX__ = ((unsigned int)(sfx_data))), \
     __asm__ ("pha\n"),                     \
@@ -129,7 +129,7 @@ void __fastcall__ famistudio_update(void);
 #define FAMISTUDIO_SFX_CH3 45 // 3 * FAMISTUDIO_SFX_STRUCT_SIZE
 
 // call `famistudio_sfx_play` with the parameters listed below
-// void famistudio_sfx_play(unsigned char sfx_index, unsigned char channel);
+//void __fastcall__ famistudio_sfx_play(unsigned char sfx_index, unsigned char channel);
 #define famistudio_sfx_play(sfx_index, channel)                          \
     (__AX__ = ((unsigned char)(channel)<<8)|(unsigned char)(sfx_index)), \
     __asm__ ("jsr _famistudio_sfx_play\n");
@@ -148,4 +148,4 @@ void __fastcall__ famistudio_update(void);
 void __fastcall__ famistudio_sfx_sample_play(unsigned char sample_index);
 
 #endif
-#endif
+//#endif

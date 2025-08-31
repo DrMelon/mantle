@@ -49,22 +49,19 @@ enum Theatric
 
 // Music Tracks
 #define MUSIC_INTRO 0
-#define MUSIC_SWORD 1
-#define MUSIC_SWORD_SLOW 2
-#define MUSIC_NORTHERNLIGHT 3
-#define MUSIC_GLACEIR 5
-#define MUSIC_BIT_ROOTS 6
-#define MUSIC_ERAM 7
-#define MUSIC_BURNING_EYES 8
-#define MUSIC_TWISTED 9
+#define MUSIC_OCEAN 1
+#define MUSIC_SWORD 2
+#define MUSIC_SWORD_SLOW 3
+#define MUSIC_NORTHERNLIGHT 4
+#define MUSIC_GLACEIR 6
+#define MUSIC_BIT_ROOTS 7
+#define MUSIC_ERAM 8
+#define MUSIC_BURNING_EYES 9
+#define MUSIC_TWISTED 10
 
 // SFX
-#define SFX_SWORD_SWING 0
-#define SFX_SWORD_DINK 1
-#define SFX_KILL 2
-#define SFX_COLLECT_ITEM 3
-#define SFX_LEVELUP 4
-#define SFX_ENTER_DUNGEON 5
+#define SFX_SWORD 2
+#define SFX_DINK 6
 
 // Narrative flags
 #define NARFLAG_MET_TWISTED_EARLY      0b00000001
@@ -177,6 +174,7 @@ extern unsigned char treeRoomVisits; // Number of times visited the Tree Room
 
 // Music/sound data
 extern unsigned char music_data_mantle[];
+extern unsigned char sounds[];
 
 extern const unsigned char* const* currentDialogPtr;
 extern unsigned char scramble_spr_0[];

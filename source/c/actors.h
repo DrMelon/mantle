@@ -57,7 +57,7 @@ extern void tele_to_room();
 extern void earn_exp();
 extern void update_kris();
 extern void draw_kris();
-extern void sword_check();
+extern unsigned char sword_check();
 extern void get_hurt();
 extern void update_followers();
 extern void draw_followers();
