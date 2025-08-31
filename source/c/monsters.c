@@ -748,7 +748,7 @@ void update_mon_cat(Monster* cat)
             {
                 cat->animframe = 1;
                 spawn_projectile(cat->xpos+7, cat->ypos+7, P_NOTE, (dx<<3), (dy<<3));
-                // TODO: play a random "sing" sound..?
+                sfx_play(SFX_DINK, FAMISTUDIO_SFX_CH3);
             }
 
             // simple frame toggle

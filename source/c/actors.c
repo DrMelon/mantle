@@ -81,6 +81,7 @@ void update_kris()
                                 int dx;
                                 int dy;
                                 mon->substate = S_FLY; //tell this block to "fly"
+                                sfx_play(SFX_MOVEBLOCK, FAMISTUDIO_SFX_CH2);
                                 // figure out direction
 
                                 dx = (int)(mon->xpos+8) - (int)(kris.xpos+8);
