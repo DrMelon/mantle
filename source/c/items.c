@@ -29,9 +29,9 @@ void update_item(Item* item, WalkingCharacter* chara)
             {
                 playerLevel++;
                 hudDirty = 1;
-                // Start playing the song!!
-                // TODO: Delay this, but play the jingle instead.
-                // Then after the jingle, teleport out and *then* start the music.
+                // play jingle!
+                music_stop();
+                sfx_play(SFX_EQUIP, FAMISTUDIO_SFX_CH0);
                 theatricActive = 1;
                 theatricIndex = TH_GETSWORD;
                 theatricStage = 0;

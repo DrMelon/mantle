@@ -233,27 +233,32 @@ const unsigned char* const* environment_rooms[]={
 
 unsigned char solidity_check(unsigned char px, unsigned char py)
 {
+    unsigned char result = 0;
     // TopLeft
-    x = (px+2) >> 4;
-    y = (py+2) >> 4;
-    if(tilemap_solid(x, y)) return 0;
+    x = (px+4) >> 4;
+    y = (py+4) >> 4;
+    result = tilemap_solid(x, y);
+    if(result > 0) return result;
 
     // TopRight
-    x = (px+14) >> 4;
-    y = (py+2) >> 4;
-    if(tilemap_solid(x, y)) return 0;
+    x = (px+12) >> 4;
+    y = (py+4) >> 4;
+    result = tilemap_solid(x, y);
+    if(result > 0) return result;
 
     // BottomLeft
-    x = (px+2) >> 4;
-    y = (py+14) >> 4;
-    if(tilemap_solid(x, y)) return 0;
+    x = (px+4) >> 4;
+    y = (py+12) >> 4;
+    result = tilemap_solid(x, y);
+    if(result > 0) return result;
 
     // BottomRight
-    x = (px+14) >> 4;
-    y = (py+14) >> 4;
-    if(tilemap_solid(x, y)) return 0;
+    x = (px+12) >> 4;
+    y = (py+12) >> 4;
+    result = tilemap_solid(x, y);
+    if(result > 0) return result;
 
-    return 1;
+    return 0;
 }
 
 unsigned char bridge_check(unsigned char px, unsigned char py)
@@ -268,57 +273,6 @@ unsigned char bridge_check(unsigned char px, unsigned char py)
     {
         return 0;
     }
-}
-
-
-unsigned char solidity_check_nocactus(unsigned char px, unsigned char py)
-{
-    // TopLeft
-    x = (px+2) >> 4;
-    y = (py+2) >> 4;
-    if(tilemap_solid_nocactus(x, y)) return 0;
-
-    // TopRight
-    x = (px+14) >> 4;
-    y = (py+2) >> 4;
-    if(tilemap_solid_nocactus(x, y)) return 0;
-
-    // BottomLeft
-    x = (px+2) >> 4;
-    y = (py+14) >> 4;
-    if(tilemap_solid_nocactus(x, y)) return 0;
-
-    // BottomRight
-    x = (px+14) >> 4;
-    y = (py+14) >> 4;
-    if(tilemap_solid_nocactus(x, y)) return 0;
-
-    return 1;
-}
-
-unsigned char cactus_check(unsigned char px, unsigned char py)
-{
-    // TopLeft
-    x = (px+4) >> 4;
-    y = (py+4) >> 4;
-    if(tilemap_ouchie(x, y)) return 0;
-
-    // TopRight
-    x = (px+12) >> 4;
-    y = (py+4) >> 4;
-    if(tilemap_ouchie(x, y)) return 0;
-
-    // BottomLeft
-    x = (px+4) >> 4;
-    y = (py+12) >> 4;
-    if(tilemap_ouchie(x, y)) return 0;
-
-    // BottomRight
-    x = (px+14) >> 4;
-    y = (py+14) >> 4;
-    if(tilemap_ouchie(x, y)) return 0;
-
-    return 1;
 }
 
 unsigned char swim_check(unsigned char px, unsigned char py)
@@ -371,22 +325,12 @@ unsigned char tilemap_swimmable(unsigned char tx, unsigned char ty)
     return 0;
 }
 
-unsigned char tilemap_ouchie(unsigned char tx, unsigned char ty)
-{
-    return tilemap_solid(tx, ty) == 2;
-}
-
-unsigned char tilemap_solid_nocactus(unsigned char tx, unsigned char ty)
-{
-    return tilemap_solid(tx, ty) == 1;
-}
-
 unsigned char tilemap_solid(unsigned char tx, unsigned char ty)
 {
     x = tx - 2; // account for centering
     y = ty - 3;
-    if(x < 0 || x >= 12) return 1;
-    if(y < 0 || y >= 8) return 1;
+    if(x >= 12) return 1;
+    if(y >= 8) return 1;
     i = (x + (y*12));
     return unpackedColl[i];
 }

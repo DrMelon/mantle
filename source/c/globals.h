@@ -60,6 +60,7 @@ enum Theatric
 #define MUSIC_TWISTED 10
 
 // SFX
+#define SFX_EQUIP 1
 #define SFX_SWORD 2
 #define SFX_DINK 6
 

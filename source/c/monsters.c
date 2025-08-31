@@ -64,19 +64,19 @@ void update_mon_walker(Monster* walker)
             // try to walk in given direction
             if(walker->direction == 0)
             {
-                if(solidity_check(walker->xpos, walker->ypos + 1)) walker->ypos++;
+                if(!solidity_check(walker->xpos, walker->ypos + 1)) walker->ypos++;
             }
             else if(walker->direction == 1)
             {
-                if(solidity_check(walker->xpos + 1, walker->ypos)) walker->xpos++;
+                if(!solidity_check(walker->xpos + 1, walker->ypos)) walker->xpos++;
             }
             else if(walker->direction == 2)
             {
-                if(solidity_check(walker->xpos, walker->ypos - 1)) walker->ypos--;
+                if(!solidity_check(walker->xpos, walker->ypos - 1)) walker->ypos--;
             }
             else if(walker->direction == 3)
             {
-                if(solidity_check(walker->xpos - 1, walker->ypos)) walker->xpos--;
+                if(!solidity_check(walker->xpos - 1, walker->ypos)) walker->xpos--;
             }
         }
     }
@@ -230,28 +230,28 @@ void update_mon_fish(Monster* fish)
             // In the other environments, they swim on regular tiles.if(fish->direction == 0)
             if(fish->direction == 0)
             {
-                if(solidity_check(fish->xpos, fish->ypos + 1))
+                if(!solidity_check(fish->xpos, fish->ypos + 1))
                         fish->ypos++;
                 else
                     fish->direction++;
             }
             else if(fish->direction == 1)
             {
-                if(solidity_check(fish->xpos + 1, fish->ypos))
+                if(!solidity_check(fish->xpos + 1, fish->ypos))
                     fish->xpos++;
                 else
                     fish->direction++;
             }
             else if(fish->direction == 2)
             {
-                if(solidity_check(fish->xpos, fish->ypos - 1))
+                if(!solidity_check(fish->xpos, fish->ypos - 1))
                     fish->ypos--;
                 else
                     fish->direction++;
             }
             else if(fish->direction == 3)
             {
-                if(solidity_check(fish->xpos - 1, fish->ypos))
+                if(!solidity_check(fish->xpos - 1, fish->ypos))
                     fish->xpos--;
                 else
                     fish->direction = 0;
@@ -732,7 +732,7 @@ void update_mon_cat(Monster* cat)
             dx -= 127;
             dy -= 127;
 
-            if(solidity_check(cat->xpos + dx, cat->ypos + dy))
+            if(!solidity_check(cat->xpos + dx, cat->ypos + dy))
             {
                 cat->xpos += sign(dx) << 1;
                 cat->ypos += sign(dy) << 1;
@@ -821,7 +821,7 @@ void update_mon_iceblock(Monster* iceblock)
         // also check other iceblocks when moving, so we don't collide into them.
         if(iceblock->direction == 0)
         {
-            if(solidity_check(iceblock->xpos, iceblock->ypos + 2) && iceblock_check(iceblock, iceblock->xpos+7, iceblock->ypos+18))
+            if(!solidity_check(iceblock->xpos, iceblock->ypos + 2) && iceblock_check(iceblock, iceblock->xpos+7, iceblock->ypos+18))
             {
                 iceblock->ypos+=2;
             }
@@ -832,7 +832,7 @@ void update_mon_iceblock(Monster* iceblock)
         }
         else if(iceblock->direction == 1)
         {
-            if(solidity_check(iceblock->xpos + 2, iceblock->ypos) && iceblock_check(iceblock, iceblock->xpos+18, iceblock->ypos+7))
+            if(!solidity_check(iceblock->xpos + 2, iceblock->ypos) && iceblock_check(iceblock, iceblock->xpos+18, iceblock->ypos+7))
             {
                 iceblock->xpos+=2;
             }
@@ -843,7 +843,7 @@ void update_mon_iceblock(Monster* iceblock)
         }
         else if(iceblock->direction == 2)
         {
-            if(solidity_check(iceblock->xpos, iceblock->ypos - 2) && iceblock_check(iceblock, iceblock->xpos+7, iceblock->ypos-2))
+            if(!solidity_check(iceblock->xpos, iceblock->ypos - 2) && iceblock_check(iceblock, iceblock->xpos+7, iceblock->ypos-2))
             {
                 iceblock->ypos-=2;
             }
@@ -854,7 +854,7 @@ void update_mon_iceblock(Monster* iceblock)
         }
         else if(iceblock->direction == 3)
         {
-            if(solidity_check(iceblock->xpos - 2, iceblock->ypos) && iceblock_check(iceblock, iceblock->xpos-2, iceblock->ypos+7))
+            if(!solidity_check(iceblock->xpos - 2, iceblock->ypos) && iceblock_check(iceblock, iceblock->xpos-2, iceblock->ypos+7))
             {
                 iceblock->xpos-=2;
             }

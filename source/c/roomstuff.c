@@ -92,6 +92,7 @@ void load_environment(enum Environment env)
         mmc1_set_chr_bank_0(2);
         mmc1_set_chr_bank_1(2 + 1);
         currentRoom = 3;
+        music_play(MUSIC_OCEAN);
         monsterAggression = 0; // Monsters start docile in the island too, but get angry faster.
         playerLevel = 0;
         playerHp = 16;
@@ -125,6 +126,7 @@ void load_environment(enum Environment env)
        playerExp = 0;
        kris.xpos = 128;
        kris.ypos = 128;
+       music_play(MUSIC_OCEAN);
 
        followerA.xpos = 130;
        followerA.ypos = 130;
@@ -165,6 +167,7 @@ void load_environment(enum Environment env)
        playerExp = 0;
        kris.xpos = 120;
        kris.ypos = 65;
+       music_play(MUSIC_OCEAN);
     }
     else if(env == E_SHELTER)
     {
@@ -407,6 +410,7 @@ void load_room_intro()
 
 
    currentState = GS_GAMEPLAY;
+   music_play(MUSIC_OCEAN);
 }
 
 void load_room()

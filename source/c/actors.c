@@ -174,17 +174,18 @@ void update_kris()
                     kris.direction = 0;
                     if(kris.raft == NULL)
                     {
-                        if(solidity_check_nocactus(kris.xpos, kris.ypos + 1))
-                        {
-                            kris.ypos++;
-                            did_move = 1;
-                        }
-                        if(!cactus_check(kris.xpos, kris.ypos))
-                        {
-                            get_hurt();
-                            kris.ypos -= 4;
-                        }
-                    }
+                       unsigned char coll = solidity_check(kris.xpos, kris.ypos + 1);
+                       if(coll == 2)
+                       {
+                           get_hurt();
+                           kris.ypos -= 4;
+                       }
+                       else if(coll == 0)
+                       {
+                           kris.ypos++;
+                           did_move = 1;
+                       }
+                   }
                     else // rafting!
                     {
                         if(swim_check(kris.xpos, kris.ypos + 1)) kris.ypos++;
@@ -201,16 +202,17 @@ void update_kris()
                     kris.direction = 1;
                     if(kris.raft == NULL)
                     {
-                        if(solidity_check_nocactus(kris.xpos + 1, kris.ypos))
-                        {
-                            kris.xpos++;
-                            did_move = 1;
-                        }
-                        if(!cactus_check(kris.xpos, kris.ypos))
-                        {
-                            get_hurt();
-                            kris.xpos -= 4;
-                        }
+                       unsigned char coll = solidity_check(kris.xpos + 1, kris.ypos);
+                       if(coll == 2)
+                       {
+                           get_hurt();
+                           kris.xpos -= 4;
+                       }
+                       else if(coll == 0)
+                       {
+                           kris.xpos++;
+                           did_move = 1;
+                       }
                     }
                     else
                     {
@@ -228,16 +230,17 @@ void update_kris()
                     kris.direction = 2;
                     if(kris.raft == NULL)
                     {
-                        if(solidity_check_nocactus(kris.xpos, kris.ypos - 1))
-                        {
-                            kris.ypos--;
-                            did_move = 1;
-                        }
-                        if(!cactus_check(kris.xpos, kris.ypos))
-                        {
-                            get_hurt();
-                            kris.ypos += 4;
-                        }
+                       unsigned char coll = solidity_check(kris.xpos, kris.ypos - 1);
+                       if(coll == 2)
+                       {
+                           get_hurt();
+                           kris.ypos += 4;
+                       }
+                       else if(coll == 0)
+                       {
+                           kris.ypos--;
+                           did_move = 1;
+                       }
                     }
                     else
                     {
@@ -259,16 +262,17 @@ void update_kris()
                     kris.direction = 3;
                     if(kris.raft == NULL)
                     {
-                        if(solidity_check_nocactus(kris.xpos - 1, kris.ypos))
-                        {
-                            kris.xpos--;
-                            did_move = 1;
-                        }
-                        if(!cactus_check(kris.xpos, kris.ypos))
-                        {
-                            get_hurt();
-                            kris.xpos += 4;
-                        }
+                       unsigned char coll = solidity_check(kris.xpos - 1, kris.ypos);
+                       if(coll == 2)
+                       {
+                           get_hurt();
+                           kris.xpos += 4;
+                       }
+                       else if(coll == 0)
+                       {
+                           kris.xpos--;
+                           did_move = 1;
+                       }
                     }
                     else
                     {
@@ -586,7 +590,7 @@ void update_kris()
 
                 if(kris.direction == 2)
                 {
-                    if(solidity_check(kris.xpos, kris.ypos + 2))
+                    if(!solidity_check(kris.xpos, kris.ypos + 2))
                     {
                         kris.ypos+=2;
                         did_move = 1;
@@ -594,7 +598,7 @@ void update_kris()
                 }
                 if(kris.direction == 3)
                 {
-                    if(solidity_check(kris.xpos + 2, kris.ypos))
+                    if(!solidity_check(kris.xpos + 2, kris.ypos))
                     {
                         kris.xpos+=2;
                         did_move = 1;
@@ -602,7 +606,7 @@ void update_kris()
                 }
                 if(kris.direction == 0)
                 {
-                    if(solidity_check(kris.xpos, kris.ypos - 2))
+                    if(!solidity_check(kris.xpos, kris.ypos - 2))
                     {
                         kris.ypos-=2;
                         did_move = 1;
@@ -610,7 +614,7 @@ void update_kris()
                 }
                 if(kris.direction == 1)
                 {
-                    if(solidity_check(kris.xpos - 2, kris.ypos))
+                    if(!solidity_check(kris.xpos - 2, kris.ypos))
                     {
                         kris.xpos-=2;
                         did_move = 1;
