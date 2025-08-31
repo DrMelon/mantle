@@ -49,6 +49,7 @@ void update_item(Item* item, WalkingCharacter* chara)
                 playerHp += 6;
                 if(playerHp > 16) playerHp = 16;
                 hudDirty = 1;
+                sfx_play(SFX_HEAL, FAMISTUDIO_SFX_CH0);
             }
 
             delete_item(i);

@@ -42,7 +42,7 @@ const unsigned char remember_path_0[] = "DO YOU REMEMBER THE WAY?\nDOES IT MATTE
 
 const unsigned char icepalace_text_0[] = "YOU KNOW THIS STORY.\nYOU KNOW THE WORDS.";
 const unsigned char icepalace_text_1[] = "TO UNDO A FATAL MISTAKE,\nSTRIKE WITH BLADE.";
-const unsigned char icepalace_text_2[] = "YOU KNOW WHAT TO DO NOW.";
+const unsigned char icepalace_text_2[] = "YOU REMEMBER THIS PART.\nDON'T YOU?";
 
 const unsigned char shelter_text_0[] = "YOU HAVE NO KEY.\nBUT IT OPENS FOR YOU.";
 
@@ -352,7 +352,7 @@ void update_text()
   // 2 = Clear text
   if(textQueued == 1)
   {
-    if(framecount % textDelay != 0 && (pad & PAD_B == 0)) return; // delay appropriately
+    if(framecount % textDelay != 0) return; // delay appropriately
     // Update the next char on the screen.
     if(textSeekChar < textLength)
     {
@@ -383,9 +383,31 @@ void update_text()
        textSeekChar++;
        set_vram_update(textVRAMBuffer);
        writingVram = 1;
+       if(theatricActive == 0 || (theatricIndex != TH_GETICEKEY && theatricIndex != TH_USED_UP))
+       {
+        if(textDelay <= 4)
+        {
+            if(textSeekChar % 3 == 0)
+            {
+            sfx_play(SFX_TEXT, FAMISTUDIO_SFX_CH3);
+            }
+        }
+        else
+        {
+            sfx_play(SFX_TEXT, FAMISTUDIO_SFX_CH3);
+        }
+       }
     }
     else
     {
+      if(theatricActive == 0 || (theatricIndex != TH_GETICEKEY && theatricIndex != TH_USED_UP))
+      {
+        sfx_play(SFX_TEXTEND, FAMISTUDIO_SFX_CH3);
+      }
+      else if(theatricIndex == TH_USED_UP)
+      {
+        sfx_play(SFX_USEDUP, FAMISTUDIO_SFX_CH3);
+      }
       textQueued = 0;
       if(textEntriesLeft > 0)
         textEntriesLeft--;

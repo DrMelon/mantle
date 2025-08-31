@@ -60,9 +60,25 @@ enum Theatric
 #define MUSIC_TWISTED 10
 
 // SFX
+#define SFX_DOOR 0
 #define SFX_EQUIP 1
 #define SFX_SWORD 2
+#define SFX_SPEAR 3
+#define SFX_HIT 4
+#define SFX_KILL 5
 #define SFX_DINK 6
+#define SFX_LVUP 7
+#define SFX_DAMAGE 8
+#define SFX_HEAL 9
+#define SFX_TEXT 10
+#define SFX_TEXTEND 11
+#define SFX_ICEKEY 12
+#define SFX_JUMP 13
+#define SFX_RAFT 14
+#define SFX_DOOROPEN 15
+#define SFX_MOVEBLOCK 16
+#define SFX_USEDUP 17
+
 
 // Narrative flags
 #define NARFLAG_MET_TWISTED_EARLY      0b00000001

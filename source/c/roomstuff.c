@@ -55,6 +55,12 @@ void reload_area()
     ppu_on_all();
 
     pal_col(0, envPalettes[currentEnvironment][0]);
+
+    if(currentEnvironment == E_DESERT)
+    {
+      // respawned in desert, so play ocean. normally skipped in loadenvironment so it doesnt stomp intro sounds
+      music_play(MUSIC_OCEAN);
+    }
     hudDirty = 1;
 }
 
@@ -66,6 +72,7 @@ void load_env_target_banked()
 void load_environment(enum Environment env)
 {
     currentEnvironment = env;
+    oam_clear();
     clear_text();
 
     // Set dead list empty (as it is a per-environment tracker)
@@ -128,14 +135,16 @@ void load_environment(enum Environment env)
        kris.ypos = 128;
        music_play(MUSIC_OCEAN);
 
-       followerA.xpos = 130;
-       followerA.ypos = 130;
+       followerA.xpos = kris.xpos;
+       followerA.ypos = kris.ypos;
        followerA.chartype = CH_SUSIE;
        followerA.direction = 0;
-       followerB.xpos = 140;
-       followerB.ypos = 140;
+       followerB.xpos = kris.xpos;
+       followerB.ypos = kris.ypos;
        followerB.chartype = CH_RALSEI;
        followerB.direction = 3;
+
+       reset_follow_pos();
 
        narrative_flag_clr(NARFLAG_KILLED_SUSIE);
        narrative_flag_clr(NARFLAG_KILLED_RALSEI);
@@ -417,8 +426,8 @@ void load_room()
 {
    unsigned char currentTileID = 0;
 
-   unpack_room();
    metatilesPtr = (unsigned char*)environment_metatiles[currentEnvironment];
+   unpack_room();
    // Load tiles into BG
    for(x = 0; x < 12; x++)
    {
@@ -615,6 +624,9 @@ void tele_to_room()
     // Set sprite pos when main game update occurs
     x = telex;
     y = teley;
+
+    // play tele sound
+    sfx_play(SFX_DOOR, FAMISTUDIO_SFX_CH1);
 
     prevRoom = currentRoom;
     currentRoom = room;

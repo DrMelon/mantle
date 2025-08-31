@@ -143,10 +143,8 @@ void update_kris()
 
             if(theatricActive == 1) // if certain theatrics are on, don't take input.
             {
-                if(theatricIndex == TH_GETSWORD || theatricIndex == TH_GETICEKEY || theatricIndex == TH_TEXT_GENERIC || theatricIndex == TH_USED_UP || theatricIndex == TH_TWISTED_INTRO || theatricIndex == TH_ENTER_SHELTER)
-                {
-                    control_override = 1;
-                }
+                control_override = 1;
+                // list of theatrics that allow control go here:
             }
             if(control_override == 0)
             {
@@ -448,14 +446,17 @@ void update_kris()
                     if(i2 == TILE_D_FERN && playerLevel >= 2)
                     {
                         set_map_tile_in_room(x, y, 0);
+                        sfx_play(SFX_KILL, FAMISTUDIO_SFX_CH2);
                     }
                     else if(i2 == TILE_D_CACTUS && playerLevel >= 3)
                     {
                         set_map_tile_in_room(x, y, 0);
+                        sfx_play(SFX_KILL, FAMISTUDIO_SFX_CH2);
                     }
                     else if(i2 == TILE_D_TREE && playerLevel >= 4)
                     {
                         set_map_tile_in_room(x, y, 0);
+                        sfx_play(SFX_KILL, FAMISTUDIO_SFX_CH2);
                     }
                     else if(i2 == TILE_D_CHEST_CLOSED)
                     {
@@ -463,6 +464,7 @@ void update_kris()
 
                         // Stop any music currently playing, then play the ice key jingle
                         music_stop();
+                        sfx_play(SFX_ICEKEY, FAMISTUDIO_SFX_CH1);
 
                         // Summon the ice key text crawl and set text delay high
                         x2 = 0;
@@ -470,6 +472,7 @@ void update_kris()
                         textDelay = 6;
                         // Set the tile to the Open Chest tile
                         set_map_tile_in_room(x, y, TILE_D_CHEST_OPEN);
+                        sfx_play(SFX_KILL, FAMISTUDIO_SFX_CH2);
                         start_theatric(TH_GETICEKEY);
                     }
                     else if(i2 == TILE_D_FERN || i2 == TILE_D_CACTUS || i2 == TILE_D_TREE)
@@ -482,14 +485,17 @@ void update_kris()
                     if(i2 == TILE_I_FERN && playerLevel >= 2)
                     {
                         set_map_tile_in_room(x, y, 0);
+                        sfx_play(SFX_KILL, FAMISTUDIO_SFX_CH2);
                     }
                     else if(i2 == TILE_I_WFERN && playerLevel >= 2)
                     {
                         set_map_tile_in_room(x, y, TILE_I_WATER);
+                        sfx_play(SFX_KILL, FAMISTUDIO_SFX_CH2);
                     }
                     else if(currentRoom == 23 && playerLevel >= 2 && x == 7 && y == 3)
                     {
                         set_map_tile_in_room(x, y, TILE_I_STAIRS);
+                        sfx_play(SFX_KILL, FAMISTUDIO_SFX_CH2);
                     }
                     else if(i2 == TILE_I_DELTDOOR_BL || i2 == TILE_I_DELTDOOR_BR)
                     {
@@ -497,6 +503,7 @@ void update_kris()
                         x2 = 2;
                         banked_call(UI_BANK, queue_text_banked);
                         start_theatric(TH_USEICEKEY);
+                        music_stop();
                     }
                     else if(i2 == TILE_I_FERN || i2 == TILE_I_WFERN)
                     {
@@ -508,11 +515,14 @@ void update_kris()
                     if(i2 == TILE_IP_TREE && playerLevel >= 4)
                     {
                         set_map_tile_in_room(x, y, TILE_IP_FLOOR);
+                        sfx_play(SFX_KILL, FAMISTUDIO_SFX_CH2);
                     }
                     else if(i2 == TILE_IP_DELTDOOR_BL || i2 == TILE_IP_DELTDOOR_BR)
                     {
                         // Made it to the Big Door.
+                        music_stop();
                         queue_text(icepalace_text_2, 1);
+                        textDelay = 6;
                         start_theatric(TH_USED_UP);
                     }
                     else if(i2 == TILE_IP_TREE)
@@ -527,6 +537,7 @@ void update_kris()
                         if(playerLevel >= 3)
                         {
                             set_map_tile_in_room(x, y, TILE_CITY_FLOOR);
+                        sfx_play(SFX_KILL, FAMISTUDIO_SFX_CH2);
                         }
                         else
                         {
@@ -539,6 +550,7 @@ void update_kris()
                     if(i2 == TILE_DUNGEON_TREE && playerLevel >= 4)
                     {
                         set_map_tile_in_room(x, y, TILE_DUNGEON_FLOOR);
+                        sfx_play(SFX_KILL, FAMISTUDIO_SFX_CH2);
                     }
                     else if(i2 == TILE_DUNGEON_TREE)
                     {
@@ -559,6 +571,7 @@ void update_kris()
                     if(i2 == TILE_SHELTER_SPIKES && playerLevel >= 1)
                     {
                         set_map_tile_in_room(x, y, TILE_SHELTER_FLOOR); // player can destroy spikes as long as they have a sword at all
+                        sfx_play(SFX_KILL, FAMISTUDIO_SFX_CH2);
                     }
                 }
 
@@ -670,6 +683,7 @@ void update_kris()
                 kris.arcid = 255;
                 jumpArcs--;
                 kris.substate = S_NORMAL;
+                sfx_play(SFX_RAFT, FAMISTUDIO_SFX_CH0);
                 kris.xpos = ((kris.xpos+7) >> 4) << 4;
                 kris.ypos = ((kris.ypos+7) >> 4) << 4;
 
@@ -736,6 +750,10 @@ unsigned char sword_check()
                  if(mon->health > 0)
                      mon->health--;
                  mon->substate = S_HURT;
+
+                 // play monster hurt sound
+                 sfx_play(SFX_HIT, FAMISTUDIO_SFX_CH1);
+
                  if(mon->montype != MON_LIZARD)
                  {
                      mon->animframe = 0;
@@ -788,6 +806,7 @@ unsigned char sword_check()
                 y2 = FP_WHOLE(twisted.ypos);
                 if(point_in_rect(kris.xpos + offsetx, kris.ypos + offsety, x2-4, y2, x2 + 12, y2 + 16))
                 {
+                    sfx_play(SFX_HIT, FAMISTUDIO_SFX_CH1);
                     twisted.emot = TE_HURT;
                     twisted.state = TA_IDLE;
                     twisted.stateTimer = 45;
@@ -818,6 +837,7 @@ void get_hurt()
 {
     if(kris.substate == S_NORMAL)
     {
+        sfx_play(SFX_DAMAGE, FAMISTUDIO_SFX_CH0);
         kris.substate = S_HURT;
         playerHp--;
         kris.animframe = 0;

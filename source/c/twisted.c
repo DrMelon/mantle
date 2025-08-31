@@ -516,6 +516,10 @@ void update_twisted()
       if(twisted.stateTimer > 0)
       {
         twisted.stateTimer--;
+        if(twisted.stateTimer == 0)
+        {
+          sfx_play(SFX_SPEAR, FAMISTUDIO_SFX_CH2);
+        }
         twisted.floatFrame++;
         if(playerLevel == 1) // in final arena, twisted can go BIG MODE
         {
@@ -763,6 +767,7 @@ void update_twisted()
           {
             playerExp -= 4;
             hudDirty = 1;
+            sfx_play(SFX_DAMAGE, FAMISTUDIO_SFX_CH1);
             twisted.stateTimer = 45;
             twisted.stateDataY -= 8;
           }
@@ -931,6 +936,7 @@ void twisted_shoot_arrow()
       dx = 0;
   }
 
+  sfx_play(SFX_SPEAR, FAMISTUDIO_SFX_CH2);
   bank_push(MONSTER_PROJECTILES_BANK);
   spawn_projectile(FP_WHOLE(twisted.xpos)+twisted.mouth.xoffset, FP_WHOLE(twisted.ypos)+twisted.mouth.yoffset, P_ARROW, (dx<<9), (dy<<9));
   bank_pop();
@@ -950,6 +956,7 @@ void twisted_shoot_pellet()
     player_offsety = player_offsety >> 1;
   }
 
+  sfx_play(SFX_SPEAR, FAMISTUDIO_SFX_CH2);
   bank_push(MONSTER_PROJECTILES_BANK);
   spawn_projectile(FP_WHOLE(twisted.xpos)+twisted.mouth.xoffset, FP_WHOLE(twisted.ypos)+twisted.mouth.yoffset, P_FRIENDLINESS_PELLET, (player_offsetx<<4), (player_offsety<<4));
   bank_pop();

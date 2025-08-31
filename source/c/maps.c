@@ -10,6 +10,7 @@
 #include "forest_maps.h"
 #include "shelter_maps.h"
 #include "bank_helpers.h"
+#include "utils.h"
 
 // Format: 4 8x8 tiles that make up this metatile, and palette mask for attrib (actual mask differs based on tile pos)
 // then, tile solidity type (0 = walkable, 1 = not walkable, 2 = not walkable, hurts)
@@ -441,6 +442,7 @@ void lock_room_doors()
 
     if(shouldLock == 0) return;
 
+    sfx_play(SFX_DOOROPEN, FAMISTUDIO_SFX_CH2);
 
     // first store the tiles before we replace them
     doorLockMemory[0] = tile_at(0+2, 3+3);
@@ -546,13 +548,21 @@ void lock_room_doors()
 
     // set collisions
     unpackedRoom[0 + (3*12) + 4] = TILE_IP_PUZDOOR_L;
+    unpackedColl[0 + (3*12)] = 1;
     unpackedRoom[0 + (4*12) + 4] = TILE_IP_PUZDOOR_L;
+    unpackedColl[0 + (4*12)] = 1;
     unpackedRoom[5 + (0*12) + 4] = TILE_IP_PUZDOOR_L;
+    unpackedColl[4 + (0*12)] = 1;
     unpackedRoom[6 + (0*12) + 4] = TILE_IP_PUZDOOR_R;
+    unpackedColl[6 + (0*12)] = 1;
     unpackedRoom[5 + (7*12) + 4] = TILE_IP_PUZDOOR_L;
+    unpackedColl[5 + (7*12)] = 1;
     unpackedRoom[6 + (7*12) + 4] = TILE_IP_PUZDOOR_R;
+    unpackedColl[6 + (7*12)] = 1;
     unpackedRoom[11 + (3*12) + 4] = TILE_IP_PUZDOOR_R;
+    unpackedColl[11 + (3*12)] = 1;
     unpackedRoom[11 + (4*12) + 4] = TILE_IP_PUZDOOR_R;
+    unpackedColl[11 + (4*12)] = 1;
 
     // move kris so they won't get trapped in the doors
     if(roomSwitchDir == 0) kris.ypos += 16;
@@ -564,15 +574,24 @@ void lock_room_doors()
 void unlock_room_doors()
 {
     unsigned short ntrAdr = 0;
+    sfx_play(SFX_DOOROPEN, FAMISTUDIO_SFX_CH2);
     // Switch the doors back to what they are supposed to be, using doorLockMemory
     unpackedRoom[0 + (3*12) + 4] = doorLockMemory[0];
+    unpackedColl[0 + (3*12)] = metatilesPtr[doorLockMemory[0]*6+5];
     unpackedRoom[0 + (4*12) + 4] = doorLockMemory[1];
+    unpackedColl[0 + (4*12)] = metatilesPtr[doorLockMemory[1]*6+5];
     unpackedRoom[5 + (0*12) + 4] = doorLockMemory[2];
+    unpackedColl[5 + (0*12)] = metatilesPtr[doorLockMemory[2]*6+5];
     unpackedRoom[6 + (0*12) + 4] = doorLockMemory[3];
+    unpackedColl[6 + (0*12)] = metatilesPtr[doorLockMemory[3]*6+5];
     unpackedRoom[5 + (7*12) + 4] = doorLockMemory[4];
+    unpackedColl[5 + (7*12)] = metatilesPtr[doorLockMemory[4]*6+5];
     unpackedRoom[6 + (7*12) + 4] = doorLockMemory[5];
+    unpackedColl[6 + (7*12)] = metatilesPtr[doorLockMemory[5]*6+5];
     unpackedRoom[11 + (3*12) + 4] = doorLockMemory[6];
+    unpackedColl[11 + (3*12)] = metatilesPtr[doorLockMemory[6]*6+5];
     unpackedRoom[11 + (4*12) + 4] = doorLockMemory[7];
+    unpackedColl[11 + (4*12)] = metatilesPtr[doorLockMemory[7]*6+5];
 
 
    // Left side (right-facing doors, vert)

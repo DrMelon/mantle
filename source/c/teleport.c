@@ -12,7 +12,8 @@ void update_buttons()
   Monster* mon;
   unsigned char should_be_pressed = 0;
   // If the room is unlocked, buttons no longer do anything.
-  if(roomLocked == 0) return;
+  if(roomLocked == 0 || spawnedButtons == 0) return;
+  if(framecount%16 != 0) return; // don't need to check every frame lol
   x2 = 0; // current button pressed count
   for(i = 0; i < spawnedButtons; i++)
   {

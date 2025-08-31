@@ -170,6 +170,8 @@ void update_mon_shooter(Monster* shooter)
                 player_offsetx = 0;
             }
 
+            sfx_play(SFX_SPEAR, FAMISTUDIO_SFX_CH2);
+
             spawn_projectile(shooter->xpos+4, shooter->ypos+4, P_ARROW, (player_offsetx<<9), (player_offsety<<9));
         }
         if(shooter->animframe >= 16)
@@ -284,6 +286,8 @@ void update_mon_fish(Monster* fish)
 
 void earn_exp()
 {
+    // monster kill sound
+    sfx_play(SFX_KILL, FAMISTUDIO_SFX_CH2);
     if(currentEnvironment == E_DESERT)
     {
         if(playerLevel < 2)
@@ -456,6 +460,7 @@ void update_mon_lizard(Monster* lizard)
 
                 if(jumpArcs < MAX_JUMP_ARCS)
                 {
+                    sfx_play(SFX_JUMP, FAMISTUDIO_SFX_CH2);
                     lizard->substate = S_JUMPING;
                     lizard->animframe = 0;
                     lizard->arcid = jumpArcs;

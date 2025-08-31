@@ -4,6 +4,7 @@
 #include "neslib.h"
 #include "bank_helpers.h"
 #include "jump_arc.h"
+#include "utils.h"
 
 CODE_BANK(ACTOR_LOGIC_BANK);
 
@@ -28,6 +29,7 @@ void board_raft(WalkingCharacter* chara, Raft* raft)
   // calculate a jump arc for the player
   if(jumpArcs < MAX_JUMP_ARCS)
   {
+    sfx_play(SFX_JUMP, FAMISTUDIO_SFX_CH1);
     chara->substate = S_JUMPING;
     chara->animframe = 0;
     chara->arcid = jumpArcs;
@@ -79,6 +81,7 @@ void leave_raft(WalkingCharacter* chara, Raft* raft, unsigned char tx, unsigned 
 
   raft->assignedchar = NULL;
   chara->raft = NULL;
+  sfx_play(SFX_JUMP, FAMISTUDIO_SFX_CH1);
 
   // calculate a jump arc for the player
   if(jumpArcs < MAX_JUMP_ARCS)

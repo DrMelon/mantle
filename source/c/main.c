@@ -148,7 +148,12 @@ void main(void) {
             {
               // wait until ominous music/jingle stops
               theatricTimer++;
-              if(theatricTimer > 240)
+              if(theatricTimer > 60)
+              {
+                theatricTimer = 0;
+                theatricStage++;
+              }
+              if(theatricStage >= 6)
               {
                 end_theatric();
                 // clear text
@@ -161,8 +166,14 @@ void main(void) {
             }
             else if(theatricIndex == TH_USEICEKEY)
             {
+              // wait until ominous music/jingle stops
               theatricTimer++;
-              if(theatricTimer > 240)
+              if(theatricTimer > 60)
+              {
+                theatricTimer = 0;
+                theatricStage++;
+              }
+              if(theatricStage >= 2)
               {
                 end_theatric();
                 textQueued = 3;
@@ -171,8 +182,14 @@ void main(void) {
             }
             else if(theatricIndex == TH_USED_UP)
             {
+              // wait until ominous music/jingle stops
               theatricTimer++;
-              if(theatricTimer > 250)
+              if(theatricTimer > 60)
+              {
+                theatricTimer = 0;
+                theatricStage++;
+              }
+              if(theatricStage >= 6)
               {
                 end_theatric();
                 textQueued = 3;
@@ -244,6 +261,7 @@ void main(void) {
           // Update player LV logic based on EXP. only runs when not in the shelter, since shelter does different things
           if(playerExp >= 24 && playerLevel < 4 && currentEnvironment != E_SHELTER)
           {
+            sfx_play(SFX_LVUP, FAMISTUDIO_SFX_CH1);
             playerLevel++;
             playerExp = 0;
             if(playerLevel == 2 && currentEnvironment == E_DESERT)
