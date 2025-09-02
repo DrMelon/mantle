@@ -775,6 +775,35 @@ void update_twisted()
       }
     }
   }
+  else if(twisted.state == TA_FINAL)
+  {
+    // Final Phase:
+    // first, move to middle-right and start gloating,
+    // and start dialogue.
+    twisted.emot = TE_GLOAT;
+
+    // then, after that dialogue concludes, wait for the player's level to go back up
+    if(playerLevel > 0 && floorpbimpbomp)
+    {
+        // do the wait! wait! dialogue
+        twisted.emot = TE_TERROR;
+
+    }
+
+    // when final hit happens
+    if(bompbimpdonk)
+    {
+       // force palette to white/grey/black, shake horizontally, stop orbiting briefly
+       twisted.emot = TE_SHOCK;
+
+       // during dialogue, start corrupting random tiles on the Bg by building random vram adjustments.
+       // allow them to overwrite eachother
+       // increase the intensity as the dialogue scene continues
+       // finally, begin replacing colours with 0x0D (darker than dark) one by one, starting from the end of the palettes, alternating between sprite and background
+       // until kris palette is the only thing left. then make it go monochrome, then fade down, then gone.
+    }
+
+  }
 
 
   if(framecount % 5 == 0)
