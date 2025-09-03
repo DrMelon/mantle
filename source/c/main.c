@@ -153,7 +153,7 @@ void main(void) {
                 theatricTimer = 0;
                 theatricStage++;
               }
-              if(theatricStage >= 6)
+              if(theatricStage >= 10)
               {
                 end_theatric();
                 // clear text

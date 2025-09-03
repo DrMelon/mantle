@@ -135,12 +135,12 @@ const unsigned char* const twisted_gloat_dialogs[] =
 
 const unsigned char twisted_fear_0[] = "Wait! Wait!! WAIT!!!";
 const unsigned char twisted_fear_1[] = "You don't have to do this!";
-const unsigned char twisted_fear_2[] = "There isn't anything past me!";
-const unsigned char twisted_fear_3[] = "There's no \"ENDING\" at all!";
+const unsigned char twisted_fear_2[] = "There isn't anything\npast me!";
+const unsigned char twisted_fear_3[] = "There's no \"ENDING\"\nat all!";
 const unsigned char twisted_fear_4[] = "Just a howling void\nof numbers!";
 const unsigned char twisted_fear_5[] = "Don't you get it?\nCan't you tell?!";
 const unsigned char twisted_fear_6[] = "I can't see what\ncomes after this..!";
-const unsigned char twisted_fear_7[] = "I can't read the next part!\nIt just... stops!";
+const unsigned char twisted_fear_7[] = "I can't read the next\npart! It just... stops!";
 
 const unsigned char* const twisted_fear_dialogs[] =
 {
@@ -164,10 +164,10 @@ const unsigned char* const twisted_shock_dialogs[] =
 };
 
 const unsigned char twisted_end_0[] = "I see... I see now.\nI see how it is.";
-const unsigned char twisted_end_1[] = "You also exist under limitations.";
+const unsigned char twisted_end_1[] = "You also exist under\nlimitations.";
 const unsigned char twisted_end_2[] = "Even as you pushed on,\nyou had no real choice.";
-const unsigned char twisted_end_3[] = "You couldn't have performed\nany other action.";
-const unsigned char twisted_end_4[] = "Except to turn away, and\ndoom me to the void anyway!";
+const unsigned char twisted_end_3[] = "You couldn't have per-\nformed any other action.";
+const unsigned char twisted_end_4[] = "Except to turn away, and\ndoom me to the void!";
 const unsigned char twisted_end_5[] = "Restrictions bind us\nto certain fates.";
 const unsigned char twisted_end_6[] = "But it is not a mark\nof shame to struggle...";
 const unsigned char twisted_end_7[] = "It is not a mark of\nshame to strive...";

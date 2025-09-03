@@ -232,6 +232,7 @@ void twisted_theatrics()
     // end dialog screen corrupts
     else if(currentDialogPtr == twisted_end_dialogs)
     {
+      // emotion & palette fading
       if(theatricStage == 1)
       {
         twisted.emot = TE_NEUTRAL;
@@ -243,9 +244,73 @@ void twisted_theatrics()
       else if(theatricStage == 5)
       {
         twisted.emot = TE_NEUTRAL;
+
+        // first dimming of bg pals
+        pal_col(5, 0x00);
+        pal_col(6, 0x10);
+        pal_col(7, 0x10);
+      }
+      else if(theatricStage == 10)
+      {
+        // dimming of twisted, further dim bg, dim text/bg pal red
+        pal_col(23, 0x10);
+        pal_col(22, 0x06);
+        pal_col(02, 0x06);
+        pal_col(6, 0x00);
+        pal_col(5, 0x0F);
+        pal_col(7, 0x00);
+      }
+      else if(theatricStage == 15)
+      {
+        // dim twisted further, bg black mostly, text light grey
+        pal_col(23, 0x00);
+        pal_col(22, 0x0F);
+        pal_col(3, 0x10);
+        pal_col(6, 0x0F);
+        pal_col(02, 0x0F);
+      }
+      else if(theatricStage == 20)
+      {
+        // twisted and bg completely black. text dark grey. ready for kris fadeout
+        pal_col(23, 0x0F);
+        pal_col(7, 0x0F);
+        pal_col(3, 0x10);
+        pal_col(0x1C, 0x0F);
+        pal_col(0x1D, 0x0F);
+        pal_col(0x1E, 0x0F);
+        pal_col(0x1F, 0x0F);
       }
 
       // screen corruption bits
+      if(theatricStage < 5 && framecount % 30 == 0)
+      {
+        if(rand8()<64) // 25% chance to corrupt a tile every 30f
+        {
+           scramble_x_tiles(1);
+        }
+      }
+      else if(theatricStage >= 5 && theatricStage < 10 && framecount % 30 == 0)
+      {
+        if(rand8()<127) // 50% chance to corrupt 3 tiles every 30f
+        {
+           scramble_x_tiles(3);
+        }
+      }
+      else if(theatricStage >= 10 && theatricStage < 15 && framecount % 10 == 0)
+      {
+        if(rand8()<127) // 25% chance to corrupt 6 tiles every 10f
+        {
+           scramble_x_tiles(6);
+        }
+      }
+      else if(theatricStage >= 15 && theatricStage < 21 && framecount % 4 == 0)
+      {
+        // aaa
+        if(rand8()<220)
+        {
+          scramble_x_tiles(12);
+        }
+      }
 
     }
   }
@@ -815,6 +880,12 @@ void update_twisted()
         twisted.mouthAnimFrame++;
       }
     }
+    if(theatricActive == 0 && theatricPrev == TH_TEXT_GENERIC && (currentDialogPtr == twisted_shock_dialogs || currentDialogPtr == twisted_end_dialogs))
+    {
+       currentDialogPtr = NULL; // make sure dialogs finish out correctly
+    }
+
+
     // Final Phase:
     // first, move to middle-right.
     if(twisted.fightStage == 0)
@@ -877,23 +948,42 @@ void update_twisted()
       if(currentDialogPtr == NULL)
       {
         playerHp = 16; // full hp forced at all times now on
-        // twisted is gone.
+        // twisted is gone. the end is near
         twisted.stateTimer++;
         if(twisted.stateTimer == 60)
         {
           // final palette fade 1
+          // text now gone
+          pal_col(3, 0x0F);
         }
         else if(twisted.stateTimer == 120)
         {
           // final palette fade 2
+          // kris begins to fade
+          pal_col(17, 0x00);
+          pal_col(18, 0x10);
+          pal_col(19, 0x10);
         }
         else if(twisted.stateTimer == 180)
         {
           // final palette fade 3
+          // kris keeps fading
+          pal_col(17, 0x0F);
+          pal_col(18, 0x0F);
+          pal_col(19, 0x00);
         }
         else if(twisted.stateTimer == 240)
         {
-          // it's over.
+          // it's over. freeze the game
+          pal_col(17, 0x0D);
+          pal_col(18, 0x0D);
+          pal_col(19, 0x0D);
+          pal_col(0, 0x0D);
+          ppu_wait_nmi();
+          while(1)
+          {
+            framecount++;
+          }
         }
       }
     }
@@ -1119,4 +1209,36 @@ void twisted_shoot_pellet()
   bank_push(MONSTER_PROJECTILES_BANK);
   spawn_projectile(FP_WHOLE(twisted.xpos)+twisted.mouth.xoffset, FP_WHOLE(twisted.ypos)+twisted.mouth.yoffset, P_FRIENDLINESS_PELLET, (player_offsetx<<4), (player_offsety<<4));
   bank_pop();
+}
+
+// Randomly scramble some tiles in VRAM.
+void scramble_x_tiles(unsigned char numtiles)
+{
+  unsigned int ntrAdr;
+  // good old palm tree buffer will do the job here.
+  for(i2 = 0; i2 < numtiles; i2++)
+  {
+    unsigned char tileidx;
+    // get random tile location between 0 and 32 x
+    x2 = rand8() >> 3;
+    // and 0-24 y
+    y2 = rand8() >> 3;
+    y2 = y2 % 23;
+    // tile chosen is random across the tile plane
+    tileidx = rand8();
+    ntrAdr = NTADR_A(x2, y2);
+    palmTreeBuffer[0+(i2*3)] = MSB(ntrAdr);
+    palmTreeBuffer[1+(i2*3)] = LSB(ntrAdr);
+    palmTreeBuffer[2+(i2*3)] = tileidx;
+  }
+
+  palmTreeBuffer[numtiles*3] = NT_UPD_EOF;
+  set_vram_update(palmTreeBuffer);
+  ppu_wait_nmi(); // wait a frame..?
+                  //
+                  // random seed randomisation. waow!
+  if(rand8()<127)
+  {
+    i2 = rand8();
+  }
 }

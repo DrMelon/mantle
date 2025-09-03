@@ -150,23 +150,50 @@ void update_kris()
             }
             if(control_override == 0)
             {
+                // twisted stuff
+                if(twisted.init == 2 && twisted.state == TA_FINAL && playerLevel < 1)
+                {
+                    // do exp bar push stuff
+                    // decay exp bar
+                    if(playerExp > 0 && (framecount % 8 == 0))
+                    {
+                        playerExp--;
+                        hudDirty = 1;
+                    }
+                    if(pad_trig&PAD_A)
+                    {
+                        if(playerExp < 4) // exp is low, so we nudge it up by 4 to make it obvious what's happening
+                        {
+                            playerExp += 4;
+                            hudDirty = 1;
+                        }
+                        else
+                        {
+                            playerExp+=2;
+                            hudDirty = 1;
+                            if(playerExp >= 24 && playerLevel < 4)
+                            {
+                                playerExp = 24;
+                                playerLevel = 4;
+                                hudDirty = 1;
+                                sfx_play(SFX_EQUIP, FAMISTUDIO_SFX_CH2);
+                            }
+                        }
+                    }
+                }
+
+
                 if(pad_trig&PAD_A)
                 {
                     if(playerLevel > 0)
                     {
                         kris.substate = S_ATTACK;
                         kris.animframe = 0;
+                        // Sword swing SFX, should play on button press
+                        sfx_play(SFX_SWORD, FAMISTUDIO_SFX_CH0);
                     }
 
-                    // twisted stuff
-                    else
-                    {
-                        if(twisted.init == 2 && twisted.state == TA_FINAL && playerLevel < 1)
-                        {
-                            // do exp bar push stuff
 
-                        }
-                    }
 
                     break;
                 }
@@ -426,7 +453,7 @@ void update_kris()
                 kris.animframe++;
                 oam_dirty = 1;
             }
-            if(kris.animframe == 1 && framecount%6 == 0)
+            if(kris.animframe == 1 && framecount%3 == 0) // two possible sword hits on attack frames, more lenient
             {
                 unsigned char dink = 0;
                 // Attack frame - do checks against monsters, smashable tiles, etc
@@ -583,8 +610,6 @@ void update_kris()
                 // Better sword check for monsters!
                 dink |= sword_check();
 
-                // Sword swing SFX, should play on button press
-                sfx_play(SFX_SWORD, FAMISTUDIO_SFX_CH0);
 
                 if(dink)
                 {
@@ -832,7 +857,7 @@ unsigned char sword_check()
                     twisted.fightStage++; // count number of hits in phase 2
                 }
             } // twisted phase 3
-            else if(twisted.state == TA_FINAL)
+            else if(twisted.state == TA_FINAL && twisted.fightStage < 3)
             {
                 x2 = FP_WHOLE(twisted.xpos);
                 y2 = FP_WHOLE(twisted.ypos);

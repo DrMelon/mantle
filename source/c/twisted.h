@@ -62,5 +62,6 @@ extern void update_twisted();
 extern void draw_twisted();
 extern void twisted_shoot_arrow();
 extern void twisted_shoot_pellet();
+extern void scramble_x_tiles(unsigned char numtiles);
 
 #endif
