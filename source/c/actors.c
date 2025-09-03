@@ -56,7 +56,6 @@ void update_kris()
                     mon = &monsterList[i];
                     if(mon->montype == MON_ICEBLOCK)
                     {
-                        // TODO using only one point in rect sucks for this, do a better edge check for ice blocks
                         x2 = 0; // store ice collision in x2
                         if(kris.direction == 0)
                         {
@@ -362,8 +361,7 @@ void update_kris()
             }
             if(did_walk && spawnedRafts != 0)
             {
-                // TODO: attempt to board a raft if we're not on one and one is nearby
-                if(kris.raft == NULL)
+                if(kris.raft == NULL) // enter a raft if we're not on one, but one is near
                 {
                     for(i2 = 0; i2 < spawnedRafts; i2++)
                     {
@@ -403,8 +401,7 @@ void update_kris()
                     }
                 }
 
-                // TODO: attempt to leave a raft if we *are* on one and the tile one over from us is a dock
-                else
+                else // leave raft if we're already on one and a bridge is here
                 {
                     if(kris.direction == 0)
                     {

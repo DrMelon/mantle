@@ -296,7 +296,6 @@ void load_room_intro()
         }
         framecount = 0;
 
-        // TODO: Set attribute table.
         // Since each attribute *memory entry* controls a 4x4 grid of tiles, we'll need to calculate
         // each of the 4 tiles for the current memory entry. so we only want to do it when y % 2 == 0.
         if(y % 2 == 0 || y == 7)

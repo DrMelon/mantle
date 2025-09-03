@@ -271,6 +271,10 @@ void main(void) {
             if(playerLevel == 4)
             {
                 playerExp = 24; // full exp
+                if(currentEnvironment == E_DESERT)
+                {
+                  music_play(MUSIC_OCEAN);
+                }
             }
             hudDirty = 1;
           }

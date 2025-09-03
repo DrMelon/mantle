@@ -110,10 +110,6 @@ void update_intro()
     else if(theatricStage == 1)
     {
         // twinkly stars and fade-up start here
-
-        // TODO: twinkly stars. use stars from ice magic sprites?
-        // encode them as Projectiles i guess...
-
         if(framecount % 60 == 0)
         {
             if(framecount == 60)

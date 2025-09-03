@@ -123,10 +123,6 @@ void update_mon_shooter(Monster* shooter)
             }
         }
     }
-    //else if(shooter->substate == S_HURT)
-    //{
-    //    // TODO: Do hurt anim & knockback for monster.
-    //}
     else if(shooter->substate == S_WINDUP)
     {
         // Winding up to shoot the player.
