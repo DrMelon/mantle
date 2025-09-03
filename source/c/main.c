@@ -290,7 +290,7 @@ void main(void) {
           bank_pop();
 
           // SOUND TEST
-          if(pad_trig & PAD_SELECT)
+          /*if(pad_trig & PAD_SELECT)
           {
 
               bank_push(MUSIC_BANK);
@@ -302,7 +302,7 @@ void main(void) {
               {
                 soundTestNum = 0;
               }
-          }
+          }*/
 
           // Update items
           for(i = 0; i < spawnedItems; i++)
