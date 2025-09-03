@@ -801,6 +801,10 @@ void on_enter_special_room()
             unpackedRoom[3] = 18;
           }
         }
+        else if(currentRoom == 19) // :pepsiahh:
+        {
+          unpackedRoom[3] = 18;
+        }
         if(prevRoom == 8 || prevRoom == 9)
         {
           clear_text();

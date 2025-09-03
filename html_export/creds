@@ -1,0 +1,10 @@
+<p><strong>A half-demake, half-fangame reconstruction of a certain part of Deltarune Chapter 3 for the actual NES!<br></strong></p>
+<p>Made over the course of 3 months, this is an NES remake&nbsp;of certain events in Chapter 3 - but with a few twists of its own...</p>
+<p><strong>Web Player Controls:</strong></p>
+<table><tbody><tr><td><strong>Keyboard Key<br></strong></td><td><strong>NES Mapping</strong></td></tr><tr><td>Up Arrow</td><td>D-Pad Up</td></tr><tr><td>Down Arrow</td><td>D-Pad Down</td></tr><tr><td>Left Arrow</td><td>D-Pad Left</td></tr><tr><td>Right Arrow</td><td>D-Pad Right</td></tr><tr><td>Z Key</td><td>A (Attack/Interact)</td></tr></tbody></table>
+<p><strong>It is highly recommended to download the ROM and play on an offline&nbsp;emulator instead.</strong></p>
+<p>Tested on the following emulators:</p>
+<ul><li>Mesen (recommended!)</li><li>FCEUX</li><li>puNes</li><li>nestopia</li><li>ares</li></ul>
+<p><br></p>
+<p><strong>Credits, Tools, and Libraries<br></strong><em>DELTARUNE sprites, concepts, characters, music compositions et cetera are copyright Toby Fox. This fan game should not be sold.</em></p>
+<ul><li>NES Porting, Code, Design, and Narrative - <a href="https://melon.zone/">@drmelon</a></li><li>2A03 NES Music Arrangements & Original Tracks&nbsp;- <a href="https://leaf.codes/">@leafcodes</a></li><li><a href="https://cc65.github.io/">cc65</a>, <a href="https://github.com/igwgames/create-nes-game">create-nes-game, neslib</a>&nbsp;</li><li><a href="https://famistudio.org/">FamiStudio</a></li><li><a href="https://www.aseprite.org/">Aseprite</a></li></ul>
