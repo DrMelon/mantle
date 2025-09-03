@@ -80,6 +80,11 @@ const unsigned char twistedEyeHurtF[]={
   128
 };
 
+const unsigned char twistedEyeShocked[]={
+  0, 0, 0x7D, 1,
+  128
+};
+
 const unsigned char twistedMouthClosedL[]={
  0, 0, 0x7A, 1,
  128
@@ -166,6 +171,9 @@ void init_twisted()
   twisted.leftEye.yoffset = -5;
   twisted.rightEye.xoffset = 10;
   twisted.rightEye.yoffset = -8;
+  twisted.stateTimer = 30;
+  twisted.stateDataX = 0;
+  twisted.stateDataY = 0;
   if(!narrative_flag_get(NARFLAG_FOUGHT_TWISTED_ONCE))
   {
     theatricActive = 1;
@@ -220,6 +228,25 @@ void twisted_theatrics()
       {
         twisted.emot = TE_ANGRY;
       }
+    }
+    // end dialog screen corrupts
+    else if(currentDialogPtr == twisted_end_dialogs)
+    {
+      if(theatricStage == 1)
+      {
+        twisted.emot = TE_NEUTRAL;
+      }
+      else if(theatricStage == 4)
+      {
+        twisted.emot = TE_SAD;
+      }
+      else if(theatricStage == 5)
+      {
+        twisted.emot = TE_NEUTRAL;
+      }
+
+      // screen corruption bits
+
     }
   }
 }
@@ -756,6 +783,10 @@ void update_twisted()
               banked_call(ROOM_LOGIC_BANK, load_room);
               ppu_on_all();
               twisted.state = TA_FINAL;
+              twisted.stateTimer = 60;
+              twisted.stateDataX = 0;
+              twisted.stateDataY = 0;
+              twisted.fightStage = 0;
           }
         }
         else
@@ -777,36 +808,107 @@ void update_twisted()
   }
   else if(twisted.state == TA_FINAL)
   {
+    if(textQueued == 1)
+    {
+      if(framecount % 6 == 0)
+      {
+        twisted.mouthAnimFrame++;
+      }
+    }
     // Final Phase:
-    // first, move to middle-right and start gloating,
-    // and start dialogue.
-    twisted.emot = TE_GLOAT;
+    // first, move to middle-right.
+    if(twisted.fightStage == 0)
+    {
+      twisted.xpos += fastlerp(twisted.xpos>>FP, 180, 32);
+      twisted.ypos += fastlerp(twisted.ypos>>FP, 120, 32);
+
+      twisted.stateTimer--;
+      if(twisted.stateTimer == 0)
+      {
+        twisted.emot = TE_GLOAT;
+        start_dialog(twisted_gloat_dialogs, 6);
+        twisted.fightStage++;
+      }
+    }
+    // after a second, start gloating and begin dialogue
 
     // then, after that dialogue concludes, wait for the player's level to go back up
-    if(playerLevel > 0 && floorpbimpbomp)
+    else if(twisted.fightStage == 1)
     {
-        // do the wait! wait! dialogue
-        twisted.emot = TE_TERROR;
-
+      if(playerLevel > 0)
+      {
+          // do the wait! wait! dialogue
+          twisted.emot = TE_TERROR;
+          start_dialog(twisted_fear_dialogs, 8);
+          twisted.stateDataX = 0;
+          twisted.fightStage++;
+      }
     }
 
     // when final hit happens
-    if(bompbimpdonk)
+    else if(twisted.fightStage == 3)
     {
-       // force palette to white/grey/black, shake horizontally, stop orbiting briefly
-       twisted.emot = TE_SHOCK;
+       // shake horizontally
+       if(framecount % 3 == 0 && twisted.stateDataX < 3)
+       {
+         x2 = rand8() >> (5+twisted.stateDataX);
+         twisted.xpos = (180 + x2)<<FP;
+         twisted.stateDataX++;
+       }
+
+       if(currentDialogPtr == NULL)
+       {
+          playerHp = 16; // full hp forced at all times now on
+          twisted.stateTimer--;
+          if(twisted.stateTimer == 0)
+          {
+              twisted.emot = TE_SAD;
+              twisted.fightStage++;
+              twisted.stateTimer = 0;
+              start_dialog(twisted_end_dialogs, 21);
+          }
+       }
+
+    }
+
+
+    else if(twisted.fightStage == 4)
+    {
+      if(currentDialogPtr == NULL)
+      {
+        playerHp = 16; // full hp forced at all times now on
+        // twisted is gone.
+        twisted.stateTimer++;
+        if(twisted.stateTimer == 60)
+        {
+          // final palette fade 1
+        }
+        else if(twisted.stateTimer == 120)
+        {
+          // final palette fade 2
+        }
+        else if(twisted.stateTimer == 180)
+        {
+          // final palette fade 3
+        }
+        else if(twisted.stateTimer == 240)
+        {
+          // it's over.
+        }
+      }
+    }
 
        // during dialogue, start corrupting random tiles on the Bg by building random vram adjustments.
        // allow them to overwrite eachother
        // increase the intensity as the dialogue scene continues
        // finally, begin replacing colours with 0x0D (darker than dark) one by one, starting from the end of the palettes, alternating between sprite and background
        // until kris palette is the only thing left. then make it go monochrome, then fade down, then gone.
-    }
+
 
   }
 
 
-  if(framecount % 5 == 0)
+  if(framecount % 5 == 0 && !(twisted.fightStage == 3 && twisted.state == TA_FINAL))
     twisted.floatFrame++;
 
   // Twisted floaty movement on components. Does this in most states.
@@ -818,6 +920,7 @@ void update_twisted()
   twisted.mouth.xoffset = smoothPingPongOffset[(twisted.floatFrame)%SMOOTH_PINGPONG_LEN];
   twisted.mouth.yoffset = 8 + smoothPingPongOffset[((twisted.floatFrame) + 6)%SMOOTH_PINGPONG_LEN];
 
+  oam_dirty = 1;
 }
 
 void draw_twisted()
@@ -939,6 +1042,33 @@ void draw_twisted()
     spr = oam_meta_spr(FP_WHOLE(twisted.xpos) + twisted.rightEye.xoffset+4, FP_WHOLE(twisted.ypos) + twisted.rightEye.yoffset, spr, twisted.emot == TE_HURT ? twistedBigModeEyeHurt : twistedBigModeEye);
     // Mouth
     spr = oam_meta_spr(FP_WHOLE(twisted.xpos) + twisted.mouth.xoffset, FP_WHOLE(twisted.ypos) + twisted.mouth.yoffset+4, spr, bigMouthSprites[twisted.mouthAnimFrame%3]);
+  }
+  else if(twisted.emot == TE_GLOAT)
+  {
+    if(framecount % 8 == 0) twisted.mouthAnimFrame++;
+    spr = oam_meta_spr(FP_WHOLE(twisted.xpos) + twisted.leftEye.xoffset, FP_WHOLE(twisted.ypos) + twisted.leftEye.yoffset, spr, twistedEyeUp);
+    // Eye 2
+    spr = oam_meta_spr(FP_WHOLE(twisted.xpos) + twisted.rightEye.xoffset, FP_WHOLE(twisted.ypos) + twisted.rightEye.yoffset, spr, twistedEyeRight);
+    // Mouth
+    spr = oam_meta_spr(FP_WHOLE(twisted.xpos) + twisted.mouth.xoffset, FP_WHOLE(twisted.ypos) + twisted.mouth.yoffset, spr, twisted.mouthAnimFrame%2 == 0 ? twistedMouthOpenL : twistedMouthClosedL);
+
+  }
+  else if(twisted.emot == TE_TERROR)
+  {
+    if(framecount % 3 == 0) twisted.mouthAnimFrame++;
+    spr = oam_meta_spr(FP_WHOLE(twisted.xpos) + twisted.leftEye.xoffset, FP_WHOLE(twisted.ypos) + twisted.leftEye.yoffset, spr, twistedEyeAngryR);
+    // Eye 2
+    spr = oam_meta_spr(FP_WHOLE(twisted.xpos) + twisted.rightEye.xoffset, FP_WHOLE(twisted.ypos) + twisted.rightEye.yoffset, spr, twistedEyeAngryL);
+    // Mouth
+    spr = oam_meta_spr(FP_WHOLE(twisted.xpos) + twisted.mouth.xoffset, FP_WHOLE(twisted.ypos) + twisted.mouth.yoffset, spr, twisted.mouthAnimFrame%2 == 0 ? twistedMouthOpenL : twistedMouthOpenR);
+  }
+  else if(twisted.emot == TE_SHOCK)
+  {
+    spr = oam_meta_spr(FP_WHOLE(twisted.xpos) + twisted.leftEye.xoffset, FP_WHOLE(twisted.ypos) + twisted.leftEye.yoffset, spr, twistedEyeShocked);
+    // Eye 2
+    spr = oam_meta_spr(FP_WHOLE(twisted.xpos) + twisted.rightEye.xoffset, FP_WHOLE(twisted.ypos) + twisted.rightEye.yoffset, spr, twistedEyeShocked);
+    // Mouth
+    spr = oam_meta_spr(FP_WHOLE(twisted.xpos) + twisted.mouth.xoffset, FP_WHOLE(twisted.ypos) + twisted.mouth.yoffset, spr, twistedMouthOpenL);
   }
 }
 

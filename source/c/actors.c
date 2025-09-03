@@ -15,6 +15,7 @@
 #include "susie_anims.h"
 #include "ralsei_anims.h"
 #include "monster_anims.h"
+#include "palettes.h"
 
 const unsigned char* const * const characterWalkAnims[]={
    krisWalkAnims,
@@ -160,9 +161,10 @@ void update_kris()
                     // twisted stuff
                     else
                     {
-                        if(twisted.init == 2 && twisted.state == TA_FINAL)
+                        if(twisted.init == 2 && twisted.state == TA_FINAL && playerLevel < 1)
                         {
                             // do exp bar push stuff
+
                         }
                     }
 
@@ -823,11 +825,33 @@ unsigned char sword_check()
                 y2 = FP_WHOLE(twisted.ypos);
                 if(point_in_rect(kris.xpos + offsetx, kris.ypos + offsety, x2-4, y2, x2 + 12, y2 + 16))
                 {
+                    sfx_play(SFX_HIT, FAMISTUDIO_SFX_CH1);
                     twisted.emot = TE_HURT;
                     twisted.state = TA_IDLE;
                     twisted.stateTimer = 45;
                     twisted.fightStage++; // count number of hits in phase 2
                 }
+            } // twisted phase 3
+            else if(twisted.state == TA_FINAL)
+            {
+                x2 = FP_WHOLE(twisted.xpos);
+                y2 = FP_WHOLE(twisted.ypos);
+                if(point_in_rect(kris.xpos + offsetx, kris.ypos + offsety, x2-4, y2, x2 + 12, y2 + 16))
+                {
+                    sfx_play(SFX_KILL, FAMISTUDIO_SFX_CH1);
+                    // force bg palette to white/grey/black
+                    pal_col(4, envPalettes[currentEnvironment][12]);
+                    pal_col(5, envPalettes[currentEnvironment][13]);
+                    pal_col(6, envPalettes[currentEnvironment][14]);
+                    pal_col(7, envPalettes[currentEnvironment][15]);
+
+                    twisted.emot = TE_SHOCK;
+                    twisted.stateTimer = 15;
+                    twisted.fightStage = 3;
+                    start_dialog(twisted_shock_dialogs, 2);
+                }
+
+
             }
         }
 

@@ -12,6 +12,7 @@ enum TwistedEmotionState
   TE_BIG,
   TE_GLOAT,
   TE_TERROR,
+  TE_SHOCK,
 };
 
 enum TwistedActionState

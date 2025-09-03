@@ -30,6 +30,10 @@ extern const unsigned char instruct_1[];
 extern const unsigned char* const twisted_intro_dialogs[];
 extern const unsigned char* const twisted_phase2_dialogs[];
 extern const unsigned char* const twisted_refight_dialogs[];
+extern const unsigned char* const twisted_gloat_dialogs[];
+extern const unsigned char* const twisted_fear_dialogs[];
+extern const unsigned char* const twisted_shock_dialogs[];
+extern const unsigned char* const twisted_end_dialogs[];
 
 extern const unsigned char twisted_eat_0[];
 extern const unsigned char twisted_eat_1[];

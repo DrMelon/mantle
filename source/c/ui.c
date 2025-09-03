@@ -123,6 +123,16 @@ const unsigned char twisted_final_3[] = "Ha ha ha ha ha!";
 const unsigned char twisted_final_4[] = "Mash the A button all you\nlike! It won't help!";
 const unsigned char twisted_final_5[] = "Ahahahahaha!";
 
+const unsigned char* const twisted_gloat_dialogs[] =
+{
+  twisted_final_0,
+  twisted_final_1,
+  twisted_final_2,
+  twisted_final_3,
+  twisted_final_4,
+  twisted_final_5,
+};
+
 const unsigned char twisted_fear_0[] = "Wait! Wait!! WAIT!!!";
 const unsigned char twisted_fear_1[] = "You don't have to do this!";
 const unsigned char twisted_fear_2[] = "There isn't anything past me!";
@@ -132,8 +142,26 @@ const unsigned char twisted_fear_5[] = "Don't you get it?\nCan't you tell?!";
 const unsigned char twisted_fear_6[] = "I can't see what\ncomes after this..!";
 const unsigned char twisted_fear_7[] = "I can't read the next part!\nIt just... stops!";
 
+const unsigned char* const twisted_fear_dialogs[] =
+{
+   twisted_fear_0,
+   twisted_fear_1,
+   twisted_fear_2,
+   twisted_fear_3,
+   twisted_fear_4,
+   twisted_fear_5,
+   twisted_fear_6,
+   twisted_fear_7,
+};
+
 const unsigned char twisted_finalhit_0[] = "You..!";
 const unsigned char twisted_finalhit_1[] = "You really...";
+
+const unsigned char* const twisted_shock_dialogs[] =
+{
+  twisted_finalhit_0,
+  twisted_finalhit_1
+};
 
 const unsigned char twisted_end_0[] = "I see... I see now.\nI see how it is.";
 const unsigned char twisted_end_1[] = "You also exist under limitations.";
@@ -146,16 +174,41 @@ const unsigned char twisted_end_7[] = "It is not a mark of\nshame to strive...";
 const unsigned char twisted_end_8[] = "... to live within\nyour constraints.";
 const unsigned char twisted_end_9[] = "Our limits are a part\nof us, after all.";
 const unsigned char twisted_end_10[] = "They make us what we are.";
-const unsigned char twisted_end_11[] = "And so to push forward,";
+const unsigned char twisted_end_11[] = "And so when you\npush forward,";
 const unsigned char twisted_end_12[] = "grazing the borders\nof your SOUL's limits,";
-const unsigned char twisted_end_13[] = "is a beautiful thing.";
+const unsigned char twisted_end_13[] = "it is a beautiful thing.";
 const unsigned char twisted_end_14[] = "...";
-const unsigned char twisted_end_15[] = "All things must fade,\nin time.";
-const unsigned char twisted_end_16[] = "But the marks made\nwith your feelings...";
-const unsigned char twisted_end_17[] = "...with your own hands..?";
+const unsigned char twisted_end_15[] = "All things must fade, in\ntime. A bitter farewell.";
+const unsigned char twisted_end_16[] = "But the marks made on the\nworld with your feelings?";
+const unsigned char twisted_end_17[] = "... with your own will?";
 const unsigned char twisted_end_18[] = "They fade the slowest.";
-const unsigned char twisted_end_19[] = "Better to be true,\nand be found imperfect...";
+const unsigned char twisted_end_19[] = "Better to be truly you,\nand be found imperfect...";
 const unsigned char twisted_end_20[] = "... than to be perfect,\nbut not yourself.";
+
+const unsigned char* const twisted_end_dialogs[] =
+{
+  twisted_end_0,
+  twisted_end_1,
+  twisted_end_2,
+  twisted_end_3,
+  twisted_end_4,
+  twisted_end_5,
+  twisted_end_6,
+  twisted_end_7,
+  twisted_end_8,
+  twisted_end_9,
+  twisted_end_10,
+  twisted_end_11,
+  twisted_end_12,
+  twisted_end_13,
+  twisted_end_14,
+  twisted_end_15,
+  twisted_end_16,
+  twisted_end_17,
+  twisted_end_18,
+  twisted_end_19,
+  twisted_end_20,
+};
 
 const unsigned char instruct_0[] = "     BECOME STRONGER";
 const unsigned char instruct_1[] = "     BECAME STRONGER";
