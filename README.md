@@ -4,8 +4,7 @@
 
 # How to compile
 
-This rom uses [create-nes-game](https://create-nes-game.nes.science/) to build. Download a copy
-of that to start.
+This rom uses [create-nes-game](https://create-nes-game.nes.science/) to build. A linux binary is in the `tools/` directory, but you may need it for your own OS.
 
 ## First time setup
 
